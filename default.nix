@@ -12,6 +12,9 @@ pkgs.mkShell rec {
     pkgs.nodejs
     pkgs.nodejs.pkgs.pnpm
 
+    # build target: zip
+    pkgs.zip
+
     # build target: deb
     pkgs.dpkg
     pkgs.fakeroot

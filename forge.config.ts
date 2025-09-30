@@ -3,6 +3,7 @@ import { MakerDeb } from "@electron-forge/maker-deb";
 import { MakerFlatpak } from "@electron-forge/maker-flatpak";
 import { MakerFlatpakOptionsConfig } from "@electron-forge/maker-flatpak/dist/Config";
 import { MakerSquirrel } from "@electron-forge/maker-squirrel";
+import { MakerZIP } from "@electron-forge/maker-zip";
 import { FusesPlugin } from "@electron-forge/plugin-fuses";
 import { VitePlugin } from "@electron-forge/plugin-vite";
 import { PublisherGithub } from "@electron-forge/publisher-github";
@@ -11,6 +12,7 @@ import { FuseV1Options, FuseVersion } from "@electron/fuses";
 import { globSync } from "node:fs";
 
 const STRINGS = {
+  author: "Revolt Platforms LTD",
   name: "Stoat",
   execName: "stoat-desktop",
   description: "Open source user-first chat platform.",
@@ -33,8 +35,12 @@ const config: ForgeConfig = {
   makers: [
     new MakerAppX({}),
     new MakerSquirrel({
+      name: STRINGS.name,
+      authors: STRINGS.author,
       iconUrl: `${ASSET_DIR}/icon.ico`,
+      description: STRINGS.description,
     }),
+    new MakerZIP({}),
     new MakerFlatpak({
       options: {
         id: "chat.stoat.stoat-desktop",
@@ -95,6 +101,9 @@ const config: ForgeConfig = {
     }),
     new MakerDeb({
       options: {
+        productName: STRINGS.name,
+        productDescription: STRINGS.description,
+        categories: ["Network"],
         icon: `${ASSET_DIR}/icon.png`,
       },
     }),

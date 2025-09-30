@@ -1,8 +1,7 @@
 {
   "name": "stoat-desktop",
   "productName": "stoat-desktop",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "version": "1.1.0",
   "main": ".vite/build/main.js",
   "repo": "stoatchat/desktop",
   "scripts": {
@@ -25,6 +24,7 @@
     "@electron-forge/maker-deb": "^7.9.0",
     "@electron-forge/maker-flatpak": "^7.9.0",
     "@electron-forge/maker-squirrel": "^7.9.0",
+    "@electron-forge/maker-zip": "^7.9.0",
     "@electron-forge/plugin-auto-unpack-natives": "^7.9.0",
     "@electron-forge/plugin-fuses": "^7.9.0",
     "@electron-forge/plugin-vite": "^7.9.0",
