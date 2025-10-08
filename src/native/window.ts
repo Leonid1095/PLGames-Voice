@@ -1,4 +1,4 @@
-import { join, resolve } from "node:path";
+import { join } from "node:path";
 
 import {
   BrowserWindow,
@@ -9,7 +9,8 @@ import {
   nativeImage,
 } from "electron";
 
-import { setBadgeCount } from "./badges";
+import windowIconAsset from "../../assets/desktop/icon.png?asset";
+
 import { config } from "./config";
 import { updateTrayMenu } from "./tray";
 
@@ -27,11 +28,7 @@ export const BUILD_URL = new URL(
 let shouldQuit = false;
 
 // load the window icon
-const windowIcon = nativeImage.createFromPath(
-  resolve(process.resourcesPath, "icon.png"),
-);
-
-console.info(resolve(process.resourcesPath, "icon.png"));
+const windowIcon = nativeImage.createFromDataURL(windowIconAsset);
 
 // windowIcon.setTemplateImage(true);
 
@@ -43,7 +40,7 @@ export function createMainWindow() {
   mainWindow = new BrowserWindow({
     minWidth: 300,
     minHeight: 300,
-    width: 800,
+    width: 1100,
     height: 600,
     backgroundColor: "#191919",
     frame: !config.customFrame,
@@ -156,8 +153,8 @@ export function createMainWindow() {
 
   // mainWindow.webContents.openDevTools();
 
-  let i = 0;
-  setInterval(() => setBadgeCount((++i % 30) + 1), 1000);
+  // let i = 0;
+  // setInterval(() => setBadgeCount((++i % 30) + 1), 1000);
 }
 
 /**

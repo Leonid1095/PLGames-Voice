@@ -1,7 +1,6 @@
-import { resolve } from "node:path";
-
 import { Menu, Tray, nativeImage } from "electron";
 
+import trayIconAsset from "../../assets/desktop/icon.png?asset";
 import { version } from "../../package.json";
 
 import { mainWindow, quitApp } from "./window";
@@ -10,9 +9,7 @@ import { mainWindow, quitApp } from "./window";
 let tray: Tray = null;
 
 // load the tray icon
-const trayIcon = nativeImage.createFromPath(
-  resolve(process.resourcesPath, "icon.png"),
-);
+const trayIcon = nativeImage.createFromDataURL(trayIconAsset);
 
 // trayIcon.setTemplateImage(true);
 

@@ -1,5 +1,4 @@
 import dbus from "@homebridge/dbus-native";
-import { resolve } from "node:path";
 
 import { NativeImage, app, nativeImage } from "electron";
 
@@ -19,8 +18,10 @@ export async function setBadgeCount(count: number) {
       }
 
       if (!nativeIcons[count])
-        nativeIcons[count] = nativeImage.createFromPath(
-          resolve(process.resourcesPath, `${Math.min(count, 10)}.ico`),
+        nativeIcons[count] = nativeImage.createFromDataURL(
+          await import(
+            `../../assets/desktop/badges/${Math.min(count, 10)}.ico?asset`
+          ),
         );
 
       mainWindow.setOverlayIcon(
