@@ -26,7 +26,7 @@ const acquiredLock = app.requestSingleInstanceLock();
 
 if (acquiredLock) {
   // start auto update logic
-  // todo: updateElectronApp();
+  updateElectronApp();
 
   // create and configure the app when electron is ready
   app.on("ready", () => {

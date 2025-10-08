@@ -33,11 +33,16 @@ const config: ForgeConfig = {
   },
   rebuildConfig: {},
   makers: [
-    new MakerAppX({}),
+    new MakerAppX({
+      packageExecutable: `app\\${STRINGS.execName}.exe`,
+      publisher: "CN=B040CC7E-0016-4AF5-957F-F8977A6CFA3B",
+    }),
     new MakerSquirrel({
       name: STRINGS.name,
       authors: STRINGS.author,
-      iconUrl: `${ASSET_DIR}/icon.ico`,
+      // todo: hoist this
+      iconUrl: `https://stoat.chat/app/assets/icon-DUSNE-Pb.ico`,
+      setupIcon: `${ASSET_DIR}/icon.ico`,
       description: STRINGS.description,
     }),
     new MakerZIP({}),
