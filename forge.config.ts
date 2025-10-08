@@ -51,64 +51,66 @@ const config: ForgeConfig = {
       copyright: "Copyright (C) 2025 Revolt Platforms LTD",
     }),
     new MakerZIP({}),
-    new MakerFlatpak({
-      options: {
-        id: "chat.stoat.stoat-desktop",
-        description: STRINGS.description,
-        productName: STRINGS.name,
-        productDescription: STRINGS.description,
-        runtimeVersion: "21.08",
-        icon: `${ASSET_DIR}/icon.png`,
-        categories: ["Network"],
-        modules: [
-          // use the latest zypak -- Electron sandboxing for Flatpak
-          {
-            name: "zypak",
-            sources: [
-              {
-                type: "git",
-                url: "https://github.com/refi64/zypak",
-                tag: "v2025.09",
-              },
-            ],
-          },
-        ],
-        finishArgs: [
-          // default arguments found by running
-          // DEBUG=electron-installer-flatpak* pnpm make
-          "--socket=x11",
-          "--share=ipc",
-          "--device=dri",
-          "--socket=pulseaudio",
-          "--filesystem=home",
-          "--env=TMPDIR=/var/tmp",
-          "--share=network",
-          "--talk-name=org.freedesktop.Notifications",
-          // add Unity talk name for badges
-          "--talk-name=com.canonical.Unity",
-        ],
-        // files: [
-        //   // is this necessary?
-        //   // https://stackoverflow.com/q/79745700
-        //   ...[16, 32, 64, 128, 256, 512].map(
-        //     (size) =>
-        //       [
-        //         `assets/desktop/hicolor/${size}x${size}.png`,
-        //         `/app/share/icons/hicolor/${size}x${size}/apps/chat.stoat.stoat-desktop.png`,
-        //       ] as [string, string],
-        //   ),
-        //   [
-        //     `assets/desktop/icon.svg`,
-        //     `/app/share/icons/hicolor/scalable/apps/chat.stoat.stoat-desktop.svg`,
-        //   ] as [string, string],
-        // ],
-        files: [],
-      } as MakerFlatpakOptionsConfig,
-      /* as Omit<
+    ...[
+      new MakerFlatpak({
+        options: {
+          id: "chat.stoat.stoat-desktop",
+          description: STRINGS.description,
+          productName: STRINGS.name,
+          productDescription: STRINGS.description,
+          runtimeVersion: "21.08",
+          icon: `${ASSET_DIR}/icon.png`,
+          categories: ["Network"],
+          modules: [
+            // use the latest zypak -- Electron sandboxing for Flatpak
+            {
+              name: "zypak",
+              sources: [
+                {
+                  type: "git",
+                  url: "https://github.com/refi64/zypak",
+                  tag: "v2025.09",
+                },
+              ],
+            },
+          ],
+          finishArgs: [
+            // default arguments found by running
+            // DEBUG=electron-installer-flatpak* pnpm make
+            "--socket=x11",
+            "--share=ipc",
+            "--device=dri",
+            "--socket=pulseaudio",
+            "--filesystem=home",
+            "--env=TMPDIR=/var/tmp",
+            "--share=network",
+            "--talk-name=org.freedesktop.Notifications",
+            // add Unity talk name for badges
+            "--talk-name=com.canonical.Unity",
+          ],
+          // files: [
+          //   // is this necessary?
+          //   // https://stackoverflow.com/q/79745700
+          //   ...[16, 32, 64, 128, 256, 512].map(
+          //     (size) =>
+          //       [
+          //         `assets/desktop/hicolor/${size}x${size}.png`,
+          //         `/app/share/icons/hicolor/${size}x${size}/apps/chat.stoat.stoat-desktop.png`,
+          //       ] as [string, string],
+          //   ),
+          //   [
+          //     `assets/desktop/icon.svg`,
+          //     `/app/share/icons/hicolor/scalable/apps/chat.stoat.stoat-desktop.svg`,
+          //   ] as [string, string],
+          // ],
+          files: [],
+        } as MakerFlatpakOptionsConfig,
+        /* as Omit<
         MakerFlatpakOptionsConfig,
         "files"
       > */
-    }),
+      }),
+    ].slice(0, 0), // disable Flatpak build
     new MakerDeb({
       options: {
         productName: STRINGS.name,
