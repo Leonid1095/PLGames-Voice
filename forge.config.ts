@@ -35,6 +35,7 @@ const config: ForgeConfig = {
   rebuildConfig: {},
   makers: [
     new MakerAppX({
+      certPass: "",
       packageExecutable: `app\\${STRINGS.execName}.exe`,
       publisher: "CN=B040CC7E-0016-4AF5-957F-F8977A6CFA3B",
     }),
