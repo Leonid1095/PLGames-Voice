@@ -1,12 +1,19 @@
 on:
   push:
-    branches:
-      - "**"
+    tags:
+      - v*
 
 jobs:
-  build:
-    name: Build App
-    runs-on: ubuntu-latest
+  release:
+    name: Publish App
+    runs-on: ${{ matrix.os }}
+
+    permissions:
+      contents: write
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - name: Checkout
@@ -29,5 +36,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build
-        run: pnpm run package
+      - name: Publish
+        run: pnpm run publish
+        env:
+          PLATFORM: ${{ matrix.os }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
