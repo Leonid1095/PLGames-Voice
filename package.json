@@ -1,7 +1,7 @@
 {
   "name": "stoat-desktop",
   "productName": "stoat-desktop",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "main": ".vite/build/main.js",
   "repository": "stoatchat/desktop",
   "scripts": {
