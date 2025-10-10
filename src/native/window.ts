@@ -40,8 +40,8 @@ export function createMainWindow() {
   mainWindow = new BrowserWindow({
     minWidth: 300,
     minHeight: 300,
-    width: 1100,
-    height: 600,
+    width: 1280,
+    height: 720,
     backgroundColor: "#191919",
     frame: !config.customFrame,
     icon: windowIcon,
@@ -53,6 +53,9 @@ export function createMainWindow() {
       spellcheck: true,
     },
   });
+
+  // hide the options
+  mainWindow.setMenu(null);
 
   // maximise the window if it was maximised before
   if (config.windowState.isMaximised) {
@@ -100,6 +103,9 @@ export function createMainWindow() {
       );
     }
   });
+
+  // send the config
+  mainWindow.webContents.on("did-finish-load", () => config.sync());
 
   // configure spellchecker context menu
   mainWindow.webContents.on("context-menu", (_, params) => {

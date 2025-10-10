@@ -18,6 +18,10 @@ export function initTray() {
   updateTrayMenu();
   tray.setToolTip("Stoat for Desktop");
   tray.setImage(trayIcon);
+  tray.on("click", () => {
+    mainWindow.show();
+    mainWindow.focus();
+  });
 }
 
 export function updateTrayMenu() {

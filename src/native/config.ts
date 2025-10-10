@@ -66,6 +66,18 @@ const store = new Store({
  * Shim for `electron-store` because typings are broken
  */
 class Config {
+  sync() {
+    mainWindow.webContents.send("config", {
+      firstLaunch: this.firstLaunch,
+      customFrame: this.customFrame,
+      minimiseToTray: this.minimiseToTray,
+      spellchecker: this.spellchecker,
+      hardwareAcceleration: this.hardwareAcceleration,
+      discordRpc: this.discordRpc,
+      windowState: this.windowState,
+    });
+  }
+
   get firstLaunch() {
     return (store as never as { get(k: string): boolean }).get("firstLaunch");
   }
@@ -75,6 +87,8 @@ class Config {
       "firstLaunch",
       value,
     );
+
+    this.sync();
   }
 
   get customFrame() {
@@ -86,6 +100,8 @@ class Config {
       "customFrame",
       value,
     );
+
+    this.sync();
   }
 
   get minimiseToTray() {
@@ -99,6 +115,8 @@ class Config {
       "minimiseToTray",
       value,
     );
+
+    this.sync();
   }
 
   get spellchecker() {
@@ -112,6 +130,8 @@ class Config {
       "spellchecker",
       value,
     );
+
+    this.sync();
   }
 
   get hardwareAcceleration() {
@@ -125,6 +145,8 @@ class Config {
       "hardwareAcceleration",
       value,
     );
+
+    this.sync();
   }
 
   get discordRpc() {
@@ -142,6 +164,8 @@ class Config {
       "discordRpc",
       value,
     );
+
+    this.sync();
   }
 
   get windowState() {
@@ -156,13 +180,16 @@ class Config {
         set(k: string, value: DesktopConfig["windowState"]): void;
       }
     ).set("windowState", value);
+
+    this.sync();
   }
 }
 
 export const config = new Config();
 
-ipcMain.on("config", (newConfig) =>
+ipcMain.on("config", (_, newConfig: Partial<DesktopConfig>) => {
+  console.info("Received new configuration", newConfig);
   Object.entries(newConfig).forEach(
-    ([key, value]) => (config[key as keyof DesktopConfig] = value),
-  ),
-);
+    ([key, value]) => (config[key as keyof DesktopConfig] = value as never),
+  );
+});

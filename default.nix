@@ -12,6 +12,11 @@ pkgs.mkShell rec {
     pkgs.nodejs
     pkgs.nodejs.pkgs.pnpm
 
+    # Electron
+    (pkgs.writeShellScriptBin "electron-nix" ''
+      exec ${pkgs.electron}/bin/electron "$@"
+    '')
+
     # build target: zip
     pkgs.zip
 

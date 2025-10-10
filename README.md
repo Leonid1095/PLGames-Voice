@@ -43,6 +43,27 @@ pnpm package
 pnpm make
 ```
 
+Various useful commands for development testing:
+
+```bash
+# connect to the development server
+pnpm start -- --force-server http://localhost:5173
+
+# test the flatpak (after `make`)
+pnpm install:flatpak
+pnpm run:flatpak
+# ... also connect to dev server like so:
+pnpm run:flatpak --force-server http://localhost:5173
+
+# Nix-specific instructions for testing
+pnpm package
+pnpm run:nix
+# ... as before:
+pnpm run:nix --force-server=http://localhost:5173
+# a better solution would be telling
+# Electron Forge where system Electron is
+```
+
 ### Pulling in Stoat's assets
 
 If you want to pull in Stoat brand assets after pulling, run the following:
