@@ -37,7 +37,13 @@ jobs:
         run: pnpm install
 
       - name: Publish
-        run: pnpm run publish
+        run: |
+          pnpm run publish
+          if [ "${{ matrix.os }}" = "macos-latest" ]; then
+            pnpm run publish --arch=x64
+          elif [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
+            pnpm run publish --arch=arm64
+          fi
         env:
           PLATFORM: ${{ matrix.os }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
