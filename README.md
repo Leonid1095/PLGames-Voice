@@ -1,0 +1,63 @@
+<div align="center">
+<h1>
+  Stoat for Desktop
+  
+  [![Stars](https://img.shields.io/github/stars/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/stargazers)
+  [![Forks](https://img.shields.io/github/forks/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/network/members)
+  [![Pull Requests](https://img.shields.io/github/issues-pr/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/pulls)
+  [![Issues](https://img.shields.io/github/issues/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/issues)
+  [![Contributors](https://img.shields.io/github/contributors/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/graphs/contributors)
+  [![License](https://img.shields.io/github/license/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/blob/main/LICENSE)
+</h1>
+Application for Windows, macOS, and Linux.
+</div>
+<br/>
+
+## Development Guide
+
+_Contribution guidelines for Desktop app TBA!_
+
+<!-- Before contributing, make yourself familiar with [our contribution guidelines](https://developers.revolt.chat/contrib.html), the [code style guidelines](./GUIDELINES.md), and the [technical documentation for this project](https://revoltchat.github.io/frontend/). -->
+
+Before getting started, you'll want to install:
+
+- Git
+- Node.js
+- pnpm (run `corepack enable`)
+
+Then proceed to setup:
+
+```bash
+# clone the repository
+git clone --recursive https://github.com/stoatchat/for-desktop stoat-for-desktop
+cd stoat-for-desktop
+
+# install all packages
+pnpm i --frozen-lockfile
+
+# start the application
+pnpm start
+# ... or build the bundle
+pnpm package
+# ... or build all distributables
+pnpm make
+```
+
+### Pulling in Stoat's assets
+
+If you want to pull in Stoat brand assets after pulling, run the following:
+
+```bash
+# update the assets
+git -c submodule."assets".update=checkout submodule update --init assets
+```
+
+Currently, this is required to build, any forks are expected to provide their own assets.
+
+## Publishing Guide
+
+To publish a new version, simply tag a new release by:
+
+1. Edit `package.json` with the new version
+2. Create a new tag from latest commit by `git tag v1.0.0`
+3. Push the tag and commit by `git push --atomic origin main v1.0.0`
