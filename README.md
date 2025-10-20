@@ -74,11 +74,3 @@ git -c submodule."assets".update=checkout submodule update --init assets
 ```
 
 Currently, this is required to build, any forks are expected to provide their own assets.
-
-## Publishing Guide
-
-To publish a new version, simply tag a new release by:
-
-1. Edit `package.json` with the new version
-2. Create a new tag from latest commit by `git tag v1.0.0`
-3. Push the tag and commit by `git push --atomic origin main v1.0.0`
