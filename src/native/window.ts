@@ -57,11 +57,6 @@ export function createMainWindow() {
   // hide the options
   mainWindow.setMenu(null);
 
-  // maximise the window if it was maximised before
-  if (config.windowState.isMaximised) {
-    mainWindow.maximize();
-  }
-
   // restore last position if it was moved previously
   if (config.windowState.x > 0 || config.windowState.y > 0) {
     mainWindow.setPosition(
@@ -76,6 +71,11 @@ export function createMainWindow() {
       config.windowState.width ?? 1280,
       config.windowState.height ?? 720,
     );
+  }
+
+  // maximise the window if it was maximised before
+  if (config.windowState.isMaximised) {
+    mainWindow.maximize();
   }
 
   // load the entrypoint
