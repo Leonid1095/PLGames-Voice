@@ -16,8 +16,6 @@ Self-hosting Stoat using Docker
 This repository contains configurations and instructions that can be used for deploying a full instance of Stoat, including the back-end, web front-end, file server, and metadata and image proxy.
 
 > [!WARNING]
-> If you are updating an instance from before November 28, 2024, please consult the [notices section](#notices) at the bottom.
-> If you are updating an instance from before October 5, 2025, please consult the [notices section](#notices) at the bottom.
 > If you are updating an instance from before February 18, 2026, please consult the [notices section](#notices) at the bottom.
 
 > [!IMPORTANT]
@@ -36,6 +34,7 @@ This repository contains configurations and instructions that can be used for de
   - [Placing Behind Another Reverse-Proxy or Another Port](#placing-behind-another-reverse-proxy-or-another-port)
   - [Insecurely Expose the Database](#insecurely-expose-the-database)
   - [Mongo Compatibility](#mongo-compatibility)
+  - [KeyDB Compatibility](#keydb-compatibility)
   - [Making Your Instance Invite-only](#making-your-instance-invite-only)
 - [Notices](#notices)
 - [Security Advisories](#security-advisories)
@@ -309,6 +308,26 @@ Update the hostname used by the web server:
 
 You can now reverse proxy to <http://localhost:1234>.
 
+> [!NOTE]
+> If you are using nginx as your reverse proxy, you will need to add the upgrade header configuration to allow websockets, which are required for Stoat.
+> Example:
+> ```
+> server_name stoat.example.com;
+>
+>  location / {
+>      allow all;
+>      proxy_pass http://localhost:1234;
+>      proxy_http_version 1.1;
+>      proxy_set_header Upgrade $http_upgrade;
+>      proxy_set_header Connection "upgrade";
+>      proxy_set_header Host $server_name;
+>      proxy_set_header X-Real-IP $remote_addr;
+>      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+>      proxy_set_header X-Forwarded-Proto $scheme;
+>  }
+> ```
+
+
 ### Insecurely Expose the Database
 
 You can insecurely expose the database by adding a port definition:
@@ -325,13 +344,28 @@ For obvious reasons, be careful doing this.
 
 ### Mongo Compatibility
 
-Older processors may not support the latest MongoDB version; you may pin to MongoDB 4.4 as such:
+Older processors may not support the latest MongoDB version; you may pin to MongoDB 4.4 and update the healthcheck as such:
 
 ```yml
 # compose.override.yml
 services:
   database:
     image: mongo:4.4
+    . . .
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      . . .
+```
+
+### KeyDB Compatibility
+
+Some systems may not support the latest KeyDB version; you may pin to KeyDB 6.3.3 as such:
+
+```yml
+# compose.override.yml
+services:
+  redis:
+    image: docker.io/eqalpha/keydb:v6.3.3
 ```
 
 ### Making Your Instance Invite-only
@@ -424,7 +458,7 @@ db.invites.insertOne({ _id: "enter_an_invite_code_here" })
 > You must run the environment with the old revolt name to apply the update. After you run `docker compose pull` during the upgrade procedure, you must run `docker compose -p revolt down`. You may then continue with the upgrade procedure.
 
 > [!IMPORTANT]
-> As of February 18, 2026, livekit support and the new web app was added to the self host repo. In order to utilize the new voice features and the new web app, you must add configuration.
+> As of February 18, 2026, livekit support and the new web app was added to the self host repo. In order to utilize the new voice features and the new web app, you must add a valid livekit configuration.
 >
 > Before beginning the upgrade process, please do the following:
 >
