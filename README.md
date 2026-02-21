@@ -16,7 +16,7 @@ Self-hosting Stoat using Docker
 This repository contains configurations and instructions that can be used for deploying a full instance of Stoat, including the back-end, web front-end, file server, and metadata and image proxy.
 
 > [!WARNING]
-> If you are updating an instance from before February 18, 2026, please consult the [notices section](#notices) at the bottom.
+> If you are updating an instance from before February 20, 2026, please consult the [notices section](#notices) at the bottom.
 
 > [!IMPORTANT]
 > A list of security advisories is [provided at the bottom](#security-advisories).
@@ -28,9 +28,7 @@ This repository contains configurations and instructions that can be used for de
 
 - [Deployment](#deployment)
 - [Updating](#updating)
-- [Advanced Deployment](#advanced-deployment)
 - [Additional Notes](#additional-notes)
-  - [Custom Domain](#custom-domain)
   - [Placing Behind Another Reverse-Proxy or Another Port](#placing-behind-another-reverse-proxy-or-another-port)
   - [Insecurely Expose the Database](#insecurely-expose-the-database)
   - [Mongo Compatibility](#mongo-compatibility)
@@ -110,6 +108,9 @@ if ! grep '^PasswordAuthentication\s' /etc/ssh/sshd_config; then echo 'PasswordA
 reboot
 ```
 
+> [!NOTE]
+> If you are using another cloud provider, or you are doing this on a physical machine, you will need to forwards ports 80, 443, 7881 and 50000-50100/udp.
+
 Your system is now ready to proceed with installation, but before we continue, you should configure your domain.
 
 ![Cloudflare DNS configuration](.github/guide/cloudflare-dns.webp)
@@ -149,7 +150,7 @@ chmod +x ./generate_config.sh
 ./generate_config.sh your.domain
 ```
 
-You can find [more options here](https://github.com/stoatchat/stoatchat/blob/stable/crates/core/config/Revolt.toml), some noteworthy configuration options:
+You can find [more options here](https://github.com/stoatchat/stoatchat/blob/main/crates/core/config/Revolt.toml), some noteworthy configuration options:
 
 - Email verification
 - Captcha
@@ -184,7 +185,7 @@ Pull the latest version of this repository:
 git pull
 ```
 
-Check if your configuration file is correct by opening [the reference config file](https://github.com/stoatchat/stoatchat/blob/df074260196f5ed246e6360d8e81ece84d8d9549/crates/core/config/Revolt.toml) and your `Revolt.toml` to compare changes.
+Check if your configuration file is correct by opening [the reference config file](https://github.com/stoatchat/stoatchat/blob/main/crates/core/config/Revolt.toml) and your `Revolt.toml` to compare changes.
 
 Then pull all the latest images:
 
@@ -198,88 +199,7 @@ Then restart the services:
 docker compose up -d
 ```
 
-## Advanced Deployment
-
-This guide assumes you know your way around a Linux terminal and Docker.
-
-Prerequisites before continuing:
-
-- [Git](https://git-scm.com)
-- [Docker](https://www.docker.com)
-
-Clone this repository.
-
-```bash
-git clone https://github.com/stoatchat/self-hosted stoat
-cd stoat
-```
-
-Create `.env.web` and download `Revolt.toml`, then modify them according to your requirements.
-
-> [!WARNING]
-> The default configurations are intended exclusively for testing and will only work locally. If you wish to deploy to a remote server, you **must** edit the URLs in `.env.web` and `Revolt.toml`. Please reference the section below on [configuring a custom domain](#custom-domain).
-
-```bash
-echo "HOSTNAME=http://local.stoat.chat" > .env.web
-echo "REVOLT_PUBLIC_URL=http://local.stoat.chat/api" >> .env.web
-wget -O Revolt.toml https://raw.githubusercontent.com/stoatchat/stoatchat/main/crates/core/config/Revolt.toml
-```
-
-Then start Stoat:
-
-```bash
-docker compose up -d
-```
-
 ## Additional Notes
-
-### Custom Domain
-
-To configure a custom domain, you can either generate a config for https by running:
-
-```
-chmod +x ./generate_config.sh
-./generate_config.sh your.domain
-```
-
-Or alternatively do it manually, you will need to replace _all_ instances of `local.stoat.chat` in `Revolt.toml` and `.env.web` to your chosen domain (here represented as `example.com`), like so:
-
-```diff
-# .env.web
-- REVOLT_PUBLIC_URL=http://local.stoat.chat/api
-+ REVOLT_PUBLIC_URL=http://example.com/api
-```
-
-```diff
-# Revolt.toml
-- app = "http://local.stoat.chat"
-+ app = "http://example.com"
-```
-
-In the case of `HOSTNAME`, you must strip the protocol prefix:
-
-```diff
-# .env.web
-- HOSTNAME=http://example.com
-+ HOSTNAME=example.com
-```
-
-You will likely also want to change the protocols to enable HTTPS:
-
-```diff
-# .env.web
-- REVOLT_PUBLIC_URL=http://example.com/api
-+ REVOLT_PUBLIC_URL=https://example.com/api
-```
-
-```diff
-# Revolt.toml
-- app = "http://example.com"
-+ app = "https://example.com"
-
-- events = "ws://example.com/ws"
-+ events = "wss://example.com/ws"
-```
 
 ### Placing Behind Another Reverse-Proxy or Another Port
 
@@ -293,6 +213,7 @@ services:
   caddy:
     ports:
       - "1234:80"
+      # - "443:443"
 ```
 
 > [!WARNING]
@@ -309,22 +230,46 @@ Update the hostname used by the web server:
 You can now reverse proxy to <http://localhost:1234>.
 
 > [!NOTE]
-> If you are using nginx as your reverse proxy, you will need to add the upgrade header configuration to allow websockets, which are required for Stoat.
+> If you are using nginx as your reverse proxy, you will need to add the upgrade header configuration to allow websockets on /ws and /livekit, which are required for Stoat.
 > Example:
 > ```
-> server_name stoat.example.com;
+> server {
+>     server_name stoat.example.com;
 >
->  location / {
->      allow all;
->      proxy_pass http://localhost:1234;
->      proxy_http_version 1.1;
->      proxy_set_header Upgrade $http_upgrade;
->      proxy_set_header Connection "upgrade";
->      proxy_set_header Host $server_name;
->      proxy_set_header X-Real-IP $remote_addr;
->      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
->      proxy_set_header X-Forwarded-Proto $scheme;
->  }
+>     location / {
+>         allow all;
+>         proxy_pass http://localhost:1234;
+>         proxy_set_header Host $server_name;
+>         proxy_set_header X-Real-IP $remote_addr;
+>         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+>         proxy_set_header X-Forwarded-Proto $scheme;
+>     }
+>
+>     location /ws {
+>         allow all;
+>         proxy_pass http://localhost:1234;
+>         proxy_http_version 1.1;
+>         proxy_set_header Upgrade $http_upgrade;
+>         proxy_set_header Connection "upgrade";
+>         proxy_set_header Host $server_name;
+>         proxy_set_header X-Real-IP $remote_addr;
+>         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+>         proxy_set_header X-Forwarded-Proto $scheme;
+>     }
+>
+>     location /livekit {
+>         allow all;
+>         proxy_pass http://localhost:1234;
+>         proxy_http_version 1.1;
+>         proxy_set_header Upgrade $http_upgrade;
+>         proxy_set_header Connection "upgrade";
+>         proxy_set_header Host $server_name;
+>         proxy_set_header X-Real-IP $remote_addr;
+>         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+>         proxy_set_header X-Forwarded-Proto $scheme;
+>     }
+>     . . . # The rest of your nginx configuration
+> }
 > ```
 
 
@@ -475,6 +420,15 @@ db.invites.insertOne({ _id: "enter_an_invite_code_here" })
 > ```
 >
 > This should append the new configurations to your existing configuration. Only run this migration once, as if you run it more than once your instance will fail to start. You may then continue with the upgrade procedure.
+
+> [!IMPORTANT]
+> As of February 20, 2026, there was an error in the `generate_config.sh` script. Please apply the following changes to your configuration:
+>
+> In `Revolt.toml`, under the section `[api.livekit.nodes.worldwide]`, change the url value to `http://livekit:7880`
+>
+> In `livekit.yml`, under the section `webhook`, change the first line under `url` to `http://voice-ingress:8500/worldwide`
+>
+> Please note that these say `http` and not `https`. That is intentional.
 
 ## Security Advisories
 
