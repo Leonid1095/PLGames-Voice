@@ -3,6 +3,7 @@
 import { modalController } from "@/controllers/modals";
 import { useAppStore } from "@hooks/useAppStore";
 import { GuildMember, User } from "@structures";
+import { useTranslation } from "react-i18next";
 import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "./ContextMenu";
 
 interface MenuProps {
@@ -12,6 +13,7 @@ interface MenuProps {
 
 function UserContextMenu({ user, member }: MenuProps) {
 	const app = useAppStore();
+	const { t } = useTranslation();
 	const guild = member ? app.guilds.get(member.guild.id) : undefined;
 	const guildMe = guild ? guild.members.get(app.account!.id) : undefined;
 
@@ -46,25 +48,25 @@ function UserContextMenu({ user, member }: MenuProps) {
 
 	return (
 		<ContextMenu>
-			<ContextMenuButton disabled>Profile</ContextMenuButton>
-			<ContextMenuButton disabled>Mention</ContextMenuButton>
-			<ContextMenuButton disabled>Message</ContextMenuButton>
+			<ContextMenuButton disabled>{t('user.profile')}</ContextMenuButton>
+			<ContextMenuButton disabled>{t('user.mention')}</ContextMenuButton>
+			<ContextMenuButton disabled>{t('user.message')}</ContextMenuButton>
 			<ContextMenuDivider />
-			{member && <ContextMenuButton disabled>Change Nickname</ContextMenuButton>}
-			<ContextMenuButton disabled>Add Friend</ContextMenuButton>
-			<ContextMenuButton disabled>Block</ContextMenuButton>
+			{member && <ContextMenuButton disabled>{t('user.changeNickname')}</ContextMenuButton>}
+			<ContextMenuButton disabled>{t('user.addFriend')}</ContextMenuButton>
+			<ContextMenuButton disabled>{t('user.block')}</ContextMenuButton>
 			<ContextMenuDivider />
 			{member && guildMe && (
 				<>
 					{guildMe.hasPermission("KICK_MEMBERS") && (
 						<ContextMenuButton destructive onClick={kick}>
-							Kick {member?.nick ?? user.username}
+							{t('user.kick', { name: member?.nick ?? user.username })}
 						</ContextMenuButton>
 					)}
 					{guildMe.hasPermission("BAN_MEMBERS") && (
 						<>
 							<ContextMenuButton destructive onClick={ban}>
-								Ban {member?.nick ?? user.username}
+								{t('user.ban', { name: member?.nick ?? user.username })}
 							</ContextMenuButton>
 							<ContextMenuDivider />
 						</>
@@ -72,7 +74,7 @@ function UserContextMenu({ user, member }: MenuProps) {
 					{guildMe.hasPermission("MANAGE_ROLES") && (
 						<>
 							<ContextMenuButton disabled icon="mdiChevronRight">
-								Roles
+								{t('user.roles')}
 							</ContextMenuButton>
 							<ContextMenuDivider />
 						</>
@@ -91,7 +93,7 @@ function UserContextMenu({ user, member }: MenuProps) {
 				}}
 				onClick={copyId}
 			>
-				Copy User ID
+				{t('user.copyUserId')}
 			</ContextMenuButton>
 		</ContextMenu>
 	);

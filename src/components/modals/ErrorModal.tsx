@@ -1,7 +1,10 @@
 import { ModalProps } from "@/controllers/modals/types";
+import { useTranslation } from "react-i18next";
 import { Modal } from "./ModalComponents";
 
 export function ErrorModal({ error, ...props }: ModalProps<"error">) {
+	const { t } = useTranslation();
+
 	return (
 		<Modal
 			{...props}
@@ -9,7 +12,7 @@ export function ErrorModal({ error, ...props }: ModalProps<"error">) {
 				{
 					onClick: () => true,
 					confirmation: true,
-					children: <span>Dismiss</span>,
+					children: <span>{t('modals.error.dismiss')}</span>,
 					palette: "primary",
 					disabled: !(props.recoverable ?? true),
 				},

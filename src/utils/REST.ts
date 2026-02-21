@@ -5,7 +5,7 @@ import Logger from "./Logger";
 import { RouteSettings } from "./constants";
 
 const DEFAULT_HEADERS = {
-	"User-Agent": "Spacebar-Client/1.0",
+	"User-Agent": "PLGVoice-Client/1.0",
 	accept: "application/json",
 };
 

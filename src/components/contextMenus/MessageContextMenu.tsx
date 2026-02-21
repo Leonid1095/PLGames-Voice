@@ -1,6 +1,7 @@
 import { modalController } from "@/controllers/modals";
 import { useAppStore } from "@hooks/useAppStore";
 import { Message } from "@structures";
+import { useTranslation } from "react-i18next";
 import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "./ContextMenu";
 
 interface MenuProps {
@@ -9,6 +10,7 @@ interface MenuProps {
 
 function MessageContextMenu({ message }: MenuProps) {
 	const app = useAppStore();
+	const { t } = useTranslation();
 
 	function copyRaw() {
 		navigator.clipboard.writeText(message.content);
@@ -32,10 +34,10 @@ function MessageContextMenu({ message }: MenuProps) {
 	return (
 		<ContextMenu>
 			<ContextMenuButton icon="mdiReply" disabled>
-				Reply
+				{t('messages.reply')}
 			</ContextMenuButton>
 			<ContextMenuButton icon="mdiContentCopy" onClick={copyRaw}>
-				Copy Raw Text
+				{t('messages.copyText')}
 			</ContextMenuButton>
 			<ContextMenuDivider />
 			{((message instanceof Message && message.channel.hasPermission("MANAGE_MESSAGES")) ||
@@ -43,7 +45,7 @@ function MessageContextMenu({ message }: MenuProps) {
 				message instanceof Message && (
 					<>
 						<ContextMenuButton icon="mdiDelete" destructive onClick={deleteMessage}>
-							Delete Message
+							{t('messages.deleteMessage')}
 						</ContextMenuButton>
 						<ContextMenuDivider />
 					</>
@@ -59,7 +61,7 @@ function MessageContextMenu({ message }: MenuProps) {
 					},
 				}}
 			>
-				Copy Message ID
+				{t('messages.copyMessageId')}
 			</ContextMenuButton>
 		</ContextMenu>
 	);

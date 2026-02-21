@@ -1,5 +1,6 @@
 import { ModalProps } from "@/controllers/modals";
 import REST from "@utils/REST";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { Modal, ModalHeader, ModalHeaderText, ModalSubHeaderText } from "./ModalComponents";
 
@@ -9,6 +10,7 @@ const ActionWrapper = styled.div`
 	gap: 8px;
 `;
 export function InviteModal({ inviteData, ...props }: ModalProps<"invite">) {
+	const { t } = useTranslation();
 	const splashUrl = REST.makeCDNUrl(`/splashes/${inviteData.guild?.id}/${inviteData.guild?.splash}.png`, {
 		size: 2048,
 	});
@@ -36,7 +38,7 @@ export function InviteModal({ inviteData, ...props }: ModalProps<"invite">) {
 						}}
 					>
 						<ModalHeader>
-							<ModalSubHeaderText>You've been invited to join</ModalSubHeaderText>
+							<ModalSubHeaderText>{t('modals.invite.invitedToJoin')}</ModalSubHeaderText>
 							<ModalHeaderText>{inviteData.guild?.name}</ModalHeaderText>
 						</ModalHeader>
 					</div>

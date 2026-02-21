@@ -2,6 +2,7 @@ import { Floating, FloatingTrigger } from "@components/floating";
 import { useAppStore } from "@hooks/useAppStore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import Icon, { IconProps } from "./Icon";
 import { SectionHeader } from "./SectionHeader";
@@ -26,6 +27,7 @@ const HeaderText = styled.header`
 
 function ChannelHeader() {
 	const app = useAppStore();
+	const { t } = useTranslation();
 
 	const [isOpen, setOpen] = React.useState(false);
 	const [icon, setIcon] = React.useState<IconProps["icon"]>("mdiChevronDown");
@@ -49,7 +51,7 @@ function ChannelHeader() {
 					justifyContent: "center",
 				}}
 			>
-				<HeaderText>Direct Messages</HeaderText>
+				<HeaderText>{t('sidebar.directMessages')}</HeaderText>
 			</Wrapper>
 		);
 	}

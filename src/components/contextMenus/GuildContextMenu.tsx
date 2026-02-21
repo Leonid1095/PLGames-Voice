@@ -5,6 +5,7 @@ import { useAppStore } from "@hooks/useAppStore";
 import useLogger from "@hooks/useLogger";
 import { ChannelType } from "@spacebarchat/spacebar-api-types/v9";
 import { Guild } from "@structures";
+import { useTranslation } from "react-i18next";
 import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "./ContextMenu";
 
 interface MenuProps {
@@ -14,6 +15,7 @@ interface MenuProps {
 function GuildContextMenu({ guild }: MenuProps) {
 	const app = useAppStore();
 	const logger = useLogger("GuildContextMenu");
+	const { t } = useTranslation();
 	const isNotOwner = guild.ownerId !== app.account!.id;
 	/**
 	 * Copy id to clipboard
@@ -49,12 +51,12 @@ function GuildContextMenu({ guild }: MenuProps) {
 
 	return (
 		<ContextMenu>
-			<ContextMenuButton onClick={openInviteCreateModal}>Create Invite</ContextMenuButton>
+			<ContextMenuButton onClick={openInviteCreateModal}>{t('guild.createInvite')}</ContextMenuButton>
 			<ContextMenuDivider />
 			{isNotOwner && (
 				<>
 					<ContextMenuButton destructive onClick={leaveGuild}>
-						Leave Guild
+						{t('guild.leaveGuild')}
 					</ContextMenuButton>
 					<ContextMenuDivider />
 				</>
@@ -70,7 +72,7 @@ function GuildContextMenu({ guild }: MenuProps) {
 				}}
 				onClick={copyId}
 			>
-				Copy Guild ID
+				{t('guild.copyGuildId')}
 			</ContextMenuButton>
 		</ContextMenu>
 	);

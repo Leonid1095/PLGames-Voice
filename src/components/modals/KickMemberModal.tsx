@@ -3,6 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppStore } from "@hooks/useAppStore";
 import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import * as yup from "yup";
 import { Modal } from "./ModalComponents";
@@ -27,14 +28,16 @@ const TextArea = styled.textarea`
 	outline: none;
 `;
 
-const schema = yup
-	.object({
-		reason: yup.string().max(512, "Reason must be less than 512 characters"),
-	})
-	.required();
-
 export function KickMemberModal({ target, ...props }: ModalProps<"kick_member">) {
 	const app = useAppStore();
+	const { t } = useTranslation();
+
+	const schema = yup
+		.object({
+			reason: yup.string().max(512, t('modals.kick.reasonTooLong')),
+		})
+		.required();
+
 	const {
 		register,
 		control,
@@ -68,17 +71,16 @@ export function KickMemberModal({ target, ...props }: ModalProps<"kick_member">)
 	return (
 		<Modal
 			{...props}
-			title={`Kick ${target.user?.username} from Guild`}
+			title={t('modals.kick.title', { name: target.user?.username })}
 			description={
 				<DescriptionText>
-					Are you sure you want to kick <b>@{target.user?.username}</b> from the guild? They will be able to
-					rejoin again with a new invite.
+					{t('modals.kick.description', { name: target.user?.username })}
 				</DescriptionText>
 			}
 			actions={[
 				{
 					onClick: onSubmit,
-					children: <span>Kick</span>,
+					children: <span>{t('modals.kick.kick')}</span>,
 					palette: "danger",
 					confirmation: true,
 					disabled: isDisabled,
@@ -86,14 +88,14 @@ export function KickMemberModal({ target, ...props }: ModalProps<"kick_member">)
 				},
 				{
 					onClick: () => modalController.pop("close"),
-					children: <span>Cancel</span>,
+					children: <span>{t('modals.kick.cancel')}</span>,
 					palette: "link",
 					disabled: isDisabled,
 					size: "small",
 				},
 			]}
 		>
-			<TextArea {...register("reason")} id="reason" name="reason" placeholder="Reason" maxLength={512} />
+			<TextArea {...register("reason")} id="reason" name="reason" placeholder={t('modals.kick.reason')} maxLength={512} />
 		</Modal>
 	);
 }

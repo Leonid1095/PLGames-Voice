@@ -2,6 +2,7 @@ import { modalController } from "@/controllers/modals";
 import { Floating, FloatingTrigger } from "@components/floating";
 import { useAppStore } from "@hooks/useAppStore";
 import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
@@ -71,6 +72,7 @@ const SettingsButton = styled(IconButton)`
 
 function UserPanel() {
 	const app = useAppStore();
+	const { t } = useTranslation();
 	const presence = app.presences.get(app.account!.id);
 
 	const openSettingsModal = () => {
@@ -96,11 +98,11 @@ function UserPanel() {
 						type="tooltip"
 						offset={10}
 						props={{
-							content: <span>Settings</span>,
+							content: <span>{t('user.settings')}</span>,
 						}}
 					>
 						<FloatingTrigger>
-							<SettingsButton aria-label="settings" color="#fff" onClick={openSettingsModal}>
+							<SettingsButton aria-label={t('user.settings')} color="#fff" onClick={openSettingsModal}>
 								<Icon icon="mdiCog" size="20px" />
 							</SettingsButton>
 						</FloatingTrigger>

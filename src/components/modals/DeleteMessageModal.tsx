@@ -1,5 +1,6 @@
 import { ModalProps, modalController } from "@/controllers/modals";
 import MarkdownRenderer from "@components/markdown/MarkdownRenderer";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { Modal } from "./ModalComponents";
 
@@ -13,17 +14,19 @@ const PreviewContainer = styled.div`
 `;
 
 export function DeleteMessageModal({ target, ...props }: ModalProps<"delete_message">) {
+	const { t } = useTranslation();
+
 	return (
 		<Modal
 			{...props}
-			title="Delete Message"
-			description="Are you sure you want to delete this message?"
+			title={t('modals.deleteMessage.title')}
+			description={t('modals.deleteMessage.description')}
 			actions={[
 				{
 					onClick: () => {
 						modalController.pop("close");
 					},
-					children: <span>Cancel</span>,
+					children: <span>{t('modals.deleteMessage.cancel')}</span>,
 					palette: "link",
 					size: "small",
 					confirmation: true,
@@ -33,7 +36,7 @@ export function DeleteMessageModal({ target, ...props }: ModalProps<"delete_mess
 						await target.delete();
 						modalController.pop("close");
 					},
-					children: <span>Delete</span>,
+					children: <span>{t('modals.deleteMessage.delete')}</span>,
 					palette: "danger",
 					size: "small",
 				},

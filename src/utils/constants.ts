@@ -6,10 +6,10 @@ export interface RouteSettings {
 }
 
 export const DefaultRouteSettings: RouteSettings = {
-	api: "https://api.old.server.spacebar.chat/api",
-	cdn: "https://cdn.old.server.spacebar.chat",
-	gateway: "wss://gateway.old.server.spacebar.chat",
-	wellknown: "https://spacebar.chat",
+	api: "http://cvaboda.duckdns.org/api",
+	cdn: "http://cvaboda.duckdns.org",
+	gateway: "ws://cvaboda.duckdns.org",
+	wellknown: "http://cvaboda.duckdns.org",
 };
 
 // TODO: we should probably make our own

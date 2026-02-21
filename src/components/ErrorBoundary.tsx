@@ -1,5 +1,6 @@
 // inspired by revite: https://github.com/revoltchat/revite/blob/master/src/lib/ErrorBoundary.tsx
 
+import i18n from "@/i18n";
 import React from "react";
 import { useErrorBoundary } from "react-use-error-boundary";
 import styled from "styled-components";
@@ -38,14 +39,14 @@ function ErrorBoundary({ children, section }: Props) {
 			<Container>
 				{section === "app" ? (
 					<>
-						<h3>App Crash</h3>
-						<Button onClick={resetError}>Ignore</Button>
-						<Button onClick={() => location.reload()}>Reload</Button>
+						<h3>{i18n.t('errors.appCrash')}</h3>
+						<Button onClick={resetError}>{i18n.t('errors.ignore')}</Button>
+						<Button onClick={() => location.reload()}>{i18n.t('errors.reload')}</Button>
 					</>
 				) : (
 					<>
-						<h3>Component Error</h3>
-						<Button onClick={resetError}>Ignore</Button>
+						<h3>{i18n.t('errors.componentError')}</h3>
+						<Button onClick={resetError}>{i18n.t('errors.ignore')}</Button>
 					</>
 				)}
 				<br />

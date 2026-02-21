@@ -12,6 +12,7 @@ import { messageFromFieldError } from "@utils";
 import dayjs from "dayjs";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { InputContainer, Modal } from "./ModalComponents";
 
@@ -40,27 +41,6 @@ enum EMaxUses {
 	ONE_HUNDRED = "USE_100",
 }
 
-const ExpiryOptions: Record<EExpiry, Option> = {
-	[EExpiry.MINUTES_30]: { label: "30 Minutes", value: 1800 },
-	[EExpiry.HOUR_1]: { label: "1 Hour", value: 3600 },
-	[EExpiry.HOURS_6]: { label: "6 Hours", value: 21600 },
-	[EExpiry.HOURS_12]: { label: "12 Hours", value: 43200 },
-	[EExpiry.DAY_1]: { label: "1 Day", value: 86400 },
-	[EExpiry.DAY_7]: { label: "7 Days", value: 604800 },
-	[EExpiry.DAYS_30]: { label: "30 Days", value: 2592000 },
-	[EExpiry.NEVER]: { label: "Never", value: 0 },
-};
-
-const MaxUsesOptions: Record<EMaxUses, Option> = {
-	[EMaxUses.NO_LIMIT]: { label: "No Limit", value: 0 },
-	[EMaxUses.ONE]: { label: "1 use", value: 1 },
-	[EMaxUses.FIVE]: { label: "5 uses", value: 5 },
-	[EMaxUses.TEN]: { label: "10 uses", value: 10 },
-	[EMaxUses.TWENTY_FIVE]: { label: "25 uses", value: 25 },
-	[EMaxUses.FIFTY]: { label: "50 uses", value: 50 },
-	[EMaxUses.ONE_HUNDRED]: { label: "100 uses", value: 100 },
-};
-
 function findOptionByValue(value: number, options: Record<string, Option>): Option | undefined {
 	const result = Object.values(options).find((option) => option.value === value);
 	return result;
@@ -88,6 +68,29 @@ interface FormValues extends APICreateInvite {
 export function CreateInviteModal({ target, ...props }: ModalProps<"create_invite">) {
 	const logger = useLogger("CreateInviteModal");
 	const app = useAppStore();
+	const { t } = useTranslation();
+
+	const ExpiryOptions: Record<EExpiry, Option> = {
+		[EExpiry.MINUTES_30]: { label: t('modals.createInvite.30min'), value: 1800 },
+		[EExpiry.HOUR_1]: { label: t('modals.createInvite.1hour'), value: 3600 },
+		[EExpiry.HOURS_6]: { label: t('modals.createInvite.6hours'), value: 21600 },
+		[EExpiry.HOURS_12]: { label: t('modals.createInvite.12hours'), value: 43200 },
+		[EExpiry.DAY_1]: { label: t('modals.createInvite.1day'), value: 86400 },
+		[EExpiry.DAY_7]: { label: t('modals.createInvite.7days'), value: 604800 },
+		[EExpiry.DAYS_30]: { label: t('modals.createInvite.30days'), value: 2592000 },
+		[EExpiry.NEVER]: { label: t('modals.createInvite.never'), value: 0 },
+	};
+
+	const MaxUsesOptions: Record<EMaxUses, Option> = {
+		[EMaxUses.NO_LIMIT]: { label: t('modals.createInvite.noLimit'), value: 0 },
+		[EMaxUses.ONE]: { label: t('modals.createInvite.1use'), value: 1 },
+		[EMaxUses.FIVE]: { label: t('modals.createInvite.5uses'), value: 5 },
+		[EMaxUses.TEN]: { label: t('modals.createInvite.10uses'), value: 10 },
+		[EMaxUses.TWENTY_FIVE]: { label: t('modals.createInvite.25uses'), value: 25 },
+		[EMaxUses.FIFTY]: { label: t('modals.createInvite.50uses'), value: 50 },
+		[EMaxUses.ONE_HUNDRED]: { label: t('modals.createInvite.100uses'), value: 100 },
+	};
+
 	const [maxAge, setMaxAge] = React.useState(ExpiryOptions.DAY_7);
 	const [maxUses, setMaxUses] = React.useState(MaxUsesOptions.NO_LIMIT);
 	const [isEdited, setIsEdited] = React.useState(false);
@@ -130,11 +133,11 @@ export function CreateInviteModal({ target, ...props }: ModalProps<"create_invit
 			.catch((r) => {
 				if ("message" in r) {
 					if (r.errors) {
-						const t = messageFromFieldError(r.errors);
-						if (t) {
-							setError(t.field as keyof FormValues, {
+						const fieldError = messageFromFieldError(r.errors);
+						if (fieldError) {
+							setError(fieldError.field as keyof FormValues, {
 								type: "manual",
-								message: t.error,
+								message: fieldError.error,
 							});
 						} else {
 							setError("code", {
@@ -178,7 +181,7 @@ export function CreateInviteModal({ target, ...props }: ModalProps<"create_invit
 	React.useEffect(() => createCode(), []);
 
 	return (
-		<Modal {...props} title="Invite People" description={`to #${target.name} in ${target.guild?.name}`}>
+		<Modal {...props} title={t('modals.createInvite.title')} description={t('modals.createInvite.toChannel', { channel: target.name, guild: target.guild?.name })}>
 			<form
 				onKeyDown={(e) => {
 					if (e.key === "Enter") {
@@ -189,7 +192,7 @@ export function CreateInviteModal({ target, ...props }: ModalProps<"create_invit
 			>
 				<InputContainer>
 					<LabelWrapper error={false}>
-						<InputLabel>Expire after</InputLabel>
+						<InputLabel>{t('modals.createInvite.expireAfter')}</InputLabel>
 					</LabelWrapper>
 					<InputWrapper>
 						<InputSelect
@@ -206,7 +209,7 @@ export function CreateInviteModal({ target, ...props }: ModalProps<"create_invit
 
 				<InputContainer>
 					<LabelWrapper error={false}>
-						<InputLabel>Max Number of Uses</InputLabel>
+						<InputLabel>{t('modals.createInvite.maxUses')}</InputLabel>
 					</LabelWrapper>
 					<InputWrapper>
 						<InputSelect
@@ -223,7 +226,7 @@ export function CreateInviteModal({ target, ...props }: ModalProps<"create_invit
 
 				<div style={{ display: "flex", justifyContent: "flex-end", margin: "24px 0 12px 0" }}>
 					<Button disabled={!isEdited} onClick={onSubmit}>
-						Generate New Link
+						{t('modals.createInvite.generateNew')}
 					</Button>
 				</div>
 
@@ -233,7 +236,7 @@ export function CreateInviteModal({ target, ...props }: ModalProps<"create_invit
 					}}
 				>
 					<LabelWrapper error={!!errors.code}>
-						<InputLabel>Invite Code</InputLabel>
+						<InputLabel>{t('modals.createInvite.inviteCode')}</InputLabel>
 						{errors.code && (
 							<InputErrorText>
 								<>
@@ -282,7 +285,7 @@ export function CreateInviteModal({ target, ...props }: ModalProps<"create_invit
 						{inviteExpiresAt ? (
 							<>This invite will expire {dayjs(inviteExpiresAt).fromNow()}</>
 						) : (
-							"Invite will never expire."
+							t('modals.createInvite.neverExpires')
 						)}
 					</span>
 				</InputContainer>

@@ -5,10 +5,10 @@ import { GuildMember, User } from "@structures";
 import { REST, Snowflake } from "@utils";
 import styled from "styled-components";
 
-import SpacebarLogoBlue from "@assets/images/logo/Spacebar_Icon.svg?react";
 import { useAppStore } from "@hooks/useAppStore";
 import { CDNRoutes, ImageFormat } from "@spacebarchat/spacebar-api-types/v9";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 import Floating from "./Floating";
 import FloatingTrigger from "./FloatingTrigger";
 
@@ -161,6 +161,7 @@ interface Props {
 function UserProfilePopout({ user, member }: Props) {
 	const app = useAppStore();
 	const logger = useLogger("UserProfilePopout");
+	const { t } = useTranslation();
 
 	const id = user.id;
 	const { timestamp: createdAt } = Snowflake.deconstruct(id);
@@ -207,22 +208,20 @@ function UserProfilePopout({ user, member }: Props) {
 					}}
 				/>
 				<Section>
-					<Heading>Member Since</Heading>
+					<Heading>{t('user.memberSince')}</Heading>
 					<MemberSinceContainer>
 						<Floating
 							placement="top"
 							type="tooltip"
 							props={{
-								content: <span>Spacebar</span>,
+								content: <span>PLG Voice</span>,
 							}}
 						>
 							<FloatingTrigger>
-								<div>
-									<SpacebarLogoBlue width={16} height={16} style={{ borderRadius: "50%" }} />
-								</div>
+								<div style={{ width: 16, height: 16, borderRadius: "50%", background: "var(--primary)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, color: "white" }}>P</div>
 							</FloatingTrigger>
 						</Floating>
-						<MemberSinceText>{dayjs(createdAt).format("MMM D, YYYY")}</MemberSinceText>
+						<MemberSinceText>{dayjs(createdAt).format("D MMM YYYY")}</MemberSinceText>
 						{member && (
 							<>
 								<div
@@ -273,7 +272,7 @@ function UserProfilePopout({ user, member }: Props) {
 
 				{member && (
 					<Section>
-						<Heading>{member.roles.length ? "Roles" : "No Roles"}</Heading>
+						<Heading>{member.roles.length ? t('user.roles') : t('user.noRoles')}</Heading>
 						<RoleList>
 							{member.roles.map((x, i) => (
 								<RolePill key={i}>

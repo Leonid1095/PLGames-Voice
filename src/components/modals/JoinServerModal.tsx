@@ -6,6 +6,7 @@ import useLogger from "@hooks/useLogger";
 import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { messageFromFieldError } from "@utils";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Modal } from "./ModalComponents";
@@ -23,6 +24,7 @@ export function JoinServerModal({ ...props }: ModalProps<"join_server">) {
 	const logger = useLogger("JoinServerModal");
 	const app = useAppStore();
 	const navigate = useNavigate();
+	const { t } = useTranslation();
 
 	const {
 		register,
@@ -44,11 +46,11 @@ export function JoinServerModal({ ...props }: ModalProps<"join_server">) {
 			.catch((r) => {
 				if ("message" in r) {
 					if (r.errors) {
-						const t = messageFromFieldError(r.errors);
-						if (t) {
-							setError(t.field as keyof FormValues, {
+						const fieldError = messageFromFieldError(r.errors);
+						if (fieldError) {
+							setError(fieldError.field as keyof FormValues, {
 								type: "manual",
-								message: t.error,
+								message: fieldError.error,
 							});
 						} else {
 							setError("code", {
@@ -77,19 +79,19 @@ export function JoinServerModal({ ...props }: ModalProps<"join_server">) {
 		<Modal
 			{...props}
 			onClose={() => modalController.closeAll()}
-			title="Join a Guild"
-			description="Enter an invite below to join an existing guild."
+			title={t('modals.joinServer.title')}
+			description={t('modals.joinServer.description')}
 			actions={[
 				{
 					onClick: onSubmit,
-					children: <span>Join</span>,
+					children: <span>{t('modals.joinServer.join')}</span>,
 					palette: "primary",
 					confirmation: true,
 					disabled: isLoading,
 				},
 				{
 					onClick: () => modalController.pop("close"),
-					children: <span>Back</span>,
+					children: <span>{t('modals.joinServer.back')}</span>,
 					palette: "link",
 					disabled: isLoading,
 				},
@@ -105,7 +107,7 @@ export function JoinServerModal({ ...props }: ModalProps<"join_server">) {
 			>
 				<InviteInputContainer>
 					<LabelWrapper error={!!errors.code}>
-						<InputLabel>Invite Link</InputLabel>
+						<InputLabel>{t('modals.joinServer.inviteLink')}</InputLabel>
 
 						{errors.code && (
 							<InputErrorText>

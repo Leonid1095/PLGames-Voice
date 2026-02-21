@@ -2,6 +2,7 @@
 
 import { modalController } from "@/controllers/modals";
 import Channel from "@structures/Channel";
+import { useTranslation } from "react-i18next";
 import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "./ContextMenu";
 
 interface MenuProps {
@@ -9,6 +10,8 @@ interface MenuProps {
 }
 
 function ChannelContextMenu({ channel }: MenuProps) {
+	const { t } = useTranslation();
+
 	/**
 	 * Copy id to clipboard
 	 */
@@ -36,17 +39,17 @@ function ChannelContextMenu({ channel }: MenuProps) {
 	return (
 		<ContextMenu>
 			<ContextMenuButton icon="mdiAccountPlus" onClick={openInviteCreateModal}>
-				Create Invite
+				{t('channel.createInvite')}
 			</ContextMenuButton>
 			<ContextMenuButton icon="mdiLink" onClick={copyLink}>
-				Copy Link
+				{t('channel.copyLink')}
 			</ContextMenuButton>
 			<ContextMenuDivider />
 			{channel.hasPermission("MANAGE_CHANNELS") && (
 				<>
-					<ContextMenuButton disabled>Edit Channel</ContextMenuButton>
+					<ContextMenuButton disabled>{t('channel.editChannel')}</ContextMenuButton>
 					<ContextMenuButton disabled destructive>
-						Delete Channel
+						{t('channel.deleteChannel')}
 					</ContextMenuButton>
 					<ContextMenuDivider />
 				</>
@@ -63,7 +66,7 @@ function ChannelContextMenu({ channel }: MenuProps) {
 				}}
 				onClick={copyId}
 			>
-				Copy Channel ID
+				{t('channel.copyChannelId')}
 			</ContextMenuButton>
 		</ContextMenu>
 	);

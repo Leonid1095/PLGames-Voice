@@ -3,6 +3,7 @@ import { useAppStore } from "@hooks/useAppStore";
 import { EXPERIMENT_LIST, Experiment as ExperimentType } from "@stores/ExperimentsStore";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 const Content = styled.div`
@@ -61,6 +62,7 @@ const Select = styled.select`
 
 function ExperimentItem({ experiment }: { experiment: ExperimentType }) {
 	const app = useAppStore();
+	const { t } = useTranslation();
 	const isActive = app.experiments.isExperimentEnabled(experiment.id);
 	const activeTreatment = app.experiments.getTreatment(experiment.id);
 	const [isExpanded, setExpanded] = useState(isActive);
@@ -80,7 +82,7 @@ function ExperimentItem({ experiment }: { experiment: ExperimentType }) {
 			</div>
 			{isExpanded && (
 				<div style={{ display: "flex", flexDirection: "column" }}>
-					<OverrideText>Treatment Override</OverrideText>
+					<OverrideText>{t('settings.treatmentOverride')}</OverrideText>
 					<Select onChange={onChange}>
 						{experiment.treatments.map((treatment) => (
 							<option
@@ -100,10 +102,11 @@ function ExperimentItem({ experiment }: { experiment: ExperimentType }) {
 
 function ExperimentsPage() {
 	const app = useAppStore();
+	const { t } = useTranslation();
 
 	return (
 		<div>
-			<SectionTitle>Experiments</SectionTitle>
+			<SectionTitle>{t('settings.experiments')}</SectionTitle>
 			<Content>
 				<ExperimentList>
 					{EXPERIMENT_LIST.map((experiment) => (

@@ -3,6 +3,7 @@ import { Message, MessageLike } from "@structures";
 import { calendarStrings } from "@utils";
 import dayjs from "dayjs";
 import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 interface Props {
@@ -94,6 +95,7 @@ export const DetailBase = styled.div`
 `;
 
 export const MessageDetails = observer(({ message, position }: { message: MessageLike; position: "left" | "top" }) => {
+	const { t } = useTranslation();
 	if (position === "left") {
 		if (message instanceof Message && message.edited_timestamp) {
 			return (
@@ -122,7 +124,7 @@ export const MessageDetails = observer(({ message, position }: { message: Messag
 							}}
 						>
 							<FloatingTrigger>
-								<span>(edited)</span>
+								<span>{t('chat.edited')}</span>
 							</FloatingTrigger>
 						</Floating>
 					</span>
@@ -160,7 +162,7 @@ export const MessageDetails = observer(({ message, position }: { message: Messag
 					}}
 				>
 					<FloatingTrigger>
-						<span className="edited">(edited)</span>
+						<span className="edited">(ред.)</span>
 					</FloatingTrigger>
 				</Floating>
 			)}

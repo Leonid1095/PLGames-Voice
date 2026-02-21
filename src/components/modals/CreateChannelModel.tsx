@@ -13,40 +13,20 @@ import {
 import { messageFromFieldError } from "@utils";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as yup from "yup";
 import { Modal } from "./ModalComponents";
 
-const CHANNEL_OPTIONS: {
+type ChannelOption = {
 	label: string;
 	description: string;
 	icon: IconType;
 	type: ChannelType;
 	note?: string;
 	canBePrivate?: boolean;
-}[] = [
-	{
-		label: "Text",
-		description: "Send messages, images, and GIFs",
-		icon: "mdiPound",
-		type: ChannelType.GuildText,
-	},
-	{
-		label: "Voice",
-		description: "Hang out and talk with friends",
-		icon: "mdiVolumeHigh",
-		type: ChannelType.GuildVoice,
-	},
-	{
-		label: "Announcement",
-		description: "Important updates for people in and out of the server",
-		icon: "mdiBullhorn",
-		type: ChannelType.GuildAnnouncement,
-		note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-		canBePrivate: false,
-	},
-];
+};
 
 const TitleText = styled.h1`
 	font-size: 20px;
@@ -137,6 +117,30 @@ const schema = yup
 export function CreateChannelModel({ guild, category, ...props }: ModalProps<"create_channel">) {
 	const app = useAppStore();
 	const navigate = useNavigate();
+	const { t } = useTranslation();
+
+	const CHANNEL_OPTIONS: ChannelOption[] = [
+		{
+			label: t('modals.createChannel.textType'),
+			description: t('modals.createChannel.textDesc'),
+			icon: "mdiPound",
+			type: ChannelType.GuildText,
+		},
+		{
+			label: t('modals.createChannel.voiceType'),
+			description: t('modals.createChannel.voiceDesc'),
+			icon: "mdiVolumeHigh",
+			type: ChannelType.GuildVoice,
+		},
+		{
+			label: t('modals.createChannel.announcementType'),
+			description: t('modals.createChannel.announcementDesc'),
+			icon: "mdiBullhorn",
+			type: ChannelType.GuildAnnouncement,
+			note: t('modals.createChannel.selectType'),
+			canBePrivate: false,
+		},
+	];
 
 	const [isLoading, setLoading] = React.useState(false);
 	const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -180,12 +184,12 @@ export function CreateChannelModel({ guild, category, ...props }: ModalProps<"cr
 				console.error(e);
 				// error
 				if (e.errors) {
-					const t = messageFromFieldError(e.errors);
-					if (t) {
+					const fieldError = messageFromFieldError(e.errors);
+					if (fieldError) {
 						// eslint-disable-next-line @typescript-eslint/no-explicit-any
-						setError(t.field as any, {
+						setError(fieldError.field as any, {
 							type: "manual",
-							message: t.error,
+							message: fieldError.error,
 						});
 					} else {
 						setError("type", {
@@ -211,12 +215,12 @@ export function CreateChannelModel({ guild, category, ...props }: ModalProps<"cr
 	return (
 		<Modal
 			{...props}
-			title={<TitleText>Create Channel</TitleText>}
-			description={<DescriptionText>in {category ? category.name : guild.name}</DescriptionText>}
+			title={<TitleText>{t('modals.createChannel.title')}</TitleText>}
+			description={<DescriptionText>{t('modals.createChannel.inCategory', { name: category ? category.name : guild.name })}</DescriptionText>}
 			actions={[
 				{
 					onClick: onSubmit,
-					children: <span>Create Channel</span>,
+					children: <span>{t('modals.createChannel.title')}</span>,
 					palette: "primary",
 					size: "small",
 					disabled: isDisabled,
@@ -225,7 +229,7 @@ export function CreateChannelModel({ guild, category, ...props }: ModalProps<"cr
 					onClick: () => {
 						modalController.pop("close");
 					},
-					children: <span>Cancel</span>,
+					children: <span>{t('modals.createChannel.cancel')}</span>,
 					palette: "link",
 					size: "small",
 					confirmation: true,
@@ -236,7 +240,7 @@ export function CreateChannelModel({ guild, category, ...props }: ModalProps<"cr
 				<List>
 					<Section>
 						<LabelWrapper error={!!errors.type}>
-							<Label>Channel Type</Label>
+							<Label>{t('modals.createChannel.channelType')}</Label>
 							{errors.type && (
 								<>
 									<TextDivider>-</TextDivider>
@@ -275,7 +279,7 @@ export function CreateChannelModel({ guild, category, ...props }: ModalProps<"cr
 					</Section>
 					<Section>
 						<LabelWrapper error={!!errors.name}>
-							<Label>Channel Name</Label>
+							<Label>{t('modals.createChannel.channelName')}</Label>
 							{errors.name && (
 								<>
 									<TextDivider>-</TextDivider>
@@ -303,7 +307,7 @@ export function CreateChannelModel({ guild, category, ...props }: ModalProps<"cr
 								style={{
 									borderRadius: 8,
 								}}
-								placeholder="new-channel"
+								placeholder={t('modals.createChannel.placeholder')}
 								error={!!errors.name}
 							/>
 						</div>

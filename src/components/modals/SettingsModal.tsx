@@ -5,11 +5,13 @@ import { useAppStore } from "@hooks/useAppStore";
 import { APP_VERSION, GIT_BRANCH, GIT_REVISION, REPO_URL, isTauri } from "@utils";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import styled, { css } from "styled-components";
 import { Modal } from "./ModalComponents";
 import AccountSettingsPage from "./SettingsPages/AccountSettingsPage";
 import DeveloperSettingsPage from "./SettingsPages/DeveloperSettingsPage";
 import ExperimentsPage from "./SettingsPages/ExperimentsPage";
+import LanguageSettingsPage from "./SettingsPages/LanguageSettingsPage";
 
 const SidebarView = styled.div`
 	display: flex;
@@ -155,6 +157,7 @@ const CloseButtonWrapper = styled.div`
 
 export const SettingsModal = observer(({ ...props }: ModalProps<"settings">) => {
 	const app = useAppStore();
+	const { t } = useTranslation();
 	const [index, setIndex] = useState(0);
 
 	const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -171,16 +174,19 @@ export const SettingsModal = observer(({ ...props }: ModalProps<"settings">) => 
 					<SidebarInner>
 						<SidebarNav>
 							<SidebarNavWrapper>
-								<Header>User Settings</Header>
-								<Item data-value="0" onClick={onClick}>
-									Account
+								<Header>{t('settings.title')}</Header>
+								<Item data-value="0" onClick={onClick} selected={index === 0}>
+									{t('settings.account')}
+								</Item>
+								<Item data-value="1" onClick={onClick} selected={index === 1}>
+									{t('settings.language')}
 								</Item>
 								<Divider />
-								<Item data-value="1" onClick={onClick}>
-									Developer Options
+								<Item data-value="2" onClick={onClick} selected={index === 2}>
+									{t('settings.developerOptions')}
 								</Item>
-								<Item data-value="2" onClick={onClick}>
-									Experiments
+								<Item data-value="3" onClick={onClick} selected={index === 3}>
+									{t('settings.experiments')}
 								</Item>
 								<Divider />
 								<Item onClick={app.logout}>
@@ -192,7 +198,7 @@ export const SettingsModal = observer(({ ...props }: ModalProps<"settings">) => 
 											color: "var(--error)",
 										}}
 									>
-										Log Out
+										{t('settings.logOut')}
 										<Icon icon="mdiLogout" size="16px" color="var(--error)" />
 									</div>
 								</Item>
@@ -228,7 +234,7 @@ export const SettingsModal = observer(({ ...props }: ModalProps<"settings">) => 
 												Tauri {window.globals.tauriVersion ?? "Fetching version information..."}
 											</span>
 											<span>{`${window.globals.platform.name} ${window.globals.platform.arch} (${window.globals.platform.version})`}</span>
-											<span>{window.globals.platform.locale ?? "Unknown"}</span>
+											<span>{window.globals.platform.locale ?? t('settings.unknown')}</span>
 										</>
 									)}
 								</VersionInfo>
@@ -240,8 +246,9 @@ export const SettingsModal = observer(({ ...props }: ModalProps<"settings">) => 
 					<ContentInner>
 						<ContentColumn>
 							{index === 0 && <AccountSettingsPage />}
-							{index === 1 && <DeveloperSettingsPage />}
-							{index === 2 && <ExperimentsPage />}
+							{index === 1 && <LanguageSettingsPage />}
+							{index === 2 && <DeveloperSettingsPage />}
+							{index === 3 && <ExperimentsPage />}
 						</ContentColumn>
 						<CloseContainer>
 							<CloseContainerInner></CloseContainerInner>

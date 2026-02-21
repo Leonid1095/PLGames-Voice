@@ -139,6 +139,12 @@ export const getFileDetails = (fileOrAttachment: File | APIAttachment) => {
 export const isTauri = !!window.__TAURI_INTERNALS__;
 
 /**
+ * Returns a boolean indicating if we are running in an Electron context
+ */
+// @ts-expect-error no types
+export const isElectron = !!window.isNative;
+
+/**
  * Converts an RGB color to HSL
  * @param r
  * @param g

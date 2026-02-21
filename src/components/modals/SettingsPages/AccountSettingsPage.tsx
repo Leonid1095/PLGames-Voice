@@ -5,6 +5,7 @@ import { useAppStore } from "@hooks/useAppStore";
 import { RESTPatchAPICurrentUserJSONBody, Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { observer } from "mobx-react-lite";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import styled, { css } from "styled-components";
 
 const Content = styled.div`
@@ -128,6 +129,7 @@ const Text = styled.p`
 
 function AccountSettingsPage() {
 	const app = useAppStore();
+	const { t } = useTranslation();
 	const [shouldRedactEmail, setShouldRedactEmail] = useState(true);
 	const [selectedFile, setSelectedFile] = useState<File>();
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -192,7 +194,7 @@ function AccountSettingsPage() {
 
 	return (
 		<div>
-			<SectionTitle>Account</SectionTitle>
+			<SectionTitle>{t('settings.account')}</SectionTitle>
 			<Content>
 				<UserInfoContainer>
 					<Field spacerBottom>
@@ -230,7 +232,7 @@ function AccountSettingsPage() {
 
 					<Field spacerBottom>
 						<Row>
-							<FieldTitle>Username</FieldTitle>
+							<FieldTitle>{t('settings.username')}</FieldTitle>
 
 							<FieldValue>
 								<FieldValueText>
@@ -242,7 +244,7 @@ function AccountSettingsPage() {
 
 					<Field>
 						<Row>
-							<FieldTitle>Email</FieldTitle>
+							<FieldTitle>{t('settings.email')}</FieldTitle>
 
 							<FieldValue>
 								<FieldValueText>
@@ -250,10 +252,10 @@ function AccountSettingsPage() {
 										? shouldRedactEmail
 											? redactEmail(app.account.email)
 											: app.account.email
-										: "No email added."}
+										: t('settings.noEmail')}
 
 									<FieldValueToggle onClick={() => setShouldRedactEmail(!shouldRedactEmail)}>
-										{shouldRedactEmail ? "Reveal" : "Hide"}
+										{shouldRedactEmail ? t('settings.reveal') : t('settings.hide')}
 									</FieldValueToggle>
 								</FieldValueText>
 							</FieldValue>
@@ -262,10 +264,10 @@ function AccountSettingsPage() {
 
 					<Field spacerTop>
 						<Row>
-							<FieldTitle>Phone Number</FieldTitle>
+							<FieldTitle>{t('settings.phoneNumber')}</FieldTitle>
 
 							<FieldValue>
-								<FieldValueText>No phone number added.</FieldValueText>
+								<FieldValueText>{t('settings.noPhone')}</FieldValueText>
 							</FieldValue>
 						</Row>
 					</Field>
@@ -273,13 +275,13 @@ function AccountSettingsPage() {
 
 				{hasUnsavedChangd && (
 					<UnsavedChangesBar>
-						<Text>You have unsaved changes.</Text>
+						<Text>{t('settings.unsavedChanges')}</Text>
 						<UnsavedChangedActions>
 							<Button palette="link" onClick={discardChanges} disabled={loading}>
-								Discard
+								{t('settings.discard')}
 							</Button>
 							<Button palette="primary" disabled={loading} onClick={save}>
-								{loading ? "Saving..." : "Save"}
+								{loading ? t('settings.saving') : t('settings.save')}
 							</Button>
 						</UnsavedChangedActions>
 					</UnsavedChangesBar>

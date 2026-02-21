@@ -1,9 +1,9 @@
-import SpacebarLogoBlue from "@assets/images/logo/Logo-Blue.svg?react";
 import Button from "@components/Button";
 import Container from "@components/Container";
 import { useAppStore } from "@hooks/useAppStore";
 import { observer } from "mobx-react-lite";
 import { Suspense } from "react";
+import { useTranslation } from "react-i18next";
 import PulseLoader from "react-spinners/PulseLoader";
 import styled from "styled-components";
 
@@ -15,17 +15,16 @@ const Wrapper = styled.div`
 	flex: 1;
 `;
 
-const SpacebarLogo = styled(SpacebarLogoBlue)`
-	width: 80vw;
-	height: min-content;
+const LogoText = styled.h1`
+	font-size: 48px;
+	font-weight: 700;
+	color: var(--text);
 	margin-bottom: 32px;
-
-	@media (min-width: 768px) {
-		width: 40vw;
-	}
+	user-select: none;
 `;
 
 function LoadingPage() {
+	const { t } = useTranslation();
 	const app = useAppStore();
 
 	return (
@@ -35,7 +34,7 @@ function LoadingPage() {
 			}}
 		>
 			<Wrapper>
-				<SpacebarLogo />
+				<LogoText>PLG Voice</LogoText>
 				<PulseLoader color="var(--text)" />
 				{app.token && (
 					<div
@@ -45,7 +44,7 @@ function LoadingPage() {
 						}}
 					>
 						<Button palette="danger" onClick={() => app.logout()}>
-							Logout
+							{t('logout')}
 						</Button>
 					</div>
 				)}

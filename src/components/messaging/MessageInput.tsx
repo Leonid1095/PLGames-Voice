@@ -9,6 +9,7 @@ import { MAX_ATTACHMENTS, Snowflake } from "@utils";
 import debounce from "@utils/debounce";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import Icon from "../Icon";
 import IconButton from "../IconButton";
@@ -58,6 +59,7 @@ interface Props {
 function MessageInput({ channel }: Props) {
 	const app = useAppStore();
 	const logger = useLogger("MessageInput");
+	const { t } = useTranslation();
 	const [content, setContent] = useState("");
 	const [attachments, setAttachments] = useState<File[]>([]);
 	const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
@@ -189,8 +191,8 @@ function MessageInput({ channel }: Props) {
 		if (files.length > MAX_ATTACHMENTS || attachments.length + files.length > MAX_ATTACHMENTS) {
 			modalController.push({
 				type: "error",
-				title: "Too many attachments",
-				error: `You can only attach ${MAX_ATTACHMENTS} files at once.`,
+				title: t('chat.tooManyAttachments'),
+				error: t('chat.tooManyAttachmentsDesc', { max: MAX_ATTACHMENTS }),
 			});
 			return;
 		}
@@ -381,7 +383,7 @@ function MessageInput({ channel }: Props) {
 											? channel.recipients?.[0].username
 											: "#" + channel.name
 								  }`
-								: "You do not have permission to send messages in this channel."
+								: t('chat.noSendPermission')
 						}
 						disabled={!channel.hasPermission("SEND_MESSAGES")}
 						onChange={onChange}

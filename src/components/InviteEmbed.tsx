@@ -4,6 +4,7 @@ import useLogger from "@hooks/useLogger";
 import { APIInvite, CDNRoutes, ImageFormat, Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { asAcronym, REST } from "@utils";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import Button from "./Button";
 
@@ -150,6 +151,7 @@ interface Props {
 function InviteEmbed({ isSelf, code }: Props) {
 	const app = useAppStore();
 	const logger = useLogger("InviteEmbed");
+	const { t } = useTranslation();
 	const [data, setData] = useState<APIInvite>();
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(false);
@@ -176,13 +178,13 @@ function InviteEmbed({ isSelf, code }: Props) {
 		<MainContainer>
 			{loading && (
 				<Wrapper>
-					<Header>Resolving Invite</Header>
+					<Header>{t('invite.resolving')}</Header>
 				</Wrapper>
 			)}
 
 			{error && (
 				<Wrapper>
-					<Header>{isSelf ? "You sent an invite, but..." : "You received an invite, but..."}</Header>
+					<Header>{isSelf ? t('invite.sentBut') : t('invite.receivedBut')}</Header>
 					<ContentWrapper>
 						<GuildHeader>
 							<div
@@ -198,8 +200,8 @@ function InviteEmbed({ isSelf, code }: Props) {
 								}}
 							/>
 							<GuildInfo>
-								<InvalidInviteHeader>Invalid Invite</InvalidInviteHeader>
-								<InvalidInviteDetails>Try sending a new invite!</InvalidInviteDetails>
+								<InvalidInviteHeader>{t('invite.invalid')}</InvalidInviteHeader>
+								<InvalidInviteDetails>{t('invite.tryNew')}</InvalidInviteDetails>
 							</GuildInfo>
 						</GuildHeader>
 					</ContentWrapper>
@@ -219,7 +221,7 @@ function InviteEmbed({ isSelf, code }: Props) {
 						</SplashWrapper>
 					)}
 					<Header>
-						{isSelf ? "You sent an invite to join a guild" : "You've been invited to join a guild"}
+						{isSelf ? t('invite.sentToJoin') : t('invite.invitedToJoin')}
 					</Header>
 					<ContentWrapper>
 						<GuildHeader>
@@ -247,20 +249,20 @@ function InviteEmbed({ isSelf, code }: Props) {
 										<OnlineStatus />
 										<StatusCount>
 											{/* @ts-expect-error the server is incorrect here */}
-											{(data.guild!.presence_count || 0).toLocaleString()} Online
+											{(data.guild!.presence_count || 0).toLocaleString()} {t('invite.online')}
 										</StatusCount>
 									</StatusWrapper>
 									<StatusWrapper>
 										<OfflineStatus />
 										<StatusCount>
 											{/* @ts-expect-error the server is incorrect here */}
-											{(data.guild!.member_count || 0).toLocaleString()} Members
+											{(data.guild!.member_count || 0).toLocaleString()} {t('invite.members')}
 										</StatusCount>
 									</StatusWrapper>
 								</GuildDetailsWrapper>
 							</GuildInfo>
 						</GuildHeader>
-						<JoinButton palette="secondary">Join</JoinButton>
+						<JoinButton palette="secondary">{t('invite.join')}</JoinButton>
 					</ContentWrapper>
 				</Wrapper>
 			)}

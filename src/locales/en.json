@@ -1,0 +1,285 @@
+{
+	"auth": {
+		"loginHeader": "Log in to PLG Voice",
+		"server": "Server",
+		"checking": "Checking",
+		"serverPlaceholder": "Server URL",
+		"email": "Email",
+		"emailPlaceholder": "Email",
+		"password": "Password",
+		"passwordPlaceholder": "Password",
+		"login": "Log In",
+		"noAccount": "Don't have an account?",
+		"register": "Register",
+		"registerHeader": "Create an account",
+		"username": "Username",
+		"usernamePlaceholder": "Username",
+		"dateOfBirth": "Date of Birth",
+		"createAccount": "Create Account",
+		"haveAccount": "Already have an account?",
+		"mfaHeader": "Two-Factor Authentication",
+		"mfaDescription": "You can use a backup code or your two-factor authentication mobile app.",
+		"mfaCodeLabel": "Enter 2FA/Backup Code",
+		"mfaCodePlaceholder": "6-digit authentication code / 8-digit backup code",
+		"mfaBackToLogin": "Go Back to Login",
+		"unknownError": "Unknown Error",
+		"captchaError": "Captcha Error: {{error}}",
+		"unsupportedCaptcha": "Unsupported captcha service: {{service}}"
+	},
+	"dob": {
+		"january": "January",
+		"february": "February",
+		"march": "March",
+		"april": "April",
+		"may": "May",
+		"june": "June",
+		"july": "July",
+		"august": "August",
+		"september": "September",
+		"october": "October",
+		"november": "November",
+		"december": "December",
+		"invalidDate": "Invalid Date",
+		"month": "Month",
+		"day": "Day",
+		"year": "Year"
+	},
+	"sidebar": {
+		"home": "Home",
+		"addServer": "Add Server",
+		"directMessages": "Direct Messages",
+		"createChannel": "Create Channel"
+	},
+	"chat": {
+		"search": "Search",
+		"inbox": "Inbox",
+		"memberList": "Toggle Member List",
+		"pinnedMessages": "Pinned Messages",
+		"notificationSettings": "Notification Settings",
+		"edited": "(edited)",
+		"welcomeTo": "Welcome to #{{channel}}!",
+		"channelStart": "This is the start of the #{{channel}} channel.",
+		"noReadHistory": "You do not have permission to read the history of this channel.",
+		"noSendPermission": "You do not have permission to send messages in this channel.",
+		"noViewPermission": "You do not have permission to view this channel",
+		"unknownGuildOrChannel": "Unknown Guild or Channel",
+		"homePlaceholder": "Home",
+		"tooManyAttachments": "Too many attachments",
+		"tooManyAttachmentsDesc": "You can only attach {{max}} files at once.",
+		"uploading": "Uploading"
+	},
+	"typing": {
+		"several": "Several people are typing...",
+		"multiple": "and <1>{{user}}</1> are typing...",
+		"single": "<1>{{user}}</1> is typing..."
+	},
+	"messages": {
+		"reply": "Reply",
+		"copyText": "Copy Text",
+		"deleteMessage": "Delete Message",
+		"copyMessageId": "Copy Message ID"
+	},
+	"channel": {
+		"createInvite": "Create Invite",
+		"copyLink": "Copy Link",
+		"editChannel": "Edit Channel",
+		"deleteChannel": "Delete Channel",
+		"copyChannelId": "Copy Channel ID"
+	},
+	"guild": {
+		"createInvite": "Create Invite",
+		"leaveGuild": "Leave Server",
+		"copyGuildId": "Copy Server ID",
+		"serverSettings": "Server Settings",
+		"createChannel": "Create Channel",
+		"createCategory": "Create Category",
+		"notificationSettings": "Notification Settings",
+		"privacySettings": "Privacy Settings"
+	},
+	"user": {
+		"profile": "Profile",
+		"mention": "Mention",
+		"message": "Message",
+		"changeNickname": "Change Nickname",
+		"addFriend": "Add Friend",
+		"block": "Block",
+		"kick": "Kick {{name}}",
+		"ban": "Ban {{name}}",
+		"roles": "Roles",
+		"noRoles": "No Roles",
+		"copyUserId": "Copy User ID",
+		"memberSince": "Member Since",
+		"settings": "Settings"
+	},
+	"modals": {
+		"deleteMessage": {
+			"title": "Delete Message",
+			"description": "Are you sure you want to delete this message?",
+			"cancel": "Cancel",
+			"delete": "Delete"
+		},
+		"leaveServer": {
+			"title": "Leave '{{name}}'",
+			"description": "Are you sure you want to leave {{name}}? You won't be able to rejoin this server unless you are re-invited.",
+			"leave": "Leave Server",
+			"cancel": "Cancel"
+		},
+		"addServer": {
+			"title": "Add a Server",
+			"description": "Create your own server or join an existing one.",
+			"create": "Create a Server",
+			"join": "Join a Server"
+		},
+		"joinServer": {
+			"title": "Join a Server",
+			"description": "Enter an invite below to join an existing server.",
+			"join": "Join",
+			"back": "Back",
+			"inviteLink": "Invite Link"
+		},
+		"ban": {
+			"title": "Ban '{{name}}'",
+			"description": "Are you sure you want to ban @{{name}}? They won't be able to rejoin unless they are unbanned.",
+			"ban": "Ban",
+			"cancel": "Cancel",
+			"reason": "Reason",
+			"reasonTooLong": "Reason must be less than 512 characters"
+		},
+		"kick": {
+			"title": "Kick {{name}} from Server",
+			"description": "Are you sure you want to kick @{{name}} from the server? They will be able to rejoin again with a new invite.",
+			"kick": "Kick",
+			"cancel": "Cancel",
+			"reason": "Reason",
+			"reasonTooLong": "Reason must be less than 512 characters"
+		},
+		"createServer": {
+			"defaultName": "{{name}}'s server",
+			"title": "Customize your server",
+			"description": "Give your new server a personality with a name and an icon. You can always change it later.",
+			"create": "Create",
+			"back": "Back",
+			"guildIcon": "Server Icon",
+			"guildName": "Server Name"
+		},
+		"createChannel": {
+			"title": "Create Channel",
+			"inCategory": "in {{name}}",
+			"cancel": "Cancel",
+			"channelType": "Channel Type",
+			"channelName": "Channel Name",
+			"placeholder": "new-channel",
+			"textType": "Text",
+			"textDesc": "Send messages, images, and GIFs",
+			"voiceType": "Voice",
+			"voiceDesc": "Hang out and talk with friends",
+			"announcementType": "Announcement",
+			"announcementDesc": "Important updates for people in and out of the server",
+			"selectType": "Choose a channel type and configure it."
+		},
+		"createInvite": {
+			"title": "Invite People",
+			"toChannel": "to #{{channel}} in {{guild}}",
+			"expireAfter": "Expire after",
+			"maxUses": "Max Number of Uses",
+			"generateNew": "Generate New Link",
+			"inviteCode": "Invite Code",
+			"neverExpires": "Invite will never expire.",
+			"30min": "30 Minutes",
+			"1hour": "1 Hour",
+			"6hours": "6 Hours",
+			"12hours": "12 Hours",
+			"1day": "1 Day",
+			"7days": "7 Days",
+			"30days": "30 Days",
+			"never": "Never",
+			"noLimit": "No Limit",
+			"1use": "1 use",
+			"5uses": "5 uses",
+			"10uses": "10 uses",
+			"25uses": "25 uses",
+			"50uses": "50 uses",
+			"100uses": "100 uses"
+		},
+		"invite": {
+			"invitedToJoin": "You've been invited to join"
+		},
+		"error": {
+			"dismiss": "Dismiss"
+		}
+	},
+	"settings": {
+		"title": "User Settings",
+		"account": "Account",
+		"developerOptions": "Developer Options",
+		"experiments": "Experiments",
+		"language": "Language",
+		"logOut": "Log Out",
+		"unknown": "Unknown",
+		"username": "Username",
+		"email": "Email",
+		"noEmail": "No email added.",
+		"reveal": "Reveal",
+		"hide": "Hide",
+		"phoneNumber": "Phone Number",
+		"noPhone": "No phone number added.",
+		"unsavedChanges": "You have unsaved changes.",
+		"discard": "Discard",
+		"saving": "Saving...",
+		"save": "Save",
+		"treatmentOverride": "Treatment Override"
+	},
+	"updates": {
+		"checking": "Checking for Updates",
+		"available": "Update Available",
+		"downloading": "Downloading Update",
+		"ready": "Update Ready!"
+	},
+	"invite": {
+		"resolving": "Resolving Invite",
+		"sentBut": "You sent an invite, but...",
+		"receivedBut": "You received an invite, but...",
+		"invalid": "Invalid Invite",
+		"tryNew": "Try sending a new invite!",
+		"sentToJoin": "You sent an invite to join a server",
+		"invitedToJoin": "You've been invited to join a server",
+		"online": "Online",
+		"members": "Members",
+		"join": "Join",
+		"noCode": "No invite code provided",
+		"error": "Error"
+	},
+	"errors": {
+		"appCrash": "App Crash",
+		"ignore": "Ignore",
+		"reload": "Reload",
+		"componentError": "Component Error",
+		"somethingWentWrong": "Oops, Something went wrong!",
+		"gatewayDisconnected": "Connection to server lost (code {{code}}), please refresh the page"
+	},
+	"media": {
+		"viewFullText": "View Full Text",
+		"expandLines": "Expand ({{count}} lines)",
+		"collapse": "Collapse",
+		"expand": "Expand"
+	},
+	"banner": {
+		"offline": "You are offline"
+	},
+	"loading": "Loading...",
+	"logout": "Log Out",
+	"notFound": "Page Not Found",
+	"cancel": "Cancel",
+	"titlebar": {
+		"minimize": "Minimize",
+		"maximize": "Maximize",
+		"close": "Close"
+	},
+	"calendar": {
+		"sameDay": "[Today at] h:mm A",
+		"nextDay": "[Tomorrow at] h:mm A",
+		"lastDay": "[Yesterday at] h:mm A",
+		"lastWeek": "[Last] dddd [at] h:mm A",
+		"sameElse": "MM/DD/YYYY h:mm A"
+	}
+}

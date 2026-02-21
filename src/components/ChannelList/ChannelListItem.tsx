@@ -8,6 +8,7 @@ import { Channel } from "@structures";
 import { Permissions } from "@utils";
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -49,6 +50,7 @@ interface Props {
 
 function ChannelListItem({ channel, isCategory, active, isCollapsed, onToggleCollapse }: Props) {
 	const app = useAppStore();
+	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const contextMenu = useContext(ContextMenuContext);
 
@@ -127,7 +129,7 @@ function ChannelListItem({ channel, isCategory, active, isCollapsed, onToggleCol
 						type="tooltip"
 						offset={10}
 						props={{
-							content: <span>Create Channel</span>,
+							content: <span>{t('sidebar.createChannel')}</span>,
 						}}
 					>
 						<FloatingTrigger>

@@ -36,6 +36,7 @@ import {
 	PresenceUpdateStatus,
 	Snowflake,
 } from "@spacebarchat/spacebar-api-types/v9";
+import i18n from "@/i18n";
 import { debounce, Logger } from "@utils";
 import { action, makeAutoObservable, observable, runInAction } from "mobx";
 import AppStore from "./AppStore";
@@ -239,7 +240,7 @@ export default class GatewayConnectionStore {
 				token: this.app.token!,
 				capabilities: 16381,
 				properties: {
-					browser: "Spacebar Web",
+					browser: "PLG Voice",
 					client_build_number: 0,
 					release_channel: "dev",
 					browser_user_agent: navigator.userAgent,
@@ -348,7 +349,7 @@ export default class GatewayConnectionStore {
 		// 	)} seconds.`,
 		// );
 
-		alert(`Gateway connection closed with code ${code}, please refresh the page`);
+		alert(i18n.t('errors.gatewayDisconnected', { code }));
 
 		// this.startReconnect();
 	};

@@ -222,8 +222,8 @@ export function Text({ attachment }: Props) {
 			<ActionItemsWrapper>
 				<ActionItem
 					icon="mdiArrowExpand"
-					tooltip="View Full Text"
-					ariaLabel="View Full Text"
+					tooltip="Показать полный текст"
+					ariaLabel="Показать полный текст"
 					onClick={popOutFullText}
 					size="16px"
 					iconWrapperStyle={{
@@ -233,10 +233,10 @@ export function Text({ attachment }: Props) {
 				/>
 				<ActionItem
 					icon={expanded ? "mdiChevronUp" : "mdiChevronDown"}
-					tooltip={"Expand (" + textLineCount + " lines)"}
-					ariaLabel={"Expand (" + textLineCount + " lines)"}
+					tooltip={"Развернуть (" + textLineCount + " строк)"}
+					ariaLabel={"Развернуть (" + textLineCount + " строк)"}
 					onClick={toggleExpand}
-					label={<span style={{ fontSize: "14px" }}>{expanded ? "Collapse" : "Expand"}</span>}
+					label={<span style={{ fontSize: "14px" }}>{expanded ? "Свернуть" : "Развернуть"}</span>}
 					size="24px"
 					iconButtonStyle={{
 						display: "flex",

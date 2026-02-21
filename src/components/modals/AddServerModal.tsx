@@ -1,5 +1,6 @@
 import { ModalProps, modalController } from "@/controllers/modals";
 import Button from "@components/Button";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { Modal } from "./ModalComponents";
 
@@ -9,8 +10,10 @@ const ActionWrapper = styled.div`
 	gap: 8px;
 `;
 export function AddServerModal({ ...props }: ModalProps<"add_server">) {
+	const { t } = useTranslation();
+
 	return (
-		<Modal {...props} title="Add a Guild" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit.">
+		<Modal {...props} title={t('modals.addServer.title')} description={t('modals.addServer.description')}>
 			<ActionWrapper>
 				<Button
 					palette="primary"
@@ -21,7 +24,7 @@ export function AddServerModal({ ...props }: ModalProps<"add_server">) {
 						});
 					}}
 				>
-					Create a Guild
+					{t('modals.addServer.create')}
 				</Button>
 
 				<Button
@@ -33,7 +36,7 @@ export function AddServerModal({ ...props }: ModalProps<"add_server">) {
 						});
 					}}
 				>
-					Join a Guild
+					{t('modals.addServer.join')}
 				</Button>
 			</ActionWrapper>
 		</Modal>

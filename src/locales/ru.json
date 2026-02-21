@@ -1,0 +1,285 @@
+{
+	"auth": {
+		"loginHeader": "Вход в PLG Voice",
+		"server": "Сервер",
+		"checking": "Проверка",
+		"serverPlaceholder": "URL сервера",
+		"email": "Электронная почта",
+		"emailPlaceholder": "Электронная почта",
+		"password": "Пароль",
+		"passwordPlaceholder": "Пароль",
+		"login": "Войти",
+		"noAccount": "Нет аккаунта?",
+		"register": "Зарегистрироваться",
+		"registerHeader": "Создать аккаунт",
+		"username": "Имя пользователя",
+		"usernamePlaceholder": "Имя пользователя",
+		"dateOfBirth": "Дата рождения",
+		"createAccount": "Создать аккаунт",
+		"haveAccount": "Уже есть аккаунт?",
+		"mfaHeader": "Двухфакторная аутентификация",
+		"mfaDescription": "Используйте резервный код или приложение для двухфакторной аутентификации.",
+		"mfaCodeLabel": "Введите код 2FA/резервный код",
+		"mfaCodePlaceholder": "6-значный код / 8-значный резервный код",
+		"mfaBackToLogin": "Вернуться к входу",
+		"unknownError": "Неизвестная ошибка",
+		"captchaError": "Ошибка капчи: {{error}}",
+		"unsupportedCaptcha": "Неподдерживаемый сервис капчи: {{service}}"
+	},
+	"dob": {
+		"january": "Январь",
+		"february": "Февраль",
+		"march": "Март",
+		"april": "Апрель",
+		"may": "Май",
+		"june": "Июнь",
+		"july": "Июль",
+		"august": "Август",
+		"september": "Сентябрь",
+		"october": "Октябрь",
+		"november": "Ноябрь",
+		"december": "Декабрь",
+		"invalidDate": "Неверная дата",
+		"month": "Месяц",
+		"day": "День",
+		"year": "Год"
+	},
+	"sidebar": {
+		"home": "Главная",
+		"addServer": "Добавить сервер",
+		"directMessages": "Личные сообщения",
+		"createChannel": "Создать канал"
+	},
+	"chat": {
+		"search": "Поиск",
+		"inbox": "Входящие",
+		"memberList": "Список участников",
+		"pinnedMessages": "Закреплённые сообщения",
+		"notificationSettings": "Настройки уведомлений",
+		"edited": "(ред.)",
+		"welcomeTo": "Добро пожаловать в #{{channel}}!",
+		"channelStart": "Это начало канала #{{channel}}.",
+		"noReadHistory": "У вас нет разрешения просматривать историю этого канала.",
+		"noSendPermission": "У вас нет разрешения отправлять сообщения в этот канал.",
+		"noViewPermission": "У вас нет разрешения просматривать этот канал",
+		"unknownGuildOrChannel": "Неизвестный сервер или канал",
+		"homePlaceholder": "Главная",
+		"tooManyAttachments": "Слишком много вложений",
+		"tooManyAttachmentsDesc": "Вы можете прикрепить не более {{max}} файлов за раз.",
+		"uploading": "Загрузка"
+	},
+	"typing": {
+		"several": "Несколько человек печатают...",
+		"multiple": "и <1>{{user}}</1> печатают...",
+		"single": "<1>{{user}}</1> печатает..."
+	},
+	"messages": {
+		"reply": "Ответить",
+		"copyText": "Копировать текст",
+		"deleteMessage": "Удалить сообщение",
+		"copyMessageId": "Копировать ID сообщения"
+	},
+	"channel": {
+		"createInvite": "Создать приглашение",
+		"copyLink": "Копировать ссылку",
+		"editChannel": "Редактировать канал",
+		"deleteChannel": "Удалить канал",
+		"copyChannelId": "Копировать ID канала"
+	},
+	"guild": {
+		"createInvite": "Создать приглашение",
+		"leaveGuild": "Покинуть сервер",
+		"copyGuildId": "Копировать ID сервера",
+		"serverSettings": "Настройки сервера",
+		"createChannel": "Создать канал",
+		"createCategory": "Создать категорию",
+		"notificationSettings": "Настройки уведомлений",
+		"privacySettings": "Настройки конфиденциальности"
+	},
+	"user": {
+		"profile": "Профиль",
+		"mention": "Упомянуть",
+		"message": "Сообщение",
+		"changeNickname": "Изменить никнейм",
+		"addFriend": "Добавить в друзья",
+		"block": "Заблокировать",
+		"kick": "Кикнуть {{name}}",
+		"ban": "Забанить {{name}}",
+		"roles": "Роли",
+		"noRoles": "Нет ролей",
+		"copyUserId": "Копировать ID пользователя",
+		"memberSince": "Участник с",
+		"settings": "Настройки"
+	},
+	"modals": {
+		"deleteMessage": {
+			"title": "Удалить сообщение",
+			"description": "Вы уверены, что хотите удалить это сообщение?",
+			"cancel": "Отмена",
+			"delete": "Удалить"
+		},
+		"leaveServer": {
+			"title": "Покинуть '{{name}}'",
+			"description": "Вы уверены, что хотите покинуть {{name}}? Вы не сможете вернуться на сервер, если вас не пригласят заново.",
+			"leave": "Покинуть сервер",
+			"cancel": "Отмена"
+		},
+		"addServer": {
+			"title": "Добавить сервер",
+			"description": "Создайте свой сервер или присоединитесь к существующему.",
+			"create": "Создать сервер",
+			"join": "Присоединиться к серверу"
+		},
+		"joinServer": {
+			"title": "Присоединиться к серверу",
+			"description": "Введите приглашение, чтобы присоединиться к серверу.",
+			"join": "Присоединиться",
+			"back": "Назад",
+			"inviteLink": "Ссылка-приглашение"
+		},
+		"ban": {
+			"title": "Забанить '{{name}}'",
+			"description": "Вы уверены, что хотите забанить @{{name}}? Они не смогут вернуться, пока не будут разбанены.",
+			"ban": "Забанить",
+			"cancel": "Отмена",
+			"reason": "Причина",
+			"reasonTooLong": "Причина должна быть менее 512 символов"
+		},
+		"kick": {
+			"title": "Кикнуть {{name}} с сервера",
+			"description": "Вы уверены, что хотите кикнуть @{{name}} с сервера? Они смогут вернуться по новому приглашению.",
+			"kick": "Кикнуть",
+			"cancel": "Отмена",
+			"reason": "Причина",
+			"reasonTooLong": "Причина должна быть менее 512 символов"
+		},
+		"createServer": {
+			"defaultName": "Сервер {{name}}",
+			"title": "Настройте свой сервер",
+			"description": "Задайте имя и иконку для вашего нового сервера. Вы всегда сможете изменить это позже.",
+			"create": "Создать",
+			"back": "Назад",
+			"guildIcon": "Иконка сервера",
+			"guildName": "Название сервера"
+		},
+		"createChannel": {
+			"title": "Создать канал",
+			"inCategory": "в {{name}}",
+			"cancel": "Отмена",
+			"channelType": "Тип канала",
+			"channelName": "Название канала",
+			"placeholder": "новый-канал",
+			"textType": "Текстовый",
+			"textDesc": "Отправляйте сообщения, изображения и GIF",
+			"voiceType": "Голосовой",
+			"voiceDesc": "Общайтесь с друзьями голосом",
+			"announcementType": "Объявления",
+			"announcementDesc": "Важные обновления для участников сервера",
+			"selectType": "Выберите тип канала и настройте его."
+		},
+		"createInvite": {
+			"title": "Пригласить участников",
+			"toChannel": "в #{{channel}} на {{guild}}",
+			"expireAfter": "Истекает через",
+			"maxUses": "Максимальное число использований",
+			"generateNew": "Сгенерировать новую ссылку",
+			"inviteCode": "Код приглашения",
+			"neverExpires": "Приглашение не истечёт.",
+			"30min": "30 минут",
+			"1hour": "1 час",
+			"6hours": "6 часов",
+			"12hours": "12 часов",
+			"1day": "1 день",
+			"7days": "7 дней",
+			"30days": "30 дней",
+			"never": "Никогда",
+			"noLimit": "Без лимита",
+			"1use": "1 раз",
+			"5uses": "5 раз",
+			"10uses": "10 раз",
+			"25uses": "25 раз",
+			"50uses": "50 раз",
+			"100uses": "100 раз"
+		},
+		"invite": {
+			"invitedToJoin": "Вас пригласили присоединиться к"
+		},
+		"error": {
+			"dismiss": "Закрыть"
+		}
+	},
+	"settings": {
+		"title": "Настройки пользователя",
+		"account": "Аккаунт",
+		"developerOptions": "Параметры разработчика",
+		"experiments": "Эксперименты",
+		"language": "Язык",
+		"logOut": "Выйти",
+		"unknown": "Неизвестно",
+		"username": "Имя пользователя",
+		"email": "Электронная почта",
+		"noEmail": "Электронная почта не добавлена.",
+		"reveal": "Показать",
+		"hide": "Скрыть",
+		"phoneNumber": "Номер телефона",
+		"noPhone": "Номер телефона не добавлен.",
+		"unsavedChanges": "У вас есть несохранённые изменения.",
+		"discard": "Отменить",
+		"saving": "Сохранение...",
+		"save": "Сохранить",
+		"treatmentOverride": "Переопределение варианта"
+	},
+	"updates": {
+		"checking": "Проверка обновлений",
+		"available": "Доступно обновление",
+		"downloading": "Загрузка обновления",
+		"ready": "Обновление готово!"
+	},
+	"invite": {
+		"resolving": "Получение приглашения",
+		"sentBut": "Вы отправили приглашение, но...",
+		"receivedBut": "Вы получили приглашение, но...",
+		"invalid": "Недействительное приглашение",
+		"tryNew": "Попробуйте отправить новое приглашение!",
+		"sentToJoin": "Вы отправили приглашение на сервер",
+		"invitedToJoin": "Вас пригласили на сервер",
+		"online": "В сети",
+		"members": "Участников",
+		"join": "Присоединиться",
+		"noCode": "Код приглашения не указан",
+		"error": "Ошибка"
+	},
+	"errors": {
+		"appCrash": "Ошибка приложения",
+		"ignore": "Игнорировать",
+		"reload": "Перезагрузить",
+		"componentError": "Ошибка компонента",
+		"somethingWentWrong": "Упс! Что-то пошло не так!",
+		"gatewayDisconnected": "Соединение с сервером потеряно (код {{code}}), пожалуйста, обновите страницу"
+	},
+	"media": {
+		"viewFullText": "Показать полный текст",
+		"expandLines": "Развернуть ({{count}} строк)",
+		"collapse": "Свернуть",
+		"expand": "Развернуть"
+	},
+	"banner": {
+		"offline": "Вы не в сети"
+	},
+	"loading": "Загрузка...",
+	"logout": "Выйти",
+	"notFound": "Страница не найдена",
+	"cancel": "Отмена",
+	"titlebar": {
+		"minimize": "Свернуть",
+		"maximize": "Развернуть",
+		"close": "Закрыть"
+	},
+	"calendar": {
+		"sameDay": "[Сегодня в] H:mm",
+		"nextDay": "[Завтра в] H:mm",
+		"lastDay": "[Вчера в] H:mm",
+		"lastWeek": "dddd [в] H:mm",
+		"sameElse": "DD.MM.YYYY H:mm"
+	}
+}

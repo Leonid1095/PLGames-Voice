@@ -6,6 +6,7 @@ import useLogger from "@hooks/useLogger";
 import * as Icons from "@mdi/js";
 import { Channel } from "@structures";
 import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 const IconButton = styled.button`
@@ -148,6 +149,7 @@ function ActionItem({ icon, active, ariaLabel, tooltip, disabled, color, onClick
  */
 function ChatHeader({ channel }: Props) {
 	const { memberListVisible, toggleMemberList, updaterStore } = useAppStore();
+	const { t } = useTranslation();
 
 	return (
 		<Container>
@@ -160,27 +162,27 @@ function ChatHeader({ channel }: Props) {
 					{updaterStore?.checkingForUpdates && (
 						<ActionItem
 							icon="mdiCloudSync"
-							tooltip="Checking for Updates"
-							ariaLabel="Checking for Updates"
+							tooltip={t('updates.checking')}
+							ariaLabel={t('updates.checking')}
 							disabled
 						/>
 					)}
 					{updaterStore?.updateAvailable && (
-						<ActionItem icon="mdiUpdate" tooltip="Update Available" ariaLabel="Upate Available" disabled />
+						<ActionItem icon="mdiUpdate" tooltip={t('updates.available')} ariaLabel={t('updates.available')} disabled />
 					)}
 					{updaterStore?.updateDownloading && (
 						<ActionItem
 							icon="mdiCloudDownload"
-							tooltip="Downloading Update"
-							ariaLabel="Downloading Update"
+							tooltip={t('updates.downloading')}
+							ariaLabel={t('updates.downloading')}
 							disabled
 						/>
 					)}
 					{updaterStore?.updateDownloaded && (
 						<ActionItem
 							icon="mdiDownload"
-							tooltip="Update Ready!"
-							ariaLabel="Update Ready!"
+							tooltip={t('updates.ready')}
+							ariaLabel={t('updates.ready')}
 							color="var(--success)"
 							onClick={() => {
 								updaterStore.quitAndInstall();
@@ -189,18 +191,18 @@ function ChatHeader({ channel }: Props) {
 					)}
 					{/* <ActionItem icon="mdiPound" ariaLabel="Threads" /> */}
 					<DummySearch>
-						<span>Search</span>
+						<span>{t('chat.search')}</span>
 					</DummySearch>
-					<ActionItem icon="mdiInbox" tooltip="Inbox" ariaLabel="Inbox" />
+					<ActionItem icon="mdiInbox" tooltip={t('chat.inbox')} ariaLabel={t('chat.inbox')} />
 					<ActionItem
 						icon="mdiAccountMultiple"
-						tooltip="Toggle Member List"
-						ariaLabel="Toggle Member List"
+						tooltip={t('chat.memberList')}
+						ariaLabel={t('chat.memberList')}
 						active={memberListVisible}
 						onClick={toggleMemberList}
 					/>
-					<ActionItem icon="mdiPin" tooltip="Pinned Messages" ariaLabel="Pinned Messages" />
-					<ActionItem icon="mdiBellBadge" tooltip="Notification Settings" ariaLabel="Notification Settings" />
+					<ActionItem icon="mdiPin" tooltip={t('chat.pinnedMessages')} ariaLabel={t('chat.pinnedMessages')} />
+					<ActionItem icon="mdiBellBadge" tooltip={t('chat.notificationSettings')} ariaLabel={t('chat.notificationSettings')} />
 				</ActionItemsWrapper>
 			</Wrapper>
 		</Container>

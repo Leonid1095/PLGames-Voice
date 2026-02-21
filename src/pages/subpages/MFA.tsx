@@ -1,4 +1,3 @@
-import SpacebarLogoBlue from "@assets/images/logo/Logo-Blue.svg?react";
 import {
 	AuthContainer,
 	FormContainer,
@@ -28,6 +27,7 @@ import {
 } from "@utils";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 type FormValues = {
@@ -39,6 +39,7 @@ interface Props extends IAPILoginResponseMFARequired {
 }
 
 function MFA(props: Props) {
+	const { t } = useTranslation();
 	const app = useAppStore();
 	const logger = useLogger("MFA");
 	const navigate = useNavigate();
@@ -67,11 +68,11 @@ function MFA(props: Props) {
 				if ("message" in r) {
 					// error
 					if (r.errors) {
-						const t = messageFromFieldError(r.errors);
-						if (t) {
-							setError(t.field as keyof FormValues, {
+						const fieldError = messageFromFieldError(r.errors);
+						if (fieldError) {
+							setError(fieldError.field as keyof FormValues, {
 								type: "manual",
-								message: t.error,
+								message: fieldError.error,
 							});
 						} else {
 							setError("code", {
@@ -90,7 +91,7 @@ function MFA(props: Props) {
 					logger.error(r);
 					setError("code", {
 						type: "manual",
-						message: "Unknown Error",
+						message: t('auth.unknownError'),
 					});
 				}
 			})
@@ -101,14 +102,13 @@ function MFA(props: Props) {
 		<Wrapper>
 			<AuthContainer>
 				<HeaderContainer>
-					<SpacebarLogoBlue height={48} width="auto" />
-					<Header>Two-factor authentication</Header>
-					<SubHeader>You can use a backup code or your two-factor authentication mobile app.</SubHeader>
+					<Header>{t('auth.mfaHeader')}</Header>
+					<SubHeader>{t('auth.mfaDescription')}</SubHeader>
 
 					<FormContainer onSubmit={onSubmit}>
 						<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
 							<LabelWrapper error={!!errors.code}>
-								<InputLabel>Enter 2FA/Backup Code</InputLabel>
+								<InputLabel>{t('auth.mfaCodeLabel')}</InputLabel>
 								{errors.code && (
 									<InputErrorText>
 										<>
@@ -125,29 +125,17 @@ function MFA(props: Props) {
 									{...register("code", { required: true })}
 									error={!!errors.code}
 									disabled={loading}
-									placeholder="6-digit authentication code/8-digit backup code"
+									placeholder={t('auth.mfaCodePlaceholder')}
 								/>
 							</InputWrapper>
 						</InputContainer>
 
 						<SubmitButton palette="primary" type="submit" disabled={loading}>
-							Log In
+							{t('auth.login')}
 						</SubmitButton>
 
-						{/* <Link
-						onClick={() => {
-							window.open(
-								"https://youtu.be/dQw4w9WgXcQ",
-								"_blank",
-							);
-						}}
-						type="button"
-					>
-						Recieve auth code from SMS
-					</Link> */}
-
 						<Link onClick={() => props.close()} type="button">
-							Go Back to Login
+							{t('auth.mfaBackToLogin')}
 						</Link>
 					</FormContainer>
 				</HeaderContainer>

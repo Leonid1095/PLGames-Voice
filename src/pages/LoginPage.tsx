@@ -1,4 +1,3 @@
-import SpacebarLogoBlue from "@assets/images/logo/Logo-Blue.svg?react";
 import {
 	AuthContainer,
 	AuthSwitchPageContainer,
@@ -22,7 +21,6 @@ import HCaptchaLib from "@hcaptcha/react-hcaptcha";
 import { useAppStore } from "@hooks/useAppStore";
 import useLogger from "@hooks/useLogger";
 import { Routes } from "@spacebarchat/spacebar-api-types/v9";
-import { AUTH_NO_BRANDING } from "@stores/AppStore";
 import {
 	Globals,
 	IAPILoginRequest,
@@ -35,6 +33,7 @@ import {
 } from "@utils";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import MFA from "./subpages/MFA";
 import { useInstanceValidation } from "@/hooks/useInstanceValidation";
@@ -47,6 +46,7 @@ type FormValues = {
 };
 
 function LoginPage() {
+	const { t } = useTranslation();
 	const app = useAppStore();
 	const logger = useLogger("LoginPage");
 	const navigate = useNavigate();
@@ -132,11 +132,11 @@ function LoginPage() {
 				} else if ("message" in r) {
 					// error
 					if (r.errors) {
-						const t = messageFromFieldError(r.errors);
-						if (t) {
-							setError(t.field as keyof FormValues, {
+						const fieldError = messageFromFieldError(r.errors);
+						if (fieldError) {
+							setError(fieldError.field as keyof FormValues, {
 								type: "manual",
-								message: t.error,
+								message: fieldError.error,
 							});
 						} else {
 							setError("login", {
@@ -194,27 +194,18 @@ function LoginPage() {
 		<Wrapper>
 			<AuthContainer>
 				<HeaderContainer>
-					{AUTH_NO_BRANDING ? (
-						<>
-							<Header>Login to Spacebar</Header>
-						</>
-					) : (
-						<>
-							<SpacebarLogoBlue height={48} width="auto" />
-							<SubHeader noBranding>Log into Spacebar</SubHeader>
-						</>
-					)}
+					<Header>{t('auth.loginHeader')}</Header>
 				</HeaderContainer>
 
 				<FormContainer onSubmit={onSubmit}>
 					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
 						<LabelWrapper error={!!errors.instance}>
-							<InputLabel>Instance</InputLabel>
+							<InputLabel>{t('auth.server')}</InputLabel>
 							{isCheckingInstance != false && (
 								<InputErrorText>
 									<>
 										<TextDivider>-</TextDivider>
-										Checking
+										{t('auth.checking')}
 									</>
 								</InputErrorText>
 							)}
@@ -234,7 +225,7 @@ function LoginPage() {
 									required: true,
 									value: Globals.routeSettings.wellknown,
 								})}
-								placeholder="Instance Root URL"
+								placeholder={t('auth.serverPlaceholder')}
 								onChange={handleInstanceChange}
 								error={!!errors.instance}
 								disabled={loading}
@@ -244,7 +235,7 @@ function LoginPage() {
 
 					<InputContainer marginBottom>
 						<LabelWrapper error={!!errors.login}>
-							<InputLabel>Email</InputLabel>
+							<InputLabel>{t('auth.email')}</InputLabel>
 							{errors.login && (
 								<InputErrorText>
 									<>
@@ -257,7 +248,7 @@ function LoginPage() {
 						<InputWrapper>
 							<Input
 								type="email"
-								placeholder="Email"
+								placeholder={t('auth.emailPlaceholder')}
 								autoFocus
 								{...register("login", { required: true })}
 								error={!!errors.login}
@@ -268,7 +259,7 @@ function LoginPage() {
 
 					<InputContainer marginBottom>
 						<LabelWrapper error={!!errors.password}>
-							<InputLabel>Password</InputLabel>
+							<InputLabel>{t('auth.password')}</InputLabel>
 							{errors.password && (
 								<InputErrorText>
 									<>
@@ -281,7 +272,7 @@ function LoginPage() {
 						<InputWrapper>
 							<Input
 								type="password"
-								placeholder="Password"
+								placeholder={t('auth.passwordPlaceholder')}
 								{...register("password", { required: true })}
 								error={!!errors.password}
 								disabled={loading}
@@ -295,18 +286,18 @@ function LoginPage() {
 					</PasswordResetLink> */}
 
 					<SubmitButton palette="primary" type="submit" disabled={loading}>
-						Login
+						{t('auth.login')}
 					</SubmitButton>
 
 					<AuthSwitchPageContainer>
-						<AuthSwitchPageLabel>New to Spacebar?&nbsp;</AuthSwitchPageLabel>
+						<AuthSwitchPageLabel>{t('auth.noAccount')}&nbsp;</AuthSwitchPageLabel>
 						<AuthSwitchPageLink
 							onClick={() => {
 								navigate("/register");
 							}}
 							type="button"
 						>
-							Register
+							{t('auth.register')}
 						</AuthSwitchPageLink>
 					</AuthSwitchPageContainer>
 				</FormContainer>

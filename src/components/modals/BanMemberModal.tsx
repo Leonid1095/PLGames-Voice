@@ -3,6 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppStore } from "@hooks/useAppStore";
 import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import * as yup from "yup";
 import { Modal } from "./ModalComponents";
@@ -27,14 +28,16 @@ const TextArea = styled.textarea`
 	outline: none;
 `;
 
-const schema = yup
-	.object({
-		reason: yup.string().max(512, "Reason must be less than 512 characters"),
-	})
-	.required();
-
 export function BanMemberModal({ target, type, ...props }: ModalProps<"ban_member">) {
 	const app = useAppStore();
+	const { t } = useTranslation();
+
+	const schema = yup
+		.object({
+			reason: yup.string().max(512, t('modals.ban.reasonTooLong')),
+		})
+		.required();
+
 	const {
 		register,
 		handleSubmit,
@@ -68,17 +71,16 @@ export function BanMemberModal({ target, type, ...props }: ModalProps<"ban_membe
 	return (
 		<Modal
 			{...props}
-			title={`Ban '${target.user?.username}'`}
+			title={t('modals.ban.title', { name: target.user?.username })}
 			description={
 				<DescriptionText>
-					Are you sure you want to ban <b>@{target.user?.username}</b>? They won't be able to rejoin unless
-					they are unbanned.
+					{t('modals.ban.description', { name: target.user?.username })}
 				</DescriptionText>
 			}
 			actions={[
 				{
 					onClick: onSubmit,
-					children: <span>Ban</span>,
+					children: <span>{t('modals.ban.ban')}</span>,
 					palette: "danger",
 					confirmation: true,
 					disabled: isDisabled,
@@ -86,7 +88,7 @@ export function BanMemberModal({ target, type, ...props }: ModalProps<"ban_membe
 				},
 				{
 					onClick: () => modalController.pop("close"),
-					children: <span>Cancel</span>,
+					children: <span>{t('modals.ban.cancel')}</span>,
 					palette: "link",
 					disabled: isDisabled,
 					size: "small",
@@ -104,7 +106,7 @@ export function BanMemberModal({ target, type, ...props }: ModalProps<"ban_membe
 				}}
 			/>
 
-			<TextArea {...register("reason")} id="reason" name="reason" placeholder="Reason" maxLength={512} />
+			<TextArea {...register("reason")} id="reason" name="reason" placeholder={t('modals.ban.reason')} maxLength={512} />
 		</Modal>
 	);
 }

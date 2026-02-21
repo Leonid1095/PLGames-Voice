@@ -4,17 +4,19 @@ import { useAppStore } from "@hooks/useAppStore";
 import { APIInvite, Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { REST } from "@utils";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 function InvitePage() {
 	const app = useAppStore();
+	const { t } = useTranslation();
 	const [inviteData, setInviteData] = React.useState<APIInvite>();
 	const [error, setError] = React.useState<string>();
 	const { code } = useParams<{ code: string }>();
 
 	useEffect(() => {
 		if (!code) {
-			setError("No invite code provided");
+			setError(t('invite.noCode'));
 			return;
 		}
 
@@ -30,7 +32,7 @@ function InvitePage() {
 	if (error) {
 		return (
 			<Container>
-				<h1>Error</h1>
+				<h1>{t('invite.error')}</h1>
 				<p>{error}</p>
 			</Container>
 		);
@@ -39,7 +41,7 @@ function InvitePage() {
 	if (!inviteData) {
 		return (
 			<Container>
-				<h1>Loading...</h1>
+				<h1>{t('loading')}</h1>
 			</Container>
 		);
 	}

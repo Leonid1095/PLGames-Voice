@@ -3,6 +3,7 @@ import { useAppStore } from "@hooks/useAppStore";
 import useLogger from "@hooks/useLogger";
 import { Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "./ModalComponents";
 
@@ -10,6 +11,7 @@ export function LeaveServerModal({ target, ...props }: ModalProps<"leave_server"
 	const app = useAppStore();
 	const logger = useLogger("LeaveServerModal");
 	const navigate = useNavigate();
+	const { t } = useTranslation();
 	const [isDisabled, setDisabled] = useState(false);
 
 	async function leaveGuild() {
@@ -36,17 +38,16 @@ export function LeaveServerModal({ target, ...props }: ModalProps<"leave_server"
 	return (
 		<Modal
 			{...props}
-			title={`Leave '${target.name}'`}
+			title={t('modals.leaveServer.title', { name: target.name })}
 			description={
 				<span>
-					Are you sure you want to leave <b>{target.name}</b>? You won't be able to rejoin this guild unless
-					you are re-invited.
+					{t('modals.leaveServer.description', { name: target.name })}
 				</span>
 			}
 			actions={[
 				{
 					onClick: leaveGuild,
-					children: <span>Leave Server</span>,
+					children: <span>{t('modals.leaveServer.leave')}</span>,
 					palette: "danger",
 					confirmation: true,
 					disabled: isDisabled,
@@ -54,7 +55,7 @@ export function LeaveServerModal({ target, ...props }: ModalProps<"leave_server"
 				},
 				{
 					onClick: () => modalController.pop("close"),
-					children: <span>Cancel</span>,
+					children: <span>{t('modals.leaveServer.cancel')}</span>,
 					palette: "link",
 					disabled: isDisabled,
 					size: "small",

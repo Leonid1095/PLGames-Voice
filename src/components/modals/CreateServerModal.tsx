@@ -7,6 +7,7 @@ import { APIGuild, Routes } from "@spacebarchat/spacebar-api-types/v9";
 import { messageFromFieldError } from "@utils";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { InputContainer, Modal } from "./ModalComponents";
@@ -47,6 +48,7 @@ type FormValues = {
 export function CreateServerModal({ ...props }: ModalProps<"create_server">) {
 	const app = useAppStore();
 	const logger = useLogger("CreateServerModal");
+	const { t } = useTranslation();
 	const [selectedFile, setSelectedFile] = React.useState<File>();
 	const fileInputRef = React.useRef<HTMLInputElement>(null);
 	const navigate = useNavigate();
@@ -60,7 +62,7 @@ export function CreateServerModal({ ...props }: ModalProps<"create_server">) {
 	} = useForm<FormValues>();
 
 	React.useEffect(() => {
-		setValue("name", `${app.account?.username}'s guild`);
+		setValue("name", t('modals.createServer.defaultName', { name: app.account?.username }));
 	}, []);
 
 	const onIconChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,11 +82,11 @@ export function CreateServerModal({ ...props }: ModalProps<"create_server">) {
 			.catch((r) => {
 				if ("message" in r) {
 					if (r.errors) {
-						const t = messageFromFieldError(r.errors);
-						if (t) {
-							setError(t.field as keyof FormValues, {
+						const fieldError = messageFromFieldError(r.errors);
+						if (fieldError) {
+							setError(fieldError.field as keyof FormValues, {
 								type: "manual",
-								message: t.error,
+								message: fieldError.error,
 							});
 						} else {
 							setError("name", {
@@ -113,19 +115,19 @@ export function CreateServerModal({ ...props }: ModalProps<"create_server">) {
 		<Modal
 			{...props}
 			onClose={() => modalController.closeAll()}
-			title="Customize your guild"
-			description="Give your new guild a personality with a name and an icon. You can always change it later."
+			title={t('modals.createServer.title')}
+			description={t('modals.createServer.description')}
 			actions={[
 				{
 					onClick: onSubmit,
-					children: <span>Create</span>,
+					children: <span>{t('modals.createServer.create')}</span>,
 					palette: "primary",
 					confirmation: true,
 					disabled: isLoading,
 				},
 				{
 					onClick: () => modalController.pop("close"),
-					children: <span>Back</span>,
+					children: <span>{t('modals.createServer.back')}</span>,
 					palette: "link",
 					disabled: isLoading,
 				},
@@ -136,7 +138,7 @@ export function CreateServerModal({ ...props }: ModalProps<"create_server">) {
 					{selectedFile ? (
 						<img
 							src={URL.createObjectURL(selectedFile)}
-							alt="Guild Icon"
+							alt={t('modals.createServer.guildIcon')}
 							width="80px"
 							height="80px"
 							style={{
@@ -181,7 +183,7 @@ export function CreateServerModal({ ...props }: ModalProps<"create_server">) {
 			>
 				<InputContainer>
 					<LabelWrapper error={!!errors.name}>
-						<InputLabel>Guild Name</InputLabel>
+						<InputLabel>{t('modals.createServer.guildName')}</InputLabel>
 						{errors.name && (
 							<InputErrorText>
 								<>
@@ -195,7 +197,7 @@ export function CreateServerModal({ ...props }: ModalProps<"create_server">) {
 						<Input
 							autoFocus
 							{...register("name", { required: true })}
-							placeholder="Guild Name"
+							placeholder={t('modals.createServer.guildName')}
 							error={!!errors.name}
 							disabled={isLoading}
 						/>

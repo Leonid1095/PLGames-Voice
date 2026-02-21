@@ -2,6 +2,7 @@ import { modalController } from "@/controllers/modals";
 import { useAppStore } from "@hooks/useAppStore";
 import { observer } from "mobx-react-lite";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { AutoSizer, List, ListRowProps } from "react-virtualized";
 import styled from "styled-components";
@@ -37,6 +38,7 @@ const Divider = styled.div`
 
 function GuildSidebar() {
 	const app = useAppStore();
+	const { t } = useTranslation();
 
 	const navigate = useNavigate();
 	const { all } = app.guilds;
@@ -49,7 +51,7 @@ function GuildSidebar() {
 			element = (
 				<SidebarAction
 					key="home"
-					tooltip="Home"
+					tooltip={t('sidebar.home')}
 					icon={{
 						icon: "mdiHome",
 						size: "24px",
@@ -71,7 +73,7 @@ function GuildSidebar() {
 			element = (
 				<SidebarAction
 					key="add-server"
-					tooltip="Add Server"
+					tooltip={t('sidebar.addServer')}
 					icon={{
 						icon: "mdiPlus",
 						size: "24px",

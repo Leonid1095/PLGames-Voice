@@ -6,6 +6,7 @@ import { Channel, Guild } from "@structures";
 import { Permissions } from "@utils";
 import { observer } from "mobx-react-lite";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PulseLoader from "react-spinners/PulseLoader";
 import styled from "styled-components";
@@ -38,6 +39,7 @@ interface Props {
 function MessageList({ guild, channel }: Props) {
 	const app = useAppStore();
 	const logger = useLogger("MessageList.tsx");
+	const { t } = useTranslation();
 	const [hasMore, setHasMore] = React.useState(true);
 	const [canView, setCanView] = React.useState(false);
 	const messageGroups = channel.messages.groups;
@@ -130,9 +132,9 @@ function MessageList({ guild, channel }: Props) {
 						scrollableTarget="scrollable-div"
 						endMessage={
 							<EndMessageContainer>
-								<h1 style={{ fontWeight: 700, margin: "8px 0" }}>Welcome to #{channel.name}!</h1>
+								<h1 style={{ fontWeight: 700, margin: "8px 0" }}>{t('chat.welcomeTo', { channel: channel.name })}</h1>
 								<p style={{ color: "var(--text-secondary)" }}>
-									This is the start of the #{channel.name} channel.
+									{t('chat.channelStart', { channel: channel.name })}
 								</p>
 								<HorizontalDivider />
 							</EndMessageContainer>
@@ -148,7 +150,7 @@ function MessageList({ guild, channel }: Props) {
 							color: "var(--text-secondary)",
 						}}
 					>
-						You do not have permission to read the history of this channel.
+						{t('chat.noReadHistory')}
 					</div>
 				)}
 			</Container>

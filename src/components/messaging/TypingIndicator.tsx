@@ -1,6 +1,7 @@
 import { Channel } from "@structures";
 import { observer } from "mobx-react-lite";
 import { Fragment } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { PulseLoader } from "react-spinners";
 import styled from "styled-components";
 
@@ -41,12 +42,14 @@ interface Props {
 }
 
 function TypingIndicator({ channel }: Props) {
+	const { t } = useTranslation();
+
 	if (channel.typingUsers.length > 0) {
 		channel.typingUsers.sort((a, b) => a.username.toUpperCase().localeCompare(b.username.toUpperCase()));
 
 		let text;
 		if (channel.typingUsers.length >= 5) {
-			text = <TypingText>Several people are typing...</TypingText>;
+			text = <TypingText>{t('typing.several')}</TypingText>;
 		} else if (channel.typingUsers.length > 1) {
 			const userlist = channel.typingUsers.map((x) => x.username);
 			const user = userlist.pop();
@@ -59,13 +62,13 @@ function TypingIndicator({ channel }: Props) {
 							{i !== userlist.length - 1 ? ", " : ""}
 						</Fragment>
 					))}{" "}
-					and <Bold>{user}</Bold> are typing...
+					<Trans i18nKey="typing.multiple" values={{ user }} components={{ 1: <Bold /> }} />
 				</TypingText>
 			);
 		} else {
 			text = (
 				<TypingText>
-					<Bold>{channel.typingUsers[0].username}</Bold> is typing...
+					<Trans i18nKey="typing.single" values={{ user: channel.typingUsers[0].username }} components={{ 1: <Bold /> }} />
 				</TypingText>
 			);
 		}

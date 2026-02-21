@@ -1,5 +1,4 @@
 import { useInstanceValidation } from "@/hooks/useInstanceValidation";
-import SpacebarLogoBlue from "@assets/images/logo/Logo-Blue.svg?react";
 import {
 	AuthContainer,
 	AuthSwitchPageContainer,
@@ -13,7 +12,6 @@ import {
 	InputLabel,
 	InputWrapper,
 	LabelWrapper,
-	SubHeader,
 	SubmitButton,
 	Wrapper,
 } from "@components/AuthComponents";
@@ -24,7 +22,6 @@ import HCaptchaLib from "@hcaptcha/react-hcaptcha";
 import { useAppStore } from "@hooks/useAppStore";
 import useLogger from "@hooks/useLogger";
 import { Routes } from "@spacebarchat/spacebar-api-types/v9";
-import { AUTH_NO_BRANDING } from "@stores/AppStore";
 import {
 	Globals,
 	IAPILoginResponseSuccess,
@@ -34,6 +31,7 @@ import {
 } from "@utils";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 type FormValues = {
@@ -46,6 +44,7 @@ type FormValues = {
 };
 
 function RegistrationPage() {
+	const { t } = useTranslation();
 	const app = useAppStore();
 	const logger = useLogger("RegistrationPage");
 	const navigate = useNavigate();
@@ -103,7 +102,7 @@ function RegistrationPage() {
 					logger.error(r);
 					setError("email", {
 						type: "manual",
-						message: "Unknown Error",
+						message: t('auth.unknownError'),
 					});
 				}
 			})
@@ -114,13 +113,13 @@ function RegistrationPage() {
 						// some kind of captcha error
 						setError("email", {
 							type: "manual",
-							message: `Captcha Error: ${r.captcha_key[0]}`,
+							message: t('auth.captchaError', { error: r.captcha_key[0] }),
 						});
 					} else if (r.captcha_service !== "hcaptcha") {
 						// recaptcha or something else
 						setError("email", {
 							type: "manual",
-							message: `Unsupported captcha service: ${r.captcha_service}`,
+							message: t('auth.unsupportedCaptcha', { service: r.captcha_service }),
 						});
 					} else {
 						// hcaptcha
@@ -133,11 +132,11 @@ function RegistrationPage() {
 				} else if ("message" in r) {
 					// error
 					if (r.errors) {
-						const t = messageFromFieldError(r.errors);
-						if (t) {
-							setError(t.field as keyof FormValues, {
+						const fieldError = messageFromFieldError(r.errors);
+						if (fieldError) {
+							setError(fieldError.field as keyof FormValues, {
 								type: "manual",
-								message: t.error,
+								message: fieldError.error,
 							});
 						} else {
 							setError("email", {
@@ -158,7 +157,7 @@ function RegistrationPage() {
 					logger.error(r);
 					setError("email", {
 						type: "manual",
-						message: "Unknown Error",
+						message: t('auth.unknownError'),
 					});
 					resetCaptcha();
 				}
@@ -178,26 +177,17 @@ function RegistrationPage() {
 	return (
 		<Wrapper>
 			<AuthContainer>
-				{AUTH_NO_BRANDING ? (
-					<>
-						<Header>Create an account</Header>
-					</>
-				) : (
-					<>
-						<SpacebarLogoBlue height={48} width="auto" />
-						<SubHeader noBranding>Create an account</SubHeader>
-					</>
-				)}
+				<Header>{t('auth.registerHeader')}</Header>
 
 				<FormContainer onSubmit={onSubmit}>
 					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
 						<LabelWrapper error={!!errors.instance}>
-							<InputLabel>Instance</InputLabel>
+							<InputLabel>{t('auth.server')}</InputLabel>
 							{isCheckingInstance != false && (
 								<InputErrorText>
 									<>
 										<TextDivider>-</TextDivider>
-										Checking
+										{t('auth.checking')}
 									</>
 								</InputErrorText>
 							)}
@@ -217,7 +207,7 @@ function RegistrationPage() {
 									required: true,
 									value: Globals.routeSettings.wellknown,
 								})}
-								placeholder="Instance Root URL"
+								placeholder={t('auth.serverPlaceholder')}
 								onChange={handleInstanceChange}
 								error={!!errors.instance}
 								disabled={loading}
@@ -226,7 +216,7 @@ function RegistrationPage() {
 					</InputContainer>
 					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
 						<LabelWrapper error={!!errors.email}>
-							<InputLabel>Email</InputLabel>
+							<InputLabel>{t('auth.email')}</InputLabel>
 							{errors.email && (
 								<InputErrorText>
 									<>
@@ -239,7 +229,7 @@ function RegistrationPage() {
 						<InputWrapper>
 							<Input
 								type="email"
-								placeholder="Email"
+								placeholder={t('auth.emailPlaceholder')}
 								autoFocus
 								{...register("email", { required: true })}
 								error={!!errors.email}
@@ -250,7 +240,7 @@ function RegistrationPage() {
 
 					<InputContainer marginBottom={true} style={{ marginTop: 0 }}>
 						<LabelWrapper error={!!errors.username}>
-							<InputLabel>Username</InputLabel>
+							<InputLabel>{t('auth.username')}</InputLabel>
 							{errors.username && (
 								<InputErrorText>
 									<>
@@ -263,7 +253,7 @@ function RegistrationPage() {
 						<InputWrapper>
 							<Input
 								{...register("username", { required: true })}
-								placeholder="Username"
+								placeholder={t('auth.usernamePlaceholder')}
 								error={!!errors.username}
 								disabled={loading}
 							/>
@@ -272,7 +262,7 @@ function RegistrationPage() {
 
 					<InputContainer marginBottom>
 						<LabelWrapper error={!!errors.password}>
-							<InputLabel>Password</InputLabel>
+							<InputLabel>{t('auth.password')}</InputLabel>
 							{errors.password && (
 								<InputErrorText>
 									<>
@@ -285,7 +275,7 @@ function RegistrationPage() {
 						<InputWrapper>
 							<Input
 								type="password"
-								placeholder="Password"
+								placeholder={t('auth.passwordPlaceholder')}
 								{...register("password", { required: true })}
 								error={!!errors.password}
 								disabled={loading}
@@ -295,7 +285,7 @@ function RegistrationPage() {
 
 					<InputContainer marginBottom={true}>
 						<LabelWrapper error={!!errors.date_of_birth}>
-							<InputLabel>Date of Birth</InputLabel>
+							<InputLabel>{t('auth.dateOfBirth')}</InputLabel>
 							{errors.date_of_birth && (
 								<InputErrorText>
 									<>
@@ -326,18 +316,18 @@ function RegistrationPage() {
 					</InputContainer>
 
 					<SubmitButton palette="primary" type="submit" disabled={loading}>
-						Create Account
+						{t('auth.createAccount')}
 					</SubmitButton>
 
 					<AuthSwitchPageContainer>
-						<AuthSwitchPageLabel>Already have an account?&nbsp;</AuthSwitchPageLabel>
+						<AuthSwitchPageLabel>{t('auth.haveAccount')}&nbsp;</AuthSwitchPageLabel>
 						<AuthSwitchPageLink
 							onClick={() => {
 								navigate("/login");
 							}}
 							type="button"
 						>
-							Login
+							{t('auth.login')}
 						</AuthSwitchPageLink>
 					</AuthSwitchPageContainer>
 				</FormContainer>

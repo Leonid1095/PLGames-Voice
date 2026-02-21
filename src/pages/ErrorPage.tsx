@@ -1,14 +1,17 @@
 import Container from "@components/Container";
 import Text from "@components/Text";
+import { useTranslation } from "react-i18next";
 
 interface Props {
 	error: Error;
 }
 
 function ErrorPage({ error }: Props) {
+	const { t } = useTranslation();
+
 	return (
 		<Container>
-			<Text>Oops, Something went wrong!</Text>
+			<Text>{t('errors.somethingWentWrong')}</Text>
 			<pre>{error.message}</pre>
 		</Container>
 	);

@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import SelectSearch from "react-select-search";
 import styled from "styled-components";
 import { Input } from "./AuthComponents";
@@ -17,57 +18,6 @@ const CustomInput = styled(Input)`
 	width: 100%;
 `;
 
-const MONTHS = [
-	{
-		value: "01",
-		name: "January",
-	},
-	{
-		value: "02",
-		name: "February",
-	},
-	{
-		value: "03",
-		name: "March",
-	},
-	{
-		value: "04",
-		name: "April",
-	},
-	{
-		value: "05",
-		name: "May",
-	},
-	{
-		value: "06",
-		name: "June",
-	},
-	{
-		value: "07",
-		name: "July",
-	},
-	{
-		value: "08",
-		name: "August",
-	},
-	{
-		value: "09",
-		name: "September",
-	},
-	{
-		value: "10",
-		name: "October",
-	},
-	{
-		value: "11",
-		name: "November",
-	},
-	{
-		value: "12",
-		name: "December",
-	},
-];
-
 interface Props {
 	onChange: (value: string) => void;
 	onErrorChange: (errors: { month?: string; day?: string; year?: string }) => void;
@@ -75,141 +25,121 @@ interface Props {
 	disabled?: boolean;
 }
 
-interface State {
-	month?: string;
-	day?: string;
-	year?: string;
-	errors: { month?: string; day?: string; year?: string };
-}
+export function DOBInput(props: Props) {
+	const { t } = useTranslation();
 
-export class DOBInput extends Component<Props, State> {
-	state = {
-		month: "",
-		day: "",
-		year: "",
-		errors: {
-			month: undefined,
-			day: undefined,
-			year: undefined,
-		},
-	};
+	const MONTHS = [
+		{ value: "01", name: t('dob.january') },
+		{ value: "02", name: t('dob.february') },
+		{ value: "03", name: t('dob.march') },
+		{ value: "04", name: t('dob.april') },
+		{ value: "05", name: t('dob.may') },
+		{ value: "06", name: t('dob.june') },
+		{ value: "07", name: t('dob.july') },
+		{ value: "08", name: t('dob.august') },
+		{ value: "09", name: t('dob.september') },
+		{ value: "10", name: t('dob.october') },
+		{ value: "11", name: t('dob.november') },
+		{ value: "12", name: t('dob.december') },
+	];
 
-	componentDidUpdate(prevProps: Props, prevState: State) {
-		if (prevState !== this.state) {
-			this.props.onErrorChange(this.state.errors);
+	const [month, setMonth] = useState("");
+	const [day, setDay] = useState("");
+	const [year, setYear] = useState("");
+	const [errors, setErrors] = useState<{ month?: string; day?: string; year?: string }>({
+		month: undefined,
+		day: undefined,
+		year: undefined,
+	});
 
-			this.props.onChange(
-				this.constructDate({
-					month: this.state.month,
-					day: this.state.day,
-					year: this.state.year,
-				}),
-			);
-		}
-	}
+	const isFirstRender = useRef(true);
 
-	onInputChange = (type: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-		const value = e.target.value;
-
-		// clear error for field
-		this.setState(
-			{
-				...this.state,
-				errors: { ...this.state.errors, [type]: undefined },
-			},
-			() => {
-				// ensure only numbers
-				if (isNaN(Number(value))) {
-					this.setState({
-						...this.state,
-						errors: {
-							...this.state.errors,
-							[type]: "Invalid Date",
-						},
-					});
-					return;
-				}
-
-				if (type === "day") {
-					// day should be a number between 1-31 and not more than 2 digits
-					if (value !== "" && (value.length > 2 || Number(value) > 31 || Number(value) < 1)) {
-						this.setState({
-							...this.state,
-							day: value,
-							errors: {
-								...this.state.errors,
-								[type]: "Invalid Date",
-							},
-						});
-						return;
-					}
-
-					this.setState({ ...this.state, day: value });
-				}
-
-				if (type === "year") {
-					// year must be between now-min and now-max
-					if (
-						value.length === 4 &&
-						(Number(value) > new Date().getFullYear() - MIN_AGE ||
-							Number(value) < new Date().getFullYear() - MAX_AGE)
-					) {
-						this.setState({
-							...this.state,
-							year: value,
-							errors: {
-								...this.state.errors,
-								[type]: "Invalid Date",
-							},
-						});
-						return;
-					}
-
-					this.setState({ ...this.state, year: value });
-				}
-			},
-		);
-	};
-
-	constructDate = (values: { month: string; day: string; year: string }) => {
+	const constructDate = useCallback((values: { month: string; day: string; year: string }) => {
 		const { month, day, year } = values;
 		// pad day with 0 if needed
 		const dayPadded = day?.length === 1 ? `0${day}` : day;
 		return `${year}-${month}-${dayPadded}`;
+	}, []);
+
+	useEffect(() => {
+		if (isFirstRender.current) {
+			isFirstRender.current = false;
+			return;
+		}
+		props.onErrorChange(errors);
+		props.onChange(constructDate({ month, day, year }));
+	}, [month, day, year, errors]);
+
+	const onInputChange = (type: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value;
+
+		// clear error for field
+		const clearedErrors = { ...errors, [type]: undefined };
+		setErrors(clearedErrors);
+
+		// ensure only numbers
+		if (isNaN(Number(value))) {
+			setErrors({ ...clearedErrors, [type]: t('dob.invalidDate') });
+			return;
+		}
+
+		if (type === "day") {
+			// day should be a number between 1-31 and not more than 2 digits
+			if (value !== "" && (value.length > 2 || Number(value) > 31 || Number(value) < 1)) {
+				setDay(value);
+				setErrors({ ...clearedErrors, [type]: t('dob.invalidDate') });
+				return;
+			}
+
+			setDay(value);
+		}
+
+		if (type === "year") {
+			// year must be between now-min and now-max
+			if (
+				value.length === 4 &&
+				(Number(value) > new Date().getFullYear() - MIN_AGE ||
+					Number(value) < new Date().getFullYear() - MAX_AGE)
+			) {
+				setYear(value);
+				setErrors({ ...clearedErrors, [type]: t('dob.invalidDate') });
+				return;
+			}
+
+			setYear(value);
+		}
 	};
 
-	render() {
-		return (
-			<Container>
-				<SelectSearch
-					placeholder="Month"
-					search
-					options={MONTHS}
-					onChange={(e) => this.setState({ ...this.state, month: e as string })}
-					value={this.state.month}
-					disabled={this.props.disabled}
-					onBlur={() => {}}
-					onFocus={() => {}}
-				/>
-				<CustomInput
-					placeholder="Day"
-					onChange={this.onInputChange("day")}
-					value={this.state.day}
-					error={this.state.errors.day || this.props.error}
-					maxLength={2}
-					disabled={this.props.disabled}
-				/>
-				<CustomInput
-					placeholder="Year"
-					onChange={this.onInputChange("year")}
-					value={this.state.year}
-					error={this.state.errors.year || this.props.error}
-					maxLength={4}
-					disabled={this.props.disabled}
-				/>
-			</Container>
-		);
-	}
+	return (
+		<Container>
+			<SelectSearch
+				placeholder={t('dob.month')}
+				search
+				options={MONTHS}
+				onChange={(e) => setMonth(e as string)}
+				value={month}
+				disabled={props.disabled}
+				onBlur={() => {}}
+				onFocus={() => {}}
+			/>
+			<CustomInput
+				placeholder={t('dob.day')}
+				onChange={onInputChange("day")}
+				value={day}
+				error={!!errors.day || props.error}
+				maxLength={2}
+				disabled={props.disabled}
+			/>
+			<CustomInput
+				placeholder={t('dob.year')}
+				onChange={onInputChange("year")}
+				value={year}
+				error={!!errors.year || props.error}
+				maxLength={4}
+				disabled={props.disabled}
+			/>
+		</Container>
+	);
 }
 
 export default DOBInput;

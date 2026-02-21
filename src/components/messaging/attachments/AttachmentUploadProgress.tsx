@@ -4,6 +4,7 @@ import { useAppStore } from "@hooks/useAppStore";
 import { QueuedMessage } from "@structures";
 import { bytesToSize } from "@utils";
 import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -48,6 +49,7 @@ interface Props {
 
 function AttachmentUploadProgress({ message }: Props) {
 	const app = useAppStore();
+	const { t } = useTranslation();
 	const totalSize = message.files!.reduce((p, f) => p + f.size, 0);
 
 	return (
@@ -59,7 +61,7 @@ function AttachmentUploadProgress({ message }: Props) {
 						display: "flex",
 					}}
 				>
-					<span>Uploading</span>
+					<span>{t('chat.uploading')}</span>
 					<span>
 						{message.files!.length === 1 ? message.files![0].name : `${message.files!.length} files`}
 					</span>

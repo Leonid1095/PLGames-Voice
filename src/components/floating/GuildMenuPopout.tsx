@@ -6,6 +6,7 @@ import { ContextMenu, ContextMenuButton, ContextMenuDivider } from "@components/
 import { useAppStore } from "@hooks/useAppStore";
 import { Permissions } from "@utils";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const CustomContextMenu = styled(ContextMenu)`
 	width: 200px;
@@ -14,6 +15,7 @@ const CustomContextMenu = styled(ContextMenu)`
 function GuildMenuPopout() {
 	const { activeGuild, account } = useAppStore();
 	const logger = useLogger("GuildMenuPopout");
+	const { t } = useTranslation();
 
 	const [hasCreateChannelPermission, setHasCreateChannelPermission] = React.useState(false);
 
@@ -47,28 +49,28 @@ function GuildMenuPopout() {
 	return (
 		<CustomContextMenu>
 			<ContextMenuButton icon="mdiCog" disabled>
-				Server Settings
+				{t('guild.serverSettings')}
 			</ContextMenuButton>
 			{hasCreateChannelPermission && (
 				<>
 					<ContextMenuButton icon="mdiPlusCircle" onClick={onChannelCreateClick}>
-						Create Channel
+						{t('guild.createChannel')}
 					</ContextMenuButton>
 					<ContextMenuButton icon="mdiFolderPlus" disabled>
-						Create Category
+						{t('guild.createCategory')}
 					</ContextMenuButton>
 				</>
 			)}
 			<ContextMenuDivider />
 			<ContextMenuButton icon="mdiBell" disabled>
-				Notification Settings
+				{t('guild.notificationSettings')}
 			</ContextMenuButton>
 			<ContextMenuButton icon="mdiShieldLock" disabled>
-				Privacy Settings
+				{t('guild.privacySettings')}
 			</ContextMenuButton>
 			<ContextMenuDivider />
 			<ContextMenuButton icon="mdiLocationExit" destructive onClick={leaveGuild}>
-				Leave Guild
+				{t('guild.leaveGuild')}
 			</ContextMenuButton>
 		</CustomContextMenu>
 	);

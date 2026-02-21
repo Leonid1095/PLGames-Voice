@@ -1,5 +1,6 @@
 import SectionTitle from "@components/SectionTitle";
 import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 const Content = styled.div`
@@ -8,9 +9,11 @@ const Content = styled.div`
 `;
 
 function DeveloperSettingsPage() {
+	const { t } = useTranslation();
+
 	return (
 		<div>
-			<SectionTitle>Developer Options</SectionTitle>
+			<SectionTitle>{t('settings.developerOptions')}</SectionTitle>
 			<Content></Content>
 		</div>
 	);

@@ -5,6 +5,7 @@ import { Channel, Guild } from "@structures";
 import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
@@ -86,6 +87,7 @@ const Content = observer((props: Props2) => {
 function Chat() {
 	const app = useAppStore();
 	const logger = useLogger("Messages");
+	const { t } = useTranslation();
 	const { activeChannel, activeGuild, activeChannelId, activeGuildId } = app;
 
 	React.useEffect(() => {
@@ -105,7 +107,7 @@ function Chat() {
 						userSelect: "none",
 					}}
 				>
-					Home Section Placeholder
+					{t('chat.homePlaceholder')}
 				</span>
 			</WrapperTwo>
 		);
@@ -121,7 +123,7 @@ function Chat() {
 						margin: "auto",
 					}}
 				>
-					Unknown Guild or Channel
+					{t('chat.unknownGuildOrChannel')}
 				</span>
 			</WrapperTwo>
 		);
@@ -137,7 +139,7 @@ function Chat() {
 						margin: "auto",
 					}}
 				>
-					You do not have permission to view this channel
+					{t('chat.noViewPermission')}
 				</span>
 			</WrapperTwo>
 		);

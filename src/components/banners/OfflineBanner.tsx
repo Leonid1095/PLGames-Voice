@@ -1,4 +1,5 @@
 import Icon from "@components/Icon";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -15,9 +16,11 @@ const Text = styled.span`
 `;
 
 function OfflineBanner() {
+	const { t } = useTranslation();
+
 	return (
 		<Wrapper>
-			<Text>You are offline</Text>
+			<Text>{t('banner.offline')}</Text>
 			<Icon icon="mdiWifiStrengthOff" color="var(--warning)" size="24px" />
 		</Wrapper>
 	);
