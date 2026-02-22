@@ -13,9 +13,9 @@ import { FuseV1Options, FuseVersion } from "@electron/fuses";
 // import { globSync } from "node:fs";
 
 const STRINGS = {
-  author: "Revolt Platforms LTD",
-  name: "Stoat",
-  execName: "stoat-desktop",
+  author: "PLG Voice Team",
+  name: "PLG Voice",
+  execName: "plg-voice-desktop",
   description: "Open source user-first chat platform.",
 };
 
@@ -29,13 +29,13 @@ const makers: ForgeConfig["makers"] = [
     name: STRINGS.name,
     authors: STRINGS.author,
     // todo: hoist this
-    iconUrl: `https://stoat.chat/app/assets/icon-DUSNE-Pb.ico`,
+    iconUrl: `https://cvaboda.duckdns.org/assets/icon.ico`,
     // todo: loadingGif
     setupIcon: `${ASSET_DIR}/icon.ico`,
     description: STRINGS.description,
     exe: `${STRINGS.execName}.exe`,
     setupExe: `${STRINGS.execName}-setup.exe`,
-    copyright: "Copyright (C) 2025 Revolt Platforms LTD",
+    copyright: "Copyright (C) 2025 PLG Voice Team",
   }),
   new MakerZIP({}),
 ];
@@ -54,7 +54,7 @@ if (!process.env.PLATFORM) {
     // this is just for testing purposes
     new MakerFlatpak({
       options: {
-        id: "chat.stoat.stoat-desktop",
+        id: "com.plgvoice.desktop",
         description: STRINGS.description,
         productName: STRINGS.name,
         productDescription: STRINGS.description,
@@ -102,12 +102,12 @@ if (!process.env.PLATFORM) {
         //     (size) =>
         //       [
         //         `assets/desktop/hicolor/${size}x${size}.png`,
-        //         `/app/share/icons/hicolor/${size}x${size}/apps/chat.stoat.stoat-desktop.png`,
+        //         `/app/share/icons/hicolor/${size}x${size}/apps/com.plgvoice.desktop.png`,
         //       ] as [string, string],
         //   ),
         //   [
         //     `assets/desktop/icon.svg`,
-        //     `/app/share/icons/hicolor/scalable/apps/chat.stoat.stoat-desktop.svg`,
+        //     `/app/share/icons/hicolor/scalable/apps/com.plgvoice.desktop.svg`,
         //   ] as [string, string],
         // ],
         files: [],
@@ -176,8 +176,8 @@ const config: ForgeConfig = {
   publishers: [
     new PublisherGithub({
       repository: {
-        owner: "stoatchat",
-        name: "for-desktop",
+        owner: "Leonid1095",
+        name: "PLGames-Voice",
       },
     }),
   ],

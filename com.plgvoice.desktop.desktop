@@ -1,11 +1,11 @@
 [Desktop Entry]
-Name=Stoat
+Name=PLG Voice
 Comment=Open source, user-first chat platform
-Exec=stoat-desktop
+Exec=plg-voice-desktop
 Terminal=false
 Type=Application
-Icon=chat.stoat.StoatDesktop
+Icon=chat.stoat.PLG VoiceDesktop
 Categories=Network;InstantMessaging
-StartupWMClass=stoat-desktop
+StartupWMClass=plg-voice-desktop
 X-Desktop-File-Install-Version=0.26
-X-Flatpak=chat.stoat.StoatDesktop
+X-Flatpak=chat.stoat.PLG VoiceDesktop
