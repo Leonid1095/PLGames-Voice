@@ -64,8 +64,7 @@ services:
     restart: always
     env_file: .env.web
     ports:
-      - "80:80"
-      - "443:443"
+      - "127.0.0.1:8091:80"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ./data/caddy-data:/data
@@ -204,6 +203,6 @@ services:
 
   # Web App
   web:
-    image: ghcr.io/stoatchat/for-web:addb6b7
+    image: plg-voice-web:latest
     restart: always
     env_file: .env.web
