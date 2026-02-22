@@ -34,9 +34,9 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 4000000,
       },
       manifest: {
-        name: "Stoat",
-        short_name: "Stoat",
-        description: "User-first open source chat platform.",
+        name: "PLG Voice",
+        short_name: "PLG Voice",
+        description: "Secure communication platform for your community.",
         categories: ["communication", "chat", "messaging"],
         start_url: base,
         orientation: "portrait",

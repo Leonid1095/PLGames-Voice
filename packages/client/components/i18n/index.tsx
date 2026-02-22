@@ -5,6 +5,7 @@ import { i18n } from "@lingui/core";
 
 import { type LocaleOptions, Language, Languages } from "./Languages";
 import { messages as en } from "./catalogs/en/messages";
+import { messages as ru } from "./catalogs/ru/messages";
 import { initTime, loadTimeLocale } from "./dayjs";
 
 export function I18nProvider(props: { children: JSX.Element }) {
@@ -55,7 +56,7 @@ export function browserPreferredLanguage() {
       .map((x) => x.split("-")[0])
       .map((lang) => languages.find((l) => l[0] == lang))
       .filter((lang) => lang)[0]?.[0] ??
-    Language.ENGLISH
+    Language.RUSSIAN
   );
 }
 
@@ -65,9 +66,10 @@ export function browserPreferredLanguage() {
 export function initI18n() {
   i18n.load({
     en,
+    ru,
   });
 
-  i18n.activate("en");
+  i18n.activate("ru");
 
   initTime();
 }

@@ -1,7 +1,7 @@
 const DEFAULT_API_URL =
   (import.meta.env.DEV ? import.meta.env.VITE_DEV_API_URL : undefined) ??
   (import.meta.env.VITE_API_URL as string) ??
-  "https://stoat.chat/api";
+  "https://cvaboda.duckdns.org/api";
 
 export default {
   /**
@@ -13,15 +13,10 @@ export default {
    */
   DEFAULT_API_URL,
   /**
-   * Whether this is Stoat
+   * Whether this is PLG Voice
    */
   IS_STOAT: [
-    // historically...
-    "https://api.revolt.chat",
-    "https://beta.revolt.chat/api",
-    "https://revolt.chat/api",
-    // ... and now:
-    "https://stoat.chat/api",
+    "https://cvaboda.duckdns.org/api",
   ].includes(DEFAULT_API_URL),
   /**
    * What WS server to connect to by default.
@@ -29,21 +24,21 @@ export default {
   DEFAULT_WS_URL:
     (import.meta.env.DEV ? import.meta.env.VITE_DEV_WS_URL : undefined) ??
     (import.meta.env.VITE_WS_URL as string) ??
-    "wss://stoat.chat/events",
+    "wss://cvaboda.duckdns.org/ws",
   /**
    * What media server to connect to by default.
    */
   DEFAULT_MEDIA_URL:
     (import.meta.env.DEV ? import.meta.env.VITE_DEV_MEDIA_URL : undefined) ??
     (import.meta.env.VITE_MEDIA_URL as string) ??
-    "https://cdn.stoatusercontent.com",
+    "https://cvaboda.duckdns.org/autumn",
   /**
    * What proxy server to connect to by default.
    */
   DEFAULT_PROXY_URL:
     (import.meta.env.DEV ? import.meta.env.VITE_DEV_PROXY_URL : undefined) ??
     (import.meta.env.VITE_PROXY_URL as string) ??
-    "https://proxy.stoatusercontent.com",
+    "https://cvaboda.duckdns.org/january",
   /**
    * What gifbox server to connect to by default.
    */

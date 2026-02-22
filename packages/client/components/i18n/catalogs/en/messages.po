@@ -1054,8 +1054,8 @@ msgid "Discord RPC"
 msgstr "Discord RPC"
 
 #: src/interface/Home.tsx
-msgid "Discover Stoat"
-msgstr "Discover Stoat"
+msgid "Discover PLG Voice"
+msgstr "Discover PLG Voice"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Display & Text"
@@ -1086,12 +1086,12 @@ msgid "Donate"
 msgstr "Donate"
 
 #: src/interface/Home.tsx
-msgid "Donate to Stoat"
-msgstr "Donate to Stoat"
+msgid "Donate to PLG Voice"
+msgstr "Donate to PLG Voice"
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
-msgid "Donated to Stoat"
-msgstr "Donated to Stoat"
+msgid "Donated to PLG Voice"
+msgstr "Donated to PLG Voice"
 
 #: components/modal/modals/MFARecovery.tsx
 msgid "Done"
@@ -1324,8 +1324,8 @@ msgid "Get active recovery codes"
 msgstr "Get active recovery codes"
 
 #: src/interface/Home.tsx
-msgid "Give feedback on Stoat"
-msgstr "Give feedback on Stoat"
+msgid "Give feedback on PLG Voice"
+msgstr "Give feedback on PLG Voice"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Give us some detail"
@@ -1345,8 +1345,8 @@ msgstr "Go to account settings to edit your username"
 
 #: src/interface/Home.tsx
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Go to the Stoat Lounge"
-msgstr "Go to the Stoat Lounge"
+msgid "Go to the PLG Voice Lounge"
+msgstr "Go to the PLG Voice Lounge"
 
 #: src/interface/Home.tsx
 #: src/interface/Home.tsx
@@ -1389,8 +1389,8 @@ msgid "Help contribute to an existing or new language"
 msgstr "Help contribute to an existing or new language"
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
-msgid "Helped translate Stoat"
-msgstr "Helped translate Stoat"
+msgid "Helped translate PLG Voice"
+msgstr "Helped translate PLG Voice"
 
 #. placeholder {0}: link()
 #: components/modal/modals/CreateInvite.tsx
@@ -1434,8 +1434,8 @@ msgid "Impersonation"
 msgstr "Impersonation"
 
 #: components/app/interface/settings/user/Native.tsx
-msgid "Instead of closing, Stoat will hide in your tray."
-msgstr "Instead of closing, Stoat will hide in your tray."
+msgid "Instead of closing, PLG Voice will hide in your tray."
+msgstr "Instead of closing, PLG Voice will hide in your tray."
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Interface Font"
@@ -1497,8 +1497,8 @@ msgstr "Join a server"
 
 #: src/interface/Home.tsx
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Join the Stoat Lounge"
-msgstr "Join the Stoat Lounge"
+msgid "Join the PLG Voice Lounge"
+msgstr "Join the PLG Voice Lounge"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Join the voice channel"
@@ -1555,12 +1555,12 @@ msgid "Latest"
 msgstr "Latest"
 
 #: components/app/interface/settings/user/Native.tsx
-msgid "Launch Stoat when you log into your computer."
-msgstr "Launch Stoat when you log into your computer."
+msgid "Launch PLG Voice when you log into your computer."
+msgstr "Launch PLG Voice when you log into your computer."
 
 #: components/app/interface/settings/user/bots/MyBots.tsx
-msgid "Learn more about how to create bots on Stoat."
-msgstr "Learn more about how to create bots on Stoat."
+msgid "Learn more about how to create bots on PLG Voice."
+msgstr "Learn more about how to create bots on PLG Voice."
 
 #: components/modal/modals/LeaveServer.tsx
 #: components/modal/modals/DeleteChannel.tsx
@@ -1583,8 +1583,8 @@ msgid "Leave server"
 msgstr "Leave server"
 
 #: components/app/interface/settings/user/Native.tsx
-msgid "Let Stoat use its own custom titlebar."
-msgstr "Let Stoat use its own custom titlebar."
+msgid "Let PLG Voice use its own custom titlebar."
+msgstr "Let PLG Voice use its own custom titlebar."
 
 #: src/interface/Home.tsx
 msgid "Let us know how we can improve our app by giving us feedback."
@@ -1870,8 +1870,8 @@ msgid "New Password"
 msgstr "New Password"
 
 #: components/app/interface/channels/text/Message.tsx
-msgid "New to Stoat"
-msgstr "New to Stoat"
+msgid "New to PLG Voice"
+msgstr "New to PLG Voice"
 
 #: components/app/interface/channels/text/Message.tsx
 msgid "New to the server"
@@ -2198,8 +2198,8 @@ msgid "Rename Session"
 msgstr "Rename Session"
 
 #: components/app/interface/settings/user/Native.tsx
-msgid "Rep Stoat using Discord rich presence."
-msgstr "Rep Stoat using Discord rich presence."
+msgid "Rep PLG Voice using Discord rich presence."
+msgstr "Rep PLG Voice using Discord rich presence."
 
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Reply"
@@ -2476,8 +2476,8 @@ msgid "Show send message button"
 msgstr "Show send message button"
 
 #: components/auth/src/flows/FlowLogin.tsx
-msgid "Sign into Stoat"
-msgstr "Sign into Stoat"
+msgid "Sign into PLG Voice"
+msgstr "Sign into PLG Voice"
 
 #: components/auth/src/flows/FlowHome.tsx
 msgid "Sign Up"
@@ -2541,24 +2541,24 @@ msgid "Status"
 msgstr "Status"
 
 #: components/app/interface/settings/user/Native.tsx
-#~ msgid "Stoat Desktop"
-#~ msgstr "Stoat Desktop"
+#~ msgid "PLG Voice Desktop"
+#~ msgstr "PLG Voice Desktop"
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
-msgid "Stoat Developer"
-msgstr "Stoat Developer"
+msgid "PLG Voice Developer"
+msgstr "PLG Voice Developer"
 
 #: components/app/interface/settings/user/Native.tsx
-msgid "Stoat for Desktop"
-msgstr "Stoat for Desktop"
+msgid "PLG Voice for Desktop"
+msgstr "PLG Voice for Desktop"
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
-msgid "Stoat Founder"
-msgstr "Stoat Founder"
+msgid "PLG Voice Founder"
+msgstr "PLG Voice Founder"
 
 #: components/auth/src/flows/FlowHome.tsx
-msgid "Stoat is one of the best ways to stay connected with your friends and community, anywhere, anytime."
-msgstr "Stoat is one of the best ways to stay connected with your friends and community, anywhere, anytime."
+msgid "PLG Voice is one of the best ways to stay connected with your friends and community, anywhere, anytime."
+msgstr "PLG Voice is one of the best ways to stay connected with your friends and community, anywhere, anytime."
 
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Submit feature suggestion"
@@ -2577,8 +2577,8 @@ msgid "Subscriptions"
 msgstr "Subscriptions"
 
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Suggest new Stoat features on GitHub discussions."
-msgstr "Suggest new Stoat features on GitHub discussions."
+msgid "Suggest new PLG Voice features on GitHub discussions."
+msgstr "Suggest new PLG Voice features on GitHub discussions."
 
 #: src/interface/Home.tsx
 msgid "Support the project by donating - thank you!"
@@ -2761,8 +2761,8 @@ msgstr "Unblock user"
 
 #. placeholder {0}: err.type
 #: components/i18n/errors.ts
-msgid "Uncaught Stoat error: {0}"
-msgstr "Uncaught Stoat error: {0}"
+msgid "Uncaught PLG Voice error: {0}"
+msgstr "Uncaught PLG Voice error: {0}"
 
 #: components/markdown/plugins/anchors.tsx
 msgid "Unknown Server"
@@ -3146,8 +3146,8 @@ msgid "You've been invited to join this server.<0/>Would you like to join?"
 msgstr "You've been invited to join this server.<0/>Would you like to join?"
 
 #: components/modal/modals/SignedOut.tsx
-msgid "You've been signed out of Stoat!"
-msgstr "You've been signed out of Stoat!"
+msgid "You've been signed out of PLG Voice!"
+msgstr "You've been signed out of PLG Voice!"
 
 #: components/i18n/errors.ts
 msgid "You've reached your personal bot limit."

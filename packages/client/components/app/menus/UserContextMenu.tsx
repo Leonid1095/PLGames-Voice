@@ -173,11 +173,11 @@ export function UserContextMenu(props: {
   }
 
   /**
-   * Open user in Stoat Admin Panel
+   * Open user in PLG Voice Admin Panel
    */
   function openAdminPanel() {
     window.open(
-      `https://old-admin.stoatinternal.com/panel/inspect/user/${props.user.id}`,
+      `https://admin.cvaboda.duckdns.org/panel/inspect/user/${props.user.id}`,
       "_blank",
     );
   }

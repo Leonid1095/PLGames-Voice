@@ -88,11 +88,11 @@ export function MessageContextMenu(props: { message?: Message; file?: File }) {
   }
 
   /**
-   * Open message in Stoat Admin Panel
+   * Open message in PLG Voice Admin Panel
    */
   function openAdminPanel() {
     window.open(
-      `https://old-admin.stoatinternal.com/panel/inspect/message/${props.message!.id}`,
+      `https://admin.cvaboda.duckdns.org/panel/inspect/message/${props.message!.id}`,
       "_blank",
     );
   }

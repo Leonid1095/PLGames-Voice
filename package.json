@@ -1,8 +1,8 @@
 {
-  "name": "stoat-for-web",
-  "version": "0.2.1",
-  "version-date": "2025-10-10",
-  "description": "Stoat for Web: frontend software for Stoat",
+  "name": "plg-voice-for-web",
+  "version": "1.0.0",
+  "version-date": "2026-02-22",
+  "description": "PLG Voice for Web: frontend software for PLG Voice",
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "eslint": "^9.26.0",

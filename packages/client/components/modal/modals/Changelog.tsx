@@ -53,8 +53,8 @@ const ChangelogPosts: ChangelogPost[] = [
   {
     icon: "voice_chat",
     date: new Date("2025-11-08T14:00:00.000Z"),
-    link: "https://stoat.chat/updates/web-0013",
-    title: "Stoat for Web: 0.0.13",
+    link: "https://cvaboda.duckdns.org/updates/web-0013",
+    title: "PLG Voice for Web: 0.0.13",
     content: [
       `This update brings a host of improvements to voice chats along with an improved messaging experience.
 
@@ -62,7 +62,7 @@ const ChangelogPosts: ChangelogPost[] = [
 A brand new user interface with picture-in-picture support to keep an eye on your voice chats while you multitask.`,
       {
         type: "image",
-        src: "https://stoat.chat/content/changelog/web-0.0.13/pip.gif",
+        src: "https://cvaboda.duckdns.org/content/changelog/web-0.0.13/pip.gif",
       },
       `You can now also see who is in a voice chat and who is speaking, making it easier to keep track of conversations.
 
@@ -70,7 +70,7 @@ A brand new user interface with picture-in-picture support to keep an eye on you
 The text editor has been revamped to provide a smoother and more intuitive messaging experience. We've taken and improved the experience from our old web app, featuring rich text preview while not intruding on what you're typing.`,
       {
         type: "image",
-        src: "https://stoat.chat/content/changelog/web-0.0.13/text_editor.png",
+        src: "https://cvaboda.duckdns.org/content/changelog/web-0.0.13/text_editor.png",
       },
       `For an in-depth look at all the new features and improvements, check out our blog post by pressing read more!`,
     ],

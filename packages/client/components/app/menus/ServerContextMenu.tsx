@@ -111,11 +111,11 @@ export function ServerContextMenu(props: { server: Server }) {
   }
 
   /**
-   * Open server in Stoat Admin Panel
+   * Open server in PLG Voice Admin Panel
    */
   function openAdminPanel() {
     window.open(
-      `https://old-admin.stoatinternal.com/panel/inspect/server/${props.server.id}`,
+      `https://admin.cvaboda.duckdns.org/panel/inspect/server/${props.server.id}`,
       "_blank",
     );
   }

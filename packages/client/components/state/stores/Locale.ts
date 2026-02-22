@@ -48,7 +48,7 @@ export class Locale extends AbstractStore<"locale", TypeLocale> {
    */
   default(): TypeLocale {
     return {
-      lang: browserPreferredLanguage() as Language,
+      lang: (browserPreferredLanguage() as Language) || Language.RUSSIAN,
       options: {},
     };
   }
