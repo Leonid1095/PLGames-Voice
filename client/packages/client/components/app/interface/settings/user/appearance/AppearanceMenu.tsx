@@ -127,13 +127,13 @@ export function AppearanceMenu() {
             />
             <For
               each={[
-                "#FF5733",
-                "#ffdc2f",
-                "#9bf088",
-                "#54ecc1",
-                "#549bec",
-                "#5470ec",
-                "#8C5FD3",
+                "#007AFF",
+                "#34C759",
+                "#FF9500",
+                "#FF3B30",
+                "#5856D6",
+                "#AF52DE",
+                "#8E8E93",
               ]}
             >
               {(colour) => (

@@ -146,41 +146,8 @@ export function AuthPage(props: { children: JSX.Element }) {
         </Nav>
         <FlowBase>{props.children}</FlowBase>
         <Nav>
-          <NavItems variant="stack">
-            <NavItems>
-              <LinkWithIcon href="https://github.com/stoatchat" target="_blank">
-                <BiLogosGithub size={24} />
-              </LinkWithIcon>
-              <LinkWithIcon
-                href=""
-                target="_blank"
-              >
-                <img
-                  src={bluesky}
-                  style={{ height: "22px", "padding-top": "3px" }}
-                />
-              </LinkWithIcon>
-            </NavItems>
-            <Bullet />
-            <NavItems>
-              <a href="" target="_blank">
-                <Trans>About</Trans>
-              </a>
-              <a href="" target="_blank">
-                <Trans>Terms of Service</Trans>
-              </a>
-              <a href="" target="_blank">
-                <Trans>Privacy Policy</Trans>
-              </a>
-            </NavItems>
-          </NavItems>
-          <NavItems variant="hide">
-            <Trans>Image by {"@fakurian"}</Trans>
-            <Bullet />
-            <a href="https://unsplash.com/" target="_blank" rel="noreferrer">
-              unsplash.com
-            </a>
-          </NavItems>
+          <div />
+          <div />
         </Nav>
       </Base>
     </div>

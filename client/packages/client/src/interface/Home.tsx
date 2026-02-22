@@ -177,7 +177,7 @@ export function HomePage() {
               variant="tertiary"
               onClick={() =>
                 window.open(
-                  "https://wiki.revolt.chat/notes/project/financial-support/",
+                  "https://new.donatepay.ru/@lenya",
                 )
               }
               description={

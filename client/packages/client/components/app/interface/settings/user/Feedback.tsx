@@ -47,47 +47,29 @@ export function Feedback() {
             <Trans>Roadmap</Trans>
           </CategoryButton>
         </Link> */}
-        <Link
-          href="https://github.com/orgs/stoatchat/discussions/categories/feature-suggestions"
-          target="_blank"
+        <CategoryButton
+          icon={<MdStar {...iconSize(22)} />}
+          onClick={() => void 0}
+          description={
+            <Trans>Suggest new PLG Voice features.</Trans>
+          }
         >
-          <CategoryButton
-            action="external"
-            icon={<MdStar {...iconSize(22)} />}
-            onClick={() => void 0}
-            description={
-              <Trans>Suggest new PLG Voice features on GitHub discussions.</Trans>
-            }
-          >
-            <Trans>Submit feature suggestion</Trans>
-          </CategoryButton>
-        </Link>
-        <Link
-          href="https://github.com/orgs/stoatchat/discussions/categories/feedback"
-          target="_blank"
+          <Trans>Submit feature suggestion</Trans>
+        </CategoryButton>
+        <CategoryButton
+          icon={<MdFormatListNumbered {...iconSize(22)} />}
+          onClick={() => void 0}
+          description={<Trans>Submit feedback</Trans>}
         >
-          <CategoryButton
-            action="external"
-            icon={<MdFormatListNumbered {...iconSize(22)} />}
-            onClick={() => void 0}
-            description={<Trans>Submit feedback</Trans>}
-          >
-            <Trans>Feedback</Trans>
-          </CategoryButton>
-        </Link>
-        <Link
-          href="https://github.com/stoatchat/for-web/issues?q=is%3Aissue%20state%3Aopen%20type%3ABug"
-          target="_blank"
+          <Trans>Feedback</Trans>
+        </CategoryButton>
+        <CategoryButton
+          icon={<MdBugReport {...iconSize(22)} />}
+          onClick={() => void 0}
+          description={<Trans>View currently active bug reports here.</Trans>}
         >
-          <CategoryButton
-            action="external"
-            icon={<MdBugReport {...iconSize(22)} />}
-            onClick={() => void 0}
-            description={<Trans>View currently active bug reports here.</Trans>}
-          >
-            <Trans>Bug Tracker</Trans>
-          </CategoryButton>
-        </Link>
+          <Trans>Bug Tracker</Trans>
+        </CategoryButton>
         <Switch fallback={null}>
           <Match when={showLoungeButton && isInLounge}>
             <CategoryButton

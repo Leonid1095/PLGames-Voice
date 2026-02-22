@@ -185,7 +185,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
         },
         {
           title: <Trans>Subscriptions</Trans>,
-          hidden: import.meta.env.PROD,
+          hidden: false,
           entries: [
             {
               id: "subscribe",
@@ -267,7 +267,8 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             //   title: t("app.special.modals.changelogs.title"),
             // },
             {
-              href: "https://github.com/stoatchat",
+              id: "advanced",
+              hidden: true,
               icon: <MdMemory {...iconSize(20)} />,
               title: <Trans>Source Code</Trans>,
             },
@@ -277,7 +278,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               title: <Trans>Advanced</Trans>,
             },
             {
-              href: "",
+              href: "https://new.donatepay.ru/@lenya",
               icon: <MdCoffee {...iconSize(20)} />,
               title: <Trans>Donate</Trans>,
             },

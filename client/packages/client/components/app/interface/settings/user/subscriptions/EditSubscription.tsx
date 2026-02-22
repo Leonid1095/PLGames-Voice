@@ -1,15 +1,8 @@
-import {
-  EditSubscriptionJoinFlow,
-  TempMountStripe,
-} from "./EditSubscriptionJoinFlow";
+import { EditSubscriptionJoinFlow } from "./EditSubscriptionJoinFlow";
 
 /**
- * Settings menu for joining or changing [premium subscription name here]
+ * Settings menu for donations
  */
 export function EditSubscription() {
-  return (
-    <TempMountStripe>
-      <EditSubscriptionJoinFlow />
-    </TempMountStripe>
-  );
+  return <EditSubscriptionJoinFlow />;
 }
