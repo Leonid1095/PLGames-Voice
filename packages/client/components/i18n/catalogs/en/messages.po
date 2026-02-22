@@ -1345,8 +1345,13 @@ msgstr "Go to account settings to edit your username"
 
 #: src/interface/Home.tsx
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Go to the PLG Voice Lounge"
-msgstr "Go to the PLG Voice Lounge"
+msgid "Go to the PLG Voice community"
+msgstr "Go to the PLG Voice community"
+
+#: src/interface/Home.tsx
+#: components/app/interface/settings/user/Feedback.tsx
+#~ msgid "Go to the PLG Voice Lounge"
+#~ msgstr "Go to the PLG Voice Lounge"
 
 #: src/interface/Home.tsx
 #: src/interface/Home.tsx
@@ -1497,8 +1502,13 @@ msgstr "Join a server"
 
 #: src/interface/Home.tsx
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Join the PLG Voice Lounge"
-msgstr "Join the PLG Voice Lounge"
+msgid "Join the PLG Voice community"
+msgstr "Join the PLG Voice community"
+
+#: src/interface/Home.tsx
+#: components/app/interface/settings/user/Feedback.tsx
+#~ msgid "Join the PLG Voice Lounge"
+#~ msgstr "Join the PLG Voice Lounge"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Join the voice channel"
@@ -2062,6 +2072,26 @@ msgstr "Please select a method to authenticate your request."
 msgid "Please select a reason"
 msgstr "Please select a reason"
 
+#: components/app/interface/settings/user/Native.tsx
+#~ msgid "PLG Voice Desktop"
+#~ msgstr "PLG Voice Desktop"
+
+#: components/ui/components/features/profiles/ProfileBadges.tsx
+msgid "PLG Voice Developer"
+msgstr "PLG Voice Developer"
+
+#: components/app/interface/settings/user/Native.tsx
+msgid "PLG Voice for Desktop"
+msgstr "PLG Voice for Desktop"
+
+#: components/ui/components/features/profiles/ProfileBadges.tsx
+msgid "PLG Voice Founder"
+msgstr "PLG Voice Founder"
+
+#: components/auth/src/flows/FlowHome.tsx
+msgid "PLG Voice is one of the best ways to stay connected with your friends and community, anywhere, anytime."
+msgstr "PLG Voice is one of the best ways to stay connected with your friends and community, anywhere, anytime."
+
 #: components/auth/src/AuthPage.tsx
 msgid "Privacy Policy"
 msgstr "Privacy Policy"
@@ -2539,26 +2569,6 @@ msgstr "Start with Computer"
 #: components/ui/components/features/profiles/ProfileStatus.tsx
 msgid "Status"
 msgstr "Status"
-
-#: components/app/interface/settings/user/Native.tsx
-#~ msgid "PLG Voice Desktop"
-#~ msgstr "PLG Voice Desktop"
-
-#: components/ui/components/features/profiles/ProfileBadges.tsx
-msgid "PLG Voice Developer"
-msgstr "PLG Voice Developer"
-
-#: components/app/interface/settings/user/Native.tsx
-msgid "PLG Voice for Desktop"
-msgstr "PLG Voice for Desktop"
-
-#: components/ui/components/features/profiles/ProfileBadges.tsx
-msgid "PLG Voice Founder"
-msgstr "PLG Voice Founder"
-
-#: components/auth/src/flows/FlowHome.tsx
-msgid "PLG Voice is one of the best ways to stay connected with your friends and community, anywhere, anytime."
-msgstr "PLG Voice is one of the best ways to stay connected with your friends and community, anywhere, anytime."
 
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Submit feature suggestion"

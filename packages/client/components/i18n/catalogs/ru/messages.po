@@ -1345,8 +1345,13 @@ msgstr ""
 
 #: src/interface/Home.tsx
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Go to the PLG Voice Lounge"
+msgid "Go to the PLG Voice community"
 msgstr ""
+
+#: src/interface/Home.tsx
+#: components/app/interface/settings/user/Feedback.tsx
+#~ msgid "Go to the PLG Voice Lounge"
+#~ msgstr ""
 
 #: src/interface/Home.tsx
 #: src/interface/Home.tsx
@@ -1497,8 +1502,13 @@ msgstr ""
 
 #: src/interface/Home.tsx
 #: components/app/interface/settings/user/Feedback.tsx
-msgid "Join the PLG Voice Lounge"
+msgid "Join the PLG Voice community"
 msgstr ""
+
+#: src/interface/Home.tsx
+#: components/app/interface/settings/user/Feedback.tsx
+#~ msgid "Join the PLG Voice Lounge"
+#~ msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Join the voice channel"
@@ -2062,6 +2072,26 @@ msgstr "Пожалуйста, выберите метод аутентифика
 msgid "Please select a reason"
 msgstr ""
 
+#: components/app/interface/settings/user/Native.tsx
+#~ msgid "PLG Voice Desktop"
+#~ msgstr ""
+
+#: components/ui/components/features/profiles/ProfileBadges.tsx
+msgid "PLG Voice Developer"
+msgstr ""
+
+#: components/app/interface/settings/user/Native.tsx
+msgid "PLG Voice for Desktop"
+msgstr ""
+
+#: components/ui/components/features/profiles/ProfileBadges.tsx
+msgid "PLG Voice Founder"
+msgstr ""
+
+#: components/auth/src/flows/FlowHome.tsx
+msgid "PLG Voice is one of the best ways to stay connected with your friends and community, anywhere, anytime."
+msgstr ""
+
 #: components/auth/src/AuthPage.tsx
 msgid "Privacy Policy"
 msgstr "Политика конфиденциальности"
@@ -2538,26 +2568,6 @@ msgstr ""
 
 #: components/ui/components/features/profiles/ProfileStatus.tsx
 msgid "Status"
-msgstr ""
-
-#: components/app/interface/settings/user/Native.tsx
-#~ msgid "PLG Voice Desktop"
-#~ msgstr ""
-
-#: components/ui/components/features/profiles/ProfileBadges.tsx
-msgid "PLG Voice Developer"
-msgstr ""
-
-#: components/app/interface/settings/user/Native.tsx
-msgid "PLG Voice for Desktop"
-msgstr ""
-
-#: components/ui/components/features/profiles/ProfileBadges.tsx
-msgid "PLG Voice Founder"
-msgstr ""
-
-#: components/auth/src/flows/FlowHome.tsx
-msgid "PLG Voice is one of the best ways to stay connected with your friends and community, anywhere, anytime."
 msgstr ""
 
 #: components/app/interface/settings/user/Feedback.tsx
