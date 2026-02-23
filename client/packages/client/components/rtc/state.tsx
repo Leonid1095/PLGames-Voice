@@ -14,7 +14,6 @@ import { Channel } from "stoat.js";
 
 import { useState } from "@revolt/state";
 import { Voice as VoiceSettings } from "@revolt/state/stores/Voice";
-import { VoiceCallCardContext } from "@revolt/ui/components/features/voice/callCard/VoiceCallCard";
 
 import { InRoom } from "./components/InRoom";
 import { RoomAudioManager } from "./components/RoomAudioManager";
@@ -198,7 +197,7 @@ export function VoiceContext(props: { children: JSX.Element }) {
   return (
     <voiceContext.Provider value={voice}>
       <RoomContext.Provider value={voice.room}>
-        <VoiceCallCardContext>{props.children}</VoiceCallCardContext>
+        {props.children}
         <InRoom>
           <RoomAudioManager />
         </InRoom>

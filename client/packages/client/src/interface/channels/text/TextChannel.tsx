@@ -8,7 +8,8 @@ import {
   onCleanup,
 } from "solid-js";
 
-import { cva } from "styled-system/css";
+import { css, cva } from "styled-system/css";
+import { Channel } from "stoat.js";
 import { styled } from "styled-system/jsx";
 import { decodeTime, ulid } from "ulid";
 
@@ -26,7 +27,9 @@ import {
   TypingIndicator,
   main,
 } from "@revolt/ui";
-import { VoiceChannelCallCardMount } from "@revolt/ui/components/features/voice/callCard/VoiceCallCard";
+import { useVoice, InRoom } from "@revolt/rtc";
+import { VoiceCallCardActiveRoom } from "@revolt/ui/components/features/voice/callCard/VoiceCallCardActiveRoom";
+import { VoiceCallCardPreview } from "@revolt/ui/components/features/voice/callCard/VoiceCallCardPreview";
 
 import { ChannelHeader } from "../ChannelHeader";
 import { ChannelPageProps } from "../ChannelPage";
@@ -178,7 +181,7 @@ export function TextChannel(props: ChannelPageProps) {
               </BelowFloatingHeader>
             }
           >
-            <VoiceChannelCallCardMount channel={props.channel} />
+            <InlineVoiceRoom channel={props.channel} />
           </Show>
 
           <Messages
@@ -276,6 +279,63 @@ export function TextChannel(props: ChannelPageProps) {
           </div>
         </Show>
       </Content>
+    </>
+  );
+}
+
+/**
+ * Inline voice room rendering (replaces floating PiP)
+ */
+function InlineVoiceRoom(props: { channel: Channel }) {
+  const voice = useVoice();
+
+  // Auto-connect to voice channel when navigating directly via URL
+  createEffect(() => {
+    if (
+      props.channel.isVoice &&
+      voice.state() === "READY" &&
+      !voice.channel()
+    ) {
+      voice.connect(props.channel);
+    }
+  });
+
+  const inThisChannel = () => voice.channel()?.id === props.channel.id;
+  const inOtherChannel = () =>
+    voice.channel() && voice.channel()?.id !== props.channel.id;
+
+  return (
+    <>
+      <Show when={inThisChannel()}>
+        <div
+          class={css({
+            width: "100%",
+            height: "40vh",
+            flexShrink: 0,
+            borderRadius: "var(--borderRadius-lg)",
+            background: "var(--md-sys-color-secondary-container)",
+            overflow: "hidden",
+          })}
+        >
+          <VoiceCallCardActiveRoom />
+        </div>
+      </Show>
+      <Show when={inOtherChannel()}>
+        <div
+          class={css({
+            width: "100%",
+            maxWidth: "360px",
+            alignSelf: "center",
+            flexShrink: 0,
+            height: "120px",
+            borderRadius: "var(--borderRadius-lg)",
+            background: "var(--md-sys-color-secondary-container)",
+            cursor: "pointer",
+          })}
+        >
+          <VoiceCallCardPreview channel={props.channel} />
+        </div>
+      </Show>
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { Component, JSX, Match, Show, Switch, createMemo } from "solid-js";
 
 import { Channel, Server as ServerI } from "stoat.js";
+import { VoiceBottomBar } from "@revolt/ui/components/features/voice/VoiceBottomBar";
 
 import {
   CategoryContextMenu,
@@ -59,11 +60,16 @@ export const Sidebar = (props: {
           !location.pathname.startsWith("/discover")
         }
       >
-        <Switch fallback={<Home />}>
-          <Match when={params.server}>
-            <Server />
-          </Match>
-        </Switch>
+        <div style={{ display: "flex", "flex-direction": "column", "flex-grow": "1", "min-height": "0" }}>
+          <div style={{ "flex-grow": "1", "min-height": "0", overflow: "hidden" }}>
+            <Switch fallback={<Home />}>
+              <Match when={params.server}>
+                <Server />
+              </Match>
+            </Switch>
+          </div>
+          <VoiceBottomBar />
+        </div>
       </Show>
     </div>
   );
