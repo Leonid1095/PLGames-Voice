@@ -52,13 +52,10 @@ export function Dialog(props: Props) {
         <Presence>
           <Show when={props.show}>
             <Motion.div
-              initial={{
-                opacity: 0,
-                y: 20,
-              }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3, easing: [0.05, 0.7, 0.1, 1.0] }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.35, easing: [0.2, 0, 0, 1] }}
             >
               <Container
                 style={{

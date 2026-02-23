@@ -55,6 +55,11 @@ const content = cva({
     gap: "32px",
     alignItems: "center",
     justifyContent: "center",
+
+    animationName: "contentFadeIn",
+    animationDuration: "0.4s",
+    animationTimingFunction: "cubic-bezier(0.2, 0, 0, 1)",
+    animationFillMode: "both",
   },
 });
 
