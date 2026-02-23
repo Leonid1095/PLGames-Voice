@@ -8,11 +8,11 @@ services:
     volumes:
       - ./data/db:/data/db
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
-      interval: 10s
+      test: mongosh --eval "db.adminCommand('ping')" --quiet
+      interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 10s
+      start_period: 20s
 
   # Redis: Event message broker & KV store
   redis:

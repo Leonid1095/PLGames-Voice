@@ -6,7 +6,6 @@ import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
 import { useClient } from "@revolt/client";
-import { CONFIGURATION } from "@revolt/common";
 import { KeybindAction, createKeybind } from "@revolt/keybinds";
 import { useModals } from "@revolt/modal";
 import { useNavigate } from "@revolt/routing";
@@ -14,7 +13,6 @@ import { useState } from "@revolt/state";
 import { Avatar, Column, Text, Time, Unreads, UserStatus } from "@revolt/ui";
 
 import MdAdd from "@material-design-icons/svg/filled/add.svg?component-solid";
-import MdExplore from "@material-design-icons/svg/filled/explore.svg?component-solid";
 import MdHome from "@material-design-icons/svg/filled/home.svg?component-solid";
 import MdSettings from "@material-design-icons/svg/filled/settings.svg?component-solid";
 
@@ -295,16 +293,7 @@ export const ServerList = (props: Props) => {
             <Avatar size={42} fallback={<MdAdd />} />
           </a>
         </Tooltip>
-        <Show when={CONFIGURATION.IS_STOAT}>
-          <Tooltip placement="right" content={"Find new servers to join"}>
-            <a
-              href={state.layout.getLastActiveDiscoverPath()}
-              class={entryContainer()}
-            >
-              <Avatar size={42} fallback={<MdExplore />} />
-            </a>
-          </Tooltip>
-        </Show>
+        {/* Discover disabled — stt.gg unavailable */}
       </div>
       <Shadow>
         <div />
@@ -357,28 +346,37 @@ const entryContainer = cva({
     "&:before": {
       content: "' '",
       position: "absolute",
-      width: "12px",
+      width: "4px",
       height: "0px",
-      transition: "var(--transitions-fast) all",
-      left: "-8px",
-      borderRadius: "4px",
-      background: "var(--md-sys-color-on-surface)",
+      left: "0px",
+      borderRadius: "0 4px 4px 0",
+      background: "var(--md-sys-color-primary)",
+      transition: "var(--transitions-medium) all",
     },
 
     "&:hover:before": {
-      height: "16px",
+      height: "20px",
+    },
+
+    "&:hover > a > svg": {
+      transform: "scale(1.08)",
+    },
+
+    "& > a > svg": {
+      transition: "var(--transitions-medium) transform",
     },
   },
   variants: {
     indicator: {
       selected: {
         "&:before": {
-          height: "32px !important",
+          height: "36px !important",
         },
       },
       alert: {
         "&:before": {
           height: "8px",
+          background: "var(--md-sys-color-on-surface)",
         },
       },
     },

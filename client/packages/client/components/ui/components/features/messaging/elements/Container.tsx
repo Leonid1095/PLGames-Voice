@@ -179,7 +179,7 @@ const base = cva({
         marginTop: "var(--message-group-spacing) !important",
 
         "&:hover": {
-          background: "var(--md-sys-color-surface-container)",
+          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 4%, var(--md-sys-color-surface-container-lowest))",
         },
       },
       hide: {},

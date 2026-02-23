@@ -31,9 +31,19 @@ export function createPlgVoiceWebVariables(theme: SelectedTheme) {
     "--transitions-slow": ".5s cubic-bezier(0.2, 0, 0, 1)",
 
     // elevation
-    "--elevation-1": "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
-    "--elevation-2": "0 3px 6px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.12)",
-    "--elevation-3": "0 10px 20px rgba(0,0,0,0.15), 0 3px 6px rgba(0,0,0,0.10)",
+    "--elevation-0": "none",
+    "--elevation-1": theme.darkMode
+      ? "0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3)"
+      : "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08)",
+    "--elevation-2": theme.darkMode
+      ? "0 3px 8px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.35)"
+      : "0 3px 6px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1)",
+    "--elevation-3": theme.darkMode
+      ? "0 8px 24px rgba(0,0,0,0.55), 0 3px 8px rgba(0,0,0,0.4)"
+      : "0 10px 20px rgba(0,0,0,0.15), 0 3px 6px rgba(0,0,0,0.08)",
+    "--elevation-4": theme.darkMode
+      ? "0 12px 32px rgba(0,0,0,0.6), 0 4px 12px rgba(0,0,0,0.45)"
+      : "0 14px 28px rgba(0,0,0,0.18), 0 5px 10px rgba(0,0,0,0.1)",
 
     // brand
     "--brand-presence-online": "#3ABF7E",

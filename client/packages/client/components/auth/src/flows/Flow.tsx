@@ -33,7 +33,8 @@ export const FlowBase = styled("div", {
     animationDuration: "0.5s",
     animationTimingFunction: "cubic-bezier(0.2, 0, 0, 1)",
     animationFillMode: "both",
-    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.12)",
+    boxShadow: "var(--elevation-3)",
+    border: "1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 20%, transparent)",
   },
 });
 

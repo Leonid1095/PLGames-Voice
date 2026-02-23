@@ -390,7 +390,7 @@ function Category(
 const CategorySection = styled("div", {
   base: {
     display: "flex",
-    gap: "var(--gap-md)",
+    gap: "2px",
     flexDirection: "column",
     paddingBlock: "var(--gap-sm)",
     borderRadius: "var(--borderRadius-sm)",
@@ -420,7 +420,9 @@ const CategoryBase = styled("div", {
     fill: "var(--color)",
 
     ...typography.raw({ class: "label", size: "small" }),
-    fontSize: "13px",
+    fontSize: "12px",
+    textTransform: "uppercase",
+    letterSpacing: "0.05em",
 
     "&:hover": {
       "--color": "var(--md-sys-color-on-surface-variant)",
