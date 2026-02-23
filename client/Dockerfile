@@ -50,6 +50,7 @@ ENV VITE_PROXY_URL=__VITE_PROXY_URL__
 ENV VITE_HCAPTCHA_SITEKEY=__VITE_HCAPTCHA_SITEKEY__
 ENV BASE_PATH=/
 
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN pnpm --filter client exec vite build
 
 # ============================================

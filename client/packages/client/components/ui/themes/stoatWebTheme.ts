@@ -26,8 +26,14 @@ export function createPlgVoiceWebVariables(theme: SelectedTheme) {
     "--effects-invert-light": theme.darkMode ? "invert(0%)" : "invert(1000%)",
 
     // transitions
-    "--transitions-fast": ".1s ease-in-out",
-    "--transitions-medium": ".2s ease",
+    "--transitions-fast": ".15s cubic-bezier(0.2, 0, 0, 1)",
+    "--transitions-medium": ".3s cubic-bezier(0.2, 0, 0, 1)",
+    "--transitions-slow": ".5s cubic-bezier(0.2, 0, 0, 1)",
+
+    // elevation
+    "--elevation-1": "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+    "--elevation-2": "0 3px 6px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.12)",
+    "--elevation-3": "0 10px 20px rgba(0,0,0,0.15), 0 3px 6px rgba(0,0,0,0.10)",
 
     // brand
     "--brand-presence-online": "#3ABF7E",

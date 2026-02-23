@@ -28,6 +28,12 @@ export const FlowBase = styled("div", {
     marginBottom: "20px",
     justifySelf: "center",
     marginInline: "auto",
+
+    animationName: "contentFadeIn",
+    animationDuration: "0.5s",
+    animationTimingFunction: "cubic-bezier(0.2, 0, 0, 1)",
+    animationFillMode: "both",
+    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.12)",
   },
 });
 
