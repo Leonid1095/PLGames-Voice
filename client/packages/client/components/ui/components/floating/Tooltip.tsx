@@ -9,10 +9,12 @@ import { typography } from "../design";
  */
 export const TooltipBase = styled("div", {
   base: {
-    color: "white",
-    background: "black",
-    padding: "var(--gap-md)",
-    borderRadius: "var(--borderRadius-md)",
+    color: "var(--md-sys-color-inverse-on-surface)",
+    background: "var(--md-sys-color-inverse-surface)",
+    padding: "6px var(--gap-md)",
+    borderRadius: "var(--borderRadius-sm)",
+    boxShadow: "var(--elevation-1)",
+    maxWidth: "240px",
 
     ...typography.raw({
       class: "label",

@@ -48,6 +48,10 @@ const Base = styled("div", {
     "& .FriendsList": {
       height: "100%",
       paddingInline: "var(--gap-lg)",
+      animationName: "contentFadeIn",
+      animationDuration: "0.4s",
+      animationTimingFunction: "cubic-bezier(0.2, 0, 0, 1)",
+      animationFillMode: "both",
     },
   },
 });
@@ -290,7 +294,7 @@ function Entry(
       <ListItem>
         <Avatar
           slot="icon"
-          size={36}
+          size={40}
           src={local.user.animatedAvatarURL}
           holepunch={
             props.user.relationship === "Friend" ? "bottom-right" : "none"

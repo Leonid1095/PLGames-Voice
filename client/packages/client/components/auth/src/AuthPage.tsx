@@ -27,7 +27,11 @@ const Base = styled("div", {
     overflowY: "scroll",
 
     color: "var(--md-sys-color-on-surface)",
-    background: "var(--md-sys-color-surface)",
+    background: `
+      radial-gradient(ellipse at 30% 20%, color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 80%, color-mix(in srgb, var(--md-sys-color-tertiary) 6%, transparent) 0%, transparent 60%),
+      linear-gradient(180deg, var(--md-sys-color-surface) 0%, var(--md-sys-color-surface-dim) 100%)
+    `,
     // background: `var(--url)`,
     // backgroundPosition: "center",
     // backgroundRepeat: "no-repeat",

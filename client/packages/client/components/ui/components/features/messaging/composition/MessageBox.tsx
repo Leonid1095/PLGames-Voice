@@ -103,6 +103,12 @@ const Base = styled("div", {
     display: "flex",
     background: "var(--md-sys-color-surface-container-high)",
     color: "var(--md-sys-color-on-surface)",
+    transition: "box-shadow var(--transitions-fast), border-color var(--transitions-fast)",
+    border: "1px solid transparent",
+    "&:focus-within": {
+      borderColor: "var(--md-sys-color-primary)",
+      boxShadow: "0 0 0 1px var(--md-sys-color-primary)",
+    },
   },
   variants: {
     hasActionsAppend: {

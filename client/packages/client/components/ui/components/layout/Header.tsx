@@ -26,6 +26,7 @@ export const Header = styled("div", {
 
     color: "var(--md-sys-color-on-surface)",
     fill: "var(--md-sys-color-on-surface)",
+    boxShadow: "0 1px 0 color-mix(in srgb, var(--md-sys-color-outline-variant) 15%, transparent)",
 
     backgroundSize: "cover !important",
     backgroundPosition: "center !important",
@@ -41,6 +42,7 @@ export const Header = styled("div", {
       secondary: {
         margin: "var(--gap-md)",
         backgroundColor: "var(--md-sys-color-surface-variant)",
+        borderBottom: "1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 20%, transparent)",
       },
     },
     image: {

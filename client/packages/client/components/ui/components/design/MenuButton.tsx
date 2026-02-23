@@ -111,6 +111,7 @@ const base = cva({
 
     color: "var(--color)",
     fill: "var(--color)",
+    transition: "var(--transitions-fast) background-color, var(--transitions-fast) color",
 
     "& > svg": {
       alignSelf: "center",
@@ -139,6 +140,10 @@ const base = cva({
       normal: {
         "--color": "var(--md-sys-color-outline)",
         background: "transparent",
+        "&:hover": {
+          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent)",
+          "--color": "var(--md-sys-color-on-surface-variant)",
+        },
       },
       muted: {
         "--color": "var(--md-sys-color-outline-variant)",
@@ -147,14 +152,23 @@ const base = cva({
         "& img": {
           opacity: "0.3",
         },
+        "&:hover": {
+          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 5%, transparent)",
+        },
       },
       active: {
         "--color": "var(--md-sys-color-on-surface)",
         background: "transparent",
+        "&:hover": {
+          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent)",
+        },
       },
       selected: {
         "--color": "var(--md-sys-color-on-primary-container)",
         background: "var(--md-sys-color-primary-container)",
+        "&:hover": {
+          background: "color-mix(in srgb, var(--md-sys-color-primary-container) 85%, var(--md-sys-color-on-primary-container))",
+        },
       },
     },
   },

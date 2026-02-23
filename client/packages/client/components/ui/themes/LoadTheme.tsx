@@ -24,6 +24,8 @@ export function LoadTheme() {
     FONTS[state.theme.interfaceFont].load();
     MONOSPACE_FONTS[state.theme.monospaceFont].load();
 
+    document.body.style.background = activeTheme.darkMode ? "#0A0A14" : "#F5F5F5";
+
     for (const [key, value] of Object.entries({
       // create unset variables to indicate where colours need replacing
       ...Object.keys(legacyThemeUnsetShim().colours).reduce(

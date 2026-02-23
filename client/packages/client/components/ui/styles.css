@@ -12,9 +12,23 @@
 
 body {
   margin: 0;
-  background: #0A0A14;
+  background: #F5F5F5;
   font-family: var(--fonts-primary);
 }
+
+/* Тонкий тематический скроллбар */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--md-sys-color-outline-variant) transparent;
+}
+*::-webkit-scrollbar { width: 6px; height: 6px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-outline-variant);
+  border-radius: 3px;
+}
+*::-webkit-scrollbar-thumb:hover { background: var(--md-sys-color-outline); }
+*::-webkit-scrollbar-corner { background: transparent; }
 
 #root {
   position: fixed;

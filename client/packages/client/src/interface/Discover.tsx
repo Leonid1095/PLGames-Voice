@@ -1,104 +1,74 @@
-import { createSignal, onCleanup } from "solid-js";
-
-import { PublicBot, PublicChannelInvite } from "stoat.js";
+import { Trans } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
-import { useClient } from "@revolt/client";
-import { useModals } from "@revolt/modal";
-import { paramsFromPathname, useLocation, useNavigate } from "@revolt/routing";
-import { useState } from "@revolt/state";
+import { useNavigate } from "@revolt/routing";
+import { Button } from "@revolt/ui";
+
+import MdExplore from "@material-design-icons/svg/filled/explore.svg?component-solid";
 
 /**
- * stt.gg wrapper
+ * Discover placeholder (stt.gg unavailable)
  */
 export function Discover() {
-  const state = useState();
-  const client = useClient();
-  const location = useLocation();
   const navigate = useNavigate();
-  const { openModal } = useModals();
-  const [ref, setRef] = createSignal<HTMLIFrameElement>();
 
-  async function onMessage(message: MessageEvent) {
-    const frame = ref();
-    if (!frame) return;
-
-    const url = new URL(message.origin);
-    if (url.origin !== "https://stt.gg") return;
-
-    const data = JSON.parse(message.data);
-    console.info(data);
-    if (data.source === "discover") {
-      switch (data.type) {
-        case "init": {
-          frame.contentWindow?.postMessage(
-            JSON.stringify({
-              source: "revolt",
-              type: "theme",
-              theme: {},
-            }),
-            "*",
-          );
-          break;
-        }
-        case "path": {
-          if (data.path.endsWith("?")) {
-            data.path = data.path.substring(0, data.path.length - 1);
-          }
-
-          navigate(data.path);
-          state.layout.setLastActivePath(data.path);
-          break;
-        }
-        case "navigate": {
-          const url = new URL(data.url);
-          const params = paramsFromPathname(url.pathname);
-
-          if (params.inviteId) {
-            const invite = await client()
-              .api.get(`/invites/${params.inviteId as ""}`)
-              .then((invite) => PublicChannelInvite.from(client(), invite));
-
-            openModal({
-              type: "invite",
-              invite,
-            });
-          } else if (params.botId) {
-            client()
-              .api.get(`/bots/${params.botId as ""}/invite`)
-              .then((bot) => new PublicBot(client(), bot))
-              .then((bot) => openModal({ type: "add_bot", invite: bot }));
-          } else {
-            alert("Missing handler for " + data.url);
-          }
-
-          break;
-        }
-        case "applyTheme": {
-          alert("revite themes are not supported!");
-          break;
-        }
-      }
-    }
-  }
-
-  window.addEventListener("message", onMessage);
-  onCleanup(() => window.removeEventListener("message", onMessage));
-
-  // Render the URL once, update path in browser through messaging
-  const query = new URLSearchParams(location.query as Record<string, string>);
-  query.set("embedded", "true");
-  const src = `https://stt.gg/${location.pathname}?${query}`;
-
-  return <Base ref={setRef} src={src} />;
+  return (
+    <Base>
+      <Content>
+        <MdExplore width={64} height={64} />
+        <Title>
+          <Trans>Server discovery coming soon</Trans>
+        </Title>
+        <Description>
+          <Trans>
+            Browse and discover servers will be available in a future update.
+          </Trans>
+        </Description>
+        <Button onPress={() => navigate("/")}>
+          <Trans>Back to home</Trans>
+        </Button>
+      </Content>
+    </Base>
+  );
 }
 
-const Base = styled("iframe", {
+const Base = styled("div", {
   base: {
-    minWidth: 0,
+    width: "100%",
     flexGrow: 1,
     display: "flex",
-    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "var(--md-sys-color-on-surface)",
+  },
+});
+
+const Content = styled("div", {
+  base: {
+    display: "flex",
     flexDirection: "column",
+    alignItems: "center",
+    gap: "16px",
+    padding: "32px",
+    fill: "var(--md-sys-color-on-surface-variant)",
+    color: "var(--md-sys-color-on-surface-variant)",
+  },
+});
+
+const Title = styled("h2", {
+  base: {
+    margin: 0,
+    fontSize: "1.5rem",
+    fontWeight: 600,
+    color: "var(--md-sys-color-on-surface)",
+  },
+});
+
+const Description = styled("p", {
+  base: {
+    margin: 0,
+    fontSize: "0.95rem",
+    textAlign: "center",
+    maxWidth: "360px",
   },
 });

@@ -126,8 +126,9 @@ const Base = styled("div", {
 
     display: "none",
     overflow: "hidden",
-    borderRadius: "var(--borderRadius-xs)",
-    boxShadow: "0 0 3px var(--md-sys-color-shadow)",
+    borderRadius: "var(--borderRadius-sm)",
+    boxShadow: "var(--elevation-2)",
+    border: "1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 20%, transparent)",
 
     fill: "var(--md-sys-color-on-secondary-container)",
     background: "var(--md-sys-color-secondary-container)",

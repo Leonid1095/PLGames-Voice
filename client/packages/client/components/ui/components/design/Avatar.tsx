@@ -99,9 +99,9 @@ const FallbackBase = styled("div", {
         background: "var(--md-sys-color-primary)",
       },
       false: {
-        fill: "var(--md-sys-color-on-surface)",
-        color: "var(--md-sys-color-on-surface)",
-        background: "var(--md-sys-color-surface-container-low)",
+        fill: "var(--md-sys-color-on-secondary-container)",
+        color: "var(--md-sys-color-on-secondary-container)",
+        background: "var(--md-sys-color-secondary-container)",
       },
     },
   },
@@ -199,6 +199,7 @@ const Shape = styled("div", {
     overflow: "hidden",
     width: "100%",
     height: "100%",
+    transition: "border-radius var(--transitions-medium)",
   },
   variants: {
     shape: {

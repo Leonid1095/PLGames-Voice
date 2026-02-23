@@ -5,7 +5,7 @@ import { cva } from "styled-system/css";
 const baseStyles = cva({
   base: {
     willChange: "transform",
-    scrollbarColor: "var(--md-sys-color-primary) transparent",
+    scrollbarColor: "var(--md-sys-color-outline-variant) transparent",
   },
   variants: {
     direction: {

@@ -61,10 +61,10 @@ export const startsWithPackPUA = (emoji: string) => {
 };
 
 export function unicodeEmojiUrl(
-  pack: UnicodeEmojiPacks = "fluent-3d",
+  pack: UnicodeEmojiPacks = "twemoji",
   text: string,
 ) {
-  return `https://cvaboda.duckdns.org/static/emoji/${pack}/${toCodepoint(text)}.svg?v=1`;
+  return `https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/${toCodepoint(text)}.svg`;
 }
 
 /**
