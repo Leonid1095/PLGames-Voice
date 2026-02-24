@@ -1,17 +1,15 @@
-import { Show } from "solid-js";
+import { Match, Show, Switch } from "solid-js";
 
+import { Trans } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
 import { useVoice } from "@revolt/rtc";
-import { Button, IconButton } from "@revolt/ui/components/design";
+import { IconButton } from "@revolt/ui/components/design";
 import { OverflowingText } from "@revolt/ui/components/utils";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
-import { VoiceCallCardStatus } from "./callCard/VoiceCallCardStatus";
-
 /**
- * Discord-style voice bottom bar for sidebar
- * Shows channel name, connection status, and mute/deafen/disconnect controls
+ * Compact Discord-style voice bottom bar for sidebar
  */
 export function VoiceBottomBar() {
   const voice = useVoice();
@@ -21,10 +19,37 @@ export function VoiceBottomBar() {
       <Bar>
         <Info>
           <ChannelName>
-            <Symbol size={18}>volume_up</Symbol>
+            <Symbol size={16}>volume_up</Symbol>
             <OverflowingText>{voice.channel()!.name}</OverflowingText>
           </ChannelName>
-          <VoiceCallCardStatus />
+          <StatusText>
+            <Switch>
+              <Match when={voice.state() === "CONNECTED"}>
+                <StatusDot status="connected" />
+                <StatusLabel status="connected">
+                  <Trans>Connected</Trans>
+                </StatusLabel>
+              </Match>
+              <Match when={voice.state() === "CONNECTING"}>
+                <StatusDot status="connecting" />
+                <StatusLabel status="connecting">
+                  <Trans>Connecting...</Trans>
+                </StatusLabel>
+              </Match>
+              <Match when={voice.state() === "RECONNECTING"}>
+                <StatusDot status="unstable" />
+                <StatusLabel status="unstable">
+                  <Trans>Reconnecting...</Trans>
+                </StatusLabel>
+              </Match>
+              <Match when={voice.state() === "DISCONNECTED"}>
+                <StatusDot status="disconnected" />
+                <StatusLabel status="disconnected">
+                  <Trans>Disconnected</Trans>
+                </StatusLabel>
+              </Match>
+            </Switch>
+          </StatusText>
         </Info>
         <Controls>
           <IconButton
@@ -35,9 +60,9 @@ export function VoiceBottomBar() {
           >
             <Show
               when={voice.microphone()}
-              fallback={<Symbol>mic_off</Symbol>}
+              fallback={<Symbol size={18}>mic_off</Symbol>}
             >
-              <Symbol>mic</Symbol>
+              <Symbol size={18}>mic</Symbol>
             </Show>
           </IconButton>
           <IconButton
@@ -50,18 +75,18 @@ export function VoiceBottomBar() {
           >
             <Show
               when={voice.deafen() || !voice.listenPermission}
-              fallback={<Symbol>headset</Symbol>}
+              fallback={<Symbol size={18}>headset</Symbol>}
             >
-              <Symbol>headset_off</Symbol>
+              <Symbol size={18}>headset_off</Symbol>
             </Show>
           </IconButton>
-          <Button
+          <DisconnectButton
             size="xs"
-            variant="_error"
+            variant="tonal"
             onPress={() => voice.disconnect()}
           >
-            <Symbol>call_end</Symbol>
-          </Button>
+            <Symbol size={18}>call_end</Symbol>
+          </DisconnectButton>
         </Controls>
       </Bar>
     </Show>
@@ -71,14 +96,15 @@ export function VoiceBottomBar() {
 const Bar = styled("div", {
   base: {
     flexShrink: 0,
-    padding: "var(--gap-md)",
-    gap: "var(--gap-sm)",
+    padding: "var(--gap-sm) var(--gap-md)",
 
     display: "flex",
-    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "var(--gap-sm)",
 
-    borderRadius: "var(--borderRadius-lg) var(--borderRadius-lg) 0 0",
     background: "var(--md-sys-color-surface-container)",
+    borderTop: "1px solid var(--md-sys-color-outline-variant)",
   },
 });
 
@@ -86,9 +112,9 @@ const Info = styled("div", {
   base: {
     display: "flex",
     flexDirection: "column",
-    gap: "2px",
-
-    fontSize: "var(--fontSize-sm)",
+    gap: "1px",
+    minWidth: 0,
+    flexShrink: 1,
   },
 });
 
@@ -96,11 +122,71 @@ const ChannelName = styled("div", {
   base: {
     display: "flex",
     alignItems: "center",
-    gap: "var(--gap-sm)",
+    gap: "4px",
 
+    fontSize: "13px",
     fontWeight: 600,
     color: "var(--md-sys-color-primary)",
     minWidth: 0,
+  },
+});
+
+const StatusText = styled("div", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    gap: "4px",
+    fontSize: "11px",
+  },
+});
+
+const StatusDot = styled("div", {
+  base: {
+    width: "7px",
+    height: "7px",
+    borderRadius: "50%",
+    flexShrink: 0,
+  },
+  variants: {
+    status: {
+      connected: {
+        background: "#43b581",
+      },
+      connecting: {
+        background: "#f04747",
+        animation: "pulse 1.5s ease-in-out infinite",
+      },
+      unstable: {
+        background: "#faa61a",
+        animation: "pulse 1.5s ease-in-out infinite",
+      },
+      disconnected: {
+        background: "#f04747",
+      },
+    },
+  },
+});
+
+const StatusLabel = styled("span", {
+  base: {
+    fontSize: "11px",
+    fontWeight: 500,
+  },
+  variants: {
+    status: {
+      connected: {
+        color: "#43b581",
+      },
+      connecting: {
+        color: "#f04747",
+      },
+      unstable: {
+        color: "#faa61a",
+      },
+      disconnected: {
+        color: "#f04747",
+      },
+    },
   },
 });
 
@@ -108,7 +194,18 @@ const Controls = styled("div", {
   base: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    gap: "var(--gap-md)",
+    flexShrink: 0,
+    gap: "2px",
+  },
+});
+
+const DisconnectButton = styled(IconButton, {
+  base: {
+    background: "rgba(240, 71, 71, 0.15) !important",
+    color: "#f04747 !important",
+
+    "&:hover": {
+      background: "rgba(240, 71, 71, 0.3) !important",
+    },
   },
 });

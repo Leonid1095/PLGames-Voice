@@ -200,7 +200,6 @@ export function MessageComposition(props: Props) {
 
     for (const file of files) {
       if (file.size > CONFIGURATION.MAX_FILE_SIZE) {
-        console.log("File too large:", file);
         rejectedFiles.push(file);
       } else {
         validFiles.push(file);

@@ -6,6 +6,7 @@ import {
   createSignal,
   on,
   onCleanup,
+  onMount,
 } from "solid-js";
 
 import { css, cva } from "styled-system/css";
@@ -289,8 +290,9 @@ export function TextChannel(props: ChannelPageProps) {
 function InlineVoiceRoom(props: { channel: Channel }) {
   const voice = useVoice();
 
-  // Auto-connect to voice channel when navigating directly via URL
-  createEffect(() => {
+  // Auto-connect only on initial mount (not reactively)
+  // This prevents re-connecting when another channel's connect() triggers intermediate states
+  onMount(() => {
     if (
       props.channel.isVoice &&
       voice.state() === "READY" &&
@@ -317,7 +319,7 @@ function InlineVoiceRoom(props: { channel: Channel }) {
             overflow: "hidden",
           })}
         >
-          <VoiceCallCardActiveRoom />
+          <InlineActiveRoom />
         </div>
       </Show>
       <Show when={inOtherChannel()}>
@@ -337,6 +339,25 @@ function InlineVoiceRoom(props: { channel: Channel }) {
         </div>
       </Show>
     </>
+  );
+}
+
+/**
+ * Inline active room — participant grid only, no status/actions (those are in VoiceBottomBar)
+ */
+function InlineActiveRoom() {
+  return (
+    <div
+      class={css({
+        height: "100%",
+        width: "100%",
+        overflowY: "auto",
+      })}
+    >
+      <InRoom>
+        <VoiceCallCardActiveRoom />
+      </InRoom>
+    </div>
   );
 }
 
