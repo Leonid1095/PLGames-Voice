@@ -76,6 +76,14 @@ export default defineConfig({
             transform: "translateY(0)",
           },
         },
+        pulse: {
+          "0%, 100%": {
+            opacity: "1",
+          },
+          "50%": {
+            opacity: "0.4",
+          },
+        },
       },
     },
   },

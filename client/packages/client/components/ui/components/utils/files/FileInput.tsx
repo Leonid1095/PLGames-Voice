@@ -55,7 +55,6 @@ export function FileInput(props: Props) {
    * Handle file selection
    */
   function onChange(e: Event & { currentTarget: HTMLInputElement }) {
-    console.info(e.currentTarget);
     if (e.currentTarget.files) {
       // NB. need to help out with the reactivity by
       //     first removing the array, and then setting

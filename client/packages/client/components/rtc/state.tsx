@@ -82,7 +82,13 @@ class Voice {
   }
 
   async connect(channel: Channel, auth?: { url: string; token: string }) {
-    this.disconnect();
+    // Clean up previous room without going through READY state
+    // (prevents reactive effects from seeing intermediate disconnected state)
+    const oldRoom = this.room();
+    if (oldRoom) {
+      oldRoom.removeAllListeners();
+      oldRoom.disconnect();
+    }
 
     const room = new Room({
       audioCaptureDefaults: {
@@ -95,6 +101,8 @@ class Voice {
       },
     });
 
+    // Atomically transition from old channel to new channel
+    // State goes CONNECTED(A) → CONNECTING(B), never through READY
     batch(() => {
       this.#setRoom(room);
       this.#setChannel(channel);

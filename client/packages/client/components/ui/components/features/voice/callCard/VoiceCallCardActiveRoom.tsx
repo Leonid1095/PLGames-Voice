@@ -1,4 +1,4 @@
-import { Match, Show, Switch } from "solid-js";
+import { Show, Switch, Match } from "solid-js";
 import {
   TrackLoop,
   TrackReference,
@@ -25,11 +25,9 @@ import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 import { VoiceStatefulUserIcons } from "../VoiceStatefulUserIcons";
 
-import { VoiceCallCardActions } from "./VoiceCallCardActions";
-import { VoiceCallCardStatus } from "./VoiceCallCardStatus";
-
 /**
- * Call card (active)
+ * Call card (active) — participant grid only
+ * Controls (status, mute, deafen, disconnect) are in VoiceBottomBar
  */
 export function VoiceCallCardActiveRoom() {
   return (
@@ -39,9 +37,6 @@ export function VoiceCallCardActiveRoom() {
           <Participants />
         </InRoom>
       </Call>
-
-      <VoiceCallCardStatus />
-      <VoiceCallCardActions size="sm" />
     </View>
   );
 }
