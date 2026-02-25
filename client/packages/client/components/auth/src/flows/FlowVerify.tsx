@@ -7,7 +7,7 @@ import { useModals } from "@revolt/modal";
 import { useNavigate, useParams } from "@revolt/routing";
 import { Button, CircularProgress } from "@revolt/ui";
 
-import { FlowTitle } from "./Flow";
+import { FlowBase, FlowTitle } from "./Flow";
 
 type State =
   | {
@@ -78,6 +78,7 @@ export default function FlowVerify() {
   }
 
   return (
+    <FlowBase>
     <Switch>
       <Match when={state().state === "verifying"}>
         <FlowTitle>
@@ -118,5 +119,6 @@ export default function FlowVerify() {
         </a>
       </Match>
     </Switch>
+    </FlowBase>
   );
 }

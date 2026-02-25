@@ -24,7 +24,7 @@ export function ProfileBio(props: Props) {
         onClick={props.onClick}
         isLink={typeof props.onClick !== "undefined"}
         width={props.full ? 3 : 2}
-        constraint={props.full ? undefined : "half"}
+        constraint={undefined}
       >
         <Show when={props.onClick}>
           <Ripple />

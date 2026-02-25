@@ -7,7 +7,7 @@ import { Button, Row, iconSize } from "@revolt/ui";
 
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
 
-import { FlowTitle } from "./Flow";
+import { FlowBase, FlowTitle } from "./Flow";
 import { MailProvider } from "./MailProvider";
 
 /**
@@ -29,7 +29,7 @@ export default function FlowCheck() {
   const navigate = useNavigate();
 
   return (
-    <>
+    <FlowBase>
       <FlowTitle
         subtitle={
           <Trans>
@@ -68,6 +68,6 @@ export default function FlowCheck() {
           Mock Verify
         </div>
       )}
-    </>
+    </FlowBase>
   );
 }

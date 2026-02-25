@@ -13,15 +13,14 @@ import { Profile } from "../features";
  */
 const base = cva({
   base: {
-    // padding: "var(--gap-md)",
-
     color: "var(--md-sys-color-on-surface)",
     background: "var(--md-sys-color-surface-container-high)",
     boxShadow: "var(--elevation-3)",
-    border: "1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 15%, transparent)",
+    border:
+      "1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 15%, transparent)",
 
-    width: "340px",
-    height: "400px",
+    width: "320px",
+    maxHeight: "min(80vh, 560px)",
 
     borderRadius: "var(--borderRadius-xl)",
   },
@@ -53,7 +52,7 @@ export function UserCard(
         e.stopImmediatePropagation();
       }}
     >
-      <Grid>
+      <Layout>
         <Profile.Banner
           width={2}
           user={props.user}
@@ -63,21 +62,33 @@ export function UserCard(
         />
 
         <Profile.Actions user={props.user} member={props.member} width={2} />
-        <Profile.Roles member={props.member} />
-        <Profile.Badges user={props.user} />
-        <Profile.Status user={props.user} />
-        <Profile.Joined user={props.user} member={props.member} />
+
+        <Sections>
+          <Profile.Roles member={props.member} />
+          <Profile.Badges user={props.user} />
+          <Profile.Status user={props.user} />
+          <Profile.Joined user={props.user} member={props.member} />
+        </Sections>
+
         <Profile.Bio content={query.data?.content} onClick={openFull} />
-      </Grid>
+      </Layout>
     </div>
   );
 }
 
-const Grid = styled("div", {
+const Layout = styled("div", {
   base: {
-    display: "grid",
+    display: "flex",
+    flexDirection: "column",
     gap: "var(--gap-md)",
     padding: "var(--gap-md)",
-    gridTemplateColumns: "repeat(2, 1fr)",
+  },
+});
+
+const Sections = styled("div", {
+  base: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "var(--gap-md)",
   },
 });

@@ -18,7 +18,7 @@ import {
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
 
 import { useState } from "@revolt/state";
-import { FlowTitle } from "./Flow";
+import { FlowBase, FlowTitle } from "./Flow";
 import { Fields, Form } from "./Form";
 
 /**
@@ -56,7 +56,7 @@ export default function FlowLogin() {
   }
 
   return (
-    <>
+    <FlowBase>
       <Switch
         fallback={
           <>
@@ -129,6 +129,6 @@ export default function FlowLogin() {
           </Form>
         </Match>
       </Switch>
-    </>
+    </FlowBase>
   );
 }
