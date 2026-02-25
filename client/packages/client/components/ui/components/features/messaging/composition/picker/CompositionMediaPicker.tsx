@@ -2,11 +2,9 @@ import { useFloating } from "solid-floating-ui";
 import {
   Accessor,
   JSX,
-  Match,
   Ref,
   Setter,
   Show,
-  Switch,
   createContext,
   createSignal,
   onCleanup,
@@ -19,11 +17,8 @@ import { flip, offset, shift } from "@floating-ui/dom";
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
-import { Button } from "@revolt/ui/components/design";
-import { Row } from "@revolt/ui/components/layout";
 
 import { EmojiPicker } from "./EmojiPicker";
-import { GifPicker } from "./GifPicker";
 
 interface Props {
   /**
@@ -120,31 +115,7 @@ function Picker(
       }}
     >
       <Container>
-        <Row justify class="CompositionButton">
-          <Button
-            groupActive={props.show() === "gif"}
-            onPress={() => props.setShow("gif")}
-            group="connected-start"
-          >
-            GIFs
-          </Button>
-          <Button
-            groupActive={props.show() === "emoji"}
-            onPress={() => props.setShow("emoji")}
-            group="connected-end"
-          >
-            Emoji
-          </Button>
-        </Row>
-
-        <Switch fallback={<span>Not available yet.</span>}>
-          <Match when={props.show() === "gif"}>
-            <GifPicker />
-          </Match>
-          <Match when={props.show() === "emoji"}>
-            <EmojiPicker />
-          </Match>
-        </Switch>
+        <EmojiPicker />
       </Container>
     </Base>
   );
