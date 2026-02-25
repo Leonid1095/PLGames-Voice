@@ -451,6 +451,7 @@ function Entry(
 ) {
   const state = useState();
   const voice = useVoice();
+  const navigate = useNavigate();
   const { openModal } = useModals();
 
   const canEditChannel = createMemo(() =>
@@ -476,7 +477,7 @@ function Entry(
     props.active
       ? "selected"
       : inCall()
-        ? "active"
+        ? "selected"
         : state.notifications.isChannelMuted(props.channel)
           ? "muted"
           : props.channel.unread
@@ -484,8 +485,18 @@ function Entry(
             : "normal",
   );
 
+  const handleClick = (e: MouseEvent) => {
+    if (props.channel.isVoice) {
+      e.preventDefault();
+      if (voice.channel()?.id !== props.channel.id) {
+        voice.connect(props.channel);
+      }
+      navigate(`/server/${props.channel.serverId}/channel/${props.channel.id}`);
+    }
+  };
+
   return (
-    <a href={`/server/${props.channel.serverId}/channel/${props.channel.id}`}>
+    <a href={`/server/${props.channel.serverId}/channel/${props.channel.id}`} onClick={handleClick}>
       <Column gap="sm">
         <MenuButton
           use:floating={props.menuGenerator(props.channel)}
@@ -557,6 +568,9 @@ function Entry(
           <OverflowingText>
             <TextWithEmoji content={props.channel.name!} />
           </OverflowingText>
+          <Show when={inCall()}>
+            <Symbol size={16} color="var(--md-sys-color-primary)">call</Symbol>
+          </Show>
         </MenuButton>
 
         <VoiceChannelPreview channel={props.channel} />

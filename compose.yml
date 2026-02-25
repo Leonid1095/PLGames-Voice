@@ -5,10 +5,11 @@ services:
   database:
     image: docker.io/mongo
     restart: always
+    command: --auth
     volumes:
       - ./data/db:/data/db
     healthcheck:
-      test: mongosh --eval "db.adminCommand('ping')" --quiet
+      test: mongosh -u stoatadmin -p plgv0ice2026db --authenticationDatabase admin --eval "db.adminCommand('ping')" --quiet
       interval: 30s
       timeout: 10s
       retries: 5
@@ -17,7 +18,14 @@ services:
   # Redis: Event message broker & KV store
   redis:
     image: docker.io/eqalpha/keydb
+    command: keydb-server --tcp-keepalive 60 --timeout 0 --hz 10 --tcp-backlog 511
     restart: always
+    healthcheck:
+      test: keydb-cli ping | grep -q PONG
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
 
   # RabbitMQ: Internal message broker
   rabbit:
@@ -93,7 +101,7 @@ services:
       database:
         condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_healthy
     volumes:
       - type: bind
         source: ./Revolt.toml
@@ -123,14 +131,14 @@ services:
         target: /Revolt.toml
     restart: always
 
-  # Tenor proxy
-  gifbox:
-    image: ghcr.io/stoatchat/gifbox:v0.11.1
-    volumes:
-      - type: bind
-        source: ./Revolt.toml
-        target: /Revolt.toml
-    restart: always
+  # Tenor proxy — disabled (Tenor API discontinued 2026)
+  # gifbox:
+  #   image: ghcr.io/stoatchat/gifbox:v0.11.1
+  #   volumes:
+  #     - type: bind
+  #       source: ./Revolt.toml
+  #       target: /Revolt.toml
+  #   restart: always
 
   # Regular task daemon
   crond:
@@ -153,7 +161,7 @@ services:
       database:
         condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_healthy
       rabbit:
         condition: service_healthy
     volumes:

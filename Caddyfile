@@ -27,12 +27,13 @@
 		}
 	}
 
-	route /gifbox* {
-		uri strip_prefix /gifbox
-		reverse_proxy http://gifbox:14706 {
-			header_down Location "^/" "/gifbox/"
-		}
-	}
+	# gifbox disabled — Tenor API discontinued 2026
+	# route /gifbox* {
+	# 	uri strip_prefix /gifbox
+	# 	reverse_proxy http://gifbox:14706 {
+	# 		header_down Location "^/" "/gifbox/"
+	# 	}
+	# }
 
 	route /livekit* {
 		uri strip_prefix /livekit
