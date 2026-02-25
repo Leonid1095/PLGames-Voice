@@ -5,7 +5,7 @@ import { CONFIGURATION } from "@revolt/common";
 import { useNavigate } from "@revolt/routing";
 import { Button } from "@revolt/ui";
 
-import { FlowTitle } from "./Flow";
+import { FlowBase, FlowTitle } from "./Flow";
 import { setFlowCheckEmail } from "./FlowCheck";
 import { Fields, Form } from "./Form";
 
@@ -34,7 +34,7 @@ export default function FlowResend() {
   }
 
   return (
-    <>
+    <FlowBase>
       <FlowTitle>
         <Trans>Resend verification</Trans>
       </FlowTitle>
@@ -49,6 +49,6 @@ export default function FlowResend() {
           <Trans>Go back to login</Trans>
         </Button>
       </a>
-    </>
+    </FlowBase>
   );
 }

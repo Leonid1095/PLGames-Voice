@@ -4,7 +4,7 @@ import { useApi } from "@revolt/client";
 import { useNavigate, useParams } from "@revolt/routing";
 import { Button } from "@revolt/ui";
 
-import { FlowTitle } from "./Flow";
+import { FlowBase, FlowTitle } from "./Flow";
 import { Fields, Form } from "./Form";
 
 /**
@@ -33,7 +33,7 @@ export default function FlowConfirmReset() {
   }
 
   return (
-    <>
+    <FlowBase>
       <FlowTitle>
         <Trans>Reset password</Trans>
       </FlowTitle>
@@ -48,6 +48,6 @@ export default function FlowConfirmReset() {
           <Trans>Go back to login</Trans>
         </Button>
       </a>
-    </>
+    </FlowBase>
   );
 }

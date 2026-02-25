@@ -3,7 +3,7 @@ import { Match, Switch, createSignal, onMount } from "solid-js";
 import { useApi } from "@revolt/client";
 import { useParams } from "@revolt/routing";
 
-import { FlowTitle } from "./Flow";
+import { FlowBase, FlowTitle } from "./Flow";
 
 /**
  * Temporary flow for account deletion
@@ -23,7 +23,7 @@ export default function FlowDeleteAccount() {
   });
 
   return (
-    <>
+    <FlowBase>
       <FlowTitle>Delete Account</FlowTitle>
       <span>
         <Switch fallback={"Please wait..."}>
@@ -35,6 +35,6 @@ export default function FlowDeleteAccount() {
           </Match>
         </Switch>
       </span>
-    </>
+    </FlowBase>
   );
 }

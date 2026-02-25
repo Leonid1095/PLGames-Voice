@@ -6,7 +6,6 @@ export const ProfileCard = styled("div", {
     position: "relative",
 
     minWidth: 0,
-    height: "100%",
     width: "100%",
     userSelect: "none",
 
@@ -22,10 +21,7 @@ export const ProfileCard = styled("div", {
   },
   variants: {
     width: {
-      1: {
-        overflow: "hidden",
-        aspectRatio: "1/1",
-      },
+      1: {},
       2: {
         gridColumn: "1 / 3",
       },
@@ -36,7 +32,7 @@ export const ProfileCard = styled("div", {
     constraint: {
       half: {
         overflow: "hidden",
-        aspectRatio: "2/1",
+        maxHeight: "160px",
       },
     },
     isLink: {

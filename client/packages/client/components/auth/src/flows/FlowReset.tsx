@@ -5,7 +5,7 @@ import { CONFIGURATION } from "@revolt/common";
 import { useNavigate } from "@revolt/routing";
 import { Button } from "@revolt/ui";
 
-import { FlowTitle } from "./Flow";
+import { FlowBase, FlowTitle } from "./Flow";
 import { setFlowCheckEmail } from "./FlowCheck";
 import { Fields, Form } from "./Form";
 
@@ -34,7 +34,7 @@ export default function FlowReset() {
   }
 
   return (
-    <>
+    <FlowBase>
       <FlowTitle>
         <Trans>Reset password</Trans>
       </FlowTitle>
@@ -66,6 +66,6 @@ export default function FlowReset() {
           Mock Reset Screen
         </div>
       )}
-    </>
+    </FlowBase>
   );
 }
