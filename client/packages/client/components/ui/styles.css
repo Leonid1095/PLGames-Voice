@@ -10,9 +10,14 @@
   box-sizing: border-box;
 }
 
+:root {
+  --glow-accent: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
+  --border-accent: color-mix(in srgb, var(--md-sys-color-primary) 15%, transparent);
+}
+
 body {
   margin: 0;
-  background: #F5F5F5;
+  background: #0C0A1A;
   font-family: var(--fonts-primary);
 }
 
@@ -36,6 +41,17 @@ body {
   left: env(safe-area-inset-left);
   right: env(safe-area-inset-right);
   bottom: env(safe-area-inset-bottom);
+}
+
+/* Branded loader keyframes */
+@keyframes splashPulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+@keyframes splashLoad {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(200%); }
+  100% { transform: translateX(-100%); }
 }
 
 /* HighlightJs */

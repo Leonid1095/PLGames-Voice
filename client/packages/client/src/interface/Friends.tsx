@@ -119,7 +119,10 @@ export function Friends() {
         <div
           style={{
             position: "relative",
+            display: "flex",
             "min-height": 0,
+            height: "100%",
+            "min-width": 0,
           }}
         >
           <NavigationRail contained value={page} onValue={setPage}>
