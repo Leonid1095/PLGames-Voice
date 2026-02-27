@@ -679,6 +679,10 @@ msgstr "Закрыть беседу с {0}?"
 msgid "Code"
 msgstr "Код"
 
+#: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
+msgid "Colours"
+msgstr "Цвета"
+
 #: components/app/interface/settings/user/Account.tsx
 msgid "Configure a way to get back into your account in case your 2FA is lost"
 msgstr "Настройте способ восстановления доступа к аккаунту в случае потери двухфакторной аутентификации"
@@ -1224,6 +1228,10 @@ msgstr "Введите ваш текущий пароль..."
 #: components/auth/src/flows/Form.tsx
 msgid "Enter your preferred username."
 msgstr "Введите имя пользователя."
+
+#: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
+msgid "Expressive"
+msgstr "Экспрессивная"
 
 #: components/modal/modals/LinkWarning.tsx
 msgid "External links can be dangerous!"
@@ -2938,6 +2946,10 @@ msgstr "Просмотреть участников"
 #~ msgid "View older updates"
 #~ msgstr "Прошлые обновления"
 
+#: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
+msgid "Vibrant"
+msgstr "Яркая"
+
 #: src/interface/channels/ChannelHeader.tsx
 msgid "View pinned messages"
 msgstr "Просмотреть закреплённые сообщения"
@@ -3267,3 +3279,71 @@ msgstr "Создавайте серверы с каналами, ролями и
 #: src/Landing.tsx
 msgid "Ready to start?"
 msgstr "Готовы начать?"
+
+#: src/interface/ThemeSetup.tsx
+msgid "Choose your style"
+msgstr "Выберите стиль"
+
+#: src/interface/ThemeSetup.tsx
+msgid "You can always change this in Settings."
+msgstr "Вы всегда можете изменить это в Настройках."
+
+#: src/interface/ThemeSetup.tsx
+msgid "Theme"
+msgstr "Тема"
+
+#: src/interface/ThemeSetup.tsx
+msgid "Dark"
+msgstr "Тёмная"
+
+#: src/interface/ThemeSetup.tsx
+msgid "Light"
+msgstr "Светлая"
+
+#: src/interface/ThemeSetup.tsx
+msgid "Auto"
+msgstr "Авто"
+
+#: src/interface/ThemeSetup.tsx
+msgid "Accent color"
+msgstr "Цвет акцента"
+
+#: src/interface/ThemeSetup.tsx
+msgid "Continue"
+msgstr "Продолжить"
+
+#: src/interface/Discover.tsx
+msgid "Browse servers"
+msgstr "Обзор серверов"
+
+#: src/interface/Discover.tsx
+msgid "Search servers by name..."
+msgstr "Поиск серверов по названию..."
+
+#: src/interface/Discover.tsx
+msgid "Your servers"
+msgstr "Ваши серверы"
+
+#: src/interface/Discover.tsx
+msgid "No servers found"
+msgstr "Серверы не найдены"
+
+#: src/interface/Discover.tsx
+msgid "Join by invite"
+msgstr "Присоединиться по приглашению"
+
+#: src/interface/Discover.tsx
+msgid "Enter invite code or link"
+msgstr "Введите код приглашения или ссылку"
+
+#: src/interface/Discover.tsx
+msgid "{0} members"
+msgstr "{0} участников"
+
+#: components/modal/modals/CreateOrJoinServer.tsx
+msgid "Create or join a server"
+msgstr "Создать или присоединиться к серверу"
+
+#: components/modal/modals/CreateOrJoinServer.tsx
+msgid "Would you like to create a new server or join an existing one?"
+msgstr "Вы хотите создать новый сервер или присоединиться к существующему?"
