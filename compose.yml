@@ -9,16 +9,16 @@ services:
     volumes:
       - ./data/db:/data/db
     healthcheck:
-      test: mongosh -u stoatadmin -p plgv0ice2026db --authenticationDatabase admin --eval "db.adminCommand('ping')" --quiet
-      interval: 30s
+      test: mongosh --norc --quiet -u stoatadmin -p plgv0ice2026db --authenticationDatabase admin --eval "db.runCommand({ping:1}).ok"
+      interval: 60s
       timeout: 10s
       retries: 5
-      start_period: 20s
+      start_period: 30s
 
   # Redis: Event message broker & KV store
   redis:
     image: docker.io/eqalpha/keydb
-    command: keydb-server --tcp-keepalive 60 --timeout 0 --hz 10 --tcp-backlog 511
+    command: keydb-server --tcp-keepalive 30 --timeout 0 --hz 10 --tcp-backlog 511 --lfu-log-factor 10 --activedefrag yes
     restart: always
     healthcheck:
       test: keydb-cli ping | grep -q PONG

@@ -42,6 +42,7 @@ import { Friends } from "./interface/Friends";
 import { HomePage } from "./interface/Home";
 import { ServerHome } from "./interface/ServerHome";
 import { ChannelPage } from "./interface/channels/ChannelPage";
+import LandingPage from "./Landing";
 import "./serviceWorkerInterface";
 
 attachDevtoolsOverlay();
@@ -151,6 +152,7 @@ render(
           <Route path="/reset/:token" component={FlowConfirmReset} />
           <Route path="/*" component={FlowHome} />
         </Route>
+        <Route path="/welcome" component={LandingPage} />
         <Route path="/" component={Interface as never}>
           <Route path="/pwa" component={PWARedirect} />
           <Route path="/dev" component={DevelopmentPage} />
