@@ -20,5 +20,7 @@ export const main = cva({
     marginBlockEnd: "var(--gap-md)",
     borderRadius: "var(--borderRadius-xl)",
     background: "var(--md-sys-color-surface-container-lowest)",
+    border: "1px solid var(--border-accent)",
+    backdropFilter: "blur(8px)",
   },
 });

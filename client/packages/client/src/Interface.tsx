@@ -13,9 +13,75 @@ import { useModals } from "@revolt/modal";
 import { Navigate, useBeforeLeave, useLocation } from "@revolt/routing";
 import { useState } from "@revolt/state";
 import { LAYOUT_SECTIONS } from "@revolt/state/stores/Layout";
-import { CircularProgress } from "@revolt/ui";
-
 import { Sidebar } from "./interface/Sidebar";
+import { ThemeSetup } from "./interface/ThemeSetup";
+
+/**
+ * Branded loading screen — shown while the client initializes
+ */
+function AppLoader() {
+  return (
+    <div
+      style={{
+        display: "flex",
+        "flex-direction": "column",
+        "align-items": "center",
+        "justify-content": "center",
+        gap: "20px",
+        flex: "1",
+        background: "#0C0A1A",
+      }}
+    >
+      <svg
+        width="48"
+        height="48"
+        viewBox="0 0 32 32"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ animation: "splashPulse 2s ease-in-out infinite" }}
+      >
+        <path
+          d="M16 2 L28 9 L28 23 L16 30 L4 23 L4 9 Z"
+          fill="url(#lg)"
+          opacity="0.9"
+        />
+        <path
+          d="M16 10 L16 22 M11 13 L16 10 L21 13 M11 19 L16 22 L21 19"
+          stroke="#fff"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          fill="none"
+        />
+        <defs>
+          <linearGradient id="lg" x1="4" y1="2" x2="28" y2="30">
+            <stop offset="0%" stop-color="#7C3AED" />
+            <stop offset="100%" stop-color="#2563EB" />
+          </linearGradient>
+        </defs>
+      </svg>
+      <div
+        style={{
+          width: "100px",
+          height: "2px",
+          "border-radius": "1px",
+          background: "#231F33",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            width: "40%",
+            height: "100%",
+            background: "linear-gradient(90deg, #7C3AED, #2563EB)",
+            "border-radius": "1px",
+            animation: "splashLoad 1.5s ease-in-out infinite",
+          }}
+        />
+      </div>
+    </div>
+  );
+}
 
 /**
  * Application layout
@@ -67,7 +133,7 @@ const Interface = (props: { children: JSX.Element }) => {
         }}
       >
         <Titlebar />
-        <Switch fallback={<CircularProgress />}>
+        <Switch fallback={<AppLoader />}>
           <Match when={!isLoggedIn()}>
             <Navigate href="/welcome" />
           </Match>
@@ -108,6 +174,7 @@ const Interface = (props: { children: JSX.Element }) => {
         </Switch>
 
         <NotificationsWorker />
+        <ThemeSetup />
       </div>
     </MessageCache>
   );
@@ -130,7 +197,7 @@ const Layout = styled("div", {
       },
       false: {
         color: "var(--md-sys-color-outline)",
-        background: "var(--md-sys-color-surface-container-high)",
+        background: "radial-gradient(ellipse at 20% 0%, color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent) 0%, transparent 50%), radial-gradient(ellipse at 80% 100%, color-mix(in srgb, var(--md-sys-color-primary) 5%, transparent) 0%, transparent 50%), linear-gradient(135deg, var(--md-sys-color-surface-container-high) 0%, color-mix(in srgb, var(--md-sys-color-surface-container) 70%, var(--md-sys-color-surface-container-high)) 100%)",
       },
     },
   },
@@ -141,7 +208,9 @@ const Layout = styled("div", {
  */
 const Content = styled("div", {
   base: {
-    background: "var(--md-sys-color-surface-container-low)",
+    background: "color-mix(in srgb, var(--md-sys-color-surface-container-low) 85%, transparent)",
+    backdropFilter: "blur(8px)",
+    boxShadow: "inset 1px 0 0 color-mix(in srgb, var(--md-sys-color-outline-variant) 15%, transparent)",
 
     display: "flex",
     width: "100%",
@@ -153,6 +222,7 @@ const Content = styled("div", {
         borderTopLeftRadius: "var(--borderRadius-lg)",
         borderBottomLeftRadius: "var(--borderRadius-lg)",
         overflow: "hidden",
+        boxShadow: "var(--elevation-2), inset 1px 0 0 color-mix(in srgb, var(--md-sys-color-outline-variant) 15%, transparent)",
       },
     },
   },

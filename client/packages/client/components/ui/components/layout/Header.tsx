@@ -26,7 +26,7 @@ export const Header = styled("div", {
 
     color: "var(--md-sys-color-on-surface)",
     fill: "var(--md-sys-color-on-surface)",
-    boxShadow: "0 1px 0 color-mix(in srgb, var(--md-sys-color-outline-variant) 15%, transparent)",
+    boxShadow: "var(--elevation-1), 0 1px 0 color-mix(in srgb, var(--md-sys-color-outline-variant) 10%, transparent)",
 
     backgroundSize: "cover !important",
     backgroundPosition: "center !important",
@@ -38,11 +38,15 @@ export const Header = styled("div", {
     placement: {
       primary: {
         margin: "var(--gap-md) var(--gap-md) var(--gap-md) 0",
+        backdropFilter: "blur(12px)",
+        background: "color-mix(in srgb, var(--md-sys-color-surface-container) 70%, transparent)",
+        boxShadow: "var(--elevation-1), 0 1px 0 color-mix(in srgb, var(--md-sys-color-outline-variant) 10%, transparent), inset 0 1px 0 color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent)",
       },
       secondary: {
         margin: "var(--gap-md)",
         backgroundColor: "var(--md-sys-color-surface-variant)",
         borderBottom: "1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 20%, transparent)",
+        boxShadow: "var(--elevation-1)",
       },
     },
     image: {
