@@ -3195,3 +3195,75 @@ msgstr "Your role ranking is too low to take this action."
 #: components/i18n/errors.ts
 msgid "Your user has already been created? Try logging in again or refreshing the app."
 msgstr "Your user has already been created? Try logging in again or refreshing the app."
+
+#: components/auth/src/flows/FlowHome.tsx
+msgid "Welcome back!"
+msgstr "Welcome back!"
+
+#: components/auth/src/flows/FlowHome.tsx
+msgid "We're so excited to see you again!"
+msgstr "We're so excited to see you again!"
+
+#: components/auth/src/flows/FlowHome.tsx
+msgid "Need an account?"
+msgstr "Need an account?"
+
+#: components/auth/src/flows/FlowHome.tsx
+msgid "Forgot your password?"
+msgstr "Forgot your password?"
+
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "Already have an account?"
+msgstr "Already have an account?"
+
+#: src/Landing.tsx
+msgid "Log in"
+msgstr "Log in"
+
+#: src/Landing.tsx
+msgid "Sign up"
+msgstr "Sign up"
+
+#: src/Landing.tsx
+msgid "Your space. Your voice."
+msgstr "Your space. Your voice."
+
+#: src/Landing.tsx
+msgid "Voice, text, and servers — all in one place. Free, open, and built for your community."
+msgstr "Voice, text, and servers — all in one place. Free, open, and built for your community."
+
+#: src/Landing.tsx
+msgid "Get started"
+msgstr "Get started"
+
+#: src/Landing.tsx
+msgid "I already have an account"
+msgstr "I already have an account"
+
+#: src/Landing.tsx
+msgid "Crystal-clear voice"
+msgstr "Crystal-clear voice"
+
+#: src/Landing.tsx
+msgid "Low-latency voice channels with noise suppression. Talk freely — it just works."
+msgstr "Low-latency voice channels with noise suppression. Talk freely — it just works."
+
+#: src/Landing.tsx
+msgid "Rich messaging"
+msgstr "Rich messaging"
+
+#: src/Landing.tsx
+msgid "Markdown, embeds, reactions, and threads. Everything you need for great conversations."
+msgstr "Markdown, embeds, reactions, and threads. Everything you need for great conversations."
+
+#: src/Landing.tsx
+msgid "Your own servers"
+msgstr "Your own servers"
+
+#: src/Landing.tsx
+msgid "Create servers with channels, roles, and permissions. Build the community you want."
+msgstr "Create servers with channels, roles, and permissions. Build the community you want."
+
+#: src/Landing.tsx
+msgid "Ready to start?"
+msgstr "Ready to start?"

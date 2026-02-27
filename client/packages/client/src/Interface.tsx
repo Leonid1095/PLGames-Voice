@@ -69,7 +69,7 @@ const Interface = (props: { children: JSX.Element }) => {
         <Titlebar />
         <Switch fallback={<CircularProgress />}>
           <Match when={!isLoggedIn()}>
-            <Navigate href="/login" />
+            <Navigate href="/welcome" />
           </Match>
           <Match when={lifecycle.loadedOnce()}>
             <Layout

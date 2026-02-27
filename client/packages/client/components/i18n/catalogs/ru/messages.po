@@ -3195,3 +3195,75 @@ msgstr "Ваш ранг роли слишком низкий для этого �
 #: components/i18n/errors.ts
 msgid "Your user has already been created? Try logging in again or refreshing the app."
 msgstr "Ваш пользователь уже создан? Попробуйте войти снова или обновить приложение."
+
+#: components/auth/src/flows/FlowHome.tsx
+msgid "Welcome back!"
+msgstr "С возвращением!"
+
+#: components/auth/src/flows/FlowHome.tsx
+msgid "We're so excited to see you again!"
+msgstr "Мы рады видеть вас снова!"
+
+#: components/auth/src/flows/FlowHome.tsx
+msgid "Need an account?"
+msgstr "Нужен аккаунт?"
+
+#: components/auth/src/flows/FlowHome.tsx
+msgid "Forgot your password?"
+msgstr "Забыли пароль?"
+
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "Already have an account?"
+msgstr "Уже есть аккаунт?"
+
+#: src/Landing.tsx
+msgid "Log in"
+msgstr "Войти"
+
+#: src/Landing.tsx
+msgid "Sign up"
+msgstr "Регистрация"
+
+#: src/Landing.tsx
+msgid "Your space. Your voice."
+msgstr "Твоё пространство. Твой голос."
+
+#: src/Landing.tsx
+msgid "Voice, text, and servers — all in one place. Free, open, and built for your community."
+msgstr "Голос, текст и серверы — всё в одном месте. Бесплатно, открыто и создано для вашего сообщества."
+
+#: src/Landing.tsx
+msgid "Get started"
+msgstr "Начать"
+
+#: src/Landing.tsx
+msgid "I already have an account"
+msgstr "У меня уже есть аккаунт"
+
+#: src/Landing.tsx
+msgid "Crystal-clear voice"
+msgstr "Кристально чистый голос"
+
+#: src/Landing.tsx
+msgid "Low-latency voice channels with noise suppression. Talk freely — it just works."
+msgstr "Голосовые каналы с низкой задержкой и шумоподавлением. Говорите свободно — всё просто работает."
+
+#: src/Landing.tsx
+msgid "Rich messaging"
+msgstr "Полноценный чат"
+
+#: src/Landing.tsx
+msgid "Markdown, embeds, reactions, and threads. Everything you need for great conversations."
+msgstr "Markdown, вложения, реакции и треды. Всё, что нужно для отличного общения."
+
+#: src/Landing.tsx
+msgid "Your own servers"
+msgstr "Свои серверы"
+
+#: src/Landing.tsx
+msgid "Create servers with channels, roles, and permissions. Build the community you want."
+msgstr "Создавайте серверы с каналами, ролями и правами. Стройте сообщество, которое вам нужно."
+
+#: src/Landing.tsx
+msgid "Ready to start?"
+msgstr "Готовы начать?"

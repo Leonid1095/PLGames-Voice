@@ -122,9 +122,9 @@ export class Theme extends AbstractStore {
       preset: "you",
       mode: "system",
 
-      m3Accent: "#007AFF",
+      m3Accent: "#7C3AED",
       m3Contrast: 0.0,
-      m3Variant: "tonal_spot",
+      m3Variant: "vibrant",
 
       interfaceFont: "Inter",
       monospaceFont: "Fira Code",

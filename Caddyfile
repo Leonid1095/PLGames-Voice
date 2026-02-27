@@ -10,6 +10,10 @@
 		uri strip_prefix /ws
 		reverse_proxy http://events:14703 {
 			header_down Location "^/" "/ws/"
+			transport http {
+				keepalive off
+				read_buffer 4096
+			}
 		}
 	}
 
@@ -39,6 +43,10 @@
 		uri strip_prefix /livekit
 		reverse_proxy http://livekit:7880 {
 			header_down Location "^/" "/livekit/"
+			transport http {
+				keepalive off
+				read_buffer 4096
+			}
 		}
 	}
 
@@ -48,6 +56,10 @@
 			header_down Location "^/" "/ingress/"
 		}
 	}
+
+	# Block access to hidden files (.git, .env, etc.)
+	@hidden path_regexp hidden \/\.
+	respond @hidden 404
 
 	reverse_proxy http://web:5000
 }

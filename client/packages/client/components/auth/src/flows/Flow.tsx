@@ -1,126 +1,72 @@
 import { JSX, Show } from "solid-js";
 
-import { defineKeyframes } from "@pandacss/dev";
 import { styled } from "styled-system/jsx";
 
-import { Column, Row, Text } from "@revolt/ui";
-
-import envelope from "./envelope.svg";
-import wave from "./wave.svg";
+import { Column, Text } from "@revolt/ui";
 
 /**
- * Container for authentication page flows
+ * Container for authentication page flows — Obsidian Amethyst card
  */
 export const FlowBase = styled("div", {
   base: {
     display: "flex",
     flexDirection: "column",
-    gap: "var(--gap-lg)",
+    gap: "20px",
     flexGrow: 0,
-    background: "var(--md-sys-color-surface-container)",
-    color: "var(--md-sys-color-on-surface)",
-    width: "360px",
-    maxWidth: "360px",
-    maxHeight: "600px",
-    padding: "45px 40px",
-    borderRadius: "32px",
-    marginTop: "20px",
-    marginBottom: "20px",
-    justifySelf: "center",
-    marginInline: "auto",
+
+    background: "#1A1726",
+    color: "#F0ECF9",
+
+    width: "480px",
+    maxWidth: "calc(100vw - 40px)",
+    padding: "32px",
+    borderRadius: "12px",
+    border: "1px solid rgba(124,58,237,0.2)",
+    boxShadow: "0 4px 24px 0 rgba(124,58,237,0.15)",
 
     animationName: "contentFadeIn",
-    animationDuration: "0.5s",
-    animationTimingFunction: "cubic-bezier(0.2, 0, 0, 1)",
+    animationDuration: "0.3s",
+    animationTimingFunction: "ease-out",
     animationFillMode: "both",
-    boxShadow: "var(--elevation-3)",
-    border: "1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 20%, transparent)",
   },
 });
 
 /**
- * Wave animation
- * TODO: I don't think this is how you use it
- */
-const WaveAnimation = defineKeyframes({
-  fadeIn: {
-    "0%": { transform: "rotate(0)" },
-    "10%": { transform: "rotate(14deg)" },
-    "20%": { transform: "rotate(-8deg)" },
-    "30%": { transform: "rotate(14deg)" },
-    "40%": { transform: "rotate(-4deg)" },
-    "50%": { transform: "rotate(10deg)" },
-    "60%": { transform: "rotate(0)" },
-    "100%": { transform: "rotate(0)" },
-  },
-});
-
-/**
- * Envelope animation
- * TODO: I don't think this is how you use it
- */
-const EnvelopeAnimation = defineKeyframes({
-  fadeIn: {
-    "0%": {
-      opacity: 0,
-      transform: "translateY(-24px)",
-    },
-    "100%": {
-      opacity: 1,
-      transform: "translateY(-4px)",
-    },
-  },
-});
-
-/**
- * Wave emoji
- */
-const Wave = styled("img", {
-  base: {
-    height: "1.8em",
-    animationDuration: "2.5s",
-    animationIterationCount: 1,
-    animationName: WaveAnimation,
-  },
-});
-
-/**
- * Mail emoji
- */
-const Mail = styled("img", {
-  base: {
-    height: "1.8em",
-    transform: "translateY(-4px)",
-    animationDuration: "0.5s",
-    animationIterationCount: 1,
-    animationTimingFunction: "ease",
-    animationName: EnvelopeAnimation,
-  },
-});
-
-/**
- * Common flow title component
+ * Common flow title component — Discord-style centered
  */
 export function FlowTitle(props: {
   children: JSX.Element;
   subtitle?: JSX.Element;
-  emoji?: "wave" | "mail";
 }) {
   return (
-    <Column>
-      <Row align gap="sm">
-        <Show when={props.emoji === "wave"}>
-          <Wave src={wave} />
-        </Show>
-        <Show when={props.emoji === "mail"}>
-          <Mail src={envelope} />
-        </Show>
-        <Text class="title" size="large">
-          {props.children}
-        </Text>
-      </Row>
+    <Column
+      gap="sm"
+      style={{
+        "text-align": "center",
+        "margin-bottom": "4px",
+      }}
+    >
+      <Text
+        class="title"
+        size="large"
+        style={{
+          "font-size": "24px",
+          "font-weight": "600",
+          color: "#F0ECF9",
+        }}
+      >
+        {props.children}
+      </Text>
       <Show when={props.subtitle}>
-        <Text class="title">{props.subtitle}</Text>
+        <Text
+          class="label"
+          style={{
+            "font-size": "14px",
+            color: "#A098B8",
+          }}
+        >
+          {props.subtitle}
+        </Text>
       </Show>
     </Column>
   );
