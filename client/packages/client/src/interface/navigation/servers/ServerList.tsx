@@ -13,6 +13,7 @@ import { useState } from "@revolt/state";
 import { Avatar, Column, Text, Time, Unreads, UserStatus } from "@revolt/ui";
 
 import MdAdd from "@material-design-icons/svg/filled/add.svg?component-solid";
+import MdExplore from "@material-design-icons/svg/filled/explore.svg?component-solid";
 import MdHome from "@material-design-icons/svg/filled/home.svg?component-solid";
 import MdSettings from "@material-design-icons/svg/filled/settings.svg?component-solid";
 
@@ -293,7 +294,11 @@ export const ServerList = (props: Props) => {
             <Avatar size={42} fallback={<MdAdd />} />
           </a>
         </Tooltip>
-        {/* Discover disabled — stt.gg unavailable */}
+        <Tooltip placement="right" content={"Browse servers"}>
+          <a class={entryContainer()} href="/discover">
+            <Avatar size={42} fallback={<MdExplore />} interactive />
+          </a>
+        </Tooltip>
       </div>
       <Shadow>
         <div />
@@ -319,6 +324,7 @@ const ServerListBase = styled("div", {
     flexDirection: "column",
 
     fill: "var(--md-sys-color-on-surface)",
+    background: "linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--md-sys-color-primary) 3%, transparent) 100%)",
   },
 });
 
@@ -371,6 +377,7 @@ const entryContainer = cva({
       selected: {
         "&:before": {
           height: "36px !important",
+          boxShadow: "0 0 8px color-mix(in srgb, var(--md-sys-color-primary) 60%, transparent)",
         },
       },
       alert: {
@@ -392,7 +399,7 @@ const LineDivider = styled("div", {
     flexShrink: 0,
     margin: "6px auto",
     width: "calc(100% - 24px)",
-    background: "var(--md-sys-color-outline-variant)",
+    background: "linear-gradient(90deg, transparent, var(--md-sys-color-outline-variant), transparent)",
   },
 });
 

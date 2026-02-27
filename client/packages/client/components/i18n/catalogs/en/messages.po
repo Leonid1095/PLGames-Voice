@@ -679,6 +679,10 @@ msgstr "Close conversation with {0}?"
 msgid "Code"
 msgstr "Code"
 
+#: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
+msgid "Colours"
+msgstr "Colours"
+
 #: components/app/interface/settings/user/Account.tsx
 msgid "Configure a way to get back into your account in case your 2FA is lost"
 msgstr "Configure a way to get back into your account in case your 2FA is lost"
@@ -1224,6 +1228,10 @@ msgstr "Enter your current password..."
 #: components/auth/src/flows/Form.tsx
 msgid "Enter your preferred username."
 msgstr "Enter your preferred username."
+
+#: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
+msgid "Expressive"
+msgstr "Expressive"
 
 #: components/modal/modals/LinkWarning.tsx
 msgid "External links can be dangerous!"
@@ -2938,6 +2946,10 @@ msgstr "View members"
 #~ msgid "View older updates"
 #~ msgstr "View older updates"
 
+#: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
+msgid "Vibrant"
+msgstr "Vibrant"
+
 #: src/interface/channels/ChannelHeader.tsx
 msgid "View pinned messages"
 msgstr "View pinned messages"
@@ -3267,3 +3279,71 @@ msgstr "Create servers with channels, roles, and permissions. Build the communit
 #: src/Landing.tsx
 msgid "Ready to start?"
 msgstr "Ready to start?"
+
+#: src/interface/ThemeSetup.tsx
+msgid "Choose your style"
+msgstr "Choose your style"
+
+#: src/interface/ThemeSetup.tsx
+msgid "You can always change this in Settings."
+msgstr "You can always change this in Settings."
+
+#: src/interface/ThemeSetup.tsx
+msgid "Theme"
+msgstr "Theme"
+
+#: src/interface/ThemeSetup.tsx
+msgid "Dark"
+msgstr "Dark"
+
+#: src/interface/ThemeSetup.tsx
+msgid "Light"
+msgstr "Light"
+
+#: src/interface/ThemeSetup.tsx
+msgid "Auto"
+msgstr "Auto"
+
+#: src/interface/ThemeSetup.tsx
+msgid "Accent color"
+msgstr "Accent color"
+
+#: src/interface/ThemeSetup.tsx
+msgid "Continue"
+msgstr "Continue"
+
+#: src/interface/Discover.tsx
+msgid "Browse servers"
+msgstr "Browse servers"
+
+#: src/interface/Discover.tsx
+msgid "Search servers by name..."
+msgstr "Search servers by name..."
+
+#: src/interface/Discover.tsx
+msgid "Your servers"
+msgstr "Your servers"
+
+#: src/interface/Discover.tsx
+msgid "No servers found"
+msgstr "No servers found"
+
+#: src/interface/Discover.tsx
+msgid "Join by invite"
+msgstr "Join by invite"
+
+#: src/interface/Discover.tsx
+msgid "Enter invite code or link"
+msgstr "Enter invite code or link"
+
+#: src/interface/Discover.tsx
+msgid "{0} members"
+msgstr "{0} members"
+
+#: components/modal/modals/CreateOrJoinServer.tsx
+msgid "Create or join a server"
+msgstr "Create or join a server"
+
+#: components/modal/modals/CreateOrJoinServer.tsx
+msgid "Would you like to create a new server or join an existing one?"
+msgstr "Would you like to create a new server or join an existing one?"
