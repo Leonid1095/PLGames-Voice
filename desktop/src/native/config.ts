@@ -28,6 +28,9 @@ const schema = {
   discordRpc: {
     type: "boolean",
   } as JSONSchema.Boolean,
+  askBeforeClose: {
+    type: "boolean",
+  } as JSONSchema.Boolean,
   windowState: {
     type: "object",
     properties: {
@@ -54,12 +57,13 @@ const store = new Store({
   schema,
   defaults: {
     firstLaunch: true,
-    customFrame: true,
+    customFrame: false,
     minimiseToTray: true,
     startMinimisedToTray: false,
     spellchecker: true,
     hardwareAcceleration: true,
     discordRpc: true,
+    askBeforeClose: true,
     windowState: {
       x: 0,
       y: 0,
@@ -83,6 +87,7 @@ class Config {
       spellchecker: this.spellchecker,
       hardwareAcceleration: this.hardwareAcceleration,
       discordRpc: this.discordRpc,
+      askBeforeClose: this.askBeforeClose,
       windowState: this.windowState,
     });
   }
@@ -186,6 +191,21 @@ class Config {
 
     (store as never as { set(k: string, value: boolean): void }).set(
       "discordRpc",
+      value,
+    );
+
+    this.sync();
+  }
+
+  get askBeforeClose() {
+    return (store as never as { get(k: string): boolean }).get(
+      "askBeforeClose",
+    );
+  }
+
+  set askBeforeClose(value: boolean) {
+    (store as never as { set(k: string, value: boolean): void }).set(
+      "askBeforeClose",
       value,
     );
 

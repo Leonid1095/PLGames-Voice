@@ -5,6 +5,7 @@ import {
   Menu,
   MenuItem,
   app,
+  dialog,
   ipcMain,
   nativeImage,
 } from "electron";
@@ -83,15 +84,54 @@ export function createMainWindow() {
     mainWindow.maximize();
   }
 
-  // load the entrypoint
-  mainWindow.loadURL(BUILD_URL.toString());
+  // load the entrypoint — desktop skips landing, goes straight to login
+  const startURL = new URL("/login", BUILD_URL);
+  mainWindow.loadURL(startURL.toString());
 
-  // minimise window to tray
+  // handle window close with optional dialog
   mainWindow.on("close", (event) => {
-    if (!shouldQuit && config.minimiseToTray) {
-      event.preventDefault();
-      mainWindow.hide();
+    if (shouldQuit) return;
+
+    event.preventDefault();
+
+    // If user already chose "don't ask again", use saved preference
+    if (!config.askBeforeClose) {
+      if (config.minimiseToTray) {
+        mainWindow.hide();
+      } else {
+        shouldQuit = true;
+        mainWindow.close();
+      }
+      return;
     }
+
+    // Show close dialog
+    dialog
+      .showMessageBox(mainWindow, {
+        type: "question",
+        title: "PLG Voice",
+        message: "Что сделать с приложением?",
+        buttons: ["Свернуть в трей", "Закрыть полностью", "Отмена"],
+        defaultId: 0,
+        cancelId: 2,
+        checkboxLabel: "Больше не спрашивать",
+        checkboxChecked: false,
+      })
+      .then(({ response, checkboxChecked }) => {
+        if (response === 2) return; // Cancel
+
+        if (checkboxChecked) {
+          config.askBeforeClose = false;
+          config.minimiseToTray = response === 0;
+        }
+
+        if (response === 0) {
+          mainWindow.hide();
+        } else {
+          shouldQuit = true;
+          mainWindow.close();
+        }
+      });
   });
 
   // update tray menu when window is shown/hidden
@@ -141,8 +181,37 @@ export function createMainWindow() {
     }
   });
 
-  // send the config
-  mainWindow.webContents.on("did-finish-load", () => config.sync());
+  // send the config and inject desktop overrides
+  mainWindow.webContents.on("did-finish-load", () => {
+    config.sync();
+
+    // Hide the custom web titlebar when using native Windows frame
+    if (!config.customFrame) {
+      mainWindow.webContents.insertCSS(`
+        [style*="-webkit-app-region"] { -webkit-app-region: none !important; }
+      `);
+      mainWindow.webContents.executeJavaScript(`
+        // Observe DOM and hide any titlebar elements rendered by the web client
+        const observer = new MutationObserver(() => {
+          // Hide wordmark SVG (PLG Voice logo in titlebar)
+          document.querySelectorAll('svg').forEach(svg => {
+            if (svg.querySelector('text') && svg.textContent.includes('PLG Voice')) {
+              const titleDiv = svg.closest('[style*="app-region"]');
+              if (titleDiv) titleDiv.style.display = 'none';
+            }
+          });
+          // Hide the 29px titlebar container
+          document.querySelectorAll('div').forEach(div => {
+            const s = div.style;
+            if (s.height === '29px' && div.querySelector('[style*="app-region"]')) {
+              div.style.display = 'none';
+            }
+          });
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+      `);
+    }
+  });
 
   // configure spellchecker context menu
   mainWindow.webContents.on("context-menu", (_, params) => {
