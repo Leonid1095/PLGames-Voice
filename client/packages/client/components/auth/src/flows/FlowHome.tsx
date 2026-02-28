@@ -57,6 +57,30 @@ const BottomLinks = styled("div", {
   },
 });
 
+const AuthButton = styled("button", {
+  base: {
+    width: "100%",
+    marginTop: "8px",
+    padding: "12px",
+    border: "none",
+    borderRadius: "8px",
+    fontSize: "16px",
+    fontWeight: 600,
+    fontFamily: "inherit",
+    cursor: "pointer",
+    color: "#fff",
+    background: "#7C3AED",
+    transition: "background 0.2s, box-shadow 0.2s",
+    _hover: {
+      background: "#6D28D9",
+      boxShadow: "0 0 20px rgba(124,58,237,0.25)",
+    },
+    _active: {
+      background: "#5B21B6",
+    },
+  },
+});
+
 /* ── component ──────────────────────────────────────── */
 
 export default function FlowHome() {
@@ -105,17 +129,9 @@ export default function FlowHome() {
                 <Trans>Forgot your password?</Trans>
               </ForgotLink>
 
-              <Button
-                type="submit"
-                style={{
-                  width: "100%",
-                  "margin-top": "8px",
-                  background: "#7C3AED",
-                  color: "#fff",
-                }}
-              >
+              <AuthButton type="submit">
                 <Trans>Login</Trans>
-              </Button>
+              </AuthButton>
 
               <BottomLinks>
                 <Trans>Need an account?</Trans>{" "}

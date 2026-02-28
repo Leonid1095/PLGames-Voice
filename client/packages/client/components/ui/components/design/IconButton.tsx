@@ -103,7 +103,7 @@ const iconButton2 = cva({
       },
 
       _header: {
-        "--colour": "white",
+        "--colour": "var(--md-sys-color-on-surface)",
       },
     },
     size: {

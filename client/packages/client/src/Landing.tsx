@@ -6,31 +6,75 @@ import { styled } from "styled-system/jsx";
 import { useClientLifecycle } from "@revolt/client";
 import { Navigate } from "@revolt/routing";
 
-import wordmarkUrl from "../scripts/assets_fallback/web/wordmark.svg";
-
 /* ── Obsidian Amethyst palette ─────────────────────── */
 
 const BG = "#0C0A1A";
-const CARD = "#1A1726";
 const SURFACE = "#231F33";
 const ACCENT = "#7C3AED";
 const ACCENT_HOVER = "#6D28D9";
 const GLOW = "rgba(124,58,237,0.15)";
-const LINK = "#A78BFA";
 const TEXT = "#F0ECF9";
 const TEXT_SECONDARY = "#A098B8";
 const TEXT_DIMMED = "#6E6889";
+
+/* ── Logo ──────────────────────────────────────────── */
+
+function Logo() {
+  return (
+    <svg
+      width="160"
+      height="32"
+      viewBox="0 0 160 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* Hexagon icon */}
+      <path
+        d="M16 2 L28 9 L28 23 L16 30 L4 23 L4 9 Z"
+        fill="url(#logoGrad)"
+        opacity="0.9"
+      />
+      <path
+        d="M16 10 L16 22 M11 13 L16 10 L21 13 M11 19 L16 22 L21 19"
+        stroke="#fff"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        fill="none"
+      />
+      <defs>
+        <linearGradient id="logoGrad" x1="4" y1="2" x2="28" y2="30">
+          <stop offset="0%" stop-color="#7C3AED" />
+          <stop offset="100%" stop-color="#2563EB" />
+        </linearGradient>
+      </defs>
+      {/* Text */}
+      <text
+        x="38"
+        y="22"
+        fill={TEXT}
+        font-family="Inter, sans-serif"
+        font-weight="700"
+        font-size="18"
+        letter-spacing="-0.3"
+      >
+        PLG Voice
+      </text>
+    </svg>
+  );
+}
 
 /* ── Styled components ─────────────────────────────── */
 
 const Page = styled("div", {
   base: {
     width: "100%",
-    minHeight: "100vh",
+    height: "100%",
+    overflowY: "auto",
+    overflowX: "hidden",
     background: `radial-gradient(ellipse at 30% 0%, ${GLOW} 0%, transparent 50%), radial-gradient(ellipse at 70% 100%, rgba(37,99,235,0.10) 0%, transparent 50%), ${BG}`,
     color: TEXT,
     fontFamily: "Inter, sans-serif",
-    overflowX: "hidden",
   },
 });
 
@@ -259,12 +303,7 @@ export default function LandingPage() {
       <Page>
         {/* ── Navbar ── */}
         <Nav>
-          <img
-            src={wordmarkUrl}
-            alt="PLG Voice"
-            height={32}
-            style={{ color: TEXT }}
-          />
+          <Logo />
           <NavButtons>
             <BtnSecondary href="/login">
               <Trans>Log in</Trans>

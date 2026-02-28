@@ -175,7 +175,7 @@ function generateMaterialYouScheme(
       break;
   }
 
-  return {
+  const colors: MaterialColours = {
     primary: hexFromArgb(scheme.primary),
     "on-primary": hexFromArgb(scheme.onPrimary),
     "primary-container": hexFromArgb(scheme.primaryContainer),
@@ -228,4 +228,31 @@ function generateMaterialYouScheme(
     scrim: hexFromArgb(scheme.scrim),
     shadow: hexFromArgb(scheme.shadow),
   };
+
+  // Custom surface overrides for premium look
+  if (darkMode) {
+    // Obsidian-dark — deep purple-tinted backgrounds
+    colors["surface-dim"] = "#0C0A1A";
+    colors.surface = "#0F0D1F";
+    colors["surface-bright"] = "#1E1A2E";
+    colors["surface-container-lowest"] = "#080618";
+    colors["surface-container-low"] = "#12101F";
+    colors["surface-container"] = "#1A1726";
+    colors["surface-container-high"] = "#1F1C2E";
+    colors["surface-container-highest"] = "#2A2640";
+    colors["outline-variant"] = "#3D3654";
+  } else {
+    // Premium light — warm off-white with subtle violet tint
+    colors["surface-dim"] = "#E8E4F0";
+    colors.surface = "#F5F3FA";
+    colors["surface-bright"] = "#FFFFFF";
+    colors["surface-container-lowest"] = "#FFFFFF";
+    colors["surface-container-low"] = "#F0EDF7";
+    colors["surface-container"] = "#EAE7F2";
+    colors["surface-container-high"] = "#E4E1ED";
+    colors["surface-container-highest"] = "#DDD9E8";
+    colors["outline-variant"] = "#C9C3D8";
+  }
+
+  return colors;
 }

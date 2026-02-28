@@ -394,7 +394,6 @@ const CategorySection = styled("div", {
     flexDirection: "column",
     paddingBlock: "var(--gap-sm)",
     borderRadius: "var(--borderRadius-sm)",
-    background: "var(--md-sys-color-surface-container-low)",
   },
 });
 

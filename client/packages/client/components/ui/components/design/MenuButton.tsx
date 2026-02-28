@@ -141,7 +141,7 @@ const base = cva({
         "--color": "var(--md-sys-color-outline)",
         background: "transparent",
         "&:hover": {
-          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent)",
+          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent)",
           "--color": "var(--md-sys-color-on-surface-variant)",
         },
       },
@@ -153,19 +153,20 @@ const base = cva({
           opacity: "0.3",
         },
         "&:hover": {
-          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 5%, transparent)",
+          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent)",
         },
       },
       active: {
         "--color": "var(--md-sys-color-on-surface)",
         background: "transparent",
         "&:hover": {
-          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent)",
+          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent)",
         },
       },
       selected: {
         "--color": "var(--md-sys-color-on-primary-container)",
         background: "var(--md-sys-color-primary-container)",
+        boxShadow: "0 1px 4px color-mix(in srgb, var(--md-sys-color-primary) 25%, transparent)",
         "&:hover": {
           background: "color-mix(in srgb, var(--md-sys-color-primary-container) 85%, var(--md-sys-color-on-primary-container))",
         },

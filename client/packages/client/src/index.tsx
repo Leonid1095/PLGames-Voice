@@ -6,6 +6,13 @@ import "./sentry";
 import { JSX, onMount } from "solid-js";
 import { render } from "solid-js/web";
 
+// Dismiss the HTML splash screen
+const splash = document.getElementById("splash");
+if (splash) {
+  splash.classList.add("hide");
+  setTimeout(() => splash.remove(), 500);
+}
+
 import { attachDevtoolsOverlay } from "@solid-devtools/overlay";
 import { Navigate, Route, Router, useParams } from "@solidjs/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/solid-query";
