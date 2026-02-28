@@ -134,12 +134,17 @@ export function Reactions(props: Props) {
           }
         >
           {(triggerProps) => (
-            <div ref={triggerProps.ref} onClick={triggerProps.onClickEmoji}>
+            <button
+              ref={triggerProps.ref}
+              onClick={triggerProps.onClickEmoji}
+              aria-label="Добавить реакцию"
+              style={{ border: "none", background: "transparent", padding: 0 }}
+            >
               <AddReaction class="add">
                 <Ripple />
                 <MdAdd />
               </AddReaction>
-            </div>
+            </button>
           )}
         </CompositionMediaPicker>
       </List>
@@ -224,10 +229,14 @@ function Reaction(props: {
 /**
  * Reaction styling
  */
-const ReactionBase = styled("div", {
+const ReactionBase = styled("button", {
   base: {
     // for <Ripple />
     position: "relative",
+
+    // reset button styles
+    border: "none",
+    font: "inherit",
 
     display: "flex",
     overflow: "hidden",

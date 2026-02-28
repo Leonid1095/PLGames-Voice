@@ -25,8 +25,6 @@ export function MessageToolbar(props: { message?: Message }) {
   const state = useState();
   const { openModal } = useModals();
 
-  // todo: a11y for buttons; tabindex
-
   /**
    * Delete the message
    */
@@ -44,13 +42,14 @@ export function MessageToolbar(props: { message?: Message }) {
   return (
     <Base class="Toolbar">
       <Show when={props.message?.channel?.havePermission("SendMessage")}>
-        <div
+        <button
           class={tool()}
+          aria-label="Ответить"
           onClick={() => state.draft.addReply(props.message!, user()!.id)}
         >
           <Ripple />
           <MdReply {...iconSize(20)} />
-        </div>
+        </button>
       </Show>
       <Show when={props.message?.channel?.havePermission("React")}>
         <CompositionMediaPicker
@@ -71,25 +70,27 @@ export function MessageToolbar(props: { message?: Message }) {
           }
         >
           {(triggerProps) => (
-            <div
+            <button
               ref={triggerProps.ref}
               class={tool()}
+              aria-label="Реакция"
               onClick={triggerProps.onClickEmoji}
             >
               <Ripple />
               <MdEmojiEmotions {...iconSize(20)} />
-            </div>
+            </button>
           )}
         </CompositionMediaPicker>
       </Show>
       <Show when={props.message?.author?.self}>
-        <div
+        <button
           class={tool()}
+          aria-label="Редактировать"
           onClick={() => state.draft.setEditingMessage(props.message)}
         >
           <Ripple />
           <MdEdit {...iconSize(20)} />
-        </div>
+        </button>
       </Show>
       <Show
         when={
@@ -97,13 +98,14 @@ export function MessageToolbar(props: { message?: Message }) {
           props.message?.channel?.havePermission("ManageMessages")
         }
       >
-        <div class={tool()} onClick={deleteMessage}>
+        <button class={tool()} aria-label="Удалить" onClick={deleteMessage}>
           <Ripple />
           <MdDelete {...iconSize(20)} />
-        </div>
+        </button>
       </Show>
-      <div
+      <button
         class={tool()}
+        aria-label="Ещё"
         use:floating={{
           contextMenu: () => <MessageContextMenu message={props.message!} />,
           contextMenuHandler: "click",
@@ -111,7 +113,7 @@ export function MessageToolbar(props: { message?: Message }) {
       >
         <Ripple />
         <MdMoreVert {...iconSize(20)} />
-      </div>
+      </button>
     </Base>
   );
 }
@@ -140,5 +142,13 @@ const tool = cva({
     cursor: "pointer",
     position: "relative",
     padding: "var(--gap-sm)",
+    border: "none",
+    background: "transparent",
+    color: "inherit",
+    fill: "inherit",
+    font: "inherit",
+    lineHeight: 1,
+    display: "flex",
+    alignItems: "center",
   },
 });
