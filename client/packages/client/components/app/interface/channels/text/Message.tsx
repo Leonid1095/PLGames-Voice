@@ -1,4 +1,4 @@
-import { For, Match, Show, Switch, createSignal, onMount } from "solid-js";
+import { For, Match, Show, Switch, createSignal, lazy, onMount } from "solid-js";
 
 import { useLingui } from "@lingui-solid/solid/macro";
 import { Message as MessageInterface, WebsiteEmbed } from "stoat.js";
@@ -30,7 +30,9 @@ import {
   floatingUserMenusFromMessage,
 } from "../../../menus/UserContextMenu";
 
-import { EditMessage } from "./EditMessage";
+const EditMessage = lazy(() =>
+  import("./EditMessage").then((m) => ({ default: m.EditMessage })),
+);
 
 /**
  * Regex for matching URLs
