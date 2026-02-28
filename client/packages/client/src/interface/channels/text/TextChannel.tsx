@@ -1,4 +1,5 @@
 import {
+  ErrorBoundary,
   Match,
   Show,
   Switch,
@@ -22,6 +23,7 @@ import { useState } from "@revolt/state";
 import { LAYOUT_SECTIONS } from "@revolt/state/stores/Layout";
 import {
   BelowFloatingHeader,
+  ErrorFallback,
   Header,
   NewMessages,
   Text,
@@ -185,32 +187,52 @@ export function TextChannel(props: ChannelPageProps) {
             <InlineVoiceRoom channel={props.channel} />
           </Show>
 
-          <Messages
-            channel={props.channel}
-            lastReadId={lastId}
-            pendingMessages={(pendingProps) => (
-              <DraftMessages
-                channel={props.channel}
-                tail={pendingProps.tail}
-                sentIds={pendingProps.ids}
+          <ErrorBoundary
+            fallback={(err, reset) => (
+              <ErrorFallback
+                error={err}
+                reset={reset}
+                label="Не удалось загрузить сообщения"
               />
             )}
-            typingIndicator={
-              <TypingIndicator
-                users={props.channel.typing}
-                ownId={client().user!.id}
-              />
-            }
-            highlightedMessageId={highlightMessageId}
-            clearHighlightedMessage={() => navigate(".")}
-            atEndRef={(ref) => (atEndRef = ref)}
-            jumpToBottomRef={(ref) => (jumpToBottomRef = ref)}
-          />
+          >
+            <Messages
+              channel={props.channel}
+              lastReadId={lastId}
+              pendingMessages={(pendingProps) => (
+                <DraftMessages
+                  channel={props.channel}
+                  tail={pendingProps.tail}
+                  sentIds={pendingProps.ids}
+                />
+              )}
+              typingIndicator={
+                <TypingIndicator
+                  users={props.channel.typing}
+                  ownId={client().user!.id}
+                />
+              }
+              highlightedMessageId={highlightMessageId}
+              clearHighlightedMessage={() => navigate(".")}
+              atEndRef={(ref) => (atEndRef = ref)}
+              jumpToBottomRef={(ref) => (jumpToBottomRef = ref)}
+            />
+          </ErrorBoundary>
 
-          <MessageComposition
-            channel={props.channel}
-            onMessageSend={() => jumpToBottomRef?.()}
-          />
+          <ErrorBoundary
+            fallback={(err, reset) => (
+              <ErrorFallback
+                error={err}
+                reset={reset}
+                label="Не удалось загрузить редактор"
+              />
+            )}
+          >
+            <MessageComposition
+              channel={props.channel}
+              onMessageSend={() => jumpToBottomRef?.()}
+            />
+          </ErrorBoundary>
         </main>
         <Show
           when={
