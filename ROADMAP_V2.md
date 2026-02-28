@@ -47,7 +47,7 @@
 - Проверяет что `.env`, `Revolt.toml` в `.gitignore`
 - Проверяет что `.env.example` не содержит реальных значений
 
-**Статус:** ⬜ Не начато
+**Статус:** ✅ Готово (`132d142c`)
 
 ---
 
@@ -95,7 +95,7 @@ throw new Error(`Unreachable code. Received ${event.type}...`);
 - Тест: `исключения являются экземплярами Error с stack trace`
 - Тест: `disconnect вызывается при истечении connectTimeout`
 
-**Статус:** ⬜ Не начато
+**Статус:** ✅ Готово (`6e8ebf67`)
 
 ---
 
@@ -146,7 +146,7 @@ async uploadFile(tag: string, file: File | Blob, config?: UploadConfig) {
 - Тест: `бросает ошибку при недопустимом MIME-типе`
 - Тест: `успешно загружает файл при валидном ответе`
 
-**Статус:** ⬜ Не начато
+**Статус:** ✅ Готово (`87abef3c`)
 
 ---
 
@@ -171,7 +171,7 @@ const BUILD_URL = process.env.PLG_VOICE_URL || "https://cvaboda.duckdns.org";
 - Тест: `BUILD_URL имеет корректный fallback`
 - Тест: `BUILD_URL является валидным HTTPS URL`
 
-**Статус:** ⬜ Не начато
+**Статус:** ✅ Готово (`92b34d21`)
 
 ---
 
@@ -223,7 +223,7 @@ ipcMain.on("setBadgeCount", (_event, count: unknown) => {
 - Тест: `setBadgeCount отклоняет дробные числа`
 - Тест: `Math.max используется вместо Math.min для count`
 
-**Статус:** ⬜ Не начато
+**Статус:** ✅ Готово (`92b34d21`)
 
 ---
 
@@ -251,7 +251,7 @@ media-src 'self' blob:;
 - Тест: `CSP запрещает inline scripts`
 - Тест: `CSP разрешает только доверенные домены для connect-src`
 
-**Статус:** ⬜ Не начато
+**Статус:** ✅ Готово (`92b34d21`)
 
 ---
 
