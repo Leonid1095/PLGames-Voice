@@ -533,12 +533,73 @@ desktop/
 
 ## 13. БЫСТРЫЙ ЧЕКЛИСТ ДЛЯ АГЕНТА
 
-- [ ] Создать иконки в `desktop/assets/desktop/` (минимум: `icon.png`, `icon.ico`)
-- [ ] `cd desktop && pnpm install`
-- [ ] `pnpm start` — проверить что окно открывается и сайт грузится
-- [ ] Проверить что `window.native` и `window.desktopConfig` доступны в DevTools
-- [ ] `pnpm make` — собрать инсталлятор
+- [x] Создать иконки в `desktop/assets/desktop/` (placeholder сгенерированы)
+- [x] `cd desktop && pnpm install`
+- [x] `pnpm make` — собрать инсталлятор + portable
 - [ ] Протестировать инсталлятор на чистой системе
 - [ ] Обновить версию в `package.json` если нужно
 - [ ] Настроить CI/CD для автосборки (опционально)
 - [ ] `pnpm publish` — опубликовать на GitHub Releases
+- [ ] Заменить placeholder-иконки на настоящий логотип PLG Voice
+
+---
+
+## 14. ЧТО БЫЛО СДЕЛАНО (28 февраля 2026)
+
+### Концепция: веб — для привлечения, приложение — для использования
+
+**Веб-клиент** (`cvaboda.duckdns.org`) — точка входа для новых пользователей:
+- Лендинг `/welcome` с описанием, фичами и CTA-кнопками
+- Регистрация и вход через `/login`
+- Полноценное использование через браузер
+
+**Desktop-приложение** (.exe) — для постоянных пользователей:
+- Пропуск лендинга, сразу экран авторизации `/login`
+- Нативная рамка Windows с кнопками закрыть/свернуть/развернуть
+- Диалог при закрытии: «Свернуть в трей» / «Закрыть полностью» + «Больше не спрашивать»
+- Скрытие кастомного веб-Titlebar (Wordmark "PLG Voice") при нативной рамке
+
+### Изменения в Electron (desktop/)
+
+#### `desktop/src/native/config.ts`
+- `customFrame: false` (по умолчанию) — включает нативную рамку Windows (`frame: true`)
+- `askBeforeClose: true` — показывать диалог при закрытии окна
+
+#### `desktop/src/native/window.ts`
+- Стартовый URL: `/login` вместо `/` — пропуск лендинга в desktop
+- Диалог закрытия: `dialog.showMessageBox()` с тремя кнопками + чекбокс
+- JS-инжект: MutationObserver скрывает кастомный Titlebar при нативной рамке
+- Добавлен импорт `dialog` из Electron
+
+#### `desktop/forge.config.ts`
+- `MakerSquirrel.name`: `"PLGVoice"` (без пробела — требование NuGet)
+
+### Изменения в веб-клиенте (client/) — для деплоя на сервер
+
+**Для AI-агента на сервере:** эти изменения нужно задеплоить чтобы desktop-приложение корректно определяло платформу.
+
+#### `client/packages/client/src/Interface.tsx` (строка 138)
+```typescript
+// Было:
+<Navigate href="/welcome" />
+
+// Стало:
+<Navigate href={window.native ? "/login" : "/welcome"} />
+```
+Desktop → сразу на авторизацию. Веб → на лендинг.
+
+#### `client/packages/client/src/Landing.tsx`
+- Добавлен `import { Titlebar }` и `<Titlebar />` в рендер
+- Нужен чтобы при disconnected-состоянии на лендинге отображалась статус-полоса
+
+### Как пересобрать после деплоя веб-клиента на сервер
+
+После того как веб-клиент обновлён на сервере, desktop-приложение автоматически подхватит изменения (оно загружает сайт по URL). Пересборка .exe не требуется для изменений в веб-клиенте.
+
+Пересборка .exe нужна только при изменениях в `desktop/` папке:
+```bash
+cd desktop
+taskkill /IM "plg-voice-desktop.exe" /F  # если запущено
+rm -rf out
+PLATFORM=win32 pnpm make --platform win32 --arch x64
+```

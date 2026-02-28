@@ -1,6 +1,6 @@
 # PLG Voice — Дорожная карта проекта
 
-> **Дата:** 2026-02-22
+> **Дата:** 2026-02-28
 > **Репозиторий:** [Leonid1095/PLGames-Voice](https://github.com/Leonid1095/PLGames-Voice)
 > **База:** Revolt/Stoat (stoatchat) — Solid.js клиент, Rust бэкенд, LiveKit голос
 
@@ -55,6 +55,52 @@
 - `revolt-desktop` ветка: `009827c` — "feat: PLG Voice desktop rebranding from Stoat"
 - `revolt-server` ветка: без изменений (конфигурация штатная)
 
+### 5. Сборка десктоп-приложения (.exe) — 28 февраля 2026
+
+#### Что сделано
+- Сгенерированы иконки приложения: `icon.png` (512x512), `icon.ico` (multi-size 16-256), `iconTemplate.png` (macOS tray), `badges/1-10.ico` (уведомления)
+- Исправлен баг Squirrel: NuGet не принимал пробел в имени `PLG Voice` → заменено на `PLGVoice` в `forge.config.ts`
+- Собран инсталлятор (`plg-voice-desktop-setup.exe`) и portable-версия (ZIP)
+
+#### Desktop UX — отличия от веб-версии
+
+Принцип: **веб — для привлечения, приложение — для использования**.
+
+| Поведение | Веб (браузер) | Desktop (Electron) |
+|-----------|---------------|---------------------|
+| Первый экран | Лендинг `/welcome` (маркетинг) | Сразу `/login` (авторизация) |
+| Рамка окна | Браузерная | Нативная Windows (frame: true) |
+| Кнопки закрыть/свернуть | Браузерные | Нативные Windows |
+| Кастомный Titlebar | Показывается при disconnected | Скрыт через JS-инжект |
+| Закрытие окна (X) | Закрывает вкладку | Диалог: «Свернуть в трей» / «Закрыть полностью» / «Отмена» + галочка «Больше не спрашивать» |
+
+#### Технические детали изменений
+
+**Electron (desktop/):**
+- `config.ts`: `customFrame: false` (по умолчанию) → `frame: true` → нативные кнопки Windows
+- `config.ts`: добавлено поле `askBeforeClose: true` — диалог при закрытии
+- `window.ts`: стартовый URL изменён с `/` на `/login` — пропуск лендинга
+- `window.ts`: при закрытии — `dialog.showMessageBox()` с выбором (трей/закрыть/отмена) и чекбоксом «Больше не спрашивать»
+- `window.ts`: JS-инжект через `executeJavaScript()` + MutationObserver — скрывает кастомный веб-Titlebar (Wordmark "PLG Voice") при нативной рамке
+
+**Веб-клиент (client/) — подготовка для деплоя на сервер:**
+- `Interface.tsx`: `Navigate href` определяется через `window.native` — desktop → `/login`, web → `/welcome`
+- `Landing.tsx`: добавлен `<Titlebar />` для корректного отображения кнопок окна на лендинге
+
+#### Артефакты сборки
+```
+desktop/out/make/squirrel.windows/x64/
+  ├── plg-voice-desktop-setup.exe    ← Инсталлятор (117 МБ)
+  ├── PLGVoice-1.0.0-full.nupkg
+  └── RELEASES
+
+desktop/out/make/zip/win32/x64/
+  └── PLG Voice-win32-x64-1.0.0.zip ← Portable (121 МБ)
+
+desktop/out/PLG Voice-win32-x64/
+  └── plg-voice-desktop.exe          ← Portable (папка, без архива)
+```
+
 ---
 
 ## ЧТО НУЖНО СДЕЛАТЬ
@@ -74,8 +120,8 @@
 
 | # | Задача | Описание | Статус |
 |---|--------|----------|--------|
-| 7 | Логотип PLG Voice | SVG/PNG для шапки приложения и favicon | ⬜ |
-| 8 | Иконка приложения | .ico/.png для десктопа, трея, PWA | ⬜ |
+| 7 | Логотип PLG Voice | SVG/PNG для шапки приложения и favicon | ⬜ (placeholder сгенерирован) |
+| 8 | Иконка приложения | .ico/.png для десктопа, трея, PWA | ✅ placeholder готов |
 | 9 | Wordmark SVG | Логотип с текстом для страницы входа | ⬜ |
 | 10 | OG-метатеги | Превью при отправке ссылки в мессенджерах | ⬜ |
 
@@ -83,9 +129,9 @@
 
 | # | Задача | Описание | Статус |
 |---|--------|----------|--------|
-| 11 | Установить зависимости | `pnpm install` в plg-voice-desktop | ⬜ |
-| 12 | Собрать .exe | `pnpm make` (Electron Forge → Windows installer) | ⬜ |
-| 13 | Протестировать | Запустить, проверить подключение к серверу, голос | ⬜ |
+| 11 | Установить зависимости | `pnpm install` в plg-voice-desktop | ✅ |
+| 12 | Собрать .exe | `pnpm make` (Electron Forge → Windows installer + ZIP portable) | ✅ |
+| 13 | Протестировать | Запустить, проверить подключение к серверу, голос | ⬜ (ждёт деплой сервера) |
 
 ### 🟢 Этап 4: Тестирование и отладка
 
@@ -210,4 +256,4 @@ docker compose ps
 
 ---
 
-*Последнее обновление: 2026-02-22*
+*Последнее обновление: 2026-02-28*

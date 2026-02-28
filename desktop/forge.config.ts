@@ -26,7 +26,7 @@ const ASSET_DIR = "assets/desktop";
  */
 const makers: ForgeConfig["makers"] = [
   new MakerSquirrel({
-    name: STRINGS.name,
+    name: "PLGVoice",
     authors: STRINGS.author,
     // todo: hoist this
     iconUrl: `https://cvaboda.duckdns.org/assets/icon.ico`,

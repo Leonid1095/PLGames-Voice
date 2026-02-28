@@ -3,6 +3,7 @@ import { Show } from "solid-js";
 import { Trans } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
+import { Titlebar } from "@revolt/app/interface/desktop/Titlebar";
 import { useClientLifecycle } from "@revolt/client";
 import { Navigate } from "@revolt/routing";
 
@@ -300,6 +301,7 @@ export default function LandingPage() {
 
   return (
     <Show when={!isLoggedIn()} fallback={<Navigate href="/" />}>
+      <Titlebar />
       <Page>
         {/* ── Navbar ── */}
         <Nav>
