@@ -1,6 +1,6 @@
 import { IUpdateInfo, updateElectronApp } from "update-electron-app";
 
-import { BrowserWindow, Notification, app, shell } from "electron";
+import { BrowserWindow, Notification, app, session, shell } from "electron";
 import started from "electron-squirrel-startup";
 
 import { autoLaunch } from "./native/autoLaunch";
@@ -40,6 +40,26 @@ if (acquiredLock) {
 
   // create and configure the app when electron is ready
   app.on("ready", () => {
+    // Content Security Policy — защита от XSS
+    session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+      callback({
+        responseHeaders: {
+          ...details.responseHeaders,
+          "Content-Security-Policy": [
+            [
+              "default-src 'self'",
+              `script-src 'self'`,
+              `style-src 'self' 'unsafe-inline'`,
+              `img-src 'self' ${BUILD_URL.origin} data: blob:`,
+              `connect-src 'self' ${BUILD_URL.origin} wss://${BUILD_URL.hostname}`,
+              `font-src 'self' ${BUILD_URL.origin}`,
+              `media-src 'self' blob:`,
+            ].join("; "),
+          ],
+        },
+      });
+    });
+
     // create window and application contexts
     createMainWindow();
 

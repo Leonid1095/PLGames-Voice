@@ -50,7 +50,7 @@ export async function setBadgeCount(count: number) {
             ? "application://com.plgvoice.desktop.desktop" // flatpak handling
             : "application://plg-voice-desktop.desktop",
           [
-            ["count", ["x", Math.min(count, 0)]],
+            ["count", ["x", Math.max(count, 0)]],
             ["count-visible", ["b", count !== 0]],
           ],
         ],
@@ -66,4 +66,7 @@ export async function setBadgeCount(count: number) {
   }
 }
 
-ipcMain.on("setBadgeCount", (_event, count: number) => setBadgeCount(count));
+ipcMain.on("setBadgeCount", (_event, count: unknown) => {
+  if (typeof count !== "number" || !Number.isInteger(count) || count < -1) return;
+  setBadgeCount(count);
+});

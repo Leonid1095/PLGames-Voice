@@ -231,9 +231,26 @@ class Config {
 
 export const config = new Config();
 
-ipcMain.on("config", (_, newConfig: Partial<DesktopConfig>) => {
-  console.info("Received new configuration", newConfig);
-  Object.entries(newConfig).forEach(
-    ([key, value]) => (config[key as keyof DesktopConfig] = value as never),
-  );
+// Allowed config keys and their expected types for IPC validation
+const ALLOWED_CONFIG_KEYS: Record<string, string> = {
+  firstLaunch: "boolean",
+  customFrame: "boolean",
+  minimiseToTray: "boolean",
+  startMinimisedToTray: "boolean",
+  spellchecker: "boolean",
+  hardwareAcceleration: "boolean",
+  discordRpc: "boolean",
+  askBeforeClose: "boolean",
+  windowState: "object",
+};
+
+ipcMain.on("config", (_, newConfig: unknown) => {
+  if (typeof newConfig !== "object" || newConfig === null) return;
+
+  for (const [key, value] of Object.entries(newConfig)) {
+    const expectedType = ALLOWED_CONFIG_KEYS[key];
+    if (!expectedType) continue; // skip unknown keys
+    if (typeof value !== expectedType) continue; // skip wrong types
+    (config as Record<string, unknown>)[key] = value;
+  }
 });

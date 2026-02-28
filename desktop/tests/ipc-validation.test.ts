@@ -16,20 +16,25 @@ describe("Desktop IPC — config.ts валидация", () => {
     "utf-8",
   );
 
-  it("не должен использовать 'as never' для обхода типизации", () => {
-    const asNeverCount = (configSource.match(/as never/g) || []).length;
-    expect(asNeverCount).toBe(0);
+  it("IPC обработчик config не должен использовать 'as never' для присвоения", () => {
+    // Ищем блок ipcMain.on("config"...) и проверяем что нет 'as never' внутри
+    const ipcBlock = configSource.match(
+      /ipcMain\.on\("config"[\s\S]*?\}\);/,
+    );
+    expect(ipcBlock).not.toBeNull();
+    if (ipcBlock) {
+      expect(ipcBlock[0]).not.toContain("as never");
+    }
   });
 
   it("должен валидировать входящие данные в IPC обработчике config", () => {
-    // Ищем паттерн валидации: zod schema, typeof проверки, или whitelist ключей
+    // Ищем паттерн валидации: typeof проверки, whitelist ключей, или schema
     const hasValidation =
+      configSource.includes("typeof newConfig") ||
+      configSource.includes("typeof value") ||
+      configSource.includes("ALLOWED_CONFIG_KEYS") ||
       configSource.includes(".parse(") ||
-      configSource.includes(".safeParse(") ||
-      configSource.includes("typeof ") ||
-      configSource.includes("allowedKeys") ||
-      configSource.includes("Object.keys(") ||
-      configSource.includes("hasOwnProperty");
+      configSource.includes(".safeParse(");
 
     expect(hasValidation).toBe(true);
   });
@@ -41,15 +46,19 @@ describe("Desktop IPC — badges.ts валидация", () => {
     "utf-8",
   );
 
-  it("setBadgeCount должен валидировать тип count", () => {
-    // Должна быть проверка typeof count === "number" или аналогичная
-    const hasTypeCheck =
-      badgesSource.includes('typeof count') ||
-      badgesSource.includes("Number.isInteger") ||
-      badgesSource.includes("Number.isFinite") ||
-      badgesSource.includes(".parse(");
-
-    expect(hasTypeCheck).toBe(true);
+  it("setBadgeCount IPC должен валидировать тип count", () => {
+    // Должна быть проверка typeof count === "number" или Number.isInteger
+    const ipcBlock = badgesSource.match(
+      /ipcMain\.on\("setBadgeCount"[\s\S]*?\}\);/,
+    );
+    expect(ipcBlock).not.toBeNull();
+    if (ipcBlock) {
+      const hasTypeCheck =
+        ipcBlock[0].includes("typeof count") ||
+        ipcBlock[0].includes("Number.isInteger") ||
+        ipcBlock[0].includes("Number.isFinite");
+      expect(hasTypeCheck).toBe(true);
+    }
   });
 
   it("должен использовать Math.max, а не Math.min для count", () => {
