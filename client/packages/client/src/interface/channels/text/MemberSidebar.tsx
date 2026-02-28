@@ -113,11 +113,15 @@ export function ServerMemberSidebar(props: Props) {
     }
   });
 
-  // Stage 3: Categorise each member entry into role lists
-  const stage3 = createMemo(() => {
+  // Stage 3: Categorise, sort, and flatten into a single virtual list
+  // (combines previous stages 3+4+5 into one pass)
+  const objectCache = new Map();
+
+  const elements = createMemo(() => {
     const [, hoistedRoles] = stage1();
     const members = stage2();
 
+    // Categorise members by role in one pass
     const byRole: Record<string, ServerMember[]> = { default: [], offline: [] };
     hoistedRoles.forEach((role) => (byRole[role.id] = []));
 
@@ -127,8 +131,8 @@ export function ServerMemberSidebar(props: Props) {
         continue;
       }
 
+      let assigned = false;
       if (member.roles.length) {
-        let assigned;
         for (const hoistedRole of hoistedRoles) {
           if (member.roles.includes(hoistedRole.id)) {
             byRole[hoistedRole.id].push(member);
@@ -136,98 +140,59 @@ export function ServerMemberSidebar(props: Props) {
             break;
           }
         }
-
-        if (assigned) continue;
       }
 
-      byRole["default"].push(member);
+      if (!assigned) byRole["default"].push(member);
     }
 
-    return [
+    // Sort comparator
+    const sortByName = (a: ServerMember, b: ServerMember) =>
+      (a.nickname ?? a.user?.displayName)?.localeCompare(
+        b.nickname ?? b.user?.displayName ?? "",
+      ) || 0;
+
+    // Build role groups (sorted + filtered in one pass)
+    const roleGroups = [
       ...hoistedRoles.map((role) => ({
-        role,
+        name: role.name,
         members: byRole[role.id],
       })),
-      {
-        role: {
-          id: "default",
-          name: "Online",
-        },
-        members: byRole["default"],
-      },
-      {
-        role: {
-          id: "offline",
-          name: "Offline",
-        },
-        members: byRole["offline"],
-      },
-    ].filter((entry) => entry.members.length);
-  });
+      { name: "Online", members: byRole["default"] },
+      { name: "Offline", members: byRole["offline"] },
+    ];
 
-  // Stage 4: Perform sorting on role lists
-  const roles = createMemo(() => {
-    const roles = stage3();
-
-    return roles.map((entry) => ({
-      ...entry,
-      members: [...entry.members].sort(
-        (a, b) =>
-          (a.nickname ?? a.user?.displayName)?.localeCompare(
-            b.nickname ?? b.user?.displayName ?? "",
-          ) || 0,
-      ),
-    }));
-  });
-
-  // Stage 5: Flatten into a single list with caching
-  const objectCache = new Map();
-
-  const elements = createMemo(() => {
-    const elements: (
+    // Flatten into virtual list elements
+    const result: (
       | { t: 0; name: string; count: number }
       | { t: 1; member: ServerMember }
     )[] = [];
 
-    // Create elements
-    for (const role of roles()) {
-      const roleElement = objectCache.get(role.role.name + role.members.length);
-      if (roleElement) {
-        elements.push(roleElement);
-      } else {
-        elements.push({
-          t: 0,
-          name: role.role.name,
-          count: role.members.length,
-        });
-      }
+    for (const group of roleGroups) {
+      if (!group.members.length) continue;
 
-      for (const member of role.members) {
-        const memberElement = objectCache.get(member.id);
-        if (memberElement) {
-          elements.push(memberElement);
-        } else {
-          elements.push({
-            t: 1,
-            member,
-          });
-        }
+      group.members.sort(sortByName);
+
+      // Reuse cached header element or create new
+      const cacheKey = group.name + group.members.length;
+      result.push(
+        objectCache.get(cacheKey) ?? { t: 0, name: group.name, count: group.members.length },
+      );
+
+      for (const member of group.members) {
+        result.push(
+          objectCache.get(member.id) ?? { t: 1, member },
+        );
       }
     }
 
-    // Flush cache
+    // Refresh cache
     objectCache.clear();
-
-    // Populate cache
-    for (const element of elements) {
-      if (element.t === 0) {
-        objectCache.set(element.name + element.count, element);
-      } else {
-        objectCache.set(element.member.id, element);
-      }
+    for (const el of result) {
+      if (el.t === 0) objectCache.set(el.name + el.count, el);
+      else objectCache.set(el.member.id, el);
     }
 
-    return elements;
+    return result;
   });
 
   const onlineMembers = createMemo(
