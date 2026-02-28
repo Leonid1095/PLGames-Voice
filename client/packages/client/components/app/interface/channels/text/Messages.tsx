@@ -2,9 +2,7 @@ import {
   Accessor,
   For,
   JSX,
-  Match,
   Show,
-  Switch,
   batch,
   createEffect,
   createMemo,
@@ -12,31 +10,23 @@ import {
   on,
   onCleanup,
   onMount,
-  splitProps,
 } from "solid-js";
 
 import isEqual from "lodash.isequal";
 import { Channel, Message as MessageInterface } from "stoat.js";
-import { styled } from "styled-system/jsx";
 
 import { useClient, useClientLifecycle } from "@revolt/client";
 import { State } from "@revolt/client/Controller";
 import { useTime } from "@revolt/i18n";
 import { useState } from "@revolt/state";
-import {
-  BlockedMessage,
-  ConversationStart,
-  Deferred,
-  JumpToBottom,
-  MessageDivider,
-} from "@revolt/ui";
+import { ConversationStart, Deferred, JumpToBottom } from "@revolt/ui";
 
 import {
   ListView2,
   ListView2Update,
 } from "@revolt/ui/components/utils/ListView2";
-import { Message } from "./Message";
 import { useMessageCache } from "./MessageCache";
+import { Entry, AnchorToEnd, Padding, type ListEntry } from "./MessagesEntry";
 
 /**
  * Initial fetch limit
@@ -939,88 +929,3 @@ export function Messages(props: Props) {
   );
 }
 
-/**
- * Anchor to the end of the messages list
- */
-const AnchorToEnd = styled("div", {
-  base: {
-    zIndex: 30,
-    position: "relative",
-
-    "& > div": {
-      width: "100%",
-      position: "absolute",
-      bottom: "var(--gap-md)",
-    },
-  },
-});
-
-/**
- * Container padding
- */
-const Padding = styled("div", {
-  base: {
-    height: "24px",
-  },
-});
-
-/**
- * List entries
- */
-type ListEntry =
-  | {
-      // Message
-      t: 0;
-      message: MessageInterface;
-      tail: boolean;
-      highlight: boolean;
-    }
-  | {
-      // Message Divider
-      t: 1;
-      date?: string;
-      unread?: boolean;
-    }
-  | {
-      // Blocked messages
-      t: 2;
-      count: number;
-    };
-
-/**
- * Render individual list entry
- */
-function Entry(
-  props: ListEntry &
-    Pick<Props, "highlightedMessageId"> & { editingMessageId?: string },
-) {
-  const [local, other] = splitProps(props, [
-    "t",
-    "highlightedMessageId",
-    "editingMessageId",
-  ]);
-
-  return (
-    <Switch>
-      <Match when={local.t === 0}>
-        <Message
-          {...(other as ListEntry & { t: 0 })}
-          highlight={
-            (other as ListEntry & { t: 0 }).message.id ===
-            local.highlightedMessageId()
-          }
-          editing={
-            (other as ListEntry & { t: 0 }).message.id ===
-            local.editingMessageId
-          }
-        />
-      </Match>
-      <Match when={local.t === 1}>
-        <MessageDivider {...(other as ListEntry & { t: 1 })} />
-      </Match>
-      <Match when={local.t === 2}>
-        <BlockedMessage count={(other as ListEntry & { t: 2 }).count} />
-      </Match>
-    </Switch>
-  );
-}
