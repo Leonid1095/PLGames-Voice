@@ -150,18 +150,18 @@ const StatusDot = styled("div", {
   variants: {
     status: {
       connected: {
-        background: "#43b581",
+        background: "var(--brand-presence-online)",
       },
       connecting: {
-        background: "#f04747",
+        background: "var(--brand-presence-busy)",
         animation: "pulse 1.5s ease-in-out infinite",
       },
       unstable: {
-        background: "#faa61a",
+        background: "var(--brand-presence-idle)",
         animation: "pulse 1.5s ease-in-out infinite",
       },
       disconnected: {
-        background: "#f04747",
+        background: "var(--brand-presence-busy)",
       },
     },
   },
@@ -175,16 +175,16 @@ const StatusLabel = styled("span", {
   variants: {
     status: {
       connected: {
-        color: "#43b581",
+        color: "var(--brand-presence-online)",
       },
       connecting: {
-        color: "#f04747",
+        color: "var(--brand-presence-busy)",
       },
       unstable: {
-        color: "#faa61a",
+        color: "var(--brand-presence-idle)",
       },
       disconnected: {
-        color: "#f04747",
+        color: "var(--brand-presence-busy)",
       },
     },
   },
@@ -201,11 +201,11 @@ const Controls = styled("div", {
 
 const DisconnectButton = styled(IconButton, {
   base: {
-    background: "rgba(240, 71, 71, 0.15) !important",
-    color: "#f04747 !important",
+    background: "color-mix(in srgb, var(--md-sys-color-error) 15%, transparent) !important",
+    color: "var(--md-sys-color-error) !important",
 
     "&:hover": {
-      background: "rgba(240, 71, 71, 0.3) !important",
+      background: "color-mix(in srgb, var(--md-sys-color-error) 30%, transparent) !important",
     },
   },
 });

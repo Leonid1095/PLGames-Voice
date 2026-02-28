@@ -182,6 +182,10 @@ const ParentBase = styled("svg", {
     interactive: {
       true: {
         cursor: "pointer",
+        transition: "transform var(--transitions-fast)",
+        _hover: {
+          transform: "scale(1.05)",
+        },
       },
       false: {},
     },

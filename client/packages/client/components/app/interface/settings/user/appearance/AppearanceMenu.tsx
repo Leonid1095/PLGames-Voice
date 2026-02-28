@@ -43,17 +43,9 @@ export function AppearanceMenu() {
 
   return (
     <Column gap="lg">
-      <MessagePreview>
-        <Text>
-          Welcome to the new appearance menu, custom themes are not available
-          just yet but we are looking for feedback on how to best implement
-          them!
-        </Text>
-      </MessagePreview>
-
       <Column>
         <Text class="title" size="small">
-          Colours
+          <Trans>Colours</Trans>
         </Text>
 
         <Row justify="stretch">
@@ -127,6 +119,7 @@ export function AppearanceMenu() {
             />
             <For
               each={[
+                "#7C3AED",
                 "#007AFF",
                 "#34C759",
                 "#FF9500",
@@ -228,46 +221,22 @@ export function AppearanceMenu() {
             >
               <Trans>Tonal Spot</Trans>
             </Button>
-            {/* <Button
-            size="xs"
-            group="connected"
-            groupActive={state.theme.m3Variant === "vibrant"}
-            onPress={() => state.theme.setM3Variant("vibrant")}
-          >
-            <Trans>Vibrant</Trans>
-          </Button>
-          <Button
-            size="xs"
-            group="connected"
-            groupActive={state.theme.m3Variant === "expressive"}
-            onPress={() => state.theme.setM3Variant("expressive")}
-          >
-            <Trans>Expressive</Trans>
-          </Button>
-          <Button
-            size="xs"
-            group="connected"
-            groupActive={state.theme.m3Variant === "fidelity"}
-            onPress={() => state.theme.setM3Variant("fidelity")}
-          >
-            <Trans>Fidelity</Trans>
-          </Button>
-          <Button
-            size="xs"
-            group="connected"
-            groupActive={state.theme.m3Variant === "content"}
-            onPress={() => state.theme.setM3Variant("content")}
-          >
-            <Trans>Content</Trans>
-          </Button>
-          <Button
-            size="xs"
-            group="connected"
-            groupActive={state.theme.m3Variant === "rainbow"}
-            onPress={() => state.theme.setM3Variant("rainbow")}
-          >
-            <Trans>Rainbow</Trans>
-          </Button> */}
+            <Button
+              size="xs"
+              group="connected"
+              groupActive={state.theme.m3Variant === "vibrant"}
+              onPress={() => state.theme.setM3Variant("vibrant")}
+            >
+              <Trans>Vibrant</Trans>
+            </Button>
+            <Button
+              size="xs"
+              group="connected"
+              groupActive={state.theme.m3Variant === "expressive"}
+              onPress={() => state.theme.setM3Variant("expressive")}
+            >
+              <Trans>Expressive</Trans>
+            </Button>
             <Button
               size="xs"
               group="connected-end"

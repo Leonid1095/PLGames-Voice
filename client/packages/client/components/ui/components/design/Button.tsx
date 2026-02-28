@@ -175,7 +175,7 @@ const button = cva({
      */
     variant: {
       elevated: {
-        boxShadow: "0 0.5px 1.5px #0004",
+        boxShadow: "var(--elevation-1)",
         background: "var(--md-sys-color-surface-container-low)",
         "--color": "var(--md-sys-color-primary)",
       },

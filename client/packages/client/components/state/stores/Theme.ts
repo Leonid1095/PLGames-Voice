@@ -6,7 +6,22 @@ import { State } from "..";
 
 import { AbstractStore } from ".";
 
+/**
+ * Bump this when theme defaults change — triggers migration for existing users
+ */
+const THEME_VERSION = 2;
+
 export type TypeTheme = {
+  /**
+   * Theme version for migration tracking
+   */
+  _version: number;
+
+  /**
+   * Whether theme onboarding has been completed
+   */
+  _setupDone: boolean;
+
   /**
    * Base theme preset
    */
@@ -119,8 +134,10 @@ export class Theme extends AbstractStore {
    */
   default(): TypeTheme {
     return {
+      _version: THEME_VERSION,
+      _setupDone: false,
       preset: "you",
-      mode: "system",
+      mode: "dark",
 
       m3Accent: "#7C3AED",
       m3Contrast: 0.0,
@@ -141,8 +158,44 @@ export class Theme extends AbstractStore {
   clean(input: Partial): TypeTheme {
     const data: TypeTheme = this.default();
 
-    if (["light", "dark", "system"].includes(input.mode!)) {
-      data.mode = input.mode!;
+    // Migration: if stored version is old or missing, reset to new defaults
+    // but keep user-customized non-default values
+    const needsMigration = !input._version || input._version < THEME_VERSION;
+
+    if (needsMigration) {
+      // Reset accent/variant/mode to new defaults, mark setup as not done
+      data._setupDone = false;
+      // Don't restore old accent/variant/mode — use new defaults
+      // But DO keep non-theme preferences like fonts, sizes, blur
+    } else {
+      data._setupDone = input._setupDone ?? true;
+
+      if (["light", "dark", "system"].includes(input.mode!)) {
+        data.mode = input.mode!;
+      }
+
+      if (
+        input.m3Accent &&
+        input.m3Accent.match(/#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})/)
+      ) {
+        data.m3Accent = input.m3Accent;
+      }
+
+      if (
+        [
+          "monochrome",
+          "neutral",
+          "tonal_spot",
+          "vibrant",
+          "expressive",
+          "fidelity",
+          "content",
+          "rainbow",
+          "fruit_salad",
+        ].includes(input.m3Variant!)
+      ) {
+        data.m3Variant = input.m3Variant!;
+      }
     }
 
     if (["you", "neutral"].includes(input.preset!)) {
@@ -151,29 +204,6 @@ export class Theme extends AbstractStore {
 
     if (typeof input.m3Contrast === "number") {
       data.m3Contrast = input.m3Contrast;
-    }
-
-    if (
-      input.m3Accent &&
-      input.m3Accent.match(/#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})/)
-    ) {
-      data.m3Accent = input.m3Accent;
-    }
-
-    if (
-      [
-        "monochrome",
-        "neutral",
-        "tonal_spot",
-        "vibrant",
-        "expressive",
-        "fidelity",
-        "content",
-        "rainbow",
-        "fruit_salad",
-      ].includes(input.m3Variant!)
-    ) {
-      data.m3Variant = input.m3Variant!;
     }
 
     if (typeof input.blur === "boolean") {
@@ -290,6 +320,20 @@ export class Theme extends AbstractStore {
    */
   setM3Variant(variant: TypeTheme["m3Variant"]) {
     this.set("m3Variant", variant);
+  }
+
+  /**
+   * Whether theme onboarding setup has been completed
+   */
+  get setupDone() {
+    return this.get()._setupDone;
+  }
+
+  /**
+   * Mark theme setup as complete
+   */
+  completeSetup() {
+    this.set("_setupDone", true);
   }
 
   /**

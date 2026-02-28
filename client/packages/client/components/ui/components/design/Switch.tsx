@@ -101,7 +101,7 @@ const Override = styled("div", {
     },
 
     "& svg": {
-      stroke: "5px solid red",
+      fill: "currentColor",
     },
   },
   variants: {
@@ -121,9 +121,8 @@ const Override = styled("div", {
       type: "allow",
       selected: "allow",
       css: {
-        // TODO
-        color: "green",
-        background: "green",
+        color: "var(--md-sys-color-on-primary)",
+        background: "var(--md-sys-color-primary)",
       },
     },
     {
@@ -138,9 +137,8 @@ const Override = styled("div", {
       type: "deny",
       selected: "deny",
       css: {
-        // TODO
-        color: "red",
-        background: "red",
+        color: "var(--md-sys-color-on-error)",
+        background: "var(--md-sys-color-error)",
       },
     },
   ],

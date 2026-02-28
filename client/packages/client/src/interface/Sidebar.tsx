@@ -14,6 +14,7 @@ import { useLocation, useParams, useSmartParams } from "@revolt/routing";
 import { useState } from "@revolt/state";
 import { LAYOUT_SECTIONS } from "@revolt/state/stores/Layout";
 
+import { ThemeToggle } from "./ThemeToggle";
 import { HomeSidebar, ServerList, ServerSidebar } from "./navigation";
 
 /**
@@ -68,6 +69,7 @@ export const Sidebar = (props: {
               </Match>
             </Switch>
           </div>
+          <ThemeToggle />
           <VoiceBottomBar />
         </div>
       </Show>

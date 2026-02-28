@@ -17,8 +17,9 @@ export const SidebarBase = styled("div", {
 
     fill: "var(--md-sys-color-on-surface)",
     color: "var(--md-sys-color-on-surface)",
-    background: "var(--md-sys-color-surface-container-low)",
-    borderRight: "1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 30%, transparent)",
+    background: "linear-gradient(180deg, var(--md-sys-color-surface-container-low) 0%, color-mix(in srgb, var(--md-sys-color-surface-container) 60%, var(--md-sys-color-surface-container-low)) 100%)",
+    borderRight: "1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 20%, transparent)",
+    boxShadow: "inset -1px 0 0 color-mix(in srgb, var(--md-sys-color-primary) 5%, transparent)",
 
     "& a": {
       textDecoration: "none",
