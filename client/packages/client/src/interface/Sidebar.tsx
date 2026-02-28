@@ -1,7 +1,16 @@
-import { Component, JSX, Match, Show, Switch, createMemo } from "solid-js";
+import {
+  Component,
+  ErrorBoundary,
+  JSX,
+  Match,
+  Show,
+  Switch,
+  createMemo,
+} from "solid-js";
 
 import { Channel, Server as ServerI } from "stoat.js";
 import { VoiceBottomBar } from "@revolt/ui/components/features/voice/VoiceBottomBar";
+import { ErrorFallback } from "@revolt/ui";
 
 import {
   CategoryContextMenu,
@@ -154,22 +163,32 @@ const Server: Component = () => {
 
   return (
     <Show when={server()}>
-      <ServerSidebar
-        server={server()}
-        channelId={params().channelId}
-        openServerInfo={openServerInfo}
-        openServerSettings={openServerSettings}
-        menuGenerator={(target) => ({
-          contextMenu: () =>
-            target instanceof Channel ? (
-              <ChannelContextMenu channel={target} />
-            ) : target instanceof ServerI ? (
-              <ServerSidebarContextMenu server={target} />
-            ) : (
-              <CategoryContextMenu server={server()} category={target} />
-            ),
-        })}
-      />
+      <ErrorBoundary
+        fallback={(err, reset) => (
+          <ErrorFallback
+            error={err}
+            reset={reset}
+            label="Не удалось загрузить каналы"
+          />
+        )}
+      >
+        <ServerSidebar
+          server={server()}
+          channelId={params().channelId}
+          openServerInfo={openServerInfo}
+          openServerSettings={openServerSettings}
+          menuGenerator={(target) => ({
+            contextMenu: () =>
+              target instanceof Channel ? (
+                <ChannelContextMenu channel={target} />
+              ) : target instanceof ServerI ? (
+                <ServerSidebarContextMenu server={target} />
+              ) : (
+                <CategoryContextMenu server={server()} category={target} />
+              ),
+          })}
+        />
+      </ErrorBoundary>
     </Show>
   );
 };

@@ -8,16 +8,13 @@
  */
 import { expect, test } from "@playwright/test";
 
-test.describe("Error Boundaries", () => {
+test.describe("Error Boundaries — E2E", () => {
   test("при ошибке рендеринга показывается fallback UI вместо белого экрана", async ({
     page,
   }) => {
-    test.skip(true, "Требует запущенного сервера — Фаза 2.4");
+    test.skip(true, "Требует запущенного сервера и авторизации");
 
-    // Этот тест проверяет что Error Boundary ловит ошибки рендеринга
-    // и показывает пользователю понятное сообщение вместо пустого экрана
-
-    // TODO: Инжектировать ошибку через page.evaluate или моковый API
+    // Инжектировать ошибку через page.evaluate или моковый API
     // await page.goto("");
     // const fallback = page.locator('[data-testid="error-fallback"]');
     // await expect(fallback).toBeVisible();
@@ -27,23 +24,17 @@ test.describe("Error Boundaries", () => {
   test("кнопка повторной загрузки восстанавливает компонент", async ({
     page,
   }) => {
-    test.skip(true, "Требует запущенного сервера — Фаза 2.4");
+    test.skip(true, "Требует запущенного сервера и авторизации");
 
-    // TODO: После показа fallback, нажатие "Перезагрузить" восстанавливает
     // const retryButton = page.locator('[data-testid="error-retry"]');
     // await retryButton.click();
-    // await expect(page.locator('[data-testid="messages-container"]')).toBeVisible();
   });
 
   test("боковая панель продолжает работать при ошибке в чате", async ({
     page,
   }) => {
-    test.skip(true, "Требует запущенного сервера — Фаза 2.4");
+    test.skip(true, "Требует запущенного сервера и авторизации");
 
     // Даже если Messages крашится, навигация должна работать
-    // const sidebar = page.locator('[class*="sidebar"]');
-    // await expect(sidebar).toBeVisible();
-    // const channels = sidebar.locator('[class*="channel"]');
-    // await expect(channels.first()).toBeClickable();
   });
 });
