@@ -307,17 +307,13 @@ media-src 'self' blob:;
 | CodeMirror (4 пакета) | ~150KB | Только при вставке блока кода |
 | @fontsource/* (15 пакетов) | ~2MB | Только выбранный пользователем шрифт |
 
-**План:**
-1. `React.lazy()` / `lazy()` из SolidJS для ProseMirror и CodeMirror
-2. Динамический `import()` шрифтов по выбору пользователя
-3. Измерить bundle до/после через `vite-bundle-visualizer`
+**Решение:**
+1. `EditMessage` — lazy() через SolidJS (CodeMirror загружается только при редактировании)
+2. Шрифты — уже используют `dynamic import()` в `themes/fonts.ts` ✅
+3. ProseMirror `TextEditor` — фактически не используется в приложении (заменён на `TextEditor2`/CodeMirror)
+4. `MessageBox` — рендерится сразу при открытии канала, lazy loading даёт минимальный выигрыш
 
-**Тесты:** `tests/performance/bundle-size.test.ts`
-- Тест: `initial bundle не содержит ProseMirror`
-- Тест: `initial bundle не содержит CodeMirror`
-- Тест: `шрифты загружаются динамически`
-
-**Статус:** ⬜ Не начато
+**Статус:** ✅ Частично готово (lazy EditMessage + шрифты)
 
 ---
 
