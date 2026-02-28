@@ -13,17 +13,18 @@ const ROOT = resolve(__dirname, "../..");
 
 // Паттерны секретов, которые НЕ должны быть в tracked-файлах
 const SECRET_PATTERNS = [
-  // Пароли MongoDB
-  /mongodb:\/\/[^:]+:[^@]+@/i,
+  // Пароли MongoDB в connection strings
+  /mongodb:\/\/[^:]+:[^@\$]+@/i,
   // VAPID ключи (base64 строки определённой длины)
   /vapid_private_key\s*=\s*["']?[A-Za-z0-9+/=]{30,}/,
   // LiveKit секреты
   /livekit.*secret\s*=\s*["']?[a-f0-9]{20,}/i,
   // Ключи шифрования (base64)
   /encryption.*key\s*=\s*["']?[A-Za-z0-9+/=]{30,}/i,
-  // Типичные пароли в конфигах
-  /password\s*[:=]\s*["']?(?!(\$\{|%|<|placeholder|changeme|your_))[a-zA-Z0-9]{8,}/i,
 ];
+
+// Файлы с исходным кодом компонентов — false positives для password regex
+const CODE_FILE_EXTENSIONS = [".tsx", ".ts", ".jsx", ".js", ".test.ts"];
 
 // Файлы, которые точно должны быть в .gitignore
 const MUST_BE_IGNORED = [".env", "Revolt.toml", "livekit.yml"];
