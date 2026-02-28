@@ -19,10 +19,12 @@ import { updateTrayMenu } from "./tray";
 export let mainWindow: BrowserWindow;
 
 // currently in-use build
+// Priority: --force-server CLI arg > PLG_VOICE_URL env > hardcoded fallback
+const DEFAULT_URL = "https://cvaboda.duckdns.org";
 export const BUILD_URL = new URL(
   app.commandLine.hasSwitch("force-server")
     ? app.commandLine.getSwitchValue("force-server")
-    : /*MAIN_WINDOW_VITE_DEV_SERVER_URL ??*/ "https://cvaboda.duckdns.org",
+    : process.env.PLG_VOICE_URL ?? DEFAULT_URL,
 );
 
 // internal window state
