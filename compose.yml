@@ -9,7 +9,7 @@ services:
     volumes:
       - ./data/db:/data/db
     healthcheck:
-      test: mongosh --norc --quiet -u stoatadmin -p plgv0ice2026db --authenticationDatabase admin --eval "db.runCommand({ping:1}).ok"
+      test: mongosh --norc --quiet -u $${MONGO_USER:-stoatadmin} -p $${MONGO_PASS} --authenticationDatabase admin --eval "db.runCommand({ping:1}).ok"
       interval: 60s
       timeout: 10s
       retries: 5
@@ -32,8 +32,8 @@ services:
     image: docker.io/rabbitmq:4
     restart: always
     environment:
-      RABBITMQ_DEFAULT_USER: rabbituser
-      RABBITMQ_DEFAULT_PASS: rabbitpass
+      RABBITMQ_DEFAULT_USER: ${RABBIT_USER:-rabbituser}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_PASS:?Set RABBIT_PASS in .env}
     volumes:
       - ./data/rabbit:/var/lib/rabbitmq
     healthcheck:
@@ -50,8 +50,8 @@ services:
     volumes:
       - ./data/minio:/data
     environment:
-      MINIO_ROOT_USER: minioautumn
-      MINIO_ROOT_PASSWORD: minioautumn
+      MINIO_ROOT_USER: ${MINIO_USER:-minioautumn}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASS:?Set MINIO_PASS in .env}
       MINIO_DOMAIN: minio
     networks:
       default:
@@ -202,12 +202,15 @@ services:
     entrypoint: >
       /bin/sh -c "
       while ! /usr/bin/mc ready minio; do
-        /usr/bin/mc alias set minio http://minio:9000 minioautumn minioautumn;
+        /usr/bin/mc alias set minio http://minio:9000 $${MINIO_USER:-minioautumn} $${MINIO_PASS};
         echo 'Waiting minio...' && sleep 1;
       done;
       /usr/bin/mc mb minio/revolt-uploads;
       exit 0;
       "
+    environment:
+      MINIO_USER: ${MINIO_USER:-minioautumn}
+      MINIO_PASS: ${MINIO_PASS:?Set MINIO_PASS in .env}
 
   # Web App
   web:
