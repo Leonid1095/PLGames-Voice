@@ -52,6 +52,20 @@ describe("Проверка секретов в репозитории", () => {
     }
   });
 
+  it("Revolt.toml.template не должен содержать реальных секретов", () => {
+    const template = resolve(ROOT, "Revolt.toml.template");
+    if (!existsSync(template)) return;
+
+    const content = readFileSync(template, "utf-8");
+    for (const pattern of SECRET_PATTERNS) {
+      expect(content).not.toMatch(pattern);
+    }
+    // Все секреты должны быть placeholder-ами ${VAR}
+    expect(content).toContain("${MONGO_PASS}");
+    expect(content).toContain("${VAPID_PRIVATE_KEY}");
+    expect(content).toContain("${LIVEKIT_SECRET}");
+  });
+
   it("tracked файлы не должны содержать паттернов секретов", () => {
     // Получаем список tracked-файлов (исключая бинарные и lock-файлы)
     let trackedFiles: string[];
