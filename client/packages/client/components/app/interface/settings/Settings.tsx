@@ -45,8 +45,7 @@ const SettingsNavigationContext = createContext<{
  */
 export function Settings(props: SettingsProps & SettingsConfiguration<never>) {
   const [page, setPage] = createSignal<undefined | string>(
-    // eslint-disable-next-line
-    (props.context as any)?.page,
+    (props.context as Record<string, unknown> | undefined)?.page as string | undefined,
   );
   const [transition, setTransition] =
     createSignal<SettingsTransition>("normal");

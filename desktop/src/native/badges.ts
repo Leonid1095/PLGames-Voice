@@ -1,12 +1,9 @@
-import dbus from "@homebridge/dbus-native";
-
 import { NativeImage, app, ipcMain, nativeImage } from "electron";
 
 import { mainWindow } from "./window";
 
 // internal state
 const nativeIcons: Record<number, NativeImage> = {};
-let sessionBus: dbus.MessageBus | null;
 
 export async function setBadgeCount(count: number) {
   switch (process.platform) {
@@ -28,33 +25,6 @@ export async function setBadgeCount(count: number) {
         nativeIcons[count],
         count === -1 ? `Unread Messages` : `${count} Notifications`,
       );
-
-      break;
-    // @ts-expect-error this is `linux` block
-    case "_": // todo: try to get this to work
-      // send D-Bus message
-      // @ts-expect-error undocumented API
-      if (!sessionBus) sessionBus = dbus.sessionBus();
-
-      // @ts-expect-error undocumented API
-      sessionBus.connection.message({
-        // @ts-expect-error undocumented API
-        type: dbus.messageType.signal,
-        serial: 1,
-        path: "/",
-        interface: "com.canonical.Unity.LauncherEntry",
-        member: "Update",
-        signature: "sa{sv}",
-        body: [
-          process.env.container === "1"
-            ? "application://com.plgvoice.desktop.desktop" // flatpak handling
-            : "application://plg-voice-desktop.desktop",
-          [
-            ["count", ["x", Math.max(count, 0)]],
-            ["count-visible", ["b", count !== 0]],
-          ],
-        ],
-      });
 
       break;
     case "darwin":
