@@ -1,6 +1,6 @@
 {
   "packages": {
-    ".": {
+    "desktop": {
       "changelog-path": "CHANGELOG.md",
       "release-type": "node",
       "bump-minor-pre-major": false,
