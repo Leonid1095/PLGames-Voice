@@ -101,6 +101,40 @@ desktop/out/PLG Voice-win32-x64/
   └── plg-voice-desktop.exe          ← Portable (папка, без архива)
 ```
 
+### 6. CI/CD: Автосборка и автообновление десктоп-приложения — 1 марта 2026
+
+#### Проблема
+GitHub Actions workflows лежали в `desktop/.github/workflows/` — GitHub их не видит (ищет только `.github/workflows/` в корне репо). Релизы никогда не собирались автоматически.
+
+#### Что сделано
+- **Перенесены workflows в корень репо:**
+  - `desktop/.github/workflows/build.yml` → `.github/workflows/desktop-build.yml`
+  - `desktop/.github/workflows/release-please.yml` → `.github/workflows/desktop-release.yml`
+- **Добавлен `defaults.run.working-directory: desktop`** ко всем jobs
+- **Добавлен `paths: ["desktop/**"]`** — workflows триггерятся только при изменениях в desktop/
+- **Упрощён release workflow (только Windows):**
+  - Убрана матрица `[ubuntu-latest, windows-latest, macos-latest]` → только `windows-latest`
+  - Убраны шаги macOS x64 и Linux arm64
+  - Заменён GitHub App token на `GITHUB_TOKEN`
+- **Обновлены пути release-please:** `config-file: desktop/release-please-config.json`, `manifest-file: desktop/.release-please-manifest.json`, пакет `"desktop"` вместо `"."`
+- **Удалены старые файлы** `desktop/.github/workflows/build.yml` и `release-please.yml`
+
+#### Как это работает
+1. Push в main с изменениями в `desktop/` → GitHub Actions запускает `desktop-release.yml`
+2. Release Please создаёт Release PR с бампом версии
+3. Merge Release PR → `publish-release` job собирает `.exe` на `windows-latest` и загружает в GitHub Releases
+4. `update-electron-app` (уже настроен в десктопе) проверяет GitHub Releases → автообновление
+
+#### Файлы
+| Файл | Действие |
+|------|----------|
+| `.github/workflows/desktop-build.yml` | Создан |
+| `.github/workflows/desktop-release.yml` | Создан |
+| `desktop/release-please-config.json` | Обновлён (пакет `"."` → `"desktop"`) |
+| `desktop/.release-please-manifest.json` | Обновлён (ключ `"."` → `"desktop"`) |
+| `desktop/.github/workflows/build.yml` | Удалён |
+| `desktop/.github/workflows/release-please.yml` | Удалён |
+
 ---
 
 ## ЧТО НУЖНО СДЕЛАТЬ
@@ -132,6 +166,8 @@ desktop/out/PLG Voice-win32-x64/
 | 11 | Установить зависимости | `pnpm install` в plg-voice-desktop | ✅ |
 | 12 | Собрать .exe | `pnpm make` (Electron Forge → Windows installer + ZIP portable) | ✅ |
 | 13 | Протестировать | Запустить, проверить подключение к серверу, голос | ⬜ (ждёт деплой сервера) |
+| 14 | CI/CD автосборка | GitHub Actions workflows перенесены в корень, release-please + publish Windows | ✅ |
+| 15 | Автообновление | `update-electron-app` привязан к GitHub Releases — заработает после первого релиза | ✅ (настроено) |
 
 ### 🟢 Этап 4: Тестирование и отладка
 
@@ -256,4 +292,4 @@ docker compose ps
 
 ---
 
-*Последнее обновление: 2026-02-28*
+*Последнее обновление: 2026-03-01*
