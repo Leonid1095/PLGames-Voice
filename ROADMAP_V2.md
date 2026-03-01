@@ -35,19 +35,20 @@
 | `compose.yml` | 35-36 | RabbitMQ credentials (`rabbituser`/`rabbitpass`) |
 | `compose.yml` | 53-54, 205 | MinIO credentials (`minioautumn`) |
 
-**План исправления:**
-1. Создать `.env.example` с placeholder-значениями
-2. Заменить все значения в `Revolt.toml` на `${ПЕРЕМЕННАЯ}` или использовать `generate_config.sh`
-3. В `compose.yml` заменить на `${VARIABLE:-default}`
-4. Убедиться что `.env` в `.gitignore` (уже есть)
-5. Ротировать все текущие секреты (они уже скомпрометированы в git-истории)
+**Решение:**
+1. `compose.yml` — пароли заменены на `${MONGO_PASS}`, `${RABBIT_PASS}`, `${MINIO_PASS}` (`132d142c`)
+2. `Revolt.toml.template` — шаблон с `${PLACEHOLDER}` переменными (`90461dd5`)
+3. `setup-config.sh` — генерирует `Revolt.toml` из шаблона + `.env` через `envsubst`
+4. `.env.example` — содержит все переменные с placeholder-ами (MongoDB, RabbitMQ, MinIO, VAPID, encryption key, LiveKit)
+5. `.env` и `Revolt.toml` в `.gitignore`, `Revolt.toml` никогда не был в git-истории
 
 **Тесты:**
-- `tests/security/secrets-scan.test.ts` — сканирует tracked-файлы на паттерны секретов
+- `tests/security/secrets-scan.test.ts` — сканирует tracked-файлы на паттерны секретов (4 теста)
 - Проверяет что `.env`, `Revolt.toml` в `.gitignore`
 - Проверяет что `.env.example` не содержит реальных значений
+- Проверяет что `Revolt.toml.template` содержит только `${PLACEHOLDER}` без реальных секретов
 
-**Статус:** ✅ Готово (`132d142c`)
+**Статус:** ✅ Готово (`132d142c`, `90461dd5`)
 
 ---
 
@@ -449,7 +450,7 @@ client/packages/stoat.js/
 │   ├── events/
 │   │   └── EventClient.test.ts    ← Фаза 1.2
 │   ├── Client.uploadFile.test.ts  ← Фаза 1.3
-│   └── member-filtering.test.ts   ← Фаза 3.4
+│   └── member-sidebar.test.ts     ← Фаза 3.4
 ```
 
 #### 2. Vitest для desktop (unit-тесты)
@@ -510,7 +511,7 @@ tests/
 | Метрика | До аудита | Сейчас | Цель |
 |---------|-----------|--------|------|
 | Секреты в git | 8+ | 0 ✅ | 0 |
-| Unit-тесты | 0 | 31 ✅ | 30+ |
+| Unit-тесты | 0 | 32 ✅ | 30+ |
 | E2E-тесты | 1 | 1 + 6 stubs | 8+ |
 | A11y нарушений (axe-core) | ~10 | 0 ✅ | 0 критических |
 | Initial bundle size | ~2.5MB | ~2.5MB | < 1.5MB |
