@@ -110,7 +110,6 @@ const Interface = (props: { children: JSX.Element }) => {
   createEffect(() => {
     if (!isLoggedIn()) {
       state.layout.setNextPath(pathname);
-      console.debug("WAITING... currently", lifecycle.state());
     }
   });
 

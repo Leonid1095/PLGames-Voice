@@ -90,8 +90,6 @@ type OrderingEvent =
  * Display server information and channels
  */
 export const ServerSidebar = (props: Props) => {
-  const navigate = useNavigate();
-
   // Users can manage certain parts of the server individually, regardless of their ManageServer Permission
   const canManageServer = () =>
     props.server.orPermission(
@@ -101,45 +99,9 @@ export const ServerSidebar = (props: Props) => {
       "ManagePermissions",
     );
 
-  // TODO: this does not filter visible channels at the moment because the state for categories is not stored anywhere
-  /** Gets a list of channels that are currently not hidden inside a closed category */
-  const visibleChannels = () =>
-    props.server.orderedChannels.flatMap((category) => category.channels);
-
   // TODO: when navigating channels, we want to add aria-keyshortcuts={localized-shortcut} to the next/previous channels
   // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-keyshortcuts
   // TODO: issue warning if nothing is found somehow? warnings can be nicer than flat out not working
-  // TODO: we want it to feel smooth when navigating through channels, so we'll want to select channels immediately but not actually navigate until we're done moving through them
-  /** Navigates to the channel offset from the current one, wrapping around if needed */
-  const _navigateChannel = (byOffset: number) => {
-    if (props.channelId == null) {
-      return;
-    }
-
-    const channels = visibleChannels();
-
-    const currentChannelIndex = channels.findIndex(
-      (channel) => channel.id === props.channelId,
-    );
-
-    // this will wrap the index around
-    const nextChannel = channels.at(
-      (currentChannelIndex + byOffset) % channels.length,
-    );
-
-    if (nextChannel) {
-      navigate(`/server/${props.server.id}/channel/${nextChannel.id}`);
-    }
-  };
-
-  // todo: I think these cause the infinite hang bug:
-
-  // createKeybind(KeybindAction.NAVIGATION_CHANNEL_UP, () => navigateChannel(-1));
-
-  // createKeybind(KeybindAction.NAVIGATION_CHANNEL_DOWN, () =>
-  //   navigateChannel(1),
-  // );
-
   createKeybind(KeybindAction.CHAT_MARK_SERVER_AS_READ, () => {
     if (props.server.unread) {
       props.server.ack();

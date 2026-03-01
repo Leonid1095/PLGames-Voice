@@ -85,8 +85,7 @@ export function Dialog(props: Props) {
                           onPress={() => {
                             if (action.isDisabled) return;
 
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            const value = action.onClick?.() as any;
+                            const value: unknown = action.onClick?.();
                             if (value instanceof Promise) {
                               value.then(props.onClose).catch(() => {});
                             } else if (value !== false) {

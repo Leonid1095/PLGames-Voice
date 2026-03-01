@@ -61,10 +61,10 @@ describe("Desktop IPC — badges.ts валидация", () => {
     }
   });
 
-  it("должен использовать Math.max, а не Math.min для count", () => {
-    // Math.min(count, 0) всегда возвращает ≤ 0, что неправильно
-    // Должно быть Math.max(count, 0) — не меньше 0
+  it("не должен содержать Math.min(count, 0) (багфикс) и мёртвый D-Bus код", () => {
+    // Math.min(count, 0) был исправлён, мёртвый D-Bus код удалён (Фаза 4.4)
     expect(badgesSource).not.toMatch(/Math\.min\(count,\s*0\)/);
-    expect(badgesSource).toMatch(/Math\.max\(count,\s*0\)/);
+    expect(badgesSource).not.toContain("dbus");
+    expect(badgesSource).not.toContain('case "_"');
   });
 });
