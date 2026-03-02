@@ -294,6 +294,31 @@ const BtnSecondary = styled("a", {
   },
 });
 
+const BtnDownload = styled("a", {
+  base: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "8px",
+    padding: "14px 32px",
+    borderRadius: "8px",
+    fontSize: "16px",
+    fontWeight: 600,
+    textDecoration: "none",
+    color: "#fff",
+    background: "linear-gradient(135deg, #2563EB, #7C3AED)",
+    transition: "box-shadow 0.2s, transform 0.15s",
+    cursor: "pointer",
+    _hover: {
+      boxShadow: "0 0 32px rgba(37,99,235,0.3)",
+      transform: "translateY(-1px)",
+    },
+  },
+});
+
+const DOWNLOAD_URL =
+  "https://github.com/Leonid1095/PLGames-Voice/releases/latest/download/plg-voice-desktop-setup.exe";
+
 /* ── Landing page ──────────────────────────────────── */
 
 export default function LandingPage() {
@@ -307,6 +332,9 @@ export default function LandingPage() {
         <Nav>
           <Logo />
           <NavButtons>
+            <BtnDownload href={DOWNLOAD_URL} target="_blank">
+              ⬇ Windows
+            </BtnDownload>
             <BtnSecondary href="/login">
               <Trans>Log in</Trans>
             </BtnSecondary>
@@ -335,6 +363,9 @@ export default function LandingPage() {
               <Trans>I already have an account</Trans>
             </BtnSecondary>
           </HeroCTA>
+          <BtnDownload href={DOWNLOAD_URL} target="_blank">
+            ⬇ <Trans>Download for Windows</Trans>
+          </BtnDownload>
         </Hero>
 
         {/* ── Features ── */}
