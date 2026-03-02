@@ -139,16 +139,16 @@ GitHub Actions workflows лежали в `desktop/.github/workflows/` — GitHub
 
 ## ЧТО НУЖНО СДЕЛАТЬ
 
-### 🔴 Этап 1: Развёртывание сервера (MVP — критическое)
+### ✅ Этап 1: Развёртывание сервера (MVP — выполнено 2 марта 2026)
 
 | # | Задача | Описание | Статус |
 |---|--------|----------|--------|
-| 1 | Остановить старый Spacebar | Остановить Docker-контейнеры Spacebar на cvaboda.duckdns.org | ⬜ |
-| 2 | Развернуть Revolt/Stoat сервер | `./generate_config.sh cvaboda.duckdns.org` + `docker compose up -d` | ⬜ |
-| 3 | Настроить DNS | Убедиться что cvaboda.duckdns.org указывает на сервер | ⬜ |
-| 4 | Открыть порты | 80, 443 (HTTP/S), 7881/tcp (LiveKit signaling), 50000-50100/udp (media) | ⬜ |
-| 5 | Проверить все сервисы | 16 Docker-сервисов: API, Events, MongoDB, KeyDB, MinIO, Caddy, LiveKit и др. | ⬜ |
-| 6 | Создать первого пользователя | Регистрация через веб-интерфейс, назначить администратором | ⬜ |
+| 1 | Остановить старый Spacebar | Остановить Docker-контейнеры Spacebar на cvaboda.duckdns.org | ✅ |
+| 2 | Развернуть Revolt/Stoat сервер | `./generate_config.sh cvaboda.duckdns.org` + `docker compose up -d` | ✅ |
+| 3 | Настроить DNS | Убедиться что cvaboda.duckdns.org указывает на сервер | ✅ |
+| 4 | Открыть порты | 80, 443 (HTTP/S), 7881/tcp (LiveKit signaling), 50000-50100/udp (media) | ✅ |
+| 5 | Проверить все сервисы | 14+ Docker-сервисов healthy: API, Events, MongoDB, Redis, RabbitMQ, MinIO, LiveKit и др. | ✅ |
+| 6 | Создать первого пользователя | Регистрация через веб-интерфейс, назначить администратором | ✅ |
 
 ### 🟠 Этап 2: Создание ассетов
 
@@ -165,7 +165,7 @@ GitHub Actions workflows лежали в `desktop/.github/workflows/` — GitHub
 |---|--------|----------|--------|
 | 11 | Установить зависимости | `pnpm install` в plg-voice-desktop | ✅ |
 | 12 | Собрать .exe | `pnpm make` (Electron Forge → Windows installer + ZIP portable) | ✅ |
-| 13 | Протестировать | Запустить, проверить подключение к серверу, голос | ⬜ (ждёт деплой сервера) |
+| 13 | Протестировать | Запустить, проверить подключение к серверу, голос | ⬜ (сервер развёрнут — можно тестировать) |
 | 14 | CI/CD автосборка | GitHub Actions workflows перенесены в корень, release-please + publish Windows | ✅ |
 | 15 | Автообновление | `update-electron-app` привязан к GitHub Releases — заработает после первого релиза | ✅ (настроено) |
 | 16 | Кнопка скачивания на лендинге | Кнопка «Скачать для Windows» в навбаре и hero-секции Landing.tsx → latest release .exe | ✅ |
