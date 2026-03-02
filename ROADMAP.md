@@ -135,6 +135,28 @@ GitHub Actions workflows лежали в `desktop/.github/workflows/` — GitHub
 | `desktop/.github/workflows/build.yml` | Удалён |
 | `desktop/.github/workflows/release-please.yml` | Удалён |
 
+### 7. Страница скачивания `/app` — 2 марта 2026
+
+#### Что сделано
+- **Новый маршрут `/app`** — выделенная страница скачивания десктоп-приложения
+- Компонент `AppDownload.tsx`: логотип, заголовок «Скачать PLG Voice», кнопка скачивания → GitHub Releases `.exe`, навигационные ссылки (главная, вход, регистрация), подпись «Windows 10+ • 64-bit • ~117 МБ»
+- Маршрут добавлен в `index.tsx` между `/welcome` и `/`
+- Дизайн в стиле Obsidian Amethyst (согласован с лендингом)
+
+#### Исправление сборки Docker
+- `stoat.js/tsconfig.json`: добавлен `exclude: ["tests", "vitest.config.ts"]` — тесты вне `rootDir` ломали `tsc` при Docker-сборке
+- Пересобран образ `plg-voice-web:latest`, задеплоен на сервер
+
+#### Файлы
+| Файл | Действие |
+|------|----------|
+| `client/packages/client/src/AppDownload.tsx` | Создан |
+| `client/packages/client/src/index.tsx` | Добавлен маршрут `/app` |
+| `client/packages/stoat.js/tsconfig.json` | Исправлен exclude для Docker-сборки |
+
+#### Коммит
+- `f51d7803` — "feat: add /app download page for Windows desktop client"
+
 ---
 
 ## ЧТО НУЖНО СДЕЛАТЬ
@@ -169,6 +191,7 @@ GitHub Actions workflows лежали в `desktop/.github/workflows/` — GitHub
 | 14 | CI/CD автосборка | GitHub Actions workflows перенесены в корень, release-please + publish Windows | ✅ |
 | 15 | Автообновление | `update-electron-app` привязан к GitHub Releases — заработает после первого релиза | ✅ (настроено) |
 | 16 | Кнопка скачивания на лендинге | Кнопка «Скачать для Windows» в навбаре и hero-секции Landing.tsx → latest release .exe | ✅ |
+| 17 | Страница скачивания /app | Выделенная страница `AppDownload.tsx` по маршруту `/app` с кнопкой скачивания .exe | ✅ |
 
 ### 🟢 Этап 4: Тестирование и отладка
 
@@ -293,4 +316,4 @@ docker compose ps
 
 ---
 
-*Последнее обновление: 2026-03-02*
+*Последнее обновление: 2026-03-02 (страница /app)*
