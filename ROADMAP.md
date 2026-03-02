@@ -168,6 +168,7 @@ GitHub Actions workflows лежали в `desktop/.github/workflows/` — GitHub
 | 13 | Протестировать | Запустить, проверить подключение к серверу, голос | ⬜ (ждёт деплой сервера) |
 | 14 | CI/CD автосборка | GitHub Actions workflows перенесены в корень, release-please + publish Windows | ✅ |
 | 15 | Автообновление | `update-electron-app` привязан к GitHub Releases — заработает после первого релиза | ✅ (настроено) |
+| 16 | Кнопка скачивания на лендинге | Кнопка «Скачать для Windows» в навбаре и hero-секции Landing.tsx → latest release .exe | ✅ |
 
 ### 🟢 Этап 4: Тестирование и отладка
 
@@ -292,4 +293,4 @@ docker compose ps
 
 ---
 
-*Последнее обновление: 2026-03-01*
+*Последнее обновление: 2026-03-02*
