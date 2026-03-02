@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.0](https://github.com/Leonid1095/PLGames-Voice/compare/v1.4.0...v1.5.0) (2026-03-02)
+
+
+### Features
+
+* desktop app — сборка .exe, UX для desktop, диалог закрытия ([c39c1f6](https://github.com/Leonid1095/PLGames-Voice/commit/c39c1f6e78979d6ff43fd29089b729dcfe70ceab))
+
+
+### Bug Fixes
+
+* desktop — URL из env, IPC валидация, CSP, badges Math.max (Фаза 2) ([92b34d2](https://github.com/Leonid1095/PLGames-Voice/commit/92b34d21e05dc9d44c4f42aa4dc7af602f051d61))
+
 ## [1.4.0](https://github.com/Leonid1095/PLGames-Voice/compare/v1.3.0...v1.4.0) (2026-03-02)
 
 
