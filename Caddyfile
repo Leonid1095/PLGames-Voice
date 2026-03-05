@@ -10,9 +10,10 @@
 		uri strip_prefix /ws
 		reverse_proxy http://events:14703 {
 			header_down Location "^/" "/ws/"
+			flush_interval -1
 			transport http {
 				keepalive off
-				read_buffer 4096
+				read_buffer 8192
 			}
 		}
 	}

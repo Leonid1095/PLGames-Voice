@@ -17,11 +17,21 @@ services:
 
   # Redis: Event message broker & KV store
   redis:
-    image: docker.io/eqalpha/keydb
-    command: keydb-server --tcp-keepalive 30 --timeout 0 --hz 10 --tcp-backlog 511 --lfu-log-factor 10 --activedefrag yes
+    image: docker.io/redis:7-alpine
+    command: >-
+      redis-server
+      --tcp-keepalive 60
+      --timeout 0
+      --hz 10
+      --tcp-backlog 511
+      --activedefrag yes
+      --save 3600 1
+      --save 900 100
+      --no-appendfsync-on-rewrite yes
+      --client-output-buffer-limit pubsub 67108864 33554432 120
     restart: always
     healthcheck:
-      test: keydb-cli ping | grep -q PONG
+      test: redis-cli ping | grep -q PONG
       interval: 10s
       timeout: 5s
       retries: 3
