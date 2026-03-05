@@ -8,8 +8,11 @@ services:
     command: --auth
     volumes:
       - ./data/db:/data/db
+    environment:
+      MONGO_USER: ${MONGO_USER:-stoatadmin}
+      MONGO_PASS: ${MONGO_PASS:?Set MONGO_PASS in .env}
     healthcheck:
-      test: mongosh --norc --quiet -u $${MONGO_USER:-stoatadmin} -p $${MONGO_PASS} --authenticationDatabase admin --eval "db.runCommand({ping:1}).ok"
+      test: mongosh --norc --quiet -u $${MONGO_USER} -p $${MONGO_PASS} --authenticationDatabase admin --eval "db.runCommand({ping:1}).ok"
       interval: 60s
       timeout: 10s
       retries: 5
