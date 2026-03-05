@@ -131,12 +131,12 @@ const Interface = (props: { children: JSX.Element }) => {
           height: "100%",
         }}
       >
-        <Titlebar />
         <Switch fallback={<AppLoader />}>
           <Match when={!isLoggedIn()}>
             <Navigate href={window.native ? "/login" : "/welcome"} />
           </Match>
           <Match when={lifecycle.loadedOnce()}>
+            <Titlebar />
             <Layout
               disconnected={isDisconnected()}
               style={{ "flex-grow": 1, "min-height": 0 }}
