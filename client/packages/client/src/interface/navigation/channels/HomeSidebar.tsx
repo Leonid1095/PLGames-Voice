@@ -73,11 +73,11 @@ export const HomeSidebar = (props: Props) => {
             <Trans>Conversations</Trans>
           </SidebarTitle>
 
-          <a href="/app">
+          <a href="/">
             <MenuButton
               size="normal"
               icon={<Symbol>home</Symbol>}
-              attention={location.pathname === "/app" ? "selected" : "normal"}
+              attention={location.pathname === "/" ? "selected" : "normal"}
             >
               <ButtonTitle>
                 <Trans>Home</Trans>

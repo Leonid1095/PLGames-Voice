@@ -90,7 +90,7 @@ export const ServerList = (props: Props) => {
     const nextIndex = currentServerIndex + byOffset;
 
     if (nextIndex === -1) {
-      return navigate("/app");
+      return navigate("/");
     }
 
     // this will wrap the index around
@@ -121,7 +121,7 @@ export const ServerList = (props: Props) => {
           class={entryContainer({
             indicator: !props.selectedServer() ? "selected" : undefined,
           })}
-          href="/app"
+          href="/"
           use:floating={{
             tooltip: {
               content: `You have ${homeNotifications()} pending friend requests.`,
