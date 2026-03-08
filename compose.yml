@@ -93,7 +93,7 @@ services:
 
   # API server
   api:
-    image: ghcr.io/stoatchat/api:v0.11.1
+    image: ghcr.io/stoatchat/api:latest
     depends_on:
       database:
         condition: service_healthy
@@ -109,7 +109,7 @@ services:
 
   # Events service
   events:
-    image: ghcr.io/stoatchat/events:v0.11.1
+    image: ghcr.io/stoatchat/events:latest
     depends_on:
       database:
         condition: service_healthy
@@ -123,7 +123,7 @@ services:
 
   # File server
   autumn:
-    image: ghcr.io/stoatchat/file-server:v0.11.1
+    image: ghcr.io/stoatchat/file-server:latest
     depends_on:
       database:
         condition: service_healthy
@@ -137,7 +137,7 @@ services:
 
   # Metadata and image proxy
   january:
-    image: ghcr.io/stoatchat/proxy:v0.11.1
+    image: ghcr.io/stoatchat/proxy:latest
     volumes:
       - type: bind
         source: ./Revolt.toml
@@ -155,7 +155,7 @@ services:
 
   # Regular task daemon
   crond:
-    image: ghcr.io/stoatchat/crond:v0.11.1
+    image: ghcr.io/stoatchat/crond:latest
     depends_on:
       database:
         condition: service_healthy
@@ -169,7 +169,8 @@ services:
 
   # Push notification daemon
   pushd:
-    image: ghcr.io/stoatchat/pushd:v0.11.1
+    image: ghcr.io/stoatchat/pushd:latest
+    restart: always
     depends_on:
       database:
         condition: service_healthy
@@ -177,15 +178,16 @@ services:
         condition: service_healthy
       rabbit:
         condition: service_healthy
+      api:
+        condition: service_started
     volumes:
       - type: bind
         source: ./Revolt.toml
         target: /Revolt.toml
-    restart: always
 
    # Voice ingress daemon
   voice-ingress:
-    image: ghcr.io/stoatchat/voice-ingress:v0.11.1
+    image: ghcr.io/stoatchat/voice-ingress:latest
     restart: always
     depends_on:
       database:
@@ -202,10 +204,45 @@ services:
     command: --config /etc/livekit.yml
     volumes:
       - ./livekit.yml:/etc/livekit.yml
+      - ./data/livekit-certs/fullchain.pem:/etc/livekit/fullchain.pem:ro
+      - ./data/livekit-certs/privkey.pem:/etc/livekit/privkey.pem:ro
     ports:
+      - "127.0.0.1:7880:7880"
       - "7881:7881"
+      - "3478:3478/udp"
+      - "5349:5349/tcp"
       - "50000-50100:50000-50100/udp"
     restart: always
+
+  # LiveKit Ingress: принимает RTMP/WHIP стримы (OBS и т.д.)
+  livekit-ingress:
+    image: livekit/ingress:latest
+    restart: always
+    depends_on:
+      - livekit
+      - redis
+    environment:
+      INGRESS_CONFIG_FILE: /etc/ingress.yml
+    volumes:
+      - ./ingress.yml:/etc/ingress.yml:ro
+    ports:
+      - "1935:1935"
+      - "8088:8088"
+
+  # LiveKit Egress: запись стримов и трансляция наружу
+  livekit-egress:
+    image: livekit/egress:latest
+    restart: always
+    depends_on:
+      - livekit
+      - redis
+    environment:
+      EGRESS_CONFIG_FILE: /etc/egress.yml
+    volumes:
+      - ./egress.yml:/etc/egress.yml:ro
+      - ./data/recordings:/recordings
+    cap_add:
+      - SYS_ADMIN
 
   # Create buckets for minio.
   createbuckets:

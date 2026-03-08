@@ -1,4 +1,4 @@
-import { Match, Show, Switch } from "solid-js";
+import { createResource, createSignal, For, Match, Show, Switch } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { PublicChannelInvite } from "stoat.js";
@@ -21,6 +21,7 @@ import {
 import MdAddCircle from "@material-design-icons/svg/filled/add_circle.svg?component-solid";
 import MdGroups3 from "@material-design-icons/svg/filled/groups_3.svg?component-solid";
 import MdHome from "@material-design-icons/svg/filled/home.svg?component-solid";
+import MdLive from "@material-design-icons/svg/filled/live_tv.svg?component-solid";
 import MdPayments from "@material-design-icons/svg/filled/payments.svg?component-solid";
 import MdRateReview from "@material-design-icons/svg/filled/rate_review.svg?component-solid";
 import MdSettings from "@material-design-icons/svg/filled/settings.svg?component-solid";
@@ -92,6 +93,201 @@ const SeparatedColumn = styled(Column, {
 });
 
 /**
+ * Stream card styles
+ */
+const StreamsSection = styled("div", {
+  base: {
+    width: "100%",
+    maxWidth: "560px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
+  },
+});
+
+const StreamsTitle = styled("div", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    fontSize: "14px",
+    fontWeight: 600,
+    textTransform: "uppercase",
+    letterSpacing: "0.05em",
+    color: "var(--md-sys-color-on-surface-variant)",
+  },
+});
+
+const StreamsGrid = styled("div", {
+  base: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+    gap: "12px",
+  },
+});
+
+const StreamCard = styled("a", {
+  base: {
+    display: "flex",
+    flexDirection: "column",
+    borderRadius: "var(--borderRadius-lg)",
+    overflow: "hidden",
+    background: "var(--md-sys-color-surface-container)",
+    cursor: "pointer",
+    transition: "transform 0.15s, box-shadow 0.15s",
+    textDecoration: "none",
+    color: "inherit",
+    "&:hover": {
+      transform: "translateY(-2px)",
+      boxShadow: "0 4px 16px rgba(0,0,0,0.3)",
+    },
+  },
+});
+
+const StreamPreview = styled("div", {
+  base: {
+    position: "relative",
+    aspectRatio: "16/9",
+    background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+  },
+});
+
+const LiveBadge = styled("span", {
+  base: {
+    position: "absolute",
+    top: "8px",
+    left: "8px",
+    background: "#e94560",
+    color: "white",
+    fontSize: "11px",
+    fontWeight: 700,
+    padding: "2px 6px",
+    borderRadius: "4px",
+    letterSpacing: "0.05em",
+  },
+});
+
+const ViewersBadge = styled("span", {
+  base: {
+    position: "absolute",
+    bottom: "8px",
+    right: "8px",
+    background: "rgba(0,0,0,0.7)",
+    color: "white",
+    fontSize: "11px",
+    padding: "2px 6px",
+    borderRadius: "4px",
+  },
+});
+
+const StreamInfo = styled("div", {
+  base: {
+    padding: "10px 12px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "2px",
+  },
+});
+
+const StreamName = styled("div", {
+  base: {
+    fontSize: "14px",
+    fontWeight: 600,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
+});
+
+const StreamStreamer = styled("div", {
+  base: {
+    fontSize: "12px",
+    color: "var(--md-sys-color-on-surface-variant)",
+  },
+});
+
+interface StreamData {
+  name: string;
+  room: string;
+  streamer: string;
+  viewers: number;
+  startedAt: number;
+  viewUrl: string;
+}
+
+async function fetchActiveStreams(): Promise<StreamData[]> {
+  try {
+    const res = await fetch("/stream/active");
+    const data = await res.json();
+    return data.streams || [];
+  } catch {
+    return [];
+  }
+}
+
+function formatDuration(startedAt: number): string {
+  const sec = Math.floor((Date.now() - startedAt) / 1000);
+  const h = Math.floor(sec / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  if (h > 0) return `${h}ч ${m}м`;
+  return `${m}м`;
+}
+
+/**
+ * Active streams component for home page
+ */
+function ActiveStreams() {
+  const [streams, { refetch }] = createResource(fetchActiveStreams);
+
+  // Auto-refresh every 30s
+  setInterval(() => refetch(), 30000);
+
+  return (
+    <Show when={streams() && streams()!.length > 0}>
+      <StreamsSection>
+        <StreamsTitle>
+          <MdLive {...iconSize(18)} />
+          <Trans>Live Streams</Trans>
+        </StreamsTitle>
+        <StreamsGrid>
+          <For each={streams()}>
+            {(stream) => (
+              <StreamCard
+                href={stream.viewUrl}
+                target="_blank"
+                rel="noopener"
+              >
+                <StreamPreview>
+                  <LiveBadge>LIVE</LiveBadge>
+                  <ViewersBadge>
+                    {stream.viewers}{" "}
+                    {stream.viewers === 1 ? "зритель" : "зрителей"}
+                  </ViewersBadge>
+                  <MdLive
+                    {...iconSize(48)}
+                    style={{ opacity: 0.2 }}
+                  />
+                </StreamPreview>
+                <StreamInfo>
+                  <StreamName>{stream.name}</StreamName>
+                  <StreamStreamer>
+                    {stream.streamer} · {formatDuration(stream.startedAt)}
+                  </StreamStreamer>
+                </StreamInfo>
+              </StreamCard>
+            )}
+          </For>
+        </StreamsGrid>
+      </StreamsSection>
+    </Show>
+  );
+}
+
+/**
  * Home page
  */
 export function HomePage() {
@@ -121,6 +317,7 @@ export function HomePage() {
             })}
           />
         </Column>
+        <ActiveStreams />
         <Buttons>
           <SeparatedColumn>
             <CategoryButton

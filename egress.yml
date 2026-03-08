@@ -1,0 +1,14 @@
+api_key: 070015acb35d
+api_secret: 1ebd13d2a06a44456961489157de89c8ff9263880d148cb2
+ws_url: ws://livekit:7880
+
+redis:
+  address: redis:6379
+
+# Локальное сохранение записей
+file_output:
+  local:
+    - /recordings
+
+logging:
+  level: info

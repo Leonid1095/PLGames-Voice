@@ -1,0 +1,15 @@
+[Unit]
+Description=PLGames Stream Service
+After=network.target docker.service
+
+[Service]
+Type=simple
+User=plg
+WorkingDirectory=/home/plg/PLGames-Voice/bot
+ExecStart=/home/plg/.nvm/versions/node/v20.19.4/bin/node stream-service.js
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

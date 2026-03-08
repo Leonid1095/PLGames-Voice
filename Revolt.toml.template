@@ -19,6 +19,9 @@ public_key = "${VAPID_PUBLIC_KEY}"
 [files]
 encryption_key = "${FILES_ENCRYPTION_KEY}"
 
+[features]
+webhooks_enabled = true
+
 [api.livekit.nodes.worldwide]
 url = "http://livekit:7880"
 lat = 0.0
