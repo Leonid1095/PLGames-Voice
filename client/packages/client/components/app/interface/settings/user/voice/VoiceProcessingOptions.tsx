@@ -14,6 +14,12 @@ export function VoiceProcessingOptions() {
       <Text class="title">
         <Trans>Voice Processing</Trans>
       </Text>
+      <Text class="body" size="small">
+        <Trans>
+          These settings affect your microphone input. Changes apply on next
+          voice connection.
+        </Trans>
+      </Text>
       <CategoryButton.Group>
         <CategoryButton
           icon="blank"
@@ -21,8 +27,13 @@ export function VoiceProcessingOptions() {
           onClick={() =>
             (state.voice.noiseSupression = !state.voice.noiseSupression)
           }
+          description={
+            <Trans>
+              Reduces background noise like fans, keyboards and ambient sounds
+            </Trans>
+          }
         >
-          <Trans>Browser Noise Supression</Trans>
+          <Trans>Noise Suppression</Trans>
         </CategoryButton>
         <CategoryButton
           icon="blank"
@@ -30,8 +41,28 @@ export function VoiceProcessingOptions() {
           onClick={() =>
             (state.voice.echoCancellation = !state.voice.echoCancellation)
           }
+          description={
+            <Trans>
+              Prevents your speakers from feeding back into your microphone
+            </Trans>
+          }
         >
-          <Trans>Browser Echo Cancellation</Trans>
+          <Trans>Echo Cancellation</Trans>
+        </CategoryButton>
+        <CategoryButton
+          icon="blank"
+          action={<Checkbox checked={state.voice.autoGainControl} />}
+          onClick={() =>
+            (state.voice.autoGainControl = !state.voice.autoGainControl)
+          }
+          description={
+            <Trans>
+              Automatically adjusts microphone volume so you're always heard
+              clearly
+            </Trans>
+          }
+        >
+          <Trans>Automatic Gain Control</Trans>
         </CategoryButton>
       </CategoryButton.Group>
     </Column>
