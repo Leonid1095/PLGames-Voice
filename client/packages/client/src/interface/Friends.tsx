@@ -6,7 +6,6 @@ import {
   Switch,
   createMemo,
   createSignal,
-  splitProps,
 } from "solid-js";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
@@ -17,6 +16,7 @@ import { styled } from "styled-system/jsx";
 import { UserContextMenu } from "@revolt/app";
 import { useClient } from "@revolt/client";
 import { useModals } from "@revolt/modal";
+import { useNavigate } from "@revolt/routing";
 import {
   Avatar,
   Badge,
@@ -24,11 +24,9 @@ import {
   Header,
   IconButton,
   List,
-  ListItem,
   ListSubheader,
   NavigationRail,
   NavigationRailItem,
-  OverflowingText,
   UserStatus,
   main,
 } from "@revolt/ui";
@@ -233,32 +231,22 @@ function People(props: {
       </ListSubheader>
 
       <Show when={props.users.length === 0}>
-        <ListItem disabled>
+        <EmptyState>
+          <Symbol size={32}>person_off</Symbol>
           <Trans>Nobody here right now!</Trans>
-        </ListItem>
+        </EmptyState>
       </Show>
 
       <VirtualContainer
         items={props.users}
         scrollTarget={props.scrollTargetElement()}
-        itemSize={{ height: 58 }}
-        // grid rendering:
-        // itemSize={{ height: 60, width: 240 }}
-        // crossAxisCount={(measurements) =>
-        //   Math.floor(measurements.container.cross / measurements.itemSize.cross)
-        // }
-        // width: 100% needs to be removed from listentry below for this to work ^^^
+        itemSize={{ height: 64 }}
       >
         {(item) => (
-          <ContainerListEntry
-            style={{
-              ...item.style,
-            }}
-          >
+          <ContainerListEntry style={{ ...item.style }}>
             <Entry
               role="listitem"
               tabIndex={item.tabIndex}
-              style={item.style}
               user={item.item}
             />
           </ContainerListEntry>
@@ -268,6 +256,19 @@ function People(props: {
   );
 }
 
+const EmptyState = styled("div", {
+  base: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "8px",
+    padding: "32px 16px",
+    color: "var(--md-sys-color-on-surface-variant)",
+    fontSize: "14px",
+    opacity: 0.7,
+  },
+});
+
 const ContainerListEntry = styled("div", {
   base: {
     width: "100%",
@@ -275,30 +276,111 @@ const ContainerListEntry = styled("div", {
 });
 
 /**
+ * Friend card row
+ */
+const FriendRow = styled("div", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    padding: "8px 12px",
+    borderRadius: "var(--borderRadius-md)",
+    cursor: "pointer",
+    transition: "background 0.15s, box-shadow 0.15s",
+    userSelect: "none",
+
+    "&:hover": {
+      background: "color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent)",
+    },
+
+    "&:active": {
+      background: "color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent)",
+    },
+  },
+});
+
+const FriendInfo = styled("div", {
+  base: {
+    display: "flex",
+    flexDirection: "column",
+    flex: 1,
+    minWidth: 0,
+    gap: "1px",
+  },
+});
+
+const FriendName = styled("span", {
+  base: {
+    fontSize: "14px",
+    fontWeight: 600,
+    color: "var(--md-sys-color-on-surface)",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+  },
+});
+
+const FriendStatus = styled("span", {
+  base: {
+    fontSize: "12px",
+    color: "var(--md-sys-color-on-surface-variant)",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+  },
+});
+
+const FriendActions = styled("div", {
+  base: {
+    display: "flex",
+    gap: "4px",
+    flexShrink: 0,
+    opacity: 0,
+    transition: "opacity 0.15s",
+
+    "[data-friend-row]:hover &": {
+      opacity: 1,
+    },
+  },
+});
+
+/**
  * Single user entry
  */
-function Entry(
-  props: { user: User } & Omit<
-    JSX.AnchorHTMLAttributes<HTMLAnchorElement>,
-    "href"
-  >,
-) {
+function Entry(props: { user: User; role?: string; tabIndex?: number }) {
+  const { t } = useLingui();
   const { openModal } = useModals();
-  const [local, remote] = splitProps(props, ["user"]);
+  const navigate = useNavigate();
+
+  const statusText = () => {
+    const custom = props.user.status?.text;
+    if (custom) return custom;
+    const presence = props.user.status?.presence ?? (props.user.online ? "Online" : undefined);
+    if (!presence) return undefined;
+    switch (presence) {
+      case "Online": return t`Online`;
+      case "Idle": return t`Idle`;
+      case "Busy": return t`Do Not Disturb`;
+      case "Focus": return t`Focus`;
+      default: return undefined;
+    }
+  };
 
   return (
-    <a
-      {...remote}
+    <div
+      data-friend-row
       use:floating={{
-        contextMenu: () => <UserContextMenu user={local.user} />,
+        contextMenu: () => <UserContextMenu user={props.user} />,
       }}
-      onClick={() => openModal({ type: "user_profile", user: local.user })}
     >
-      <ListItem>
+      <FriendRow
+        role={props.role}
+        tabIndex={props.tabIndex}
+        onClick={() => openModal({ type: "user_profile", user: props.user })}
+      >
         <Avatar
-          slot="icon"
           size={40}
-          src={local.user.animatedAvatarURL}
+          src={props.user.animatedAvatarURL}
           holepunch={
             props.user.relationship === "Friend" ? "bottom-right" : "none"
           }
@@ -310,8 +392,41 @@ function Entry(
             </Show>
           }
         />
-        <OverflowingText>{local.user.displayName}</OverflowingText>
-      </ListItem>
-    </a>
+        <FriendInfo>
+          <FriendName>{props.user.displayName}</FriendName>
+          <Show when={statusText()}>
+            <FriendStatus>{statusText()}</FriendStatus>
+          </Show>
+        </FriendInfo>
+        <FriendActions>
+          <Show when={props.user.relationship === "Friend"}>
+            <IconButton
+              size="xs"
+              variant="standard"
+              onPress={() =>
+                props.user.openDM().then((ch) => navigate(ch.url))
+              }
+              use:floating={{
+                tooltip: { placement: "top", content: t`Message` },
+              }}
+            >
+              <Symbol size={18}>chat</Symbol>
+            </IconButton>
+          </Show>
+          <IconButton
+            size="xs"
+            variant="standard"
+            onPress={() =>
+              openModal({ type: "user_profile", user: props.user })
+            }
+            use:floating={{
+              tooltip: { placement: "top", content: t`Profile` },
+            }}
+          >
+            <Symbol size={18}>person</Symbol>
+          </IconButton>
+        </FriendActions>
+      </FriendRow>
+    </div>
   );
 }
