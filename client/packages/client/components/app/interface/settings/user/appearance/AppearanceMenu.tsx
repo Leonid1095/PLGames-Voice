@@ -1,6 +1,6 @@
 import { For, Match, Show, Switch, createSignal } from "solid-js";
 
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { css } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
@@ -37,6 +37,7 @@ import MDPalette from "@material-design-icons/svg/outlined/palette.svg?component
  * All appearance options for the client
  */
 export function AppearanceMenu() {
+  const { t } = useLingui();
   const user = useUser();
   const state = useState();
   const [pickerRef, setPickerRef] = createSignal<HTMLDivElement>();
@@ -318,7 +319,7 @@ export function AppearanceMenu() {
         <Trans>Interface Font</Trans>
       </Text>
       <TextField.Select
-        title="Interface Font"
+        title={t`Interface Font`}
         value={state.theme.interfaceFont}
         onChange={(e) =>
           state.theme.setInterfaceFont(e.currentTarget.value as Fonts)
@@ -333,7 +334,7 @@ export function AppearanceMenu() {
         <Trans>Monospace Font</Trans>
       </Text>
       <TextField.Select
-        title="Monospace Font"
+        title={t`Monospace Font`}
         value={state.theme.monospaceFont}
         onChange={(e) =>
           state.theme.setMonospaceFont(e.currentTarget.value as MonospaceFonts)

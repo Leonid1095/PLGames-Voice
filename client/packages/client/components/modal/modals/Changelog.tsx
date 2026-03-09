@@ -51,35 +51,34 @@ const ChangelogPosts: ChangelogPost[] = [
   //   ],
   // },
   {
-    icon: "voice_chat",
-    date: new Date("2025-11-08T14:00:00.000Z"),
-    link: "https://cvaboda.duckdns.org/updates/web-0013",
-    title: "PLG Voice for Web: 0.0.13",
+    icon: "upgrade",
+    date: new Date("2026-03-09T12:00:00.000Z"),
+    link: "https://cvaboda.duckdns.org",
+    title: "PLG Voice 0.2.0",
     content: [
-      `This update brings a host of improvements to voice chats along with an improved messaging experience.
+      `Обновление с множеством улучшений и исправлений.
 
-## Improved Voice Chats
-A brand new user interface with picture-in-picture support to keep an eye on your voice chats while you multitask.`,
-      {
-        type: "image",
-        src: "https://cvaboda.duckdns.org/content/changelog/web-0.0.13/pip.gif",
-      },
-      `You can now also see who is in a voice chat and who is speaking, making it easier to keep track of conversations.
+## Голосовые чаты
+Обновлённый интерфейс с поддержкой картинки-в-картинке, чтобы следить за голосовым чатом во время работы.`,
+      `Теперь видно, кто в голосовом чате и кто говорит.
 
-## Improved Text Editor
-The text editor has been revamped to provide a smoother and more intuitive messaging experience. We've taken and improved the experience from our old web app, featuring rich text preview while not intruding on what you're typing.`,
-      {
-        type: "image",
-        src: "https://cvaboda.duckdns.org/content/changelog/web-0.0.13/text_editor.png",
-      },
-      `For an in-depth look at all the new features and improvements, check out our blog post by pressing read more!`,
+## Улучшенный редактор сообщений
+Переработанный текстовый редактор с предпросмотром Markdown и удобным вводом.
+
+## RTMP-стриминг
+Поддержка стримов через OBS — транслируйте прямо на сервер.
+
+## Исправления
+- Улучшена стабильность WebSocket-соединений
+- Исправлен лендинг для авторизованных пользователей
+- Доработан перевод на русский язык`,
     ],
   },
 ];
 
 export const CHANGELOG_MODAL_CONST = {
   index: 0,
-  until: new Date("2026-01-01T00:00:00.000Z"),
+  until: new Date("2026-04-01T00:00:00.000Z"),
 };
 
 /**

@@ -9,7 +9,7 @@ import {
   createMemo,
 } from "solid-js";
 
-import { useLingui } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import type { API, Channel, Server, ServerFlags } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
@@ -222,12 +222,36 @@ function ServerInfo(
     canManageServer: boolean;
   },
 ) {
+  const { t } = useLingui();
+  const { openModal } = useModals();
+
   return (
     <Row align grow minWidth={0}>
       <ServerBadge flags={props.server.flags} />
       <ServerName onClick={props.openServerInfo}>
         <TextWithEmoji content={props.server.name} />
       </ServerName>
+      <Show when={props.server.havePermission("ManageChannel")}>
+        <IconButton
+          size="xs"
+          width="narrow"
+          variant={props.server.banner ? "_header" : "standard"}
+          onPress={() =>
+            openModal({
+              type: "create_channel",
+              server: props.server,
+            })
+          }
+          use:floating={{
+            tooltip: {
+              placement: "bottom",
+              content: t`Create channel`,
+            },
+          }}
+        >
+          <Symbol size={20}>add</Symbol>
+        </IconButton>
+      </Show>
       <Show when={props.canManageServer}>
         <IconButton
           size="xs"
@@ -410,6 +434,7 @@ const CategoryBase = styled("div", {
 function Entry(
   props: { channel: Channel; active: boolean } & Pick<Props, "menuGenerator">,
 ) {
+  const { t } = useLingui();
   const state = useState();
   const voice = useVoice();
   const navigate = useNavigate();
@@ -488,7 +513,7 @@ function Entry(
               <Show when={canInvite()}>
                 <a
                   use:floating={{
-                    tooltip: { placement: "top", content: "Create Invite" },
+                    tooltip: { placement: "top", content: t`Create Invite` },
                   }}
                   onClick={(e) => {
                     e.preventDefault();
@@ -507,7 +532,7 @@ function Entry(
               <Show when={canEditChannel()}>
                 <a
                   use:floating={{
-                    tooltip: { placement: "top", content: "Edit Channel" },
+                    tooltip: { placement: "top", content: t`Edit Channel` },
                   }}
                   onClick={(e) => {
                     e.preventDefault();

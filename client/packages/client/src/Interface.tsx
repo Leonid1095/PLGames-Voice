@@ -133,7 +133,7 @@ const Interface = (props: { children: JSX.Element }) => {
       >
         <Switch fallback={<AppLoader />}>
           <Match when={!isLoggedIn()}>
-            <Navigate href={window.native ? "/login" : "/welcome"} />
+            <Navigate href="/login" />
           </Match>
           <Match when={lifecycle.loadedOnce()}>
             <Titlebar />

@@ -190,7 +190,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             {
               id: "subscribe",
               icon: <MdWorkspacePremium {...iconSize(20)} />,
-              title: "[premium]",
+              title: <Trans>Premium</Trans>,
             },
           ],
         },

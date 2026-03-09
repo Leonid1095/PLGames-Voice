@@ -1,7 +1,7 @@
 {
   "name": "plg-voice-for-web",
-  "version": "1.0.0",
-  "version-date": "2026-02-22",
+  "version": "0.2.0",
+  "version-date": "2026-03-09",
   "description": "PLG Voice for Web: frontend software for PLG Voice",
   "devDependencies": {
     "@eslint/js": "^9.39.1",

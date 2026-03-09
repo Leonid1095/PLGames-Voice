@@ -1,6 +1,6 @@
 import { Accessor, For, JSX, Show, createMemo, createSignal } from "solid-js";
 
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { Channel, Server, User } from "stoat.js";
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
@@ -65,6 +65,7 @@ interface Props {
  * Server list sidebar component
  */
 export const ServerList = (props: Props) => {
+  const { t } = useLingui();
   const state = useState();
   const client = useClient();
   const navigate = useNavigate();
@@ -286,7 +287,7 @@ export const ServerList = (props: Props) => {
             </Tooltip>
           )}
         </Draggable>
-        <Tooltip placement="right" content={"Create or join a server"}>
+        <Tooltip placement="right" content={t`Create or join a server`}>
           <a
             class={entryContainer()}
             onClick={() => props.onCreateOrJoinServer()}
@@ -294,7 +295,7 @@ export const ServerList = (props: Props) => {
             <Avatar size={42} fallback={<MdAdd />} />
           </a>
         </Tooltip>
-        <Tooltip placement="right" content={"Browse servers"}>
+        <Tooltip placement="right" content={t`Browse servers`}>
           <a class={entryContainer()} href="/discover">
             <Avatar size={42} fallback={<MdExplore />} interactive />
           </a>
@@ -303,7 +304,7 @@ export const ServerList = (props: Props) => {
       <Shadow>
         <div />
       </Shadow>
-      <Tooltip placement="right" content="Settings">
+      <Tooltip placement="right" content={t`Settings`}>
         <a
           class={entryContainer()}
           onClick={() => openModal({ type: "settings", config: "user" })}

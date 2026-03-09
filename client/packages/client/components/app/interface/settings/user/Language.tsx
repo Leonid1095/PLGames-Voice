@@ -135,7 +135,7 @@ function PickDateFormat() {
   return (
     <CategoryCollapse
       icon={<MdCalendarMonth {...iconSize(22)} />}
-      title="Select date format"
+      title={t`Select date format`}
       description={
         date() === "DD/MM/YYYY"
           ? t`Traditional (DD/MM/YYYY)`
@@ -185,7 +185,7 @@ function PickTimeFormat() {
   return (
     <CategoryCollapse
       icon={<MdSchedule {...iconSize(22)} />}
-      title="Select time format"
+      title={t`Select time format`}
       description={time() === "HH:mm" ? t`24 hours` : t`12 hours`}
     >
       <CategoryButton

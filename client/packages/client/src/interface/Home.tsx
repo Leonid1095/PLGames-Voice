@@ -1,6 +1,6 @@
 import { createResource, createSignal, For, Match, Show, Switch } from "solid-js";
 
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { PublicChannelInvite } from "stoat.js";
 import { css, cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
@@ -262,10 +262,14 @@ function ActiveStreams() {
                 rel="noopener"
               >
                 <StreamPreview>
-                  <LiveBadge>LIVE</LiveBadge>
+                  <LiveBadge>
+                    <Trans>LIVE</Trans>
+                  </LiveBadge>
                   <ViewersBadge>
                     {stream.viewers}{" "}
-                    {stream.viewers === 1 ? "зритель" : "зрителей"}
+                    {stream.viewers === 1
+                      ? t`viewer`
+                      : t`viewers`}
                   </ViewersBadge>
                   <MdLive
                     {...iconSize(48)}
@@ -291,6 +295,7 @@ function ActiveStreams() {
  * Home page
  */
 export function HomePage() {
+  const { t } = useLingui();
   const { openModal } = useModals();
   const navigate = useNavigate();
   const client = useClient();
