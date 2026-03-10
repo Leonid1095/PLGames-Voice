@@ -77,8 +77,10 @@ export function DraftMessage(props: Props) {
           return (
             <>
               <Text class="label">
-                Uploading file `{file.file.name}`...{" "}
-                {(file.uploadProgress[0]() * 100).toFixed()}%
+                <Trans>
+                  Uploading file `{file.file.name}`...{" "}
+                  {(file.uploadProgress[0]() * 100).toFixed()}%
+                </Trans>
               </Text>
               <Switch>
                 <Match when={file.dimensions}>

@@ -3347,3 +3347,60 @@ msgstr "Создать или присоединиться к серверу"
 #: components/modal/modals/CreateOrJoinServer.tsx
 msgid "Would you like to create a new server or join an existing one?"
 msgstr "Вы хотите создать новый сервер или присоединиться к существующему?"
+
+#: src/interface/channels/text/TextChannel.tsx
+msgid "Search Results"
+msgstr "Результаты поиска"
+
+#: src/interface/channels/text/TextChannel.tsx
+msgid "Pinned Messages"
+msgstr "Закреплённые сообщения"
+
+#: src/interface/channels/text/MemberSidebar.tsx
+msgid "{0} members online"
+msgstr "{0} участников онлайн"
+
+#: components/app/interface/channels/text/EditMessage.tsx
+msgid "escape to <0>cancel</0> · enter to <1>save</1>"
+msgstr "escape — <0>отмена</0> · enter — <1>сохранить</1>"
+
+#: components/app/interface/channels/text/EditMessage.tsx
+msgid "Saving message..."
+msgstr "Сохранение сообщения..."
+
+#: components/app/interface/channels/text/DraftMessage.tsx
+msgid "Uploading file `{0}`... {1}%"
+msgstr "Загрузка файла `{0}`... {1}%"
+
+#: components/auth/src/flows/FlowDelete.tsx
+msgid "Delete Account"
+msgstr "Удалить аккаунт"
+
+#: components/auth/src/flows/FlowDelete.tsx
+msgid "Please wait..."
+msgstr "Пожалуйста, подождите..."
+
+#: components/auth/src/flows/FlowDelete.tsx
+msgid "Error occurred, please email support."
+msgstr "Произошла ошибка, обратитесь в поддержку."
+
+#: components/auth/src/flows/FlowDelete.tsx
+msgid "Account has been queued for deletion!"
+msgstr "Аккаунт поставлен в очередь на удаление!"
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Reset"
+msgstr "Сбросить"
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Save permissions"
+msgstr "Сохранить разрешения"
+
+#: components/app/interface/settings/server/invites/ListServerInvites.tsx
+msgid "Unknown User"
+msgstr "Неизвестный пользователь"
+
+#: components/ui/components/features/messaging/elements/Embed.tsx
+#: components/ui/components/features/messaging/elements/Attachment.tsx
+msgid "Could not render {type}!"
+msgstr "Не удалось отобразить {type}!"

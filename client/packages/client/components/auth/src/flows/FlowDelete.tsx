@@ -1,5 +1,7 @@
 import { Match, Switch, createSignal, onMount } from "solid-js";
 
+import { Trans } from "@lingui-solid/solid/macro";
+
 import { useApi } from "@revolt/client";
 import { useParams } from "@revolt/routing";
 
@@ -24,14 +26,14 @@ export default function FlowDeleteAccount() {
 
   return (
     <FlowBase>
-      <FlowTitle>Delete Account</FlowTitle>
+      <FlowTitle><Trans>Delete Account</Trans></FlowTitle>
       <span>
-        <Switch fallback={"Please wait..."}>
+        <Switch fallback={<Trans>Please wait...</Trans>}>
           <Match when={deleted() === "error"}>
-            Error occurred, please email support.
+            <Trans>Error occurred, please email support.</Trans>
           </Match>
           <Match when={deleted() === true}>
-            Account has been queued for deletion!
+            <Trans>Account has been queued for deletion!</Trans>
           </Match>
         </Switch>
       </span>

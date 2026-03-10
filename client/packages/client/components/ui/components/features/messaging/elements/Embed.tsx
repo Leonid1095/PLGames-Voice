@@ -1,5 +1,6 @@
 import { Match, Switch } from "solid-js";
 
+import { useLingui } from "@lingui-solid/solid/macro";
 import {
   ImageEmbed,
   MessageEmbed,
@@ -18,6 +19,7 @@ import { TextEmbed } from "./TextEmbed";
  * Render a given embed
  */
 export function Embed(props: { embed: MessageEmbed }) {
+  const { t } = useLingui();
   const { openModal } = useModals();
 
   /**
@@ -47,7 +49,7 @@ export function Embed(props: { embed: MessageEmbed }) {
       : isGIF() && (props.embed as WebsiteEmbed).image) || undefined;
 
   return (
-    <Switch fallback={`Could not render ${props.embed.type}!`}>
+    <Switch fallback={t`Could not render ${props.embed.type}!`}>
       <Match when={image()}>
         <SizedContent width={image()!.width} height={image()!.height}>
           <img

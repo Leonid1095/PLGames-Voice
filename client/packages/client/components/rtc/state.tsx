@@ -153,7 +153,7 @@ class Voice {
 
   async toggleMute() {
     const room = this.room();
-    if (!room) throw "invalid state";
+    if (!room) throw new Error("Voice: no active room");
     await room.localParticipant.setMicrophoneEnabled(
       !room.localParticipant.isMicrophoneEnabled,
     );
@@ -163,7 +163,7 @@ class Voice {
 
   async toggleCamera() {
     const room = this.room();
-    if (!room) throw "invalid state";
+    if (!room) throw new Error("Voice: no active room");
     await room.localParticipant.setCameraEnabled(
       !room.localParticipant.isCameraEnabled,
     );
@@ -173,7 +173,7 @@ class Voice {
 
   async toggleScreenshare() {
     const room = this.room();
-    if (!room) throw "invalid state";
+    if (!room) throw new Error("Voice: no active room");
     await room.localParticipant.setScreenShareEnabled(
       !room.localParticipant.isScreenShareEnabled,
     );

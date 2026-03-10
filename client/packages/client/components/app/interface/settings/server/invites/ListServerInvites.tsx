@@ -37,7 +37,7 @@ export function ListServerInvites(props: { server: Server }) {
       await invite.delete();
       client.setQueryData(
         ["invites", props.server.id],
-        query.data!.filter((entry) => entry.id !== entry.id),
+        query.data!.filter((entry) => entry.id !== invite.id),
       );
     } catch (error) {
       showError(error);
@@ -102,7 +102,7 @@ export function ListServerInvites(props: { server: Server }) {
                         />
                         <Column gap="none">
                           <span>
-                            {item.creator?.displayName ?? "Unknown User"}
+                            {item.creator?.displayName ?? t`Unknown User`}
                           </span>
                           <Text class="label">#{item.channel?.name}</Text>
                         </Column>

@@ -1,5 +1,6 @@
 import { Match, Show, Switch } from "solid-js";
 
+import { useLingui } from "@lingui-solid/solid/macro";
 import { File, ImageEmbed, Message, VideoEmbed } from "stoat.js";
 import { css } from "styled-system/css";
 import { styled } from "styled-system/jsx";
@@ -28,10 +29,11 @@ export const AttachmentContainer = styled(Column, {
  * Render a given list of files
  */
 export function Attachment(props: { file: File; message?: Message }) {
+  const { t } = useLingui();
   const { openModal } = useModals();
 
   return (
-    <Switch fallback={`Could not render ${props.file.metadata.type}!`}>
+    <Switch fallback={t`Could not render ${props.file.metadata.type}!`}>
       <Match when={props.file.metadata.type === "Image"}>
         <SizedContent
           width={(props.file.metadata as ImageEmbed).width}

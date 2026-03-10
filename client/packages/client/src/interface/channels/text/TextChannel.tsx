@@ -10,6 +10,7 @@ import {
   onMount,
 } from "solid-js";
 
+import { Trans } from "@lingui-solid/solid/macro";
 import { css, cva } from "styled-system/css";
 import { Channel } from "stoat.js";
 import { styled } from "styled-system/jsx";
@@ -267,7 +268,7 @@ export function TextChannel(props: ChannelPageProps) {
                 <WideSidebarContainer>
                   <SidebarTitle>
                     <Text class="label" size="large">
-                      Search Results
+                      <Trans>Search Results</Trans>
                     </Text>
                   </SidebarTitle>
                   <TextSearchSidebar
@@ -282,7 +283,7 @@ export function TextChannel(props: ChannelPageProps) {
                 <WideSidebarContainer>
                   <SidebarTitle>
                     <Text class="label" size="large">
-                      Pinned Messages
+                      <Trans>Pinned Messages</Trans>
                     </Text>
                   </SidebarTitle>
                   <TextSearchSidebar

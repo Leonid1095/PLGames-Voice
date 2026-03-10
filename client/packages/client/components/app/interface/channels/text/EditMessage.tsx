@@ -1,6 +1,7 @@
 import { Match, Switch } from "solid-js";
 
 import { useMutation } from "@tanstack/solid-query";
+import { Trans } from "@lingui-solid/solid/macro";
 import { Message } from "stoat.js";
 import { css } from "styled-system/css";
 import { styled } from "styled-system/jsx";
@@ -69,16 +70,18 @@ export function EditMessage(props: { message: Message }) {
       <Switch
         fallback={
           <Text size="small">
-            escape to{" "}
-            <Action onClick={() => state.draft.setEditingMessage(undefined)}>
-              cancel
-            </Action>{" "}
-            &middot; enter to <Action onClick={saveMessage}>save</Action>
+            <Trans>
+              escape to{" "}
+              <Action onClick={() => state.draft.setEditingMessage(undefined)}>
+                cancel
+              </Action>{" "}
+              &middot; enter to <Action onClick={saveMessage}>save</Action>
+            </Trans>
           </Text>
         }
       >
         <Match when={change.isPending}>
-          <Text size="small">Saving message...</Text>
+          <Text size="small"><Trans>Saving message...</Trans></Text>
         </Match>
       </Switch>
     </>
