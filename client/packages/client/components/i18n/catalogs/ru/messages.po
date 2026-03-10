@@ -3440,3 +3440,43 @@ msgstr "Шумоподавление Krisp"
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "AI-powered noise cancellation that removes background sounds better than standard suppression"
 msgstr "Шумоподавление на основе ИИ, которое убирает фоновые звуки лучше стандартного подавления"
+
+#: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
+msgid "Search"
+msgstr "Поиск"
+
+#: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
+msgid "My GIFs"
+msgstr "Мои GIF"
+
+#: components/ui/components/features/messaging/composition/picker/MyGifPicker.tsx
+msgid "Favourites"
+msgstr "Избранное"
+
+#: components/ui/components/features/messaging/composition/picker/MyGifPicker.tsx
+msgid "Create your first GIF collection!"
+msgstr "Создайте свою первую GIF-коллекцию!"
+
+#: components/ui/components/features/messaging/composition/picker/MyGifPicker.tsx
+msgid "New collection"
+msgstr "Новая коллекция"
+
+#: components/ui/components/features/messaging/composition/picker/MyGifPicker.tsx
+msgid "Collection name"
+msgstr "Название коллекции"
+
+#: components/ui/components/features/messaging/composition/picker/MyGifPicker.tsx
+msgid "Create"
+msgstr "Создать"
+
+#: components/ui/components/features/messaging/composition/picker/MyGifPicker.tsx
+msgid "No favourite GIFs yet"
+msgstr "Пока нет избранных GIF"
+
+#: components/ui/components/features/messaging/composition/picker/MyGifPicker.tsx
+msgid "Uploading..."
+msgstr "Загрузка..."
+
+#: components/ui/components/features/messaging/composition/picker/MyGifPicker.tsx
+msgid "Press + to add GIFs"
+msgstr "Нажмите + чтобы добавить GIF"
