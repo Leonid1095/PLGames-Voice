@@ -9,6 +9,7 @@ export interface TypeVoice {
   echoCancellation: boolean;
   noiseSupression: boolean;
   autoGainControl: boolean;
+  krispNoiseCancellation: boolean;
 
   inputVolume: number;
   outputVolume: number;
@@ -44,6 +45,7 @@ export class Voice extends AbstractStore<"voice", TypeVoice> {
       echoCancellation: true,
       noiseSupression: true,
       autoGainControl: true,
+      krispNoiseCancellation: false,
       inputVolume: 1.0,
       outputVolume: 1.0,
       userVolumes: {},
@@ -75,6 +77,10 @@ export class Voice extends AbstractStore<"voice", TypeVoice> {
 
     if (typeof input.autoGainControl === "boolean") {
       data.autoGainControl = input.autoGainControl;
+    }
+
+    if (typeof input.krispNoiseCancellation === "boolean") {
+      data.krispNoiseCancellation = input.krispNoiseCancellation;
     }
 
     if (typeof input.inputVolume === "number") {
@@ -177,6 +183,13 @@ export class Voice extends AbstractStore<"voice", TypeVoice> {
   }
 
   /**
+   * Set Krisp AI noise cancellation
+   */
+  set krispNoiseCancellation(value: boolean) {
+    this.set("krispNoiseCancellation", value);
+  }
+
+  /**
    * Set input volume
    */
   set inputVolume(value: number) {
@@ -223,6 +236,13 @@ export class Voice extends AbstractStore<"voice", TypeVoice> {
    */
   get autoGainControl(): boolean | undefined {
     return this.get().autoGainControl;
+  }
+
+  /**
+   * Get Krisp AI noise cancellation
+   */
+  get krispNoiseCancellation(): boolean {
+    return this.get().krispNoiseCancellation;
   }
 
   /**

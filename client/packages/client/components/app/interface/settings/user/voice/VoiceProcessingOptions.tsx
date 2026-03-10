@@ -23,6 +23,24 @@ export function VoiceProcessingOptions() {
       <CategoryButton.Group>
         <CategoryButton
           icon="blank"
+          action={
+            <Checkbox checked={state.voice.krispNoiseCancellation} />
+          }
+          onClick={() =>
+            (state.voice.krispNoiseCancellation =
+              !state.voice.krispNoiseCancellation)
+          }
+          description={
+            <Trans>
+              AI-powered noise cancellation that removes background sounds
+              better than standard suppression
+            </Trans>
+          }
+        >
+          <Trans>Krisp Noise Cancellation</Trans>
+        </CategoryButton>
+        <CategoryButton
+          icon="blank"
           action={<Checkbox checked={state.voice.noiseSupression} />}
           onClick={() =>
             (state.voice.noiseSupression = !state.voice.noiseSupression)

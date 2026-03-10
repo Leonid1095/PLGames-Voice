@@ -3432,3 +3432,11 @@ msgstr "Я прочитал и ознакомился с изменениями.
 #: src/interface/Discover.tsx
 msgid "Failed to join"
 msgstr "Не удалось присоединиться"
+
+#: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
+msgid "Krisp Noise Cancellation"
+msgstr "Шумоподавление Krisp"
+
+#: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
+msgid "AI-powered noise cancellation that removes background sounds better than standard suppression"
+msgstr "Шумоподавление на основе ИИ, которое убирает фоновые звуки лучше стандартного подавления"

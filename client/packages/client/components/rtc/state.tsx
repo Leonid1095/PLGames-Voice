@@ -9,7 +9,7 @@ import {
 } from "solid-js";
 import { RoomContext } from "solid-livekit-components";
 
-import { Room } from "livekit-client";
+import { Room, LocalAudioTrack, type TrackProcessor } from "livekit-client";
 import { Channel } from "stoat.js";
 
 import { useState } from "@revolt/state";
@@ -117,7 +117,12 @@ class Voice {
       if (this.speakingPermission)
         room.localParticipant
           .setMicrophoneEnabled(true)
-          .then((track) => this.#setMicrophone(typeof track !== "undefined"));
+          .then(async (track) => {
+            this.#setMicrophone(typeof track !== "undefined");
+            if (track && this.#settings.krispNoiseCancellation) {
+              await this.#applyKrisp(track);
+            }
+          });
     });
 
     room.addListener("connected", () => this.#setState("CONNECTED"));
@@ -179,6 +184,18 @@ class Voice {
     );
 
     this.#setScreenshare(room.localParticipant.isScreenShareEnabled);
+  }
+
+  async #applyKrisp(track: LocalAudioTrack) {
+    try {
+      const { KrispNoiseFilter } = await import(
+        "@livekit/krisp-noise-filter"
+      );
+      const krisp = KrispNoiseFilter();
+      await track.setProcessor(krisp as TrackProcessor<typeof track.kind>);
+    } catch (e) {
+      console.warn("Krisp noise filter failed to load:", e);
+    }
   }
 
   getConnectedUser(userId: string) {
