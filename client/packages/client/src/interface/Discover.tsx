@@ -52,7 +52,7 @@ export function Discover() {
       }
       setInviteCode("");
     } catch (e: any) {
-      setJoinError(e?.message || "Failed to join");
+      setJoinError(e?.message || t`Failed to join`);
     } finally {
       setJoining(false);
     }

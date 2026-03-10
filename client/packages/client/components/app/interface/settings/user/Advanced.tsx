@@ -1,5 +1,7 @@
 import { For } from "solid-js";
 
+import { Trans } from "@lingui-solid/solid/macro";
+
 import { useState } from "@revolt/state";
 import {
   AVAILABLE_EXPERIMENTS,
@@ -30,7 +32,7 @@ export default function AdvancedSettings() {
             )
           }
         >
-          Compact mode
+          <Trans>Compact mode</Trans>
         </Checkbox>
         <Checkbox
           checked={state.settings.getValue("advanced:copy_id")}
@@ -38,7 +40,7 @@ export default function AdvancedSettings() {
             state.settings.setValue("advanced:copy_id", e.currentTarget.checked)
           }
         >
-          Show 'copy ID' in context menus
+          <Trans>Show 'copy ID' in context menus</Trans>
         </Checkbox>
         <Checkbox
           checked={state.settings.getValue("advanced:admin_panel")}
@@ -49,7 +51,7 @@ export default function AdvancedSettings() {
             )
           }
         >
-          Show admin panel shortcuts in context menus
+          <Trans>Show admin panel shortcuts in context menus</Trans>
         </Checkbox>
       </Column>
       <CategoryButtonGroup>

@@ -3404,3 +3404,31 @@ msgstr "Неизвестный пользователь"
 #: components/ui/components/features/messaging/elements/Attachment.tsx
 msgid "Could not render {type}!"
 msgstr "Не удалось отобразить {type}!"
+
+#: components/modal/modals/AddBot.tsx
+msgid "Bots are not verified by PLG Voice."
+msgstr "Боты не верифицированы PLG Voice."
+
+#: components/modal/modals/AddBot.tsx
+msgid "The bot will not be granted any permissions."
+msgstr "Боту не будут предоставлены никакие разрешения."
+
+#: components/app/interface/settings/user/Advanced.tsx
+msgid "Compact mode"
+msgstr "Компактный режим"
+
+#: components/app/interface/settings/user/Advanced.tsx
+msgid "Show 'copy ID' in context menus"
+msgstr "Показывать «Копировать ID» в контекстных меню"
+
+#: components/app/interface/settings/user/Advanced.tsx
+msgid "Show admin panel shortcuts in context menus"
+msgstr "Показывать ярлыки админ-панели в контекстных меню"
+
+#: components/modal/modals/PolicyChange.tsx
+msgid "I've read and reviewed the changes."
+msgstr "Я прочитал и ознакомился с изменениями."
+
+#: src/interface/Discover.tsx
+msgid "Failed to join"
+msgstr "Не удалось присоединиться"
