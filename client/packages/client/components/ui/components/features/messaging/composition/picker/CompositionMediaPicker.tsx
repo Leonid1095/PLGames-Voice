@@ -2,9 +2,11 @@ import { useFloating } from "solid-floating-ui";
 import {
   Accessor,
   JSX,
+  Match,
   Ref,
   Setter,
   Show,
+  Switch,
   createContext,
   createSignal,
   onCleanup,
@@ -19,6 +21,7 @@ import { styled } from "styled-system/jsx";
 
 
 import { EmojiPicker } from "./EmojiPicker";
+import { GifPicker } from "./GifPicker";
 
 interface Props {
   /**
@@ -115,7 +118,14 @@ function Picker(
       }}
     >
       <Container>
-        <EmojiPicker />
+        <Switch>
+          <Match when={props.show() === "gif"}>
+            <GifPicker />
+          </Match>
+          <Match when={props.show() === "emoji"}>
+            <EmojiPicker />
+          </Match>
+        </Switch>
       </Container>
     </Base>
   );
