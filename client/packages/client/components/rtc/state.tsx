@@ -113,20 +113,10 @@ class Voice {
       this.#setDeafen(false);
       this.#setVideo(false);
       this.#setScreenshare(false);
-
-      if (this.speakingPermission)
-        room.localParticipant
-          .setMicrophoneEnabled(true)
-          .then(async (track) => {
-            this.#setMicrophone(typeof track !== "undefined");
-            if (track && this.#settings.krispNoiseCancellation) {
-              await this.#applyKrisp(track);
-            }
-          });
     });
 
     room.addListener("connected", () => this.#setState("CONNECTED"));
-
+    room.addListener("reconnecting", () => this.#setState("RECONNECTING"));
     room.addListener("disconnected", () => this.#setState("DISCONNECTED"));
 
     if (!auth) {
@@ -136,6 +126,18 @@ class Voice {
     await room.connect(auth.url, auth.token, {
       autoSubscribe: false,
     });
+
+    // Enable microphone after connection to avoid blocking on browser permission dialog
+    if (this.speakingPermission) {
+      room.localParticipant
+        .setMicrophoneEnabled(true)
+        .then(async (track) => {
+          this.#setMicrophone(typeof track !== "undefined");
+          if (track && this.#settings.krispNoiseCancellation) {
+            await this.#applyKrisp(track);
+          }
+        });
+    }
   }
 
   disconnect() {

@@ -26,8 +26,8 @@ const acquiredLock = app.requestSingleInstanceLock();
 
 const onNotifyUser = (_info: IUpdateInfo) => {
   const notification = new Notification({
-    title: "Update Available",
-    body: "Restart the app to install the update.",
+    title: "Доступно обновление",
+    body: "Перезапустите приложение, чтобы установить обновление.",
     silent: true,
   });
 
@@ -35,8 +35,15 @@ const onNotifyUser = (_info: IUpdateInfo) => {
 };
 
 if (acquiredLock) {
-  // start auto update logic
-  updateElectronApp({ onNotifyUser });
+  // start auto update logic — use static storage pointing to GitHub Releases
+  // (update.electronjs.org proxy doesn't index all repos)
+  updateElectronApp({
+    onNotifyUser,
+    updateSource: {
+      type: "static-storage",
+      baseUrl: "https://github.com/Leonid1095/PLGames-Voice/releases/latest/download",
+    },
+  });
 
   // create and configure the app when electron is ready
   app.on("ready", () => {

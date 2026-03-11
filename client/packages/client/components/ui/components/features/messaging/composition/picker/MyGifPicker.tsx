@@ -14,12 +14,11 @@ import { useClient } from "@revolt/client";
 import { useState } from "@revolt/state";
 import {
   Button,
-  Column,
   IconButton,
-  Row,
   Text,
   TextField,
 } from "@revolt/ui/components/design";
+import { Column, Row } from "@revolt/ui/components/layout";
 
 import { CompositionMediaPickerContext } from "./CompositionMediaPicker";
 

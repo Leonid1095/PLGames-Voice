@@ -146,16 +146,16 @@ export function Friends() {
             </div>
 
             <NavigationRailItem
-              icon={<Symbol>waving_hand</Symbol>}
+              icon={<Symbol>circle</Symbol>}
               value="online"
             >
               <Trans>Online</Trans>
             </NavigationRailItem>
-            <NavigationRailItem icon={<Symbol>all_inbox</Symbol>} value="all">
+            <NavigationRailItem icon={<Symbol>group</Symbol>} value="all">
               <Trans>All</Trans>
             </NavigationRailItem>
             <NavigationRailItem
-              icon={<Symbol>notifications</Symbol>}
+              icon={<Symbol>person_add</Symbol>}
               value="pending"
             >
               <Trans>Pending</Trans>

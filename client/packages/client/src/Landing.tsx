@@ -333,7 +333,7 @@ export default function LandingPage() {
           <Logo />
           <NavButtons>
             <BtnDownload href={DOWNLOAD_URL} target="_blank">
-              ⬇ Windows
+              <Trans>Download for Windows</Trans>
             </BtnDownload>
             <BtnSecondary href="/login">
               <Trans>Log in</Trans>
@@ -364,7 +364,7 @@ export default function LandingPage() {
             </BtnSecondary>
           </HeroCTA>
           <BtnDownload href={DOWNLOAD_URL} target="_blank">
-            ⬇ <Trans>Download for Windows</Trans>
+            <Trans>Download for Windows</Trans>
           </BtnDownload>
         </Hero>
 

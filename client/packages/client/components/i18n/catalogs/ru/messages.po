@@ -454,7 +454,7 @@ msgstr "Заблокировать пользователя"
 
 #: src/interface/Friends.tsx
 msgid "Blocked"
-msgstr "Заблокированный"
+msgstr "Блок"
 
 #: components/ui/components/features/messaging/elements/MessageReply.tsx
 msgid "Blocked User"
@@ -3480,3 +3480,59 @@ msgstr "Загрузка..."
 #: components/ui/components/features/messaging/composition/picker/MyGifPicker.tsx
 msgid "Press + to add GIFs"
 msgstr "Нажмите + чтобы добавить GIF"
+
+#: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
+msgid "GIF search is temporarily unavailable"
+msgstr "Поиск GIF временно недоступен"
+
+#: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
+msgid "Animated avatar"
+msgstr "Анимированный аватар"
+
+#: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
+msgid "Server boosts"
+msgstr "Бусты серверов"
+
+#: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
+msgid "Custom stickers"
+msgstr "Пользовательские стикеры"
+
+#: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
+msgid "HD streaming"
+msgstr "HD-стриминг"
+
+#: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
+msgid "Large file uploads"
+msgstr "Загрузка больших файлов"
+
+#: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
+msgid "Profile customization"
+msgstr "Настройка профиля"
+
+#: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
+msgid "Premium subscriptions are coming soon. Unlock exclusive features and support the project."
+msgstr "Премиум-подписки скоро появятся. Разблокируйте эксклюзивные функции и поддержите проект."
+
+#: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
+msgid "Coming soon"
+msgstr "Скоро"
+
+#: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
+msgid "What you get"
+msgstr "Что вы получите"
+
+#: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
+msgid "Support PLG Voice"
+msgstr "Поддержать PLG Voice"
+
+#: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
+msgid "While Premium is in development, you can support the project with a donation."
+msgstr "Пока Премиум в разработке, вы можете поддержать проект пожертвованием."
+
+#: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
+msgid "Donate via DonatePay"
+msgstr "Пожертвовать через DonatePay"
+
+#: src/Landing.tsx
+msgid "Download for Windows"
+msgstr "Скачать для Windows"
