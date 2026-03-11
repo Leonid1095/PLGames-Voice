@@ -92,7 +92,7 @@ export function MessageContextMenu(props: { message?: Message; file?: File }) {
    */
   function openAdminPanel() {
     window.open(
-      `https://admin.cvaboda.duckdns.org/panel/inspect/message/${props.message!.id}`,
+      `https://admin.plgames-voice.ru/panel/inspect/message/${props.message!.id}`,
       "_blank",
     );
   }

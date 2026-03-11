@@ -20,7 +20,7 @@ export let mainWindow: BrowserWindow;
 
 // currently in-use build
 // Priority: --force-server CLI arg > PLG_VOICE_URL env > hardcoded fallback
-const DEFAULT_URL = "https://cvaboda.duckdns.org";
+const DEFAULT_URL = "https://plgames-voice.ru";
 export const BUILD_URL = new URL(
   app.commandLine.hasSwitch("force-server")
     ? app.commandLine.getSwitchValue("force-server")

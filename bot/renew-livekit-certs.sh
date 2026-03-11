@@ -2,7 +2,7 @@
 # Копирует обновлённые Let's Encrypt сертификаты для LiveKit TURN
 # Запускается через cron после certbot renew
 
-CERT_SRC="/etc/letsencrypt/live/cvaboda.duckdns.org"
+CERT_SRC="/etc/letsencrypt/live/plgames-voice.ru"
 CERT_DST="/home/plg/PLGames-Voice/data/livekit-certs"
 
 cp "$CERT_SRC/fullchain.pem" "$CERT_DST/fullchain.pem"

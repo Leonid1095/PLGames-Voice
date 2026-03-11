@@ -177,7 +177,7 @@ export function UserContextMenu(props: {
    */
   function openAdminPanel() {
     window.open(
-      `https://admin.cvaboda.duckdns.org/panel/inspect/user/${props.user.id}`,
+      `https://admin.plgames-voice.ru/panel/inspect/user/${props.user.id}`,
       "_blank",
     );
   }

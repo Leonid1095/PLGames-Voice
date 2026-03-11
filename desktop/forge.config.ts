@@ -29,7 +29,7 @@ const makers: ForgeConfig["makers"] = [
     name: "PLGVoice",
     authors: STRINGS.author,
     // todo: hoist this
-    iconUrl: `https://cvaboda.duckdns.org/assets/icon.ico`,
+    iconUrl: `https://plgames-voice.ru/assets/icon.ico`,
     // todo: loadingGif
     setupIcon: `${ASSET_DIR}/icon.ico`,
     description: STRINGS.description,

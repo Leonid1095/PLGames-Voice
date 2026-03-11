@@ -3,10 +3,10 @@ const { IngressInput } = require("livekit-server-sdk");
 const { ingressClient, roomService, egressClient } = require("./stream-service");
 
 const BOT_TOKEN = process.env.BOT_TOKEN || "JvOmSsjwDuRPAJTbVJ0X4Bh33vVMkis5oeO4Ano9v5cdXMPu1kk4FFoKMVr4YwD3";
-const API_URL = process.env.API_URL || "https://cvaboda.duckdns.org/api";
-const WS_URL = process.env.WS_URL || "wss://cvaboda.duckdns.org/ws";
+const API_URL = process.env.API_URL || "https://plgames-voice.ru/api";
+const WS_URL = process.env.WS_URL || "wss://plgames-voice.ru/ws";
 const PREFIX = process.env.PREFIX || "!";
-const PUBLIC_URL = "https://cvaboda.duckdns.org";
+const PUBLIC_URL = "https://plgames-voice.ru";
 
 const SERVER_ID = "01KJ3E82WMT4EEAJ4NMJ7H7V3Z";
 const WELCOME_CHANNEL = "01KJ5VGBTASNYK698NN4563D1B";
@@ -173,7 +173,7 @@ const COMMANDS = {
           `**Стрим "${name}" создан**`,
           "",
           "Настройки OBS:",
-          `Сервер: \`rtmp://cvaboda.duckdns.org/live\``,
+          `Сервер: \`rtmp://plgames-voice.ru/live\``,
           `Ключ стрима: \`${ingress.streamKey}\``,
           "",
           `Ссылка для зрителей: ${viewerUrl}`,

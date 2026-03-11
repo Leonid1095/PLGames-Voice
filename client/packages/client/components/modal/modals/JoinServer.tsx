@@ -76,7 +76,7 @@ export function JoinServerModal(
             name="link"
             control={group.controls.link}
             label={t`Code`}
-            placeholder="cvaboda.duckdns.org/invite/abc123"
+            placeholder="plgames-voice.ru/invite/abc123"
           />
         </Column>
       </form>

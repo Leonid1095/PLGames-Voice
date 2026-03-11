@@ -83,7 +83,7 @@ export function ChannelContextMenu(props: { channel: Channel }) {
    */
   function openAdminPanel() {
     window.open(
-      `https://admin.cvaboda.duckdns.org/panel/inspect/channel/${props.channel.id}`,
+      `https://admin.plgames-voice.ru/panel/inspect/channel/${props.channel.id}`,
       "_blank",
     );
   }

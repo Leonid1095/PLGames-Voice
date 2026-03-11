@@ -64,7 +64,7 @@ function CreateBot() {
       <CategoryButton
         action="external"
         icon={<MdLibraryBooks {...iconSize(22)} />}
-        onClick={() => window.open("https://developers.cvaboda.duckdns.org", "_blank")}
+        onClick={() => window.open("https://developers.plgames-voice.ru", "_blank")}
         description={
           <Trans>Learn more about how to create bots on PLG Voice.</Trans>
         }

@@ -16,14 +16,14 @@ export async function initDiscordRpc() {
 
     rpc.on("ready", () =>
       rpc.setActivity({
-        state: "cvaboda.duckdns.org",
+        state: "plgames-voice.ru",
         details: "Chatting with others",
         largeImageKey: "qr",
         largeImageText: "Join PLG Voice!",
         buttons: [
           {
             label: "Join PLG Voice",
-            url: "https://cvaboda.duckdns.org/",
+            url: "https://plgames-voice.ru/",
           },
         ],
       }),

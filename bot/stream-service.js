@@ -165,7 +165,7 @@ const server = http.createServer(async (req, res) => {
     try {
       const token = await createViewerToken(room, viewerId);
       res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ token, wsUrl: "wss://cvaboda.duckdns.org/livekit" }));
+      res.end(JSON.stringify({ token, wsUrl: "wss://plgames-voice.ru/livekit" }));
     } catch (e) {
       res.writeHead(500, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ error: e.message }));

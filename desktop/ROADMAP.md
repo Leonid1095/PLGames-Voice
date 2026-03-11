@@ -22,18 +22,18 @@
 
 #### Веб-клиент (351 файл изменён)
 - **HTML/PWA:** title, manifest → "PLG Voice"
-- **Все API URL:** перенаправлены на `cvaboda.duckdns.org` (API, WebSocket, Media, Proxy)
+- **Все API URL:** перенаправлены на `plgames-voice.ru` (API, WebSocket, Media, Proxy)
 - **Компоненты авторизации:** FlowHome, FlowLogin, SignedOut — все тексты PLG Voice
 - **Контроллер сессий:** friendly_name → "PLG Voice for Web"
 - **Темы:** переименована функция createPlgVoiceWebVariables
 - **Настройки, модалки, контекстные меню:** все строки обновлены
 - **Переводы (i18n):** Stoat → PLG Voice в русском каталоге (3187 строк)
-- **Ссылки:** stoat.chat, admin.stoat.chat → cvaboda.duckdns.org
+- **Ссылки:** stoat.chat, admin.stoat.chat → plgames-voice.ru
 
 #### Десктоп-приложение (10 файлов)
 - **package.json:** name, productName → plg-voice-desktop
 - **Electron Forge:** author, execName, flatpak IDs, publisher
-- **Окно:** BUILD_URL → `https://cvaboda.duckdns.org`
+- **Окно:** BUILD_URL → `https://plgames-voice.ru`
 - **Трей:** tooltip, метки → "PLG Voice for Desktop"
 - **Discord RPC:** state, кнопки → PLG Voice
 - **Автозапуск:** name → "PLG Voice"
@@ -42,7 +42,7 @@
 
 #### Серверная часть
 - Конфигурация параметризована через `generate_config.sh` — изменения не требуются
-- Домен задаётся при генерации: `./generate_config.sh cvaboda.duckdns.org`
+- Домен задаётся при генерации: `./generate_config.sh plgames-voice.ru`
 
 ### 3. Русский язык по умолчанию
 - `initI18n()` активирует "ru" при загрузке
@@ -63,9 +63,9 @@
 
 | # | Задача | Описание | Статус |
 |---|--------|----------|--------|
-| 1 | Остановить старый Spacebar | Остановить Docker-контейнеры Spacebar на cvaboda.duckdns.org | ⬜ |
-| 2 | Развернуть Revolt/Stoat сервер | `./generate_config.sh cvaboda.duckdns.org` + `docker compose up -d` | ⬜ |
-| 3 | Настроить DNS | Убедиться что cvaboda.duckdns.org указывает на сервер | ⬜ |
+| 1 | Остановить старый Spacebar | Остановить Docker-контейнеры Spacebar на plgames-voice.ru | ⬜ |
+| 2 | Развернуть Revolt/Stoat сервер | `./generate_config.sh plgames-voice.ru` + `docker compose up -d` | ⬜ |
+| 3 | Настроить DNS | Убедиться что plgames-voice.ru указывает на сервер | ⬜ |
 | 4 | Открыть порты | 80, 443 (HTTP/S), 7881/tcp (LiveKit signaling), 50000-50100/udp (media) | ⬜ |
 | 5 | Проверить все сервисы | 16 Docker-сервисов: API, Events, MongoDB, KeyDB, MinIO, Caddy, LiveKit и др. | ⬜ |
 | 6 | Создать первого пользователя | Регистрация через веб-интерфейс, назначить администратором | ⬜ |
@@ -169,7 +169,7 @@
                                  │
                     ┌────────────▼────────────┐
                     │   Caddy (Reverse Proxy) │
-                    │   cvaboda.duckdns.org   │
+                    │   plgames-voice.ru   │
                     └────────────┬────────────┘
                                  │
          ┌───────────┬───────────┼───────────┬───────────┐
@@ -195,7 +195,7 @@ git clone -b revolt-server https://github.com/Leonid1095/PLGames-Voice.git plg-v
 cd plg-voice-server
 
 # 2. Сгенерировать конфиг для домена
-./generate_config.sh cvaboda.duckdns.org
+./generate_config.sh plgames-voice.ru
 
 # 3. Запустить все сервисы
 docker compose up -d

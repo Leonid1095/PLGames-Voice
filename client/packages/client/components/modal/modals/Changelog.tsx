@@ -53,7 +53,7 @@ const ChangelogPosts: ChangelogPost[] = [
   {
     icon: "upgrade",
     date: new Date("2026-03-09T12:00:00.000Z"),
-    link: "https://cvaboda.duckdns.org",
+    link: "https://plgames-voice.ru",
     title: "PLG Voice 0.2.0",
     content: [
       `Обновление с множеством улучшений и исправлений.

@@ -159,10 +159,10 @@ async uploadFile(tag: string, file: File | Blob, config?: UploadConfig) {
 
 ```typescript
 // СЕЙЧАС:
-const BUILD_URL = "https://cvaboda.duckdns.org";
+const BUILD_URL = "https://plgames-voice.ru";
 
 // ДОЛЖНО БЫТЬ:
-const BUILD_URL = process.env.PLG_VOICE_URL || "https://cvaboda.duckdns.org";
+const BUILD_URL = process.env.PLG_VOICE_URL || "https://plgames-voice.ru";
 ```
 
 **План:** Вынести URL в `.env` файл десктопа или в forge.config.ts как define-переменную Vite.
@@ -241,8 +241,8 @@ ipcMain.on("setBadgeCount", (_event, count: unknown) => {
 default-src 'self';
 script-src 'self';
 style-src 'self' 'unsafe-inline';
-img-src 'self' https://cvaboda.duckdns.org data: blob:;
-connect-src 'self' https://cvaboda.duckdns.org wss://cvaboda.duckdns.org;
+img-src 'self' https://plgames-voice.ru data: blob:;
+connect-src 'self' https://plgames-voice.ru wss://plgames-voice.ru;
 font-src 'self';
 media-src 'self' blob:;
 ```

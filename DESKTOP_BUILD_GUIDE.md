@@ -41,16 +41,16 @@ Electron-приложение **НЕ содержит рендерер внут�
 export const BUILD_URL = new URL(
   app.commandLine.hasSwitch("force-server")
     ? app.commandLine.getSwitchValue("force-server")
-    : "https://cvaboda.duckdns.org",  // ← Веб-клиент на сервере
+    : "https://plgames-voice.ru",  // ← Веб-клиент на сервере
 );
 ```
-Это значит: Electron = BrowserWindow, который открывает сайт `https://cvaboda.duckdns.org`.
+Это значит: Electron = BrowserWindow, который открывает сайт `https://plgames-voice.ru`.
 
 ---
 
 ## 2. СЕРВЕРНАЯ ИНФРАСТРУКТУРА (уже работает)
 
-Сервер доступен по адресу: `https://cvaboda.duckdns.org`
+Сервер доступен по адресу: `https://plgames-voice.ru`
 
 ### Маршрутизация (nginx → Caddy → сервисы):
 
@@ -177,7 +177,7 @@ new PublisherGithub({
 
 ### 4.2. Окно (`desktop/src/native/window.ts`)
 
-- Загружает URL: `https://cvaboda.duckdns.org` (или `--force-server <url>`)
+- Загружает URL: `https://plgames-voice.ru` (или `--force-server <url>`)
 - Минимальный размер: 300x300, стартовый: 1280x720
 - Фон: `#191919`
 - Сохраняет/восстанавливает позицию и размер окна
@@ -317,8 +317,8 @@ packagerConfig: {
 | Code Highlight  | Shiki + Rehype      | -       |
 
 ### Протоколы связи:
-- **REST API**: `https://cvaboda.duckdns.org/api` — CRUD операции
-- **WebSocket**: `wss://cvaboda.duckdns.org/ws` — реалтайм-события (чат, статусы, набор текста)
+- **REST API**: `https://plgames-voice.ru/api` — CRUD операции
+- **WebSocket**: `wss://plgames-voice.ru/ws` — реалтайм-события (чат, статусы, набор текста)
 - **WebRTC** (через LiveKit): голос/видео — через `/livekit`
 
 ### Аутентификация:
@@ -348,7 +348,7 @@ pnpm install
 ### Шаг 3: Проверка в dev-режиме
 ```bash
 pnpm start
-# Откроется окно Electron с загрузкой https://cvaboda.duckdns.org
+# Откроется окно Electron с загрузкой https://plgames-voice.ru
 ```
 
 ### Шаг 4: Сборка .exe
@@ -516,7 +516,7 @@ desktop/
 
 | Переменная                | Значение                          | Где используется        |
 |--------------------------|-----------------------------------|------------------------|
-| `BUILD_URL`              | `https://cvaboda.duckdns.org`    | window.ts              |
+| `BUILD_URL`              | `https://plgames-voice.ru`    | window.ts              |
 | App Name                 | `PLG Voice`                       | forge.config.ts        |
 | Executable Name          | `plg-voice-desktop`              | forge.config.ts        |
 | Flatpak ID               | `com.plgvoice.desktop`           | forge.config.ts        |
@@ -548,7 +548,7 @@ desktop/
 
 ### Концепция: веб — для привлечения, приложение — для использования
 
-**Веб-клиент** (`cvaboda.duckdns.org`) — точка входа для новых пользователей:
+**Веб-клиент** (`plgames-voice.ru`) — точка входа для новых пользователей:
 - Лендинг `/welcome` с описанием, фичами и CTA-кнопками
 - Регистрация и вход через `/login`
 - Полноценное использование через браузер

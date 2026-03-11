@@ -115,7 +115,7 @@ export function ServerContextMenu(props: { server: Server }) {
    */
   function openAdminPanel() {
     window.open(
-      `https://admin.cvaboda.duckdns.org/panel/inspect/server/${props.server.id}`,
+      `https://admin.plgames-voice.ru/panel/inspect/server/${props.server.id}`,
       "_blank",
     );
   }

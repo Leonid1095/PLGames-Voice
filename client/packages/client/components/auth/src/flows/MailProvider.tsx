@@ -104,7 +104,7 @@ function mapMailProvider(email?: string): [string, string] | undefined {
       return ["Rambler", "https://rambler.ru/"];
     case "revolt.chat":
     case "revolt.wtf":
-    case "cvaboda.duckdns.org":
+    case "plgames-voice.ru":
       return ["PLG Voice Mail", ""];
     default:
       return [domain, `https://${domain}`];
