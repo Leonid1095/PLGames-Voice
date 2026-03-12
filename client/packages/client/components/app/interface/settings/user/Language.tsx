@@ -251,7 +251,9 @@ function ContributeLanguageLink() {
   return (
     <CategoryButton
       icon={<MdTranslate {...iconSize(22)} />}
-      onClick={() => void 0}
+      onClick={() =>
+        window.open("https://github.com/Leonid1095/PLGames-Voice/issues", "_blank")
+      }
       description={
         <Trans>Help contribute to an existing or new language</Trans>
       }

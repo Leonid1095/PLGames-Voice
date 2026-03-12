@@ -1,12 +1,14 @@
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 
 import { useState } from "@revolt/state";
 import { CategoryButton, Checkbox, Column, Text } from "@revolt/ui";
+import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 /**
  * Voice processing options
  */
 export function VoiceProcessingOptions() {
+  const { t } = useLingui();
   const state = useState();
 
   return (
@@ -15,72 +17,86 @@ export function VoiceProcessingOptions() {
         <Trans>Voice Processing</Trans>
       </Text>
       <Text class="body" size="small">
-        <Trans>
-          These settings affect your microphone input. Changes apply on next
-          voice connection.
-        </Trans>
+        {t`These settings affect your microphone input. Changes apply on next voice connection.`}
       </Text>
       <CategoryButton.Group>
         <CategoryButton
-          icon="blank"
+          icon={<Symbol size={20}>graphic_eq</Symbol>}
           action={
-            <Checkbox checked={state.voice.krispNoiseCancellation} />
+            <Checkbox
+              checked={state.voice.krispNoiseCancellation}
+              onChange={() =>
+                (state.voice.krispNoiseCancellation =
+                  !state.voice.krispNoiseCancellation)
+              }
+            />
           }
           onClick={() =>
             (state.voice.krispNoiseCancellation =
               !state.voice.krispNoiseCancellation)
           }
           description={
-            <Trans>
-              AI-powered noise cancellation that removes background sounds
-              better than standard suppression
-            </Trans>
+            t`AI-powered noise cancellation that removes background sounds better than standard suppression`
           }
         >
-          <Trans>Krisp Noise Cancellation</Trans>
+          {t`Krisp Noise Cancellation`}
         </CategoryButton>
         <CategoryButton
-          icon="blank"
-          action={<Checkbox checked={state.voice.noiseSupression} />}
+          icon={<Symbol size={20}>noise_aware</Symbol>}
+          action={
+            <Checkbox
+              checked={state.voice.noiseSupression}
+              onChange={() =>
+                (state.voice.noiseSupression = !state.voice.noiseSupression)
+              }
+            />
+          }
           onClick={() =>
             (state.voice.noiseSupression = !state.voice.noiseSupression)
           }
           description={
-            <Trans>
-              Reduces background noise like fans, keyboards and ambient sounds
-            </Trans>
+            t`Reduces background noise like fans, keyboards and ambient sounds`
           }
         >
-          <Trans>Noise Suppression</Trans>
+          {t`Noise Suppression`}
         </CategoryButton>
         <CategoryButton
-          icon="blank"
-          action={<Checkbox checked={state.voice.echoCancellation} />}
+          icon={<Symbol size={20}>spatial_audio_off</Symbol>}
+          action={
+            <Checkbox
+              checked={state.voice.echoCancellation}
+              onChange={() =>
+                (state.voice.echoCancellation = !state.voice.echoCancellation)
+              }
+            />
+          }
           onClick={() =>
             (state.voice.echoCancellation = !state.voice.echoCancellation)
           }
           description={
-            <Trans>
-              Prevents your speakers from feeding back into your microphone
-            </Trans>
+            t`Prevents your speakers from feeding back into your microphone`
           }
         >
-          <Trans>Echo Cancellation</Trans>
+          {t`Echo Cancellation`}
         </CategoryButton>
         <CategoryButton
-          icon="blank"
-          action={<Checkbox checked={state.voice.autoGainControl} />}
+          icon={<Symbol size={20}>tune</Symbol>}
+          action={
+            <Checkbox
+              checked={state.voice.autoGainControl}
+              onChange={() =>
+                (state.voice.autoGainControl = !state.voice.autoGainControl)
+              }
+            />
+          }
           onClick={() =>
             (state.voice.autoGainControl = !state.voice.autoGainControl)
           }
           description={
-            <Trans>
-              Automatically adjusts microphone volume so you're always heard
-              clearly
-            </Trans>
+            t`Automatically adjusts microphone volume so you're always heard clearly`
           }
         >
-          <Trans>Automatic Gain Control</Trans>
+          {t`Automatic Gain Control`}
         </CategoryButton>
       </CategoryButton.Group>
     </Column>

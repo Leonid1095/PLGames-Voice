@@ -95,6 +95,17 @@ export function CategoryContextMenu(props: {
       </Show>
 
       <Show when={props.server.havePermission("ManageChannel")}>
+        <ContextMenuButton
+          icon={<Symbol size={16}>add</Symbol>}
+          onClick={() =>
+            openModal({
+              type: "create_channel",
+              server: props.server,
+            })
+          }
+        >
+          <Trans>Create channel</Trans>
+        </ContextMenuButton>
         <ContextMenuButton icon={MdLibraryAdd} onClick={createCategory}>
           <Trans>Create category</Trans>
         </ContextMenuButton>

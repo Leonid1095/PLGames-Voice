@@ -3588,3 +3588,63 @@ msgstr "Входящие"
 #: src/interface/Friends.tsx
 msgid "Outgoing"
 msgstr "Исходящие"
+
+#: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
+msgid "These settings affect your microphone input. Changes apply on next voice connection."
+msgstr "Эти настройки влияют на вход микрофона. Изменения применятся при следующем подключении."
+
+#: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
+msgid "Noise Suppression"
+msgstr "Подавление шума"
+
+#: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
+msgid "Reduces background noise like fans, keyboards and ambient sounds"
+msgstr "Уменьшает фоновый шум: вентиляторы, клавиатуру и окружающие звуки"
+
+#: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
+msgid "Echo Cancellation"
+msgstr "Подавление эха"
+
+#: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
+msgid "Prevents your speakers from feeding back into your microphone"
+msgstr "Предотвращает попадание звука из динамиков обратно в микрофон"
+
+#: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
+msgid "Automatic Gain Control"
+msgstr "Автоматическая регулировка громкости"
+
+#: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
+msgid "Automatically adjusts microphone volume so you're always heard clearly"
+msgstr "Автоматически регулирует громкость микрофона, чтобы вас всегда было хорошо слышно"
+
+#: components/app/interface/settings/user/Language.tsx
+msgid "Select date format"
+msgstr "Формат даты"
+
+#: components/app/interface/settings/user/Language.tsx
+msgid "Select time format"
+msgstr "Формат времени"
+
+#: src/interface/Friends.tsx
+msgid "Add friend"
+msgstr "Добавить друга"
+
+#: components/app/menus/CategoryContextMenu.tsx
+msgid "Create channel"
+msgstr "Создать канал"
+
+#: components/app/interface/settings/UserSettings.tsx
+msgid "Premium"
+msgstr "Премиум"
+
+#: components/modal/modals/CreateChannel.tsx
+msgid "Trigger for temporary channels"
+msgstr "Триггер для временных каналов"
+
+#: components/modal/modals/CreateChannel.tsx
+msgid "Users who join this channel will automatically get a personal voice channel"
+msgstr "Пользователи, заходящие в этот канал, автоматически получат личный голосовой канал"
+
+#: src/interface/navigation/channels/ServerSidebar.tsx
+msgid "Server settings"
+msgstr "Настройки сервера"

@@ -100,26 +100,23 @@ export function Friends() {
           )}
         </For>
 
-        <div style={{ "margin-left": "auto" }}>
-          <IconButton
-            variant="filled-tonal"
-            size="sm"
-            onPress={() =>
-              openModal({
-                type: "add_friend",
-                client: client(),
-              })
-            }
-            use:floating={{
-              tooltip: {
-                placement: "bottom",
-                content: t`Add a new friend`,
-              },
-            }}
-          >
-            <Symbol size={18}>person_add</Symbol>
-          </IconButton>
-        </div>
+        <AddFriendButton
+          onClick={() =>
+            openModal({
+              type: "add_friend",
+              client: client(),
+            })
+          }
+          use:floating={{
+            tooltip: {
+              placement: "bottom",
+              content: t`Add a new friend`,
+            },
+          }}
+        >
+          <Symbol size={16}>person_add</Symbol>
+          <Trans>Add friend</Trans>
+        </AddFriendButton>
       </TabBar>
 
       <ContentArea ref={scrollTargetElement} use:scrollable>
@@ -130,7 +127,7 @@ export function Friends() {
                 title={t`Online`}
                 users={lists().online}
                 scrollTargetElement={targetSignal}
-                emptyIcon="wifi_off"
+                emptyIcon="person_off"
                 emptyText={t`No friends online`}
               />
             }
@@ -435,6 +432,30 @@ const TabBadge = styled("span", {
     color: "var(--md-sys-color-on-error)",
     minWidth: "16px",
     textAlign: "center",
+  },
+});
+
+const AddFriendButton = styled("button", {
+  base: {
+    marginLeft: "auto",
+    display: "flex",
+    alignItems: "center",
+    gap: "6px",
+    padding: "6px 14px",
+    borderRadius: "var(--borderRadius-full)",
+    border: "none",
+    cursor: "pointer",
+    fontSize: "13px",
+    fontWeight: 600,
+    fontFamily: "inherit",
+    color: "var(--md-sys-color-on-primary)",
+    background: "var(--md-sys-color-primary)",
+    transition: "all 0.15s",
+    whiteSpace: "nowrap",
+
+    "&:hover": {
+      filter: "brightness(1.1)",
+    },
   },
 });
 

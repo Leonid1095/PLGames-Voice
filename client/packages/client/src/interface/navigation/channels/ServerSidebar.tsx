@@ -30,7 +30,6 @@ import {
   Row,
   Tooltip,
   iconSize,
-  symbolSize,
   typography,
 } from "@revolt/ui";
 import { VoiceChannelPreview } from "@revolt/ui/components/features/voice/VoiceChannelPreview";
@@ -38,8 +37,6 @@ import { createDragHandle } from "@revolt/ui/components/utils/Draggable";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 import MdChevronRight from "@material-design-icons/svg/filled/chevron_right.svg?component-solid";
-
-import MdSettings from "@material-symbols/svg-400/outlined/settings-fill.svg?component-solid";
 
 import { getGameActivity } from "@revolt/app/gameActivity";
 
@@ -251,11 +248,9 @@ function ServerInfo(
         <TextWithEmoji content={props.server.name} />
       </ServerName>
       <Show when={props.server.havePermission("ManageChannel")}>
-        <IconButton
-          size="xs"
-          width="narrow"
-          variant={props.server.banner ? "_header" : "standard"}
-          onPress={() =>
+        <HeaderActionButton
+          banner={!!props.server.banner}
+          onClick={() =>
             openModal({
               type: "create_channel",
               server: props.server,
@@ -268,22 +263,64 @@ function ServerInfo(
             },
           }}
         >
-          <Symbol size={20}>add</Symbol>
-        </IconButton>
+          <Symbol size={18}>add</Symbol>
+        </HeaderActionButton>
       </Show>
       <Show when={props.canManageServer}>
-        <IconButton
-          size="xs"
-          width="narrow"
-          variant={props.server.banner ? "_header" : "standard"}
-          onPress={props.openServerSettings}
+        <HeaderActionButton
+          banner={!!props.server.banner}
+          onClick={props.openServerSettings}
+          use:floating={{
+            tooltip: {
+              placement: "bottom",
+              content: t`Server settings`,
+            },
+          }}
         >
-          <MdSettings {...symbolSize(24)} />
-        </IconButton>
+          <Symbol size={18}>settings</Symbol>
+        </HeaderActionButton>
       </Show>
     </Row>
   );
 }
+
+/**
+ * Action button in server header with backdrop for banner visibility
+ */
+const HeaderActionButton = styled("button", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "28px",
+    height: "28px",
+    borderRadius: "var(--borderRadius-sm)",
+    border: "none",
+    cursor: "pointer",
+    flexShrink: 0,
+    transition: "all 0.15s",
+    color: "var(--md-sys-color-on-surface)",
+    background: "transparent",
+    padding: 0,
+
+    "&:hover": {
+      background: "color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent)",
+    },
+  },
+  variants: {
+    banner: {
+      true: {
+        background: "rgba(0, 0, 0, 0.4)",
+        color: "#fff",
+        backdropFilter: "blur(4px)",
+
+        "&:hover": {
+          background: "rgba(0, 0, 0, 0.6)",
+        },
+      },
+    },
+  },
+});
 
 /**
  * Server name
