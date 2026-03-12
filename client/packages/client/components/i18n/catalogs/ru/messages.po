@@ -3536,3 +3536,55 @@ msgstr "Пожертвовать через DonatePay"
 #: src/Landing.tsx
 msgid "Download for Windows"
 msgstr "Скачать для Windows"
+
+#: components/app/interface/settings/user/Native.tsx
+msgid "Game Activity Detection"
+msgstr "Обнаружение игр"
+
+#: components/app/interface/settings/user/Native.tsx
+msgid "Detect running games and show them in your status."
+msgstr "Обнаруживать запущенные игры и показывать их в статусе."
+
+#: src/interface/navigation/channels/ServerSidebar.tsx
+msgid "Rename Channel"
+msgstr "Переименовать канал"
+
+#: src/interface/navigation/channels/ServerSidebar.tsx
+msgid "Enter new channel name:"
+msgstr "Введите новое название канала:"
+
+#: src/interface/Friends.tsx
+msgid "No friends online"
+msgstr "Нет друзей онлайн"
+
+#: src/interface/Friends.tsx
+msgid "All Friends"
+msgstr "Все друзья"
+
+#: src/interface/Friends.tsx
+msgid "You haven't added any friends yet"
+msgstr "У вас пока нет друзей"
+
+#: src/interface/Friends.tsx
+msgid "No pending requests"
+msgstr "Нет ожидающих запросов"
+
+#: src/interface/Friends.tsx
+msgid "No outgoing requests"
+msgstr "Нет исходящих запросов"
+
+#: src/interface/Friends.tsx
+msgid "No blocked users"
+msgstr "Нет заблокированных"
+
+#: src/interface/Friends.tsx
+msgid "Unblock"
+msgstr "Разблокировать"
+
+#: src/interface/Friends.tsx
+msgid "Incoming"
+msgstr "Входящие"
+
+#: src/interface/Friends.tsx
+msgid "Outgoing"
+msgstr "Исходящие"

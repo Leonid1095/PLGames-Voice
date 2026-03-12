@@ -4,3 +4,4 @@ export { Messages } from "./interface/channels/text/Messages";
 
 export * from "./interface/settings";
 export * from "./menus";
+export { getGameActivity, initGameActivity } from "./gameActivity";

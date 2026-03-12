@@ -13,6 +13,7 @@ import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import type { API, Channel, Server, ServerFlags } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
+import { useClient } from "@revolt/client";
 import { KeybindAction, createKeybind } from "@revolt/keybinds";
 import { TextWithEmoji } from "@revolt/markdown";
 import { useModals } from "@revolt/modal";
@@ -40,7 +41,25 @@ import MdChevronRight from "@material-design-icons/svg/filled/chevron_right.svg?
 
 import MdSettings from "@material-symbols/svg-400/outlined/settings-fill.svg?component-solid";
 
+import { getGameActivity } from "@revolt/app/gameActivity";
+
 import { SidebarBase } from "./common";
+
+const TRIGGER_MARKER = "[TRIGGER:TEMP_VOICE]";
+const TEMP_MARKER_PREFIX = "[TEMP_VOICE:";
+
+function isTriggerChannel(channel: Channel): boolean {
+  return !!channel.description?.includes(TRIGGER_MARKER);
+}
+
+function isTempChannel(channel: Channel): boolean {
+  return !!channel.description?.includes(TEMP_MARKER_PREFIX);
+}
+
+function getTempCreatorId(channel: Channel): string | null {
+  const match = channel.description?.match(/\[TEMP_VOICE:([A-Z0-9]+)\]/);
+  return match ? match[1] : null;
+}
 
 interface Props {
   /**
@@ -436,6 +455,7 @@ function Entry(
 ) {
   const { t } = useLingui();
   const state = useState();
+  const client = useClient();
   const voice = useVoice();
   const navigate = useNavigate();
   const { openModal } = useModals();
@@ -471,7 +491,33 @@ function Entry(
             : "normal",
   );
 
-  const handleClick = (e: MouseEvent) => {
+  const isTrigger = () => isTriggerChannel(props.channel);
+  const isTemp = () => isTempChannel(props.channel);
+  const tempCreator = () => getTempCreatorId(props.channel);
+
+  const handleClick = async (e: MouseEvent) => {
+    if (isTrigger()) {
+      e.preventDefault();
+      const server = props.channel.server;
+      if (!server) return;
+      const c = client();
+      const userId = c?.user?.id;
+      if (!userId) return;
+      const gameActivity = getGameActivity();
+      const channelName = gameActivity || c.user?.displayName || c.user?.username || "Voice";
+      try {
+        const newChannel = await server.createChannel({
+          type: "Voice",
+          name: channelName,
+          description: `[TEMP_VOICE:${userId}]`,
+        });
+        voice.connect(newChannel);
+        navigate(`/server/${newChannel.serverId}/channel/${newChannel.id}`);
+      } catch (err) {
+        console.error("[TEMP] Failed to create temp channel:", err);
+      }
+      return;
+    }
     if (props.channel.isVoice) {
       e.preventDefault();
       if (voice.channel()?.id !== props.channel.id) {
@@ -492,6 +538,18 @@ function Entry(
           icon={
             <>
               <Switch fallback={<Symbol>grid_3x3</Symbol>}>
+                <Match when={isTrigger()}>
+                  <Symbol color="var(--md-sys-color-tertiary)">
+                    add_circle
+                  </Symbol>
+                </Match>
+                <Match when={isTemp()}>
+                  <Symbol
+                    color={inCall() ? "var(--md-sys-color-primary)" : undefined}
+                  >
+                    schedule
+                  </Symbol>
+                </Match>
                 <Match when={props.channel.isVoice}>
                   <Symbol
                     color={inCall() ? "var(--md-sys-color-primary)" : undefined}
@@ -510,6 +568,24 @@ function Entry(
           }
           actions={
             <>
+              <Show when={isTemp() && tempCreator() === client()?.user?.id}>
+                <a
+                  use:floating={{
+                    tooltip: { placement: "top", content: t`Rename Channel` },
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const newName = prompt(t`Enter new channel name:`);
+                    if (newName && newName.trim()) {
+                      props.channel.edit({ name: newName.trim() });
+                    }
+                  }}
+                >
+                  <Symbol size={16} fill>
+                    edit
+                  </Symbol>
+                </a>
+              </Show>
               <Show when={canInvite()}>
                 <a
                   use:floating={{

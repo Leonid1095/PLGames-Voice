@@ -1,11 +1,12 @@
 import { IUpdateInfo, updateElectronApp } from "update-electron-app";
 
-import { BrowserWindow, Notification, app, session, shell } from "electron";
+import { BrowserWindow, Notification, app, ipcMain, session, shell } from "electron";
 import started from "electron-squirrel-startup";
 
 import { autoLaunch } from "./native/autoLaunch";
 import { config } from "./native/config";
 import { initDiscordRpc } from "./native/discordRpc";
+import { getCurrentGame, startGameDetector } from "./native/gameDetector";
 import { initTray } from "./native/tray";
 import { BUILD_URL, createMainWindow, mainWindow } from "./native/window";
 
@@ -80,6 +81,14 @@ if (acquiredLock) {
 
     initTray();
     initDiscordRpc();
+
+    // Game activity detection
+    ipcMain.on("get-game-activity", (event) => {
+      event.returnValue = getCurrentGame();
+    });
+    if (config.gameDetection) {
+      startGameDetector();
+    }
 
     // Windows specific fix for notifications
     if (process.platform === "win32") {

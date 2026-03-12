@@ -151,12 +151,45 @@ function CommonUser(props: {
       <Ripple />
       <Avatar size={24} src={user().avatar} fallback={user().username} />{" "}
       <PreviewUsername>{user().username}</PreviewUsername>
+      <GameBadge statusText={user().user?.status?.text} />
       <Row gap="sm">
         <VoiceStatefulUserIcons {...iconProps} userId={rest.userId} />
       </Row>
     </div>
   );
 }
+
+/**
+ * Show game badge if user status starts with game emoji
+ */
+function GameBadge(props: { statusText?: string | null }) {
+  const gameName = () => {
+    const text = props.statusText;
+    if (!text || !text.startsWith("🎮 ")) return null;
+    return text.slice(3);
+  };
+
+  return (
+    <Show when={gameName()}>
+      <GameBadgeLabel>{gameName()}</GameBadgeLabel>
+    </Show>
+  );
+}
+
+const GameBadgeLabel = styled("span", {
+  base: {
+    ...typography.raw({ class: "label", size: "small" }),
+    fontSize: "10px",
+    padding: "1px 4px",
+    borderRadius: "var(--borderRadius-sm)",
+    backgroundColor: "var(--md-sys-color-tertiary-container)",
+    color: "var(--md-sys-color-on-tertiary-container)",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    maxWidth: "80px",
+  },
+});
 
 const Base = styled("div", {
   base: {

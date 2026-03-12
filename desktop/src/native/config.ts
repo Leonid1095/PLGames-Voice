@@ -4,6 +4,7 @@ import { ipcMain } from "electron";
 import Store from "electron-store";
 
 import { destroyDiscordRpc, initDiscordRpc } from "./discordRpc";
+import { startGameDetector, stopGameDetector } from "./gameDetector";
 import { mainWindow } from "./window";
 
 const schema = {
@@ -29,6 +30,9 @@ const schema = {
     type: "boolean",
   } as JSONSchema.Boolean,
   askBeforeClose: {
+    type: "boolean",
+  } as JSONSchema.Boolean,
+  gameDetection: {
     type: "boolean",
   } as JSONSchema.Boolean,
   windowState: {
@@ -64,6 +68,7 @@ const store = new Store({
     hardwareAcceleration: true,
     discordRpc: true,
     askBeforeClose: true,
+    gameDetection: true,
     windowState: {
       x: 0,
       y: 0,
@@ -88,6 +93,7 @@ class Config {
       hardwareAcceleration: this.hardwareAcceleration,
       discordRpc: this.discordRpc,
       askBeforeClose: this.askBeforeClose,
+      gameDetection: this.gameDetection,
       windowState: this.windowState,
     });
   }
@@ -197,6 +203,27 @@ class Config {
     this.sync();
   }
 
+  get gameDetection() {
+    return (store as never as { get(k: string): boolean }).get(
+      "gameDetection",
+    );
+  }
+
+  set gameDetection(value: boolean) {
+    if (value) {
+      startGameDetector();
+    } else {
+      stopGameDetector();
+    }
+
+    (store as never as { set(k: string, value: boolean): void }).set(
+      "gameDetection",
+      value,
+    );
+
+    this.sync();
+  }
+
   get askBeforeClose() {
     return (store as never as { get(k: string): boolean }).get(
       "askBeforeClose",
@@ -241,6 +268,7 @@ const ALLOWED_CONFIG_KEYS: Record<string, string> = {
   hardwareAcceleration: "boolean",
   discordRpc: "boolean",
   askBeforeClose: "boolean",
+  gameDetection: "boolean",
   windowState: "object",
 };
 

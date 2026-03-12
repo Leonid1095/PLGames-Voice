@@ -1,9 +1,9 @@
-import { JSX, Match, Switch, createEffect } from "solid-js";
+import { JSX, Match, Switch, createEffect, onMount } from "solid-js";
 
 import { Server } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
-import { ChannelContextMenu, ServerContextMenu } from "@revolt/app";
+import { ChannelContextMenu, ServerContextMenu, initGameActivity } from "@revolt/app";
 import { MessageCache } from "@revolt/app/interface/channels/text/MessageCache";
 import { Titlebar } from "@revolt/app/interface/desktop/Titlebar";
 import { useClient, useClientLifecycle } from "@revolt/client";
@@ -113,6 +113,16 @@ const Interface = (props: { children: JSX.Element }) => {
     }
   });
 
+  // Initialize game activity detection on desktop
+  onMount(() => {
+    if (typeof window !== "undefined" && window.native) {
+      const c = client();
+      if (c?.user) {
+        initGameActivity((status) => c.user!.edit({ status }));
+      }
+    }
+  });
+
   function isDisconnected() {
     return [
       State.Connecting,
@@ -133,7 +143,7 @@ const Interface = (props: { children: JSX.Element }) => {
       >
         <Switch fallback={<AppLoader />}>
           <Match when={!isLoggedIn()}>
-            <Navigate href="/login" />
+            <Navigate href="/welcome" />
           </Match>
           <Match when={lifecycle.loadedOnce()}>
             <Titlebar />

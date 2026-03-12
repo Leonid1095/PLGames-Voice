@@ -17,6 +17,56 @@ let botUserId;
 
 const activeStreams = new Map();
 
+// --- Temp Voice Channels ---
+const TRIGGER_MARKER = "[TRIGGER:TEMP_VOICE]";
+const TEMP_MARKER_PREFIX = "[TEMP_VOICE:";
+const tempChannels = new Map(); // channelId -> { creatorId, serverId }
+const triggerChannelIds = new Set();
+
+function isTriggerChannel(channel) {
+  return channel.description && channel.description.includes(TRIGGER_MARKER);
+}
+
+function isTempChannel(channel) {
+  return channel.description && channel.description.includes(TEMP_MARKER_PREFIX);
+}
+
+function extractTempCreator(description) {
+  if (!description) return null;
+  const match = description.match(/\[TEMP_VOICE:([A-Z0-9]+)\]/);
+  return match ? match[1] : null;
+}
+
+async function checkAndDeleteTempChannel(channelId) {
+  try {
+    const channel = await api("GET", `/channels/${channelId}`);
+    // Check if channel still has voice participants
+    // Use the LiveKit room service to check participant count
+    const roomName = channelId;
+    try {
+      const rooms = await roomService.listRooms([roomName]);
+      const room = rooms.find((r) => r.name === roomName);
+      if (room && room.numParticipants > 0) return; // still has participants
+    } catch {
+      // If room doesn't exist in LiveKit, it means nobody is in voice
+    }
+    // Delete the empty temp channel
+    await api("DELETE", `/channels/${channelId}`);
+    tempChannels.delete(channelId);
+    console.log(`[TEMP] Deleted empty temp channel ${channelId}`);
+  } catch (e) {
+    // Channel may already be deleted
+    tempChannels.delete(channelId);
+  }
+}
+
+// Periodic cleanup sweep for temp channels
+setInterval(async () => {
+  for (const [channelId] of tempChannels) {
+    await checkAndDeleteTempChannel(channelId);
+  }
+}, 60000);
+
 // --- API helpers ---
 
 async function api(method, path, body) {
@@ -62,6 +112,10 @@ const COMMANDS = {
       `\`${PREFIX}stream list\` — активные стримы`,
       `\`${PREFIX}stream record <комната>\` — записать комнату`,
       `\`${PREFIX}stream recordings\` — список записей`,
+      "",
+      "**Временные каналы:**",
+      `\`${PREFIX}trigger <channel_id>\` — сделать канал триггером для временных голосовых`,
+      `\`${PREFIX}untrigger <channel_id>\` — убрать триггер с канала`,
     ].join("\n");
     await sendMessage(msg.channel, text);
   },
@@ -231,6 +285,34 @@ const COMMANDS = {
       await sendMessage(msg.channel, "Подкоманды: `start`, `stop`, `list`, `record`, `recordings`");
     }
   },
+
+  async trigger(msg, args) {
+    const channelId = args[0];
+    if (!channelId) return sendMessage(msg.channel, "Укажите ID канала: `!trigger <channel_id>`");
+    try {
+      const channel = await api("GET", `/channels/${channelId}`);
+      const desc = (channel.description || "") + (channel.description ? "\n" : "") + TRIGGER_MARKER;
+      await api("PATCH", `/channels/${channelId}`, { description: desc });
+      triggerChannelIds.add(channelId);
+      await sendMessage(msg.channel, `Канал **${channel.name}** теперь триггер для временных голосовых.`);
+    } catch (e) {
+      await sendMessage(msg.channel, `Ошибка: ${e.message}`);
+    }
+  },
+
+  async untrigger(msg, args) {
+    const channelId = args[0];
+    if (!channelId) return sendMessage(msg.channel, "Укажите ID канала: `!untrigger <channel_id>`");
+    try {
+      const channel = await api("GET", `/channels/${channelId}`);
+      const desc = (channel.description || "").replace(TRIGGER_MARKER, "").trim();
+      await api("PATCH", `/channels/${channelId}`, { description: desc || null });
+      triggerChannelIds.delete(channelId);
+      await sendMessage(msg.channel, `Триггер убран с канала **${channel.name}**.`);
+    } catch (e) {
+      await sendMessage(msg.channel, `Ошибка: ${e.message}`);
+    }
+  },
 };
 
 function extractUserId(mention) {
@@ -294,6 +376,21 @@ function connect() {
           if (bot) botUserId = bot._id;
         }
         console.log(`[BOT] User ID: ${botUserId}`);
+        // Scan channels for trigger/temp markers
+        if (event.channels) {
+          for (const ch of event.channels) {
+            if (isTriggerChannel(ch)) {
+              triggerChannelIds.add(ch._id);
+              console.log(`[TEMP] Found trigger channel: ${ch.name} (${ch._id})`);
+            }
+            if (isTempChannel(ch)) {
+              const creatorId = extractTempCreator(ch.description);
+              tempChannels.set(ch._id, { creatorId, serverId: ch.server });
+              console.log(`[TEMP] Found temp channel: ${ch.name} (${ch._id})`);
+            }
+          }
+          console.log(`[TEMP] ${triggerChannelIds.size} triggers, ${tempChannels.size} temp channels`);
+        }
         break;
       case "Message":
         handleMessage(event);
@@ -304,6 +401,30 @@ function connect() {
       case "ServerMemberLeave":
         if (event.id === SERVER_ID) handleMemberLeave(event);
         break;
+      case "ChannelCreate":
+        if (isTriggerChannel(event)) {
+          triggerChannelIds.add(event._id || event.id);
+          console.log(`[TEMP] New trigger channel created: ${event.name}`);
+        }
+        if (isTempChannel(event)) {
+          const id = event._id || event.id;
+          const creatorId = extractTempCreator(event.description);
+          tempChannels.set(id, { creatorId, serverId: event.server });
+          console.log(`[TEMP] New temp channel created: ${event.name}`);
+        }
+        break;
+      case "ChannelDelete":
+        triggerChannelIds.delete(event.id);
+        tempChannels.delete(event.id);
+        break;
+      case "VoiceChannelLeave": {
+        const chId = event.id || event.channel;
+        if (tempChannels.has(chId)) {
+          console.log(`[TEMP] User left temp channel ${chId}, checking in 3s...`);
+          setTimeout(() => checkAndDeleteTempChannel(chId), 3000);
+        }
+        break;
+      }
       case "Pong":
         break;
       default:

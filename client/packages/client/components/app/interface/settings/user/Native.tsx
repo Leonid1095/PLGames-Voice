@@ -12,6 +12,7 @@ declare type DesktopConfig = {
   spellchecker: boolean;
   hardwareAcceleration: boolean;
   discordRpc: boolean;
+  gameDetection: boolean;
   windowState: {
     isMaximised: boolean;
   };
@@ -71,6 +72,8 @@ export default function Native() {
     spellchecker: () => set({ spellchecker: !config().spellchecker }),
     hardwareAcceleration: () =>
       set({ hardwareAcceleration: !config().hardwareAcceleration }),
+    gameDetection: () =>
+      set({ gameDetection: !config().gameDetection }),
   };
 
   function CheckboxButton<K extends keyof DesktopConfig>(
@@ -151,6 +154,12 @@ export default function Native() {
           "speed",
           t`Hardware Acceleration`,
           t`Use the graphics card to improve performance.`,
+        )}
+        {CheckboxButton(
+          "gameDetection",
+          "sports_esports",
+          t`Game Activity Detection`,
+          t`Detect running games and show them in your status.`,
         )}
       </CategoryButton.Group>
 
