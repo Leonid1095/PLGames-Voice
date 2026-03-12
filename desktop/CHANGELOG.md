@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.7.0](https://github.com/Leonid1095/PLGames-Voice/compare/v1.6.0...v1.7.0) (2026-03-12)
+
+
+### Features
+
+* migrate domain from cvaboda.duckdns.org to plgames-voice.ru ([537b7cc](https://github.com/Leonid1095/PLGames-Voice/commit/537b7cc074a1f9d171623489dcad9bf2f037ecbc))
+* temp voice channels, game activity detection, Friends page redesign ([50edd4c](https://github.com/Leonid1095/PLGames-Voice/commit/50edd4cdbee1e8a1d9820640cb4e3e0a773004d5))
+
+
+### Bug Fixes
+
+* GIF picker, i18n subscriptions, Friends icons, voice optimization, desktop auto-update ([be49bf8](https://github.com/Leonid1095/PLGames-Voice/commit/be49bf8d905d8a016935cf42ba9cf1b3b04eb241))
+
 ## [1.6.0](https://github.com/Leonid1095/PLGames-Voice/compare/v1.5.0...v1.6.0) (2026-03-02)
 
 
