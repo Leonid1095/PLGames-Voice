@@ -19,6 +19,15 @@ public_key = "${VAPID_PUBLIC_KEY}"
 [files]
 encryption_key = "${FILES_ENCRYPTION_KEY}"
 
+[rabbit]
+host = "rabbit"
+port = 5672
+username = "${RABBIT_USER}"
+password = "${RABBIT_PASS}"
+
+[messages]
+encryption_key = "${MESSAGES_ENCRYPTION_KEY}"
+
 [features]
 webhooks_enabled = true
 

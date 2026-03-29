@@ -34,6 +34,9 @@ pub async fn web() -> Rocket<Build> {
     // Ensure environment variables are present
     config.preflight_checks();
 
+    // Initialize message encryption
+    revolt_database::util::message_encryption::init_cipher(&config.messages.encryption_key);
+
     // Setup database
     let db = revolt_database::DatabaseInfo::Auto.connect().await.unwrap();
     log::info!("database_here {db:?}");

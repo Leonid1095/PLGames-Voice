@@ -409,6 +409,22 @@ pub struct Sentry {
 }
 
 #[derive(Deserialize, Debug, Clone)]
+pub struct Messages {
+    /// AES-256-GCM encryption key for message content (base64-encoded, 32 bytes).
+    /// Leave empty to disable message encryption.
+    #[serde(default)]
+    pub encryption_key: String,
+}
+
+impl Default for Messages {
+    fn default() -> Self {
+        Self {
+            encryption_key: String::new(),
+        }
+    }
+}
+
+#[derive(Deserialize, Debug, Clone)]
 pub struct Settings {
     pub database: Database,
     pub rabbit: Rabbit,
@@ -416,6 +432,8 @@ pub struct Settings {
     pub api: Api,
     pub pushd: Pushd,
     pub files: Files,
+    #[serde(default)]
+    pub messages: Messages,
     pub features: Features,
     pub sentry: Sentry,
     pub production: bool,
