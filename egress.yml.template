@@ -1,0 +1,13 @@
+api_key: ${LIVEKIT_KEY}
+api_secret: ${LIVEKIT_SECRET}
+ws_url: ws://livekit:7880
+
+redis:
+  address: redis:6379
+
+file_output:
+  local:
+    - /recordings
+
+logging:
+  level: info

@@ -1,0 +1,66 @@
+:80 {
+	route /api* {
+		uri strip_prefix /api
+		reverse_proxy http://api:14702 {
+			header_down Location "^/" "/api/"
+		}
+	}
+
+	route /ws {
+		uri strip_prefix /ws
+		reverse_proxy http://events:14703 {
+			header_down Location "^/" "/ws/"
+			flush_interval -1
+			transport http {
+				keepalive off
+				read_buffer 8192
+			}
+		}
+	}
+
+	route /autumn* {
+		uri strip_prefix /autumn
+		reverse_proxy http://autumn:14704 {
+			header_down Location "^/" "/autumn/"
+		}
+	}
+
+	route /january* {
+		uri strip_prefix /january
+		reverse_proxy http://january:14705 {
+			header_down Location "^/" "/january/"
+		}
+	}
+
+	# gifbox disabled — Tenor API discontinued 2026
+	# route /gifbox* {
+	# 	uri strip_prefix /gifbox
+	# 	reverse_proxy http://gifbox:14706 {
+	# 		header_down Location "^/" "/gifbox/"
+	# 	}
+	# }
+
+	route /livekit* {
+		uri strip_prefix /livekit
+		reverse_proxy http://livekit:7880 {
+			header_down Location "^/" "/livekit/"
+			transport http {
+				keepalive off
+				read_buffer 4096
+			}
+		}
+	}
+
+	route /ingress* {
+		uri strip_prefix /ingress
+		reverse_proxy http://voice-ingress:8500 {
+			header_down Location "^/" "/ingress/"
+		}
+	}
+
+	# Block access to hidden files (.git, .env, etc.)
+	@hidden path_regexp hidden \/\.
+	respond @hidden 404
+
+	reverse_proxy http://web:5000
+}

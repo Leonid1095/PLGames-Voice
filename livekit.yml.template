@@ -1,0 +1,25 @@
+rtc:
+  use_external_ip: true
+  node_ip: ${EXTERNAL_IP}
+  port_range_start: 50000
+  port_range_end: 50100
+  tcp_port: 7881
+
+redis:
+  address: redis:6379
+
+turn:
+  enabled: true
+  domain: ${PLG_VOICE_HOST}
+  tls_port: 5349
+  udp_port: 3478
+  cert_file: /etc/livekit/fullchain.pem
+  key_file: /etc/livekit/privkey.pem
+
+keys:
+  ${LIVEKIT_KEY}: ${LIVEKIT_SECRET}
+
+webhook:
+  api_key: ${LIVEKIT_KEY}
+  urls:
+  - "http://voice-ingress:8500/worldwide"

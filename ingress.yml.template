@@ -1,0 +1,18 @@
+api_key: ${LIVEKIT_KEY}
+api_secret: ${LIVEKIT_SECRET}
+ws_url: ws://livekit:7880
+
+redis:
+  address: redis:6379
+
+rtmp_port: 1935
+whip_port: 8088
+
+cpu_cost:
+  rtmp_cpu_cost: 2
+  whip_cpu_cost: 2
+  whip_bypass_transcoding_cpu_cost: 0.1
+  url_cpu_cost: 2
+
+logging:
+  level: info

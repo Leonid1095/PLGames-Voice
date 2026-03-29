@@ -1,0 +1,275 @@
+name: stoat
+
+services:
+  # MongoDB: Database
+  database:
+    image: docker.io/mongo
+    restart: always
+    command: --auth
+    volumes:
+      - ./data/db:/data/db
+    environment:
+      MONGO_USER: ${MONGO_USER:-stoatadmin}
+      MONGO_PASS: ${MONGO_PASS:?Set MONGO_PASS in .env}
+    healthcheck:
+      test: mongosh --norc --quiet -u $${MONGO_USER} -p $${MONGO_PASS} --authenticationDatabase admin --eval "db.runCommand({ping:1}).ok"
+      interval: 60s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # Redis: Event message broker & KV store
+  redis:
+    image: docker.io/redis:7-alpine
+    command: >-
+      redis-server
+      --tcp-keepalive 60
+      --timeout 0
+      --hz 10
+      --tcp-backlog 511
+      --activedefrag yes
+      --save 3600 1
+      --save 900 100
+      --no-appendfsync-on-rewrite yes
+      --client-output-buffer-limit pubsub 67108864 33554432 120
+    restart: always
+    healthcheck:
+      test: redis-cli ping | grep -q PONG
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  # RabbitMQ: Internal message broker
+  rabbit:
+    image: docker.io/rabbitmq:4
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBIT_USER:-rabbituser}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_PASS:?Set RABBIT_PASS in .env}
+    volumes:
+      - ./data/rabbit:/var/lib/rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  # MinIO: S3-compatible storage server
+  minio:
+    image: docker.io/minio/minio
+    command: server /data
+    volumes:
+      - ./data/minio:/data
+    environment:
+      MINIO_ROOT_USER: ${MINIO_USER:-minioautumn}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASS:?Set MINIO_PASS in .env}
+      MINIO_DOMAIN: minio
+    networks:
+      default:
+        aliases:
+          - revolt-uploads.minio
+          - attachments.minio
+          - avatars.minio
+          - backgrounds.minio
+          - icons.minio
+          - banners.minio
+          - emojis.minio
+    restart: always
+
+  # Caddy: Web server
+  caddy:
+    image: docker.io/caddy
+    restart: always
+    env_file: .env.web
+    ports:
+      - "127.0.0.1:8091:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./data/caddy-data:/data
+      - ./data/caddy-config:/config
+
+  # API server (local build with forum/threads support)
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.api
+    image: plg-voice-api:latest
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbit:
+        condition: service_healthy
+    volumes:
+      - type: bind
+        source: ./Revolt.toml
+        target: /Revolt.toml
+    restart: always
+
+  # Events service (local build)
+  events:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.events
+    image: plg-voice-events:latest
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbit:
+        condition: service_healthy
+    volumes:
+      - type: bind
+        source: ./Revolt.toml
+        target: /Revolt.toml
+    restart: always
+
+  # File server
+  autumn:
+    image: ghcr.io/stoatchat/file-server:latest
+    depends_on:
+      database:
+        condition: service_healthy
+      createbuckets:
+        condition: service_started
+    volumes:
+      - type: bind
+        source: ./Revolt.toml
+        target: /Revolt.toml
+    restart: always
+
+  # Metadata and image proxy
+  january:
+    image: ghcr.io/stoatchat/proxy:latest
+    volumes:
+      - type: bind
+        source: ./Revolt.toml
+        target: /Revolt.toml
+    restart: always
+
+  # Regular task daemon
+  crond:
+    image: ghcr.io/stoatchat/crond:latest
+    depends_on:
+      database:
+        condition: service_healthy
+      minio:
+        condition: service_started
+    volumes:
+      - type: bind
+        source: ./Revolt.toml
+        target: /Revolt.toml
+    restart: always
+
+  # Push notification daemon
+  pushd:
+    image: ghcr.io/stoatchat/pushd:latest
+    restart: always
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbit:
+        condition: service_healthy
+      api:
+        condition: service_started
+    volumes:
+      - type: bind
+        source: ./Revolt.toml
+        target: /Revolt.toml
+
+  # Voice ingress daemon
+  voice-ingress:
+    image: ghcr.io/stoatchat/voice-ingress:latest
+    restart: always
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbit:
+        condition: service_healthy
+      api:
+        condition: service_started
+    volumes:
+      - type: bind
+        source: ./Revolt.toml
+        target: /Revolt.toml
+
+  livekit:
+    image: ghcr.io/stoatchat/livekit-server:v1.9.6
+    command: --config /etc/livekit.yml
+    volumes:
+      - ./livekit.yml:/etc/livekit.yml
+      - ./data/livekit-certs/fullchain.pem:/etc/livekit/fullchain.pem:ro
+      - ./data/livekit-certs/privkey.pem:/etc/livekit/privkey.pem:ro
+    ports:
+      - "127.0.0.1:7880:7880"
+      - "7881:7881"
+      - "3478:3478/udp"
+      - "5349:5349/tcp"
+      - "50000-50100:50000-50100/udp"
+    restart: always
+
+  # LiveKit Ingress: RTMP/WHIP streaming (OBS etc.)
+  livekit-ingress:
+    image: livekit/ingress:latest
+    restart: always
+    depends_on:
+      - livekit
+      - redis
+    environment:
+      INGRESS_CONFIG_FILE: /etc/ingress.yml
+      LIVEKIT_API_KEY: ${LIVEKIT_API_KEY:?Set LIVEKIT_API_KEY in .env}
+      LIVEKIT_API_SECRET: ${LIVEKIT_API_SECRET:?Set LIVEKIT_API_SECRET in .env}
+    volumes:
+      - ./ingress.yml:/etc/ingress.yml:ro
+    ports:
+      - "1935:1935"
+      - "8088:8088"
+
+  # LiveKit Egress: stream recording
+  livekit-egress:
+    image: livekit/egress:latest
+    restart: always
+    depends_on:
+      - livekit
+      - redis
+    environment:
+      EGRESS_CONFIG_FILE: /etc/egress.yml
+      LIVEKIT_API_KEY: ${LIVEKIT_API_KEY:?Set LIVEKIT_API_KEY in .env}
+      LIVEKIT_API_SECRET: ${LIVEKIT_API_SECRET:?Set LIVEKIT_API_SECRET in .env}
+    volumes:
+      - ./egress.yml:/etc/egress.yml:ro
+      - ./data/recordings:/recordings
+    cap_add:
+      - SYS_ADMIN
+
+  # Create buckets for minio.
+  createbuckets:
+    image: docker.io/minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      while ! /usr/bin/mc ready minio; do
+        /usr/bin/mc alias set minio http://minio:9000 $${MINIO_USER:-minioautumn} $${MINIO_PASS};
+        echo 'Waiting minio...' && sleep 1;
+      done;
+      /usr/bin/mc mb minio/revolt-uploads;
+      exit 0;
+      "
+    environment:
+      MINIO_USER: ${MINIO_USER:-minioautumn}
+      MINIO_PASS: ${MINIO_PASS:?Set MINIO_PASS in .env}
+
+  # Web App (build locally: docker build -t plg-voice-web:latest ./client/)
+  web:
+    image: plg-voice-web:latest
+    restart: always
+    env_file: .env.web

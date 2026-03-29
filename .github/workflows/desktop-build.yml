@@ -1,0 +1,47 @@
+name: Desktop Build
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "desktop/**"
+  pull_request:
+    paths:
+      - "desktop/**"
+
+defaults:
+  run:
+    working-directory: desktop
+
+jobs:
+  build:
+    name: Build App
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout assets
+        working-directory: desktop
+        run: git -c submodule."assets".update=checkout submodule update --init assets
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+          package_json_file: desktop/package.json
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
+          cache-dependency-path: desktop/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm run package
