@@ -174,10 +174,16 @@ impl<'z> BulkDatabasePermissionQuery<'z> {
                 Channel::TextChannel {
                     role_permissions, ..
                 } => role_permissions,
-                _ => panic!("Not supported for non-server channels"),
+                _ => {
+                    log::error!("get_channel_role_overrides called on non-server channel");
+                    static EMPTY: std::sync::OnceLock<HashMap<String, OverrideField>> = std::sync::OnceLock::new();
+                    return EMPTY.get_or_init(HashMap::new);
+                }
             }
         } else {
-            panic!("No channel added to query")
+            log::error!("get_channel_role_overrides called without channel");
+            static EMPTY: std::sync::OnceLock<HashMap<String, OverrideField>> = std::sync::OnceLock::new();
+            return EMPTY.get_or_init(HashMap::new);
         }
     }
 }
@@ -200,7 +206,10 @@ async fn calculate_members_permissions<'a>(
             default_permissions,
             ..
         } => (id, role_permissions, default_permissions),
-        _ => panic!("Calculation of member permissions must be done on a server channel"),
+        _ => {
+            log::error!("calculate_members_permissions called on non-server channel");
+            return resp;
+        }
     };
 
     if query.users.is_none() {

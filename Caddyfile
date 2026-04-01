@@ -1,4 +1,15 @@
 :80 {
+	# Security headers
+	header {
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-XSS-Protection "1; mode=block"
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; media-src 'self' blob: https:; connect-src 'self' wss: https:; font-src 'self' data:; frame-ancestors 'none'"
+		-Server
+	}
+
 	route /api* {
 		uri strip_prefix /api
 		reverse_proxy http://api:14702 {

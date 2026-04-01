@@ -64,9 +64,11 @@ pub async fn web() -> Rocket<Build> {
         }
     });
 
-    // Configure CORS
+    // Configure CORS — restrict to our domain only
+    let config = config().await;
+    let app_origin = config.hosts.app.clone();
     let cors = CorsOptions {
-        allowed_origins: AllowedOrigins::All,
+        allowed_origins: AllowedOrigins::some_exact(&[app_origin]),
         allowed_methods: [
             "Get", "Put", "Post", "Delete", "Options", "Head", "Trace", "Connect", "Patch",
         ]

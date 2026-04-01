@@ -399,7 +399,8 @@ impl<'a> DatabasePermissionQuery<'a> {
         }
 
         if self.user.is_none() {
-            panic!("Expected `PermissionCalculator.user to exist.");
+            log::error!("PermissionCalculator.calc_user called without user set");
+            return self;
         }
 
         DatabasePermissionQuery {

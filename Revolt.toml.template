@@ -1,6 +1,6 @@
 [database]
 mongodb = "mongodb://${MONGO_USER}:${MONGO_PASS}@database:27017/revolt?authSource=admin"
-redis = "redis://redis/"
+redis = "redis://:${REDIS_PASSWORD}@redis/"
 
 [hosts]
 app = "https://${PLG_VOICE_HOST}"

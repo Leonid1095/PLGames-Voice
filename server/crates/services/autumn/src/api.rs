@@ -22,7 +22,7 @@ use serde::{Deserialize, Serialize};
 use sha2::Digest;
 use tempfile::NamedTempFile;
 use tokio::time::Instant;
-use tower_http::cors::{AllowHeaders, Any, CorsLayer};
+use tower_http::cors::{AllowHeaders, AllowOrigin, CorsLayer};
 use utoipa::ToSchema;
 
 use crate::{exif::strip_metadata, metadata::generate_metadata, mime_type::determine_mime_type, AppState};
@@ -40,7 +40,9 @@ pub async fn router() -> Router<AppState> {
             "X-RateLimit-Remaining".try_into().unwrap(),
             "X-RateLimit-Reset-After".try_into().unwrap(),
         ])
-        .allow_origin(Any);
+        .allow_origin(AllowOrigin::exact(
+            config.hosts.app.parse().expect("Invalid app host for CORS"),
+        ));
 
     Router::new()
         .route("/", get(root))

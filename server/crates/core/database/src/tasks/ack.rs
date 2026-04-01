@@ -198,7 +198,7 @@ pub async fn handle_ack_event(
                         revolt_config::capture_error(&err);
                     }
                 } else {
-                    panic!("Unknown channel type when sending mass mention event");
+                    log::error!("Unknown channel type when sending mass mention event for channel {}", &mass_mentions[0].message.channel);
                 }
             }
         }
@@ -288,7 +288,7 @@ pub async fn worker(db: Database, amqp: AMQP) {
                                 info!("{err_msg}")
                             }
                         } else {
-                            panic!("Somehow got an ack message in the add mention arm");
+                            log::error!("Unexpected ack message in the add mention arm: {event:?}");
                         }
                     }
                     AckEvent::AckMessage { .. } => {

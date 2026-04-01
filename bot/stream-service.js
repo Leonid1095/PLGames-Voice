@@ -136,13 +136,41 @@ const VIEWER_HTML = `<!DOCTYPE html>
 </body>
 </html>`;
 
+// --- Rate limiting ---
+const rateLimitMap = new Map();
+const RATE_LIMIT_WINDOW = 60_000; // 1 minute
+const RATE_LIMIT_MAX = 20; // 20 requests per minute per IP
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now - entry.windowStart > RATE_LIMIT_WINDOW) {
+    rateLimitMap.set(ip, { windowStart: now, count: 1 });
+    return false;
+  }
+  entry.count++;
+  if (entry.count > RATE_LIMIT_MAX) return true;
+  return false;
+}
+
+// Clean up stale entries every 5 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, entry] of rateLimitMap) {
+    if (now - entry.windowStart > RATE_LIMIT_WINDOW) rateLimitMap.delete(ip);
+  }
+}, 300_000);
+
 // --- HTTP Server ---
+
+const ALLOWED_ORIGIN = process.env.PUBLIC_URL || "https://plgames-voice.ru";
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
+  const clientIp = req.headers["x-real-ip"] || req.socket.remoteAddress;
 
-  // CORS
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  // CORS — restrict to our domain
+  res.setHeader("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
   if (req.method === "OPTIONS") {
     res.writeHead(204);
@@ -179,10 +207,14 @@ const server = http.createServer(async (req, res) => {
     }
 
   } else if (url.pathname === "/stream/token") {
+    if (isRateLimited(clientIp)) {
+      res.writeHead(429, { "Content-Type": "application/json", "Retry-After": "60" });
+      return res.end(JSON.stringify({ error: "Too many requests" }));
+    }
     const room = url.searchParams.get("room");
-    if (!room) {
+    if (!room || !/^[\w-]{1,64}$/.test(room)) {
       res.writeHead(400, { "Content-Type": "application/json" });
-      return res.end(JSON.stringify({ error: "room required" }));
+      return res.end(JSON.stringify({ error: "room required (alphanumeric, max 64 chars)" }));
     }
     const viewerId = `viewer-${Math.random().toString(36).slice(2, 8)}`;
     try {

@@ -176,7 +176,7 @@ impl AbstractServerMembers for ReferenceDb {
         let member = server_members.get_mut(id);
         if let Some(member) = member {
             if member.in_timeout() {
-                panic!("Soft deletion is not implemented.")
+                Err(create_error!(InternalError))
             } else if server_members.remove(id).is_some() {
                 Ok(())
             } else {
