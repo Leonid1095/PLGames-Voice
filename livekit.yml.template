@@ -7,6 +7,7 @@ rtc:
 
 redis:
   address: redis:6379
+  password: ${REDIS_PASSWORD}
 
 turn:
   enabled: true
