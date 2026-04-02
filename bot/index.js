@@ -1,4 +1,5 @@
 const WebSocket = require("ws");
+const fs = require("fs");
 const path = require("path");
 const { IngressInput } = require("livekit-server-sdk");
 
@@ -15,6 +16,51 @@ const PUBLIC_URL = process.env.PUBLIC_URL || "https://plgames-voice.ru";
 
 const SERVER_ID = process.env.SERVER_ID;
 const WELCOME_CHANNEL = process.env.WELCOME_CHANNEL;
+
+// --- Persistent settings (JSON file) ---
+const SETTINGS_FILE = path.resolve(__dirname, "settings.json");
+
+function loadSettings() {
+  try {
+    if (fs.existsSync(SETTINGS_FILE)) {
+      return JSON.parse(fs.readFileSync(SETTINGS_FILE, "utf8"));
+    }
+  } catch (e) {
+    console.error("[SETTINGS] Failed to load:", e.message);
+  }
+  return {};
+}
+
+function saveSettings(settings) {
+  try {
+    fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2), "utf8");
+  } catch (e) {
+    console.error("[SETTINGS] Failed to save:", e.message);
+  }
+}
+
+const settings = loadSettings();
+
+// Defaults
+if (!settings.welcome) settings.welcome = {
+  enabled: true,
+  channel: WELCOME_CHANNEL || "",
+  template: "Добро пожаловать на сервер, {user}! Ты участник #{count} 🎉",
+  leaveEnabled: false,
+  leaveChannel: "",
+  leaveTemplate: "{user} покинул(а) сервер.",
+  autoRoleId: "",
+  dmEnabled: false,
+  dmTemplate: "Привет! Добро пожаловать на **{server}**! Ознакомься с правилами.",
+};
+if (!settings.starboard) settings.starboard = {
+  enabled: false,
+  channel: "",
+  threshold: 3,
+  emoji: "⭐",
+  posted: [], // message IDs already posted
+};
+saveSettings(settings);
 
 if (!BOT_TOKEN || !API_URL || !WS_URL) {
   console.error("[BOT] Missing required env vars: BOT_TOKEN, API_URL, WS_URL");
@@ -165,6 +211,23 @@ const COMMANDS = {
       "**Временные каналы:**",
       `\`${PREFIX}trigger <channel_id>\` — сделать канал триггером для временных голосовых`,
       `\`${PREFIX}untrigger <channel_id>\` — убрать триггер с канала`,
+      "",
+      "**Приветствия:**",
+      `\`${PREFIX}welcome\` — текущие настройки`,
+      `\`${PREFIX}welcome channel <channel_id>\` — канал приветствий`,
+      `\`${PREFIX}welcome template <текст>\` — шаблон ({user}, {server}, {count})`,
+      `\`${PREFIX}welcome leave <channel_id>\` — канал прощаний`,
+      `\`${PREFIX}welcome leavetext <текст>\` — шаблон прощания ({user})`,
+      `\`${PREFIX}welcome autorole <role_id>\` — авто-роль при входе`,
+      `\`${PREFIX}welcome dm <текст>\` — ЛС новичку ({user}, {server})`,
+      `\`${PREFIX}welcome off\` / \`on\` — вкл/выкл`,
+      "",
+      "**Starboard:**",
+      `\`${PREFIX}starboard\` — текущие настройки`,
+      `\`${PREFIX}starboard channel <channel_id>\` — канал starboard`,
+      `\`${PREFIX}starboard threshold <N>\` — порог (по умолчанию 3)`,
+      `\`${PREFIX}starboard emoji <эмодзи>\` — эмодзи (по умолчанию ⭐)`,
+      `\`${PREFIX}starboard off\` / \`on\` — вкл/выкл`,
     ].join("\n");
     await sendMessage(msg.channel, text);
   },
@@ -395,6 +458,147 @@ const COMMANDS = {
       await sendMessage(msg.channel, safeErrorMessage(e));
     }
   },
+
+  // --- Welcome settings ---
+  async welcome(msg, args) {
+    if (!(await isAdmin(SERVER_ID, msg.author))) {
+      return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+    }
+    const w = settings.welcome;
+    const sub = (args[0] || "").toLowerCase();
+
+    if (!sub) {
+      const lines = [
+        `**Настройки приветствий:**`,
+        `Статус: ${w.enabled ? "✅ включено" : "❌ выключено"}`,
+        `Канал: ${w.channel ? `<#${w.channel}>` : "не задан"}`,
+        `Шаблон: \`${w.template}\``,
+        `Прощание: ${w.leaveEnabled ? "✅" : "❌"} ${w.leaveChannel ? `<#${w.leaveChannel}>` : ""}`,
+        `Шаблон прощания: \`${w.leaveTemplate}\``,
+        `Авто-роль: ${w.autoRoleId || "не задана"}`,
+        `ЛС новичку: ${w.dmEnabled ? "✅" : "❌"}`,
+      ];
+      return sendMessage(msg.channel, lines.join("\n"));
+    }
+
+    if (sub === "on") {
+      w.enabled = true;
+      saveSettings(settings);
+      return sendMessage(msg.channel, "✅ Приветствия включены.");
+    }
+    if (sub === "off") {
+      w.enabled = false;
+      saveSettings(settings);
+      return sendMessage(msg.channel, "❌ Приветствия выключены.");
+    }
+    if (sub === "channel") {
+      const id = validateId(args[1]);
+      if (!id) return sendMessage(msg.channel, "Укажите ID канала.");
+      w.channel = id;
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Канал приветствий: <#${id}>`);
+    }
+    if (sub === "template") {
+      const tmpl = args.slice(1).join(" ");
+      if (!tmpl) return sendMessage(msg.channel, "Укажите шаблон. Переменные: {user}, {server}, {count}");
+      w.template = tmpl;
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Шаблон приветствия: \`${tmpl}\``);
+    }
+    if (sub === "leave") {
+      const id = validateId(args[1]);
+      if (!id) return sendMessage(msg.channel, "Укажите ID канала для прощаний.");
+      w.leaveChannel = id;
+      w.leaveEnabled = true;
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Канал прощаний: <#${id}>`);
+    }
+    if (sub === "leavetext") {
+      const tmpl = args.slice(1).join(" ");
+      if (!tmpl) return sendMessage(msg.channel, "Укажите шаблон. Переменные: {user}");
+      w.leaveTemplate = tmpl;
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Шаблон прощания: \`${tmpl}\``);
+    }
+    if (sub === "autorole") {
+      const roleId = args[1] || "";
+      if (roleId === "off" || roleId === "none") {
+        w.autoRoleId = "";
+        saveSettings(settings);
+        return sendMessage(msg.channel, "Авто-роль убрана.");
+      }
+      w.autoRoleId = roleId;
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Авто-роль при входе: \`${roleId}\``);
+    }
+    if (sub === "dm") {
+      const tmpl = args.slice(1).join(" ");
+      if (!tmpl || tmpl === "off") {
+        w.dmEnabled = false;
+        saveSettings(settings);
+        return sendMessage(msg.channel, "ЛС новичкам выключено.");
+      }
+      w.dmEnabled = true;
+      w.dmTemplate = tmpl;
+      saveSettings(settings);
+      return sendMessage(msg.channel, `ЛС новичкам: \`${tmpl}\``);
+    }
+    return sendMessage(msg.channel, "Подкоманды: `channel`, `template`, `leave`, `leavetext`, `autorole`, `dm`, `on`, `off`");
+  },
+
+  // --- Starboard settings ---
+  async starboard(msg, args) {
+    if (!(await isAdmin(SERVER_ID, msg.author))) {
+      return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+    }
+    const sb = settings.starboard;
+    const sub = (args[0] || "").toLowerCase();
+
+    if (!sub) {
+      const lines = [
+        `**Настройки Starboard:**`,
+        `Статус: ${sb.enabled ? "✅ включено" : "❌ выключено"}`,
+        `Канал: ${sb.channel ? `<#${sb.channel}>` : "не задан"}`,
+        `Порог: ${sb.threshold} ${sb.emoji}`,
+        `Эмодзи: ${sb.emoji}`,
+      ];
+      return sendMessage(msg.channel, lines.join("\n"));
+    }
+
+    if (sub === "on") {
+      if (!sb.channel) return sendMessage(msg.channel, "Сначала задайте канал: `!starboard channel <id>`");
+      sb.enabled = true;
+      saveSettings(settings);
+      return sendMessage(msg.channel, "✅ Starboard включён.");
+    }
+    if (sub === "off") {
+      sb.enabled = false;
+      saveSettings(settings);
+      return sendMessage(msg.channel, "❌ Starboard выключен.");
+    }
+    if (sub === "channel") {
+      const id = validateId(args[1]);
+      if (!id) return sendMessage(msg.channel, "Укажите ID канала.");
+      sb.channel = id;
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Канал starboard: <#${id}>`);
+    }
+    if (sub === "threshold") {
+      const n = parseInt(args[1]);
+      if (!n || n < 1 || n > 50) return sendMessage(msg.channel, "Порог: число от 1 до 50.");
+      sb.threshold = n;
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Порог: ${n} ${sb.emoji}`);
+    }
+    if (sub === "emoji") {
+      const e = args[1];
+      if (!e) return sendMessage(msg.channel, "Укажите эмодзи.");
+      sb.emoji = e;
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Эмодзи starboard: ${e}`);
+    }
+    return sendMessage(msg.channel, "Подкоманды: `channel`, `threshold`, `emoji`, `on`, `off`");
+  },
 };
 
 function extractUserId(mention) {
@@ -420,17 +624,132 @@ function handleMessage(data) {
   }
 }
 
-function handleMemberJoin(data) {
-  if (!WELCOME_CHANNEL) return;
+async function handleMemberJoin(data) {
   const userId = data.member?.id?.user || data.user;
   if (!userId || userId === botUserId) return;
   console.log(`[JOIN] ${userId} joined server`);
-  sendMessage(WELCOME_CHANNEL, `Добро пожаловать на сервер, <@${userId}>!`)
-    .catch((e) => console.error("[WELCOME ERROR]", e.message));
+
+  const w = settings.welcome;
+  if (!w.enabled || !w.channel) return;
+
+  try {
+    // Get member count for {count} template
+    let count = "?";
+    try {
+      const members = await api("GET", `/servers/${SERVER_ID}/members`);
+      count = members.members?.length || "?";
+    } catch { /* ignore */ }
+
+    // Get server name for {server} template
+    let serverName = "сервер";
+    try {
+      const server = await api("GET", `/servers/${SERVER_ID}`);
+      serverName = server.name || "сервер";
+    } catch { /* ignore */ }
+
+    // Send welcome message
+    const text = w.template
+      .replace(/\{user\}/g, `<@${userId}>`)
+      .replace(/\{count\}/g, String(count))
+      .replace(/\{server\}/g, serverName);
+    await sendMessage(w.channel, text);
+
+    // Auto-role
+    if (w.autoRoleId) {
+      try {
+        await api("PATCH", `/servers/${SERVER_ID}/members/${userId}`, {
+          roles: [w.autoRoleId],
+        });
+        console.log(`[JOIN] Auto-role ${w.autoRoleId} assigned to ${userId}`);
+      } catch (e) {
+        console.error(`[JOIN] Auto-role error:`, e.message);
+      }
+    }
+
+    // DM welcome
+    if (w.dmEnabled && w.dmTemplate) {
+      try {
+        const dm = await api("GET", `/users/${userId}/dm`);
+        const dmText = w.dmTemplate
+          .replace(/\{user\}/g, `<@${userId}>`)
+          .replace(/\{server\}/g, serverName);
+        await sendMessage(dm._id, dmText);
+      } catch (e) {
+        console.error(`[JOIN] DM error:`, e.message);
+      }
+    }
+  } catch (e) {
+    console.error("[WELCOME ERROR]", e.message);
+  }
 }
 
-function handleMemberLeave(data) {
-  console.log(`[LEAVE] ${data.user} left server (${data.reason})`);
+async function handleMemberLeave(data) {
+  const userId = data.user;
+  console.log(`[LEAVE] ${userId} left server (${data.reason})`);
+
+  const w = settings.welcome;
+  if (!w.leaveEnabled || !w.leaveChannel) return;
+
+  try {
+    const text = w.leaveTemplate
+      .replace(/\{user\}/g, userId);
+    await sendMessage(w.leaveChannel, text);
+  } catch (e) {
+    console.error("[LEAVE ERROR]", e.message);
+  }
+}
+
+// --- Starboard handler ---
+async function handleReaction(data) {
+  const sb = settings.starboard;
+  if (!sb.enabled || !sb.channel) return;
+
+  try {
+    const msgId = data.id; // message ID
+    const channelId = data.channel_id;
+    const emoji = data.emoji_id || data.emoji;
+
+    // Only track configured emoji
+    if (emoji !== sb.emoji) return;
+
+    // Don't re-post already posted messages
+    if (sb.posted.includes(msgId)) return;
+
+    // Fetch message to check reaction count
+    const msg = await api("GET", `/channels/${channelId}/messages/${msgId}`);
+    if (!msg || !msg.reactions) return;
+
+    // Find matching reaction count
+    let count = 0;
+    for (const [key, reaction] of Object.entries(msg.reactions)) {
+      if (key === sb.emoji || key === emoji) {
+        count = Array.isArray(reaction) ? reaction.length : 0;
+        break;
+      }
+    }
+
+    if (count < sb.threshold) return;
+
+    // Post to starboard channel
+    const author = msg.author;
+    const content = msg.content || "(вложение)";
+    const starText = [
+      `${sb.emoji} **${count}** | <#${channelId}>`,
+      "",
+      `> ${content.split("\n").join("\n> ")}`,
+      "",
+      `— <@${author}>`,
+    ].join("\n");
+
+    await sendMessage(sb.channel, starText);
+    sb.posted.push(msgId);
+    // Keep only last 500 IDs
+    if (sb.posted.length > 500) sb.posted = sb.posted.slice(-500);
+    saveSettings(settings);
+    console.log(`[STARBOARD] Message ${msgId} posted (${count} ${sb.emoji})`);
+  } catch (e) {
+    console.error("[STARBOARD ERROR]", e.message);
+  }
 }
 
 // --- WebSocket connection ---
@@ -477,6 +796,9 @@ function connect() {
         break;
       case "Message":
         handleMessage(event);
+        break;
+      case "MessageReact":
+        handleReaction(event);
         break;
       case "ServerMemberJoin":
         if (SERVER_ID && event.id === SERVER_ID) handleMemberJoin(event);

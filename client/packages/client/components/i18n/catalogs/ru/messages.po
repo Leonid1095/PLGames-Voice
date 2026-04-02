@@ -4718,3 +4718,15 @@ msgstr "Файл слишком большой"
 #: src/interface/channels/text/Composition.tsx
 msgid "Файлы слишком большие"
 msgstr "Файлы слишком большие"
+
+#: src/interface/channels/text/MemberSidebar.tsx
+msgid "В игре"
+msgstr "В игре"
+
+#: src/interface/channels/text/MemberSidebar.tsx
+msgid "Онлайн"
+msgstr "Онлайн"
+
+#: src/interface/channels/text/MemberSidebar.tsx
+msgid "Оффлайн"
+msgstr "Оффлайн"

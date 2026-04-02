@@ -74,6 +74,7 @@ const LARGE_SERVERS = [
  * Server Member Sidebar
  */
 export function ServerMemberSidebar(props: Props) {
+  const { t } = useLingui();
   const client = useClient();
 
   // todo: useQuery
@@ -122,12 +123,21 @@ export function ServerMemberSidebar(props: Props) {
     const members = stage2();
 
     // Categorise members by role in one pass
-    const byRole: Record<string, ServerMember[]> = { default: [], offline: [] };
+    const byRole: Record<string, ServerMember[]> = { inGame: [], default: [], offline: [] };
     hoistedRoles.forEach((role) => (byRole[role.id] = []));
 
     for (const member of members) {
       if (!member.user?.online) {
         byRole["offline"].push(member);
+        continue;
+      }
+
+      // Check if user is playing a game (status starts with 🎮)
+      const statusText = member.user?.status?.text;
+      const isInGame = statusText && statusText.startsWith("🎮");
+
+      if (isInGame) {
+        byRole["inGame"].push(member);
         continue;
       }
 
@@ -153,12 +163,13 @@ export function ServerMemberSidebar(props: Props) {
 
     // Build role groups (sorted + filtered in one pass)
     const roleGroups = [
+      { name: t`В игре`, members: byRole["inGame"] },
       ...hoistedRoles.map((role) => ({
         name: role.name,
         members: byRole[role.id],
       })),
-      { name: "Online", members: byRole["default"] },
-      { name: "Offline", members: byRole["offline"] },
+      { name: t`Онлайн`, members: byRole["default"] },
+      { name: t`Оффлайн`, members: byRole["offline"] },
     ];
 
     // Flatten into virtual list elements

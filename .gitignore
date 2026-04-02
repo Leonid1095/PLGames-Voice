@@ -18,3 +18,4 @@ node_modules/
 /server/target/
 /server/.mongo/
 /server/.env
+/bot/settings.json
