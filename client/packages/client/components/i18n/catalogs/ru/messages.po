@@ -4574,3 +4574,147 @@ msgstr "Текст"
 #: components/app/interface/settings/server/Overview.tsx
 msgid "This server is about..."
 msgstr "Этот сервер о..."
+
+#: components/ui/components/design/ErrorFallback.tsx
+msgid "Произошла ошибка при отображении"
+msgstr "Произошла ошибка при отображении"
+
+#: components/ui/components/design/ErrorFallback.tsx
+msgid "Перезагрузить"
+msgstr "Перезагрузить"
+
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+msgid "Ответить"
+msgstr "Ответить"
+
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+msgid "Реакция"
+msgstr "Реакция"
+
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+msgid "Редактировать"
+msgstr "Редактировать"
+
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+msgid "Удалить"
+msgstr "Удалить"
+
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+msgid "Ещё"
+msgstr "Ещё"
+
+#: components/ui/components/features/messaging/elements/Reactions.tsx
+msgid "Добавить реакцию"
+msgstr "Добавить реакцию"
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "только что"
+msgstr "только что"
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "{0} мин"
+msgstr "{0} мин"
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "{0} ч"
+msgstr "{0} ч"
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "{0} д"
+msgstr "{0} д"
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Все"
+msgstr "Все"
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Новые"
+msgstr "Новые"
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Старые"
+msgstr "Старые"
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Отмена"
+msgstr "Отмена"
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Новый тред"
+msgstr "Новый тред"
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Заголовок треда"
+msgstr "Заголовок треда"
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Первое сообщение..."
+msgstr "Первое сообщение..."
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Создать тред"
+msgstr "Создать тред"
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Загрузка..."
+msgstr "Загрузка..."
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Тредов пока нет"
+msgstr "Тредов пока нет"
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Создайте первый тред для обсуждения"
+msgstr "Создайте первый тред для обсуждения"
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Есть ответы"
+msgstr "Есть ответы"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "Пустой"
+msgstr "Пустой"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "Начать с нуля"
+msgstr "Начать с нуля"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "Игровой"
+msgstr "Игровой"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "Для игровых сообществ"
+msgstr "Для игровых сообществ"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "Сообщество"
+msgstr "Сообщество"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "Для сообществ и клубов"
+msgstr "Для сообществ и клубов"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "Учёба"
+msgstr "Учёба"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "Для учебных групп"
+msgstr "Для учебных групп"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "Друзья"
+msgstr "Друзья"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "Для компании друзей"
+msgstr "Для компании друзей"
+
+#: src/interface/channels/text/Composition.tsx
+msgid "Файл слишком большой"
+msgstr "Файл слишком большой"
+
+#: src/interface/channels/text/Composition.tsx
+msgid "Файлы слишком большие"
+msgstr "Файлы слишком большие"

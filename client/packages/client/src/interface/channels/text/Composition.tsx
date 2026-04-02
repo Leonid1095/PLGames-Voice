@@ -240,7 +240,7 @@ export function MessageComposition(props: Props) {
         const error = new Error(
           t`The file "${file.name}" (${fileSize}) exceeds the maximum size limit of ${maxSizeFormatted}.`,
         );
-        error.name = "File too large";
+        error.name = "Файл слишком большой";
         openModal({
           type: "error2",
           error,
@@ -249,7 +249,7 @@ export function MessageComposition(props: Props) {
         const error = new Error(
           t`${rejectedFiles.length} files exceed the maximum size limit of ${maxSizeFormatted} and were not uploaded.`,
         );
-        error.name = "Files too large";
+        error.name = "Файлы слишком большие";
         openModal({
           type: "error2",
           error,

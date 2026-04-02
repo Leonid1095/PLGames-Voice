@@ -1,22 +1,9 @@
 const WebSocket = require("ws");
-const fs = require("fs");
 const path = require("path");
 const { IngressInput } = require("livekit-server-sdk");
 
-// Auto-load .env from project root if env vars not set
-const envPath = path.resolve(__dirname, "..", ".env");
-if (!process.env.BOT_TOKEN && fs.existsSync(envPath)) {
-  for (const line of fs.readFileSync(envPath, "utf8").split("\n")) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith("#")) continue;
-    const eq = trimmed.indexOf("=");
-    if (eq > 0) {
-      const key = trimmed.slice(0, eq);
-      const val = trimmed.slice(eq + 1);
-      if (!process.env[key]) process.env[key] = val;
-    }
-  }
-}
+// Load .env from project root
+require("dotenv").config({ path: path.resolve(__dirname, "..", ".env") });
 
 const { ingressClient, roomService, egressClient } = require("./stream-service");
 
@@ -44,6 +31,28 @@ let botUserId;
 
 const activeStreams = new Map();
 
+// --- Input validation helpers ---
+
+const VALID_ID = /^[A-Z0-9]{26}$/;
+const VALID_ROOM_NAME = /^[\w-]{1,64}$/;
+const MAX_REASON_LENGTH = 200;
+const MAX_STREAM_NAME = 50;
+const MAX_MUTE_MINUTES = 10080; // 7 days
+
+function validateId(id) {
+  return id && VALID_ID.test(id) ? id : null;
+}
+
+function sanitizeText(text, maxLen) {
+  return (text || "").slice(0, maxLen).replace(/[`*_~|]/g, "");
+}
+
+function safeErrorMessage(e) {
+  const status = e.message?.match(/:\s*(\d{3})\s/)?.[1];
+  if (status) return `Ошибка сервера (${status})`;
+  return "Произошла ошибка";
+}
+
 // --- Temp Voice Channels ---
 const TRIGGER_MARKER = "[TRIGGER:TEMP_VOICE]";
 const TEMP_MARKER_PREFIX = "[TEMP_VOICE:";
@@ -66,21 +75,17 @@ function extractTempCreator(description) {
 
 async function checkAndDeleteTempChannel(channelId) {
   try {
-    const channel = await api("GET", `/channels/${channelId}`);
-    // Check if channel still has voice participants
-    // Use the LiveKit room service to check participant count
+    await api("GET", `/channels/${channelId}`);
     const roomName = channelId;
     try {
       const rooms = await roomService.listRooms([roomName]);
       const room = rooms.find((r) => r.name === roomName);
-      if (room && room.numParticipants > 0) return; // still has participants
+      if (room && room.numParticipants > 0) return;
     } catch {
-      // If room doesn't exist in LiveKit, it means nobody is in voice
+      // Room doesn't exist in LiveKit — nobody is in voice
     }
-    // Delete the empty temp channel
     console.log(`[TEMP] Channel ${channelId} is empty, deleting...`);
-    const delResult = await api("DELETE", `/channels/${channelId}`);
-    console.log(`[TEMP] DELETE response:`, delResult);
+    await api("DELETE", `/channels/${channelId}`);
     tempChannels.delete(channelId);
     console.log(`[TEMP] Deleted empty temp channel ${channelId}`);
   } catch (e) {
@@ -98,7 +103,7 @@ setInterval(async () => {
 
 // --- API helpers ---
 
-async function api(method, path, body) {
+async function api(method, apiPath, body) {
   const opts = {
     method,
     headers: {
@@ -107,10 +112,10 @@ async function api(method, path, body) {
     },
   };
   if (body) opts.body = JSON.stringify(body);
-  const res = await fetch(`${API_URL}${path}`, opts);
+  const res = await fetch(`${API_URL}${apiPath}`, opts);
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`API ${method} ${path}: ${res.status} ${text}`);
+    throw new Error(`API ${method} ${apiPath}: ${res.status} ${text}`);
   }
   const ct = res.headers.get("content-type") || "";
   return ct.includes("json") ? res.json() : null;
@@ -118,6 +123,21 @@ async function api(method, path, body) {
 
 function sendMessage(channelId, content) {
   return api("POST", `/channels/${channelId}/messages`, { content });
+}
+
+// --- Permission check ---
+
+async function isAdmin(serverId, userId) {
+  try {
+    const member = await api("GET", `/servers/${serverId}/members/${userId}`);
+    // Server owner is always admin
+    const server = await api("GET", `/servers/${serverId}`);
+    if (server.owner === userId) return true;
+    // Check if member has any roles (basic permission check)
+    return member.roles && member.roles.length > 0;
+  } catch {
+    return false;
+  }
 }
 
 // --- Commands ---
@@ -154,7 +174,7 @@ const COMMANDS = {
     const sent = await sendMessage(msg.channel, "Понг...");
     const latency = Date.now() - start;
     await api("PATCH", `/channels/${msg.channel}/messages/${sent._id}`, {
-      content: `Понг! Задержка: **${latency}ms**`,
+      content: `Понг! Задержка: **${latency}мс**`,
     });
   },
 
@@ -176,59 +196,76 @@ const COMMANDS = {
 
   async kick(msg, args) {
     if (!SERVER_ID) return sendMessage(msg.channel, "SERVER_ID не настроен.");
+    if (!(await isAdmin(SERVER_ID, msg.author))) {
+      return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+    }
     const userId = extractUserId(args[0]);
     if (!userId) return sendMessage(msg.channel, "Укажите пользователя: `!kick @user`");
     try {
       await api("DELETE", `/servers/${SERVER_ID}/members/${userId}`);
       await sendMessage(msg.channel, `<@${userId}> кикнут с сервера.`);
     } catch (e) {
-      await sendMessage(msg.channel, `Ошибка: ${e.message}`);
+      await sendMessage(msg.channel, safeErrorMessage(e));
     }
   },
 
   async ban(msg, args) {
     if (!SERVER_ID) return sendMessage(msg.channel, "SERVER_ID не настроен.");
+    if (!(await isAdmin(SERVER_ID, msg.author))) {
+      return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+    }
     const userId = extractUserId(args[0]);
     if (!userId) return sendMessage(msg.channel, "Укажите пользователя: `!ban @user`");
-    const reason = args.slice(1).join(" ") || "Нарушение правил";
+    const reason = sanitizeText(args.slice(1).join(" "), MAX_REASON_LENGTH) || "Нарушение правил";
     try {
       await api("PUT", `/servers/${SERVER_ID}/bans/${userId}`, { reason });
       await sendMessage(msg.channel, `<@${userId}> забанен. Причина: ${reason}`);
     } catch (e) {
-      await sendMessage(msg.channel, `Ошибка: ${e.message}`);
+      await sendMessage(msg.channel, safeErrorMessage(e));
     }
   },
 
   async unban(msg, args) {
     if (!SERVER_ID) return sendMessage(msg.channel, "SERVER_ID не настроен.");
-    const userId = args[0];
-    if (!userId) return sendMessage(msg.channel, "Укажите ID: `!unban <user_id>`");
+    if (!(await isAdmin(SERVER_ID, msg.author))) {
+      return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+    }
+    const userId = validateId(args[0]);
+    if (!userId) return sendMessage(msg.channel, "Укажите корректный ID: `!unban <user_id>`");
     try {
       await api("DELETE", `/servers/${SERVER_ID}/bans/${userId}`);
-      await sendMessage(msg.channel, `Пользователь ${userId} разбанен.`);
+      await sendMessage(msg.channel, `Пользователь разбанен.`);
     } catch (e) {
-      await sendMessage(msg.channel, `Ошибка: ${e.message}`);
+      await sendMessage(msg.channel, safeErrorMessage(e));
     }
   },
 
   async mute(msg, args) {
     if (!SERVER_ID) return sendMessage(msg.channel, "SERVER_ID не настроен.");
+    if (!(await isAdmin(SERVER_ID, msg.author))) {
+      return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+    }
     const userId = extractUserId(args[0]);
     if (!userId) return sendMessage(msg.channel, "Укажите пользователя: `!mute @user`");
-    const minutes = parseInt(args[1]) || 10;
+    const minutes = Math.max(1, Math.min(parseInt(args[1]) || 10, MAX_MUTE_MINUTES));
     const timeout = new Date(Date.now() + minutes * 60000).toISOString();
     try {
       await api("PATCH", `/servers/${SERVER_ID}/members/${userId}`, { timeout });
       await sendMessage(msg.channel, `<@${userId}> замьючен на ${minutes} мин.`);
     } catch (e) {
-      await sendMessage(msg.channel, `Ошибка: ${e.message}`);
+      await sendMessage(msg.channel, safeErrorMessage(e));
     }
   },
 
   async purge(msg, args) {
-    const count = Math.min(parseInt(args[0]) || 10, 100);
+    if (!SERVER_ID) return sendMessage(msg.channel, "SERVER_ID не настроен.");
+    if (!(await isAdmin(SERVER_ID, msg.author))) {
+      return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+    }
+    const count = Math.max(1, Math.min(parseInt(args[0]) || 10, 100));
     try {
       const messages = await api("GET", `/channels/${msg.channel}/messages?limit=${count}&sort=Latest`);
+      if (!messages || !messages.length) return sendMessage(msg.channel, "Нет сообщений для удаления.");
       const ids = messages.map((m) => m._id);
       for (const id of ids) {
         await api("DELETE", `/channels/${msg.channel}/messages/${id}`);
@@ -238,7 +275,7 @@ const COMMANDS = {
         api("DELETE", `/channels/${msg.channel}/messages/${notice._id}`).catch(() => {});
       }, 3000);
     } catch (e) {
-      await sendMessage(msg.channel, `Ошибка: ${e.message}`);
+      await sendMessage(msg.channel, safeErrorMessage(e));
     }
   },
 
@@ -246,7 +283,7 @@ const COMMANDS = {
     const sub = (args[0] || "").toLowerCase();
 
     if (sub === "start") {
-      const name = args.slice(1).join(" ") || `stream-${Date.now()}`;
+      const name = sanitizeText(args.slice(1).join(" "), MAX_STREAM_NAME) || `stream-${Date.now()}`;
       const roomName = `stream-${msg.author}-${Date.now()}`;
       try {
         const ingress = await ingressClient.createIngress(IngressInput.RTMP_INPUT, {
@@ -270,7 +307,7 @@ const COMMANDS = {
         ].join("\n");
         await sendMessage(msg.channel, text);
       } catch (e) {
-        await sendMessage(msg.channel, `Ошибка создания стрима: ${e.message}`);
+        await sendMessage(msg.channel, `Ошибка создания стрима: ${safeErrorMessage(e)}`);
       }
     } else if (sub === "stop") {
       const stream = activeStreams.get(msg.author);
@@ -280,29 +317,34 @@ const COMMANDS = {
         activeStreams.delete(msg.author);
         await sendMessage(msg.channel, `Стрим "${stream.name}" остановлен.`);
       } catch (e) {
-        await sendMessage(msg.channel, `Ошибка: ${e.message}`);
+        await sendMessage(msg.channel, safeErrorMessage(e));
       }
     } else if (sub === "list") {
       try {
         const ingresses = await ingressClient.listIngress();
         if (!ingresses.length) return sendMessage(msg.channel, "Нет активных стримов.");
         const lines = ingresses.map(
-          (i) => `- **${i.name}** (${i.status?.startedAt ? "в эфире" : "ожидает"}) — комната: ${i.roomName}`
+          (i) => `- **${sanitizeText(i.name, 50)}** (${i.status?.startedAt ? "в эфире" : "ожидает"}) — комната: ${i.roomName}`
         );
         await sendMessage(msg.channel, "**Активные стримы:**\n" + lines.join("\n"));
       } catch (e) {
-        await sendMessage(msg.channel, `Ошибка: ${e.message}`);
+        await sendMessage(msg.channel, safeErrorMessage(e));
       }
     } else if (sub === "record") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
       const roomName = args.slice(1).join(" ");
-      if (!roomName) return sendMessage(msg.channel, "Укажи имя комнаты: `!stream record <room>`");
+      if (!roomName || !VALID_ROOM_NAME.test(roomName)) {
+        return sendMessage(msg.channel, "Укажите имя комнаты (буквы, цифры, дефис, до 64 символов): `!stream record <room>`");
+      }
       try {
         const egress = await egressClient.startRoomCompositeEgress(roomName, {
           file: { fileType: 0, filepath: `/recordings/${roomName}-${Date.now()}.mp4` },
         });
         await sendMessage(msg.channel, `Запись комнаты **${roomName}** начата. ID: \`${egress.egressId}\``);
       } catch (e) {
-        await sendMessage(msg.channel, `Ошибка записи: ${e.message}`);
+        await sendMessage(msg.channel, `Ошибка записи: ${safeErrorMessage(e)}`);
       }
     } else if (sub === "recordings") {
       try {
@@ -313,7 +355,7 @@ const COMMANDS = {
         );
         await sendMessage(msg.channel, "**Записи:**\n" + lines.join("\n"));
       } catch (e) {
-        await sendMessage(msg.channel, `Ошибка: ${e.message}`);
+        await sendMessage(msg.channel, safeErrorMessage(e));
       }
     } else {
       await sendMessage(msg.channel, "Подкоманды: `start`, `stop`, `list`, `record`, `recordings`");
@@ -321,30 +363,36 @@ const COMMANDS = {
   },
 
   async trigger(msg, args) {
-    const channelId = args[0];
-    if (!channelId) return sendMessage(msg.channel, "Укажите ID канала: `!trigger <channel_id>`");
+    if (!(await isAdmin(SERVER_ID, msg.author))) {
+      return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+    }
+    const channelId = validateId(args[0]);
+    if (!channelId) return sendMessage(msg.channel, "Укажите корректный ID канала: `!trigger <channel_id>`");
     try {
       const channel = await api("GET", `/channels/${channelId}`);
       const desc = (channel.description || "") + (channel.description ? "\n" : "") + TRIGGER_MARKER;
       await api("PATCH", `/channels/${channelId}`, { description: desc });
       triggerChannelIds.add(channelId);
-      await sendMessage(msg.channel, `Канал **${channel.name}** теперь триггер для временных голосовых.`);
+      await sendMessage(msg.channel, `Канал **${sanitizeText(channel.name, 50)}** теперь триггер для временных голосовых.`);
     } catch (e) {
-      await sendMessage(msg.channel, `Ошибка: ${e.message}`);
+      await sendMessage(msg.channel, safeErrorMessage(e));
     }
   },
 
   async untrigger(msg, args) {
-    const channelId = args[0];
-    if (!channelId) return sendMessage(msg.channel, "Укажите ID канала: `!untrigger <channel_id>`");
+    if (!(await isAdmin(SERVER_ID, msg.author))) {
+      return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+    }
+    const channelId = validateId(args[0]);
+    if (!channelId) return sendMessage(msg.channel, "Укажите корректный ID канала: `!untrigger <channel_id>`");
     try {
       const channel = await api("GET", `/channels/${channelId}`);
       const desc = (channel.description || "").replace(TRIGGER_MARKER, "").trim();
       await api("PATCH", `/channels/${channelId}`, { description: desc || null });
       triggerChannelIds.delete(channelId);
-      await sendMessage(msg.channel, `Триггер убран с канала **${channel.name}**.`);
+      await sendMessage(msg.channel, `Триггер убран с канала **${sanitizeText(channel.name, 50)}**.`);
     } catch (e) {
-      await sendMessage(msg.channel, `Ошибка: ${e.message}`);
+      await sendMessage(msg.channel, safeErrorMessage(e));
     }
   },
 };

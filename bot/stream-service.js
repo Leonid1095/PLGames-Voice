@@ -1,5 +1,4 @@
 const http = require("http");
-const fs = require("fs");
 const path = require("path");
 const {
   IngressClient,
@@ -9,20 +8,8 @@ const {
   AccessToken,
 } = require("livekit-server-sdk");
 
-// Auto-load .env from project root if env vars not set
-const envPath = path.resolve(__dirname, "..", ".env");
-if (!process.env.LIVEKIT_API_KEY && fs.existsSync(envPath)) {
-  for (const line of fs.readFileSync(envPath, "utf8").split("\n")) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith("#")) continue;
-    const eq = trimmed.indexOf("=");
-    if (eq > 0) {
-      const key = trimmed.slice(0, eq);
-      const val = trimmed.slice(eq + 1);
-      if (!process.env[key]) process.env[key] = val;
-    }
-  }
-}
+// Load .env from project root
+require("dotenv").config({ path: path.resolve(__dirname, "..", ".env") });
 
 const LIVEKIT_URL = process.env.LIVEKIT_URL;
 const LIVEKIT_API_KEY = process.env.LIVEKIT_API_KEY;

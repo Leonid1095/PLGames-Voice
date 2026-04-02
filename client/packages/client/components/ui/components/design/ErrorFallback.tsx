@@ -1,4 +1,5 @@
 import { JSX } from "solid-js";
+import { Trans } from "@lingui-solid/solid/macro";
 import { css } from "styled-system/css";
 
 /**
@@ -14,14 +15,14 @@ export function ErrorFallback(props: {
     <div class={container()} data-testid="error-fallback">
       <span class={icon()}>&#9888;</span>
       <p class={message()}>
-        {props.label ?? "Произошла ошибка при отображении"}
+        {props.label ?? <Trans>Произошла ошибка при отображении</Trans>}
       </p>
       <button
         class={retryButton()}
         onClick={() => props.reset()}
         data-testid="error-retry"
       >
-        Перезагрузить
+        <Trans>Перезагрузить</Trans>
       </button>
     </div>
   );

@@ -3,6 +3,7 @@ import { Show } from "solid-js";
 import { Message } from "stoat.js";
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
+import { useLingui } from "@lingui-solid/solid/macro";
 
 import { MessageContextMenu } from "@revolt/app";
 import { useUser } from "@revolt/client";
@@ -21,6 +22,7 @@ import { startsWithPackPUA } from "@revolt/markdown/emoji/UnicodeEmoji";
 import { CompositionMediaPicker } from "../composition";
 
 export function MessageToolbar(props: { message?: Message }) {
+  const { t } = useLingui();
   const user = useUser();
   const state = useState();
   const { openModal } = useModals();
@@ -44,7 +46,7 @@ export function MessageToolbar(props: { message?: Message }) {
       <Show when={props.message?.channel?.havePermission("SendMessage")}>
         <button
           class={tool()}
-          aria-label="Ответить"
+          aria-label={t`Ответить`}
           onClick={() => state.draft.addReply(props.message!, user()!.id)}
         >
           <Ripple />
@@ -73,7 +75,7 @@ export function MessageToolbar(props: { message?: Message }) {
             <button
               ref={triggerProps.ref}
               class={tool()}
-              aria-label="Реакция"
+              aria-label={t`Реакция`}
               onClick={triggerProps.onClickEmoji}
             >
               <Ripple />
@@ -85,7 +87,7 @@ export function MessageToolbar(props: { message?: Message }) {
       <Show when={props.message?.author?.self}>
         <button
           class={tool()}
-          aria-label="Редактировать"
+          aria-label={t`Редактировать`}
           onClick={() => state.draft.setEditingMessage(props.message)}
         >
           <Ripple />
@@ -98,14 +100,14 @@ export function MessageToolbar(props: { message?: Message }) {
           props.message?.channel?.havePermission("ManageMessages")
         }
       >
-        <button class={tool()} aria-label="Удалить" onClick={deleteMessage}>
+        <button class={tool()} aria-label={t`Удалить`} onClick={deleteMessage}>
           <Ripple />
           <MdDelete {...iconSize(20)} />
         </button>
       </Show>
       <button
         class={tool()}
-        aria-label="Ещё"
+        aria-label={t`Ещё`}
         use:floating={{
           contextMenu: () => <MessageContextMenu message={props.message!} />,
           contextMenuHandler: "click",

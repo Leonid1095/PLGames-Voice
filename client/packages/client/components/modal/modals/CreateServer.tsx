@@ -20,19 +20,20 @@ interface ServerTemplate {
   categories: { title: string; channels: { name: string; type: "Text" | "VoiceChannel" }[] }[];
 }
 
-const TEMPLATES: ServerTemplate[] = [
+function getTemplates(t: any): ServerTemplate[] {
+  return [
   {
     id: "empty",
     icon: "add_circle",
-    name: "Empty",
-    description: "Start from scratch",
+    name: t`Пустой`,
+    description: t`Начать с нуля`,
     categories: [],
   },
   {
     id: "gaming",
     icon: "sports_esports",
-    name: "Gaming",
-    description: "For gaming communities",
+    name: t`Игровой`,
+    description: t`Для игровых сообществ`,
     categories: [
       {
         title: "💬 Общение",
@@ -63,8 +64,8 @@ const TEMPLATES: ServerTemplate[] = [
   {
     id: "community",
     icon: "groups",
-    name: "Community",
-    description: "For communities and clubs",
+    name: t`Сообщество`,
+    description: t`Для сообществ и клубов`,
     categories: [
       {
         title: "📢 Информация",
@@ -93,8 +94,8 @@ const TEMPLATES: ServerTemplate[] = [
   {
     id: "study",
     icon: "school",
-    name: "Study",
-    description: "For study groups",
+    name: t`Учёба`,
+    description: t`Для учебных групп`,
     categories: [
       {
         title: "📚 Учёба",
@@ -124,8 +125,8 @@ const TEMPLATES: ServerTemplate[] = [
   {
     id: "friends",
     icon: "favorite",
-    name: "Friends",
-    description: "For a group of friends",
+    name: t`Друзья`,
+    description: t`Для компании друзей`,
     categories: [
       {
         title: "💬 Чат",
@@ -144,6 +145,7 @@ const TEMPLATES: ServerTemplate[] = [
     ],
   },
 ];
+}
 
 /**
  * Modal to create a new server with template selection
@@ -156,6 +158,7 @@ export function CreateServerModal(
   const { showError } = useModals();
 
   const [selectedTemplate, setSelectedTemplate] = createSignal("empty");
+  const TEMPLATES = getTemplates(t);
 
   const group = createFormGroup({
     name: createFormControl("", { required: true }),
@@ -168,7 +171,7 @@ export function CreateServerModal(
       });
 
       // Apply template
-      const template = TEMPLATES.find((t) => t.id === selectedTemplate());
+      const template = TEMPLATES.find((tmpl) => tmpl.id === selectedTemplate());
       if (template && template.categories.length > 0) {
         const categories: { id: string; title: string; channels: string[] }[] = [];
 

@@ -137,7 +137,7 @@ export function Reactions(props: Props) {
             <button
               ref={triggerProps.ref}
               onClick={triggerProps.onClickEmoji}
-              aria-label="Добавить реакцию"
+              aria-label={t`Добавить реакцию`}
               style={{ border: "none", background: "transparent", padding: 0 }}
             >
               <AddReaction class="add">
