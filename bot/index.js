@@ -228,6 +228,24 @@ const COMMANDS = {
       `\`${PREFIX}starboard threshold <N>\` — порог (по умолчанию 3)`,
       `\`${PREFIX}starboard emoji <эмодзи>\` — эмодзи (по умолчанию ⭐)`,
       `\`${PREFIX}starboard off\` / \`on\` — вкл/выкл`,
+      "",
+      "**Розыгрыши:**",
+      `\`${PREFIX}giveaway start <время> [N] <приз>\` — создать (1h, 2d)`,
+      `\`${PREFIX}giveaway end <msg_id>\` — завершить досрочно`,
+      `\`${PREFIX}giveaway reroll <msg_id>\` — перевыбрать`,
+      `\`${PREFIX}giveaway list\` — активные розыгрыши`,
+      "",
+      "**Опросы:**",
+      `\`${PREFIX}poll "Вопрос?" "Вариант 1" "Вариант 2"\` — создать опрос`,
+      "",
+      "**Автомодерация:**",
+      `\`${PREFIX}automod\` — текущие настройки`,
+      `\`${PREFIX}automod spam <N> <сек>\` — лимит спама`,
+      `\`${PREFIX}automod spamaction <mute|kick|ban> [мин]\` — действие`,
+      `\`${PREFIX}automod addword <слово>\` / \`removeword\` / \`words\``,
+      `\`${PREFIX}automod duplicates <on|off|N>\` — антидубликаты`,
+      `\`${PREFIX}automod log <channel_id>\` — канал логов`,
+      `\`${PREFIX}automod on\` / \`off\` — вкл/выкл`,
     ].join("\n");
     await sendMessage(msg.channel, text);
   },
@@ -599,7 +617,385 @@ const COMMANDS = {
     }
     return sendMessage(msg.channel, "Подкоманды: `channel`, `threshold`, `emoji`, `on`, `off`");
   },
+
+  // --- Giveaways ---
+  async giveaway(msg, args) {
+    if (!(await isAdmin(SERVER_ID, msg.author))) {
+      return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+    }
+    const sub = (args[0] || "").toLowerCase();
+
+    if (sub === "start") {
+      // Parse: !giveaway start <duration> <winners> <prize...>
+      const duration = args[1];
+      if (!duration) return sendMessage(msg.channel, "Формат: `!giveaway start <время> [победителей] <приз>`\nВремя: 1m, 1h, 1d");
+
+      // Parse duration
+      const match = duration.match(/^(\d+)(m|h|d)$/);
+      if (!match) return sendMessage(msg.channel, "Формат времени: `10m`, `1h`, `2d`");
+      const amount = parseInt(match[1]);
+      const unit = match[2];
+      const ms = amount * (unit === "m" ? 60000 : unit === "h" ? 3600000 : 86400000);
+      if (ms > 7 * 86400000) return sendMessage(msg.channel, "Максимум 7 дней.");
+
+      let winners = 1;
+      let prizeStart = 2;
+      if (args[2] && /^\d+$/.test(args[2])) {
+        winners = Math.max(1, Math.min(parseInt(args[2]), 20));
+        prizeStart = 3;
+      }
+      const prize = args.slice(prizeStart).join(" ");
+      if (!prize) return sendMessage(msg.channel, "Укажите приз.");
+
+      const endsAt = Date.now() + ms;
+      const endDate = new Date(endsAt);
+      const timeStr = unit === "m" ? `${amount} мин` : unit === "h" ? `${amount} ч` : `${amount} д`;
+
+      const text = [
+        "🎉 **РОЗЫГРЫШ** 🎉",
+        "",
+        `Приз: **${sanitizeText(prize, 100)}**`,
+        `Победителей: **${winners}**`,
+        `Длительность: **${timeStr}**`,
+        `Завершится: **${endDate.toLocaleString("ru-RU")}**`,
+        "",
+        `Нажми 🎉 чтобы участвовать!`,
+      ].join("\n");
+
+      try {
+        const sent = await sendMessage(msg.channel, text);
+        // React with 🎉
+        await api("PUT", `/channels/${msg.channel}/messages/${sent._id}/reactions/${encodeURIComponent("🎉")}`);
+
+        // Store giveaway
+        if (!settings.giveaways) settings.giveaways = [];
+        settings.giveaways.push({
+          messageId: sent._id,
+          channelId: msg.channel,
+          prize,
+          winners,
+          endsAt,
+          author: msg.author,
+          ended: false,
+        });
+        saveSettings(settings);
+
+        // Schedule end
+        setTimeout(() => endGiveaway(sent._id), ms);
+        console.log(`[GIVEAWAY] Started: "${prize}" for ${timeStr}, ${winners} winners`);
+      } catch (e) {
+        await sendMessage(msg.channel, safeErrorMessage(e));
+      }
+
+    } else if (sub === "end") {
+      const msgId = args[1];
+      if (!msgId) return sendMessage(msg.channel, "Укажите ID сообщения: `!giveaway end <message_id>`");
+      await endGiveaway(msgId);
+
+    } else if (sub === "reroll") {
+      const msgId = args[1];
+      if (!msgId) return sendMessage(msg.channel, "Укажите ID сообщения: `!giveaway reroll <message_id>`");
+      await endGiveaway(msgId, true);
+
+    } else if (sub === "list") {
+      const active = (settings.giveaways || []).filter((g) => !g.ended);
+      if (!active.length) return sendMessage(msg.channel, "Нет активных розыгрышей.");
+      const lines = active.map((g) => `- **${g.prize}** (${g.winners} побед.) — до ${new Date(g.endsAt).toLocaleString("ru-RU")}`);
+      return sendMessage(msg.channel, "**Активные розыгрыши:**\n" + lines.join("\n"));
+
+    } else {
+      return sendMessage(msg.channel, "Подкоманды: `start <время> [N] <приз>`, `end <msg_id>`, `reroll <msg_id>`, `list`");
+    }
+  },
+
+  // --- Polls ---
+  async poll(msg, args) {
+    // Parse: !poll "вопрос" "вариант1" "вариант2" ...
+    const parts = [];
+    const raw = args.join(" ");
+    const regex = /"([^"]+)"/g;
+    let m;
+    while ((m = regex.exec(raw)) !== null) parts.push(m[1]);
+
+    if (parts.length < 3) {
+      return sendMessage(msg.channel, 'Формат: `!poll "Вопрос?" "Вариант 1" "Вариант 2" ...`\nМинимум 2 варианта.');
+    }
+
+    const question = parts[0];
+    const options = parts.slice(1, 11); // max 10 options
+    const emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
+
+    const lines = [
+      `📊 **${sanitizeText(question, 200)}**`,
+      "",
+      ...options.map((opt, i) => `${emojis[i]} ${sanitizeText(opt, 100)}`),
+      "",
+      `_Голосуйте реакциями ниже!_`,
+    ];
+
+    try {
+      const sent = await sendMessage(msg.channel, lines.join("\n"));
+      // Add reaction emojis
+      for (let i = 0; i < options.length; i++) {
+        await api("PUT", `/channels/${msg.channel}/messages/${sent._id}/reactions/${encodeURIComponent(emojis[i])}`);
+      }
+      console.log(`[POLL] Created: "${question}" with ${options.length} options`);
+    } catch (e) {
+      await sendMessage(msg.channel, safeErrorMessage(e));
+    }
+  },
+
+  // --- Automod ---
+  async automod(msg, args) {
+    if (!(await isAdmin(SERVER_ID, msg.author))) {
+      return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+    }
+    const sub = (args[0] || "").toLowerCase();
+
+    if (!settings.automod) {
+      settings.automod = {
+        enabled: false,
+        spamLimit: 5,        // messages
+        spamWindow: 5,       // seconds
+        spamAction: "mute",  // mute|kick|ban
+        spamMuteDuration: 10, // minutes
+        bannedWords: [],
+        bannedWordsAction: "delete", // delete|mute|kick
+        antiDuplicates: false,
+        maxDuplicates: 3,
+        logChannel: "",
+      };
+      saveSettings(settings);
+    }
+    const am = settings.automod;
+
+    if (!sub) {
+      const lines = [
+        `**Настройки автомодерации:**`,
+        `Статус: ${am.enabled ? "✅ включено" : "❌ выключено"}`,
+        `Спам: ${am.spamLimit} сообщений за ${am.spamWindow} сек → ${am.spamAction}`,
+        `Мьют за спам: ${am.spamMuteDuration} мин`,
+        `Стоп-слова: ${am.bannedWords.length} шт.`,
+        `Действие: ${am.bannedWordsAction}`,
+        `Антидубликаты: ${am.antiDuplicates ? "✅" : "❌"} (${am.maxDuplicates} подряд)`,
+        `Лог-канал: ${am.logChannel ? `<#${am.logChannel}>` : "не задан"}`,
+      ];
+      return sendMessage(msg.channel, lines.join("\n"));
+    }
+
+    if (sub === "on") { am.enabled = true; saveSettings(settings); return sendMessage(msg.channel, "✅ Автомодерация включена."); }
+    if (sub === "off") { am.enabled = false; saveSettings(settings); return sendMessage(msg.channel, "❌ Автомодерация выключена."); }
+
+    if (sub === "spam") {
+      const limit = parseInt(args[1]);
+      const window = parseInt(args[2]);
+      if (!limit || !window) return sendMessage(msg.channel, "Формат: `!automod spam <сообщений> <секунд>` (пример: `!automod spam 5 5`)");
+      am.spamLimit = Math.max(2, Math.min(limit, 30));
+      am.spamWindow = Math.max(2, Math.min(window, 60));
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Спам: ${am.spamLimit} сообщений за ${am.spamWindow} сек.`);
+    }
+    if (sub === "spamaction") {
+      const action = (args[1] || "").toLowerCase();
+      if (!["mute", "kick", "ban"].includes(action)) return sendMessage(msg.channel, "Действие: `mute`, `kick`, `ban`");
+      am.spamAction = action;
+      if (args[2]) am.spamMuteDuration = Math.max(1, Math.min(parseInt(args[2]) || 10, 10080));
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Действие за спам: ${action}${action === "mute" ? ` (${am.spamMuteDuration} мин)` : ""}`);
+    }
+    if (sub === "addword") {
+      const word = args.slice(1).join(" ").toLowerCase();
+      if (!word) return sendMessage(msg.channel, "Укажите слово: `!automod addword <слово>`");
+      if (!am.bannedWords.includes(word)) am.bannedWords.push(word);
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Стоп-слово добавлено. Всего: ${am.bannedWords.length}`);
+    }
+    if (sub === "removeword") {
+      const word = args.slice(1).join(" ").toLowerCase();
+      am.bannedWords = am.bannedWords.filter((w) => w !== word);
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Стоп-слово удалено. Всего: ${am.bannedWords.length}`);
+    }
+    if (sub === "words") {
+      if (!am.bannedWords.length) return sendMessage(msg.channel, "Список стоп-слов пуст.");
+      return sendMessage(msg.channel, `**Стоп-слова (${am.bannedWords.length}):**\n\`${am.bannedWords.join("`, `")}\``);
+    }
+    if (sub === "duplicates") {
+      const val = (args[1] || "").toLowerCase();
+      if (val === "on") { am.antiDuplicates = true; }
+      else if (val === "off") { am.antiDuplicates = false; }
+      else if (/^\d+$/.test(val)) { am.antiDuplicates = true; am.maxDuplicates = Math.max(2, Math.min(parseInt(val), 10)); }
+      else return sendMessage(msg.channel, "Формат: `!automod duplicates on|off|<число>`");
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Антидубликаты: ${am.antiDuplicates ? `✅ (${am.maxDuplicates} подряд)` : "❌"}`);
+    }
+    if (sub === "log") {
+      const id = validateId(args[1]);
+      if (!id) return sendMessage(msg.channel, "Укажите ID канала: `!automod log <channel_id>`");
+      am.logChannel = id;
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Лог-канал: <#${id}>`);
+    }
+    return sendMessage(msg.channel, "Подкоманды: `spam`, `spamaction`, `addword`, `removeword`, `words`, `duplicates`, `log`, `on`, `off`");
+  },
 };
+
+// --- Giveaway end logic ---
+async function endGiveaway(messageId, reroll = false) {
+  const giveaways = settings.giveaways || [];
+  const giveaway = giveaways.find((g) => g.messageId === messageId);
+  if (!giveaway) return;
+
+  try {
+    // Fetch message to get reactions
+    const msg = await api("GET", `/channels/${giveaway.channelId}/messages/${messageId}`);
+    if (!msg) return;
+
+    // Get users who reacted with 🎉
+    let participants = [];
+    if (msg.reactions) {
+      for (const [emoji, users] of Object.entries(msg.reactions)) {
+        if (emoji === "🎉") {
+          participants = (Array.isArray(users) ? users : []).filter((id) => id !== botUserId);
+          break;
+        }
+      }
+    }
+
+    if (!participants.length) {
+      await sendMessage(giveaway.channelId, `🎉 Розыгрыш **${giveaway.prize}** завершён — никто не участвовал!`);
+    } else {
+      // Pick random winners
+      const shuffled = participants.sort(() => Math.random() - 0.5);
+      const winners = shuffled.slice(0, giveaway.winners);
+      const winnerMentions = winners.map((id) => `<@${id}>`).join(", ");
+
+      const label = reroll ? "Перевыбор" : "Розыгрыш завершён";
+      await sendMessage(giveaway.channelId, [
+        `🎉 **${label}!**`,
+        `Приз: **${giveaway.prize}**`,
+        `Победитель${winners.length > 1 ? "и" : ""}: ${winnerMentions}`,
+        `Участников: ${participants.length}`,
+      ].join("\n"));
+    }
+
+    giveaway.ended = true;
+    saveSettings(settings);
+  } catch (e) {
+    console.error("[GIVEAWAY] End error:", e.message);
+  }
+}
+
+// --- Automod message handler ---
+const spamTracker = new Map(); // userId -> { messages: timestamp[], lastContent: string, duplicateCount: number }
+
+async function automodCheck(data) {
+  const am = settings.automod;
+  if (!am || !am.enabled) return;
+  if (data.author === botUserId) return;
+
+  const userId = data.author;
+  const content = (data.content || "").toLowerCase();
+  const channelId = data.channel;
+
+  // --- Banned words check ---
+  if (am.bannedWords.length) {
+    for (const word of am.bannedWords) {
+      if (content.includes(word)) {
+        try {
+          await api("DELETE", `/channels/${channelId}/messages/${data._id}`);
+          if (am.logChannel) {
+            await sendMessage(am.logChannel, `🚫 Стоп-слово от <@${userId}>: \`${sanitizeText(word, 30)}\` в <#${channelId}>`);
+          }
+          if (am.bannedWordsAction === "mute" && SERVER_ID) {
+            const timeout = new Date(Date.now() + am.spamMuteDuration * 60000).toISOString();
+            await api("PATCH", `/servers/${SERVER_ID}/members/${userId}`, { timeout });
+          }
+        } catch (e) {
+          console.error("[AUTOMOD] Banned word action error:", e.message);
+        }
+        return;
+      }
+    }
+  }
+
+  // --- Spam check ---
+  const now = Date.now();
+  if (!spamTracker.has(userId)) {
+    spamTracker.set(userId, { messages: [], lastContent: "", duplicateCount: 0 });
+  }
+  const tracker = spamTracker.get(userId);
+
+  // Clean old timestamps
+  tracker.messages = tracker.messages.filter((ts) => now - ts < am.spamWindow * 1000);
+  tracker.messages.push(now);
+
+  if (tracker.messages.length >= am.spamLimit) {
+    try {
+      if (am.logChannel) {
+        await sendMessage(am.logChannel, `⚠️ Спам от <@${userId}> в <#${channelId}> (${tracker.messages.length} сообщений за ${am.spamWindow} сек) → ${am.spamAction}`);
+      }
+      if (am.spamAction === "mute" && SERVER_ID) {
+        const timeout = new Date(Date.now() + am.spamMuteDuration * 60000).toISOString();
+        await api("PATCH", `/servers/${SERVER_ID}/members/${userId}`, { timeout });
+      } else if (am.spamAction === "kick" && SERVER_ID) {
+        await api("DELETE", `/servers/${SERVER_ID}/members/${userId}`);
+      } else if (am.spamAction === "ban" && SERVER_ID) {
+        await api("PUT", `/servers/${SERVER_ID}/bans/${userId}`, { reason: "Автомодерация: спам" });
+      }
+      tracker.messages = [];
+    } catch (e) {
+      console.error("[AUTOMOD] Spam action error:", e.message);
+    }
+    return;
+  }
+
+  // --- Duplicate check ---
+  if (am.antiDuplicates && content) {
+    if (content === tracker.lastContent) {
+      tracker.duplicateCount++;
+      if (tracker.duplicateCount >= am.maxDuplicates) {
+        try {
+          await api("DELETE", `/channels/${channelId}/messages/${data._id}`);
+          if (am.logChannel) {
+            await sendMessage(am.logChannel, `🔁 Дубликат от <@${userId}> в <#${channelId}> (${tracker.duplicateCount}x) — удалено`);
+          }
+        } catch (e) {
+          console.error("[AUTOMOD] Duplicate action error:", e.message);
+        }
+        return;
+      }
+    } else {
+      tracker.lastContent = content;
+      tracker.duplicateCount = 1;
+    }
+  }
+}
+
+// Cleanup spam tracker periodically
+setInterval(() => {
+  const now = Date.now();
+  for (const [userId, tracker] of spamTracker) {
+    if (!tracker.messages.length || now - tracker.messages[tracker.messages.length - 1] > 60000) {
+      spamTracker.delete(userId);
+    }
+  }
+}, 30000);
+
+// Restore active giveaway timers on startup
+function restoreGiveawayTimers() {
+  const giveaways = settings.giveaways || [];
+  for (const g of giveaways) {
+    if (g.ended) continue;
+    const remaining = g.endsAt - Date.now();
+    if (remaining <= 0) {
+      endGiveaway(g.messageId);
+    } else {
+      setTimeout(() => endGiveaway(g.messageId), remaining);
+      console.log(`[GIVEAWAY] Restored timer for "${g.prize}" (${Math.round(remaining / 60000)} min left)`);
+    }
+  }
+}
 
 function extractUserId(mention) {
   if (!mention) return null;
@@ -611,6 +1007,10 @@ function extractUserId(mention) {
 
 function handleMessage(data) {
   if (data.author === botUserId) return;
+
+  // Automod check (before command processing)
+  automodCheck(data).catch((e) => console.error("[AUTOMOD ERROR]", e.message));
+
   const content = data.content || "";
   if (!content.startsWith(PREFIX)) return;
 
@@ -857,4 +1257,5 @@ function connect() {
 
 // --- Start ---
 console.log("[BOT] PLG Voice Admin Bot starting...");
+restoreGiveawayTimers();
 connect();
