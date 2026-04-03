@@ -1,6 +1,6 @@
 import { IUpdateInfo, updateElectronApp } from "update-electron-app";
 
-import { BrowserWindow, Notification, app, ipcMain, session, shell } from "electron";
+import { BrowserWindow, Notification, app, clipboard, desktopCapturer, globalShortcut, ipcMain, nativeImage, session, shell } from "electron";
 import started from "electron-squirrel-startup";
 
 import { autoLaunch } from "./native/autoLaunch";
@@ -90,10 +90,69 @@ if (acquiredLock) {
       startGameDetector();
     }
 
+    // Screenshot hotkey (F12 — like Steam)
+    globalShortcut.register("F12", async () => {
+      try {
+        const sources = await desktopCapturer.getSources({
+          types: ["screen"],
+          thumbnailSize: { width: 1920, height: 1080 },
+        });
+        if (!sources.length) return;
+
+        const screenshot = sources[0].thumbnail;
+        const pngBuffer = screenshot.toPNG();
+
+        // Copy to clipboard
+        clipboard.writeImage(screenshot);
+
+        // Save to temp and notify renderer
+        const fs = require("fs");
+        const path = require("path");
+        const tmpDir = path.join(app.getPath("temp"), "plg-screenshots");
+        if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
+        const filename = `screenshot-${Date.now()}.png`;
+        const filepath = path.join(tmpDir, filename);
+        fs.writeFileSync(filepath, pngBuffer);
+
+        // Notify renderer
+        mainWindow.webContents.send("screenshot-taken", {
+          path: filepath,
+          filename,
+          size: pngBuffer.length,
+        });
+
+        new Notification({
+          title: "Скриншот сохранён",
+          body: "Скопировано в буфер обмена. Нажми Ctrl+V чтобы вставить.",
+        }).show();
+
+        console.log(`[SCREENSHOT] Saved: ${filepath} (${(pngBuffer.length / 1024).toFixed(0)} KB)`);
+      } catch (e) {
+        console.error("[SCREENSHOT] Error:", e);
+      }
+    });
+
+    // IPC: get screenshot for upload
+    ipcMain.handle("get-last-screenshot", () => {
+      const fs = require("fs");
+      const path = require("path");
+      const tmpDir = path.join(app.getPath("temp"), "plg-screenshots");
+      if (!fs.existsSync(tmpDir)) return null;
+      const files = fs.readdirSync(tmpDir).filter((f: string) => f.endsWith(".png")).sort().reverse();
+      if (!files.length) return null;
+      const filepath = path.join(tmpDir, files[0]);
+      return { path: filepath, filename: files[0], data: fs.readFileSync(filepath).toString("base64") };
+    });
+
     // Windows specific fix for notifications
     if (process.platform === "win32") {
       app.setAppUserModelId("com.plgvoice.notifications");
     }
+  });
+
+  // Unregister shortcuts on quit
+  app.on("will-quit", () => {
+    globalShortcut.unregisterAll();
   });
 
   // focus the window if we try to launch again

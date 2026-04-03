@@ -70,6 +70,12 @@ if (!settings.levels) settings.levels = {
   roleRewards: [], // { level, roleId }
   users: {}, // { [userId]: { xp, level, lastXpTime } }
 };
+if (!settings.auditLog) settings.auditLog = {
+  enabled: false,
+  channel: "",
+};
+if (!settings.events) settings.events = [];
+// Each: { id, title, description, date, channelId, author, rsvp: { yes: [], maybe: [], no: [] }, reminded: false }
 saveSettings(settings);
 
 if (!BOT_TOKEN || !API_URL || !WS_URL) {
@@ -266,6 +272,15 @@ const COMMANDS = {
       `\`${PREFIX}level [@user]\` — посмотреть уровень`,
       `\`${PREFIX}leaderboard\` — таблица лидеров`,
       `\`${PREFIX}xp\` — настройки (on/off/amount/cooldown/notify/reward)`,
+      "",
+      "**Аудит-лог:**",
+      `\`${PREFIX}audit\` — настройки`,
+      `\`${PREFIX}audit channel <id>\` / \`on\` / \`off\``,
+      "",
+      "**Календарь событий:**",
+      `\`${PREFIX}event create "Название" ГГГГ-ММ-ДД ЧЧ:ММ [описание]\``,
+      `\`${PREFIX}event list\` — предстоящие`,
+      `\`${PREFIX}event cancel <N>\` — отменить`,
     ].join("\n");
     await sendMessage(msg.channel, text);
   },
@@ -1022,6 +1037,127 @@ const COMMANDS = {
     }
     return sendMessage(msg.channel, "Подкоманды: `on`, `off`, `amount`, `cooldown`, `notify`, `reward <ур> <role_id>`, `rewards`");
   },
+
+  // --- Audit Log settings ---
+  async audit(msg, args) {
+    if (!(await isAdmin(SERVER_ID, msg.author))) {
+      return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+    }
+    const al = settings.auditLog;
+    const sub = (args[0] || "").toLowerCase();
+
+    if (!sub) {
+      return sendMessage(msg.channel, [
+        `**Аудит-лог:**`,
+        `Статус: ${al.enabled ? "✅ включено" : "❌ выключено"}`,
+        `Канал: ${al.channel ? `<#${al.channel}>` : "не задан"}`,
+      ].join("\n"));
+    }
+    if (sub === "on") { al.enabled = true; saveSettings(settings); return sendMessage(msg.channel, "✅ Аудит-лог включён."); }
+    if (sub === "off") { al.enabled = false; saveSettings(settings); return sendMessage(msg.channel, "❌ Аудит-лог выключен."); }
+    if (sub === "channel") {
+      const id = validateId(args[1]);
+      if (!id) return sendMessage(msg.channel, "Укажите ID канала.");
+      al.channel = id;
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Канал аудит-лога: <#${id}>`);
+    }
+    return sendMessage(msg.channel, "Подкоманды: `on`, `off`, `channel <id>`");
+  },
+
+  // --- Events / Calendar ---
+  async event(msg, args) {
+    const sub = (args[0] || "").toLowerCase();
+
+    if (sub === "create") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      // !event create "Название" 2026-04-05 18:00 [описание]
+      const raw = args.slice(1).join(" ");
+      const titleMatch = raw.match(/"([^"]+)"/);
+      if (!titleMatch) return sendMessage(msg.channel, 'Формат: `!event create "Название" 2026-04-05 18:00 [описание]`');
+
+      const title = titleMatch[1];
+      const afterTitle = raw.slice(raw.indexOf(titleMatch[0]) + titleMatch[0].length).trim();
+      const dateParts = afterTitle.match(/^(\d{4}-\d{2}-\d{2})\s+(\d{2}:\d{2})/);
+      if (!dateParts) return sendMessage(msg.channel, 'Укажите дату и время: `2026-04-05 18:00`');
+
+      const dateStr = `${dateParts[1]}T${dateParts[2]}:00`;
+      const date = new Date(dateStr);
+      if (isNaN(date.getTime())) return sendMessage(msg.channel, "Неверный формат даты.");
+
+      const description = afterTitle.slice(dateParts[0].length).trim() || "";
+      const eventId = `evt-${Date.now()}`;
+
+      const evt = {
+        id: eventId,
+        title,
+        description,
+        date: dateStr,
+        channelId: msg.channel,
+        author: msg.author,
+        rsvp: { yes: [], maybe: [], no: [] },
+        reminded: false,
+      };
+      settings.events.push(evt);
+      saveSettings(settings);
+
+      const text = [
+        `📅 **Событие: ${sanitizeText(title, 100)}**`,
+        description ? `> ${sanitizeText(description, 200)}` : "",
+        "",
+        `🕐 **${date.toLocaleString("ru-RU", { weekday: "long", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" })}**`,
+        `Создал: <@${msg.author}>`,
+        "",
+        `✅ Приду — нажми ✅`,
+        `🤔 Может быть — нажми 🤔`,
+        `❌ Не приду — нажми ❌`,
+      ].filter(Boolean).join("\n");
+
+      try {
+        const sent = await sendMessage(msg.channel, text);
+        evt.messageId = sent._id;
+        saveSettings(settings);
+        // Add RSVP reactions
+        for (const emoji of ["✅", "🤔", "❌"]) {
+          await api("PUT", `/channels/${msg.channel}/messages/${sent._id}/reactions/${encodeURIComponent(emoji)}`);
+        }
+        auditLog("📅", `Событие **${title}** создано <@${msg.author}>`);
+      } catch (e) {
+        await sendMessage(msg.channel, safeErrorMessage(e));
+      }
+
+    } else if (sub === "list") {
+      const now = Date.now();
+      const upcoming = settings.events.filter((e) => new Date(e.date).getTime() > now);
+      if (!upcoming.length) return sendMessage(msg.channel, "Нет предстоящих событий.");
+      const lines = upcoming.map((e) => {
+        const d = new Date(e.date);
+        return `- **${e.title}** — ${d.toLocaleString("ru-RU", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })} (✅ ${e.rsvp.yes.length} | 🤔 ${e.rsvp.maybe.length})`;
+      });
+      return sendMessage(msg.channel, `**📅 Предстоящие события:**\n${lines.join("\n")}`);
+
+    } else if (sub === "cancel") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      const idx = parseInt(args[1]) - 1;
+      const now = Date.now();
+      const upcoming = settings.events.filter((e) => new Date(e.date).getTime() > now);
+      if (isNaN(idx) || idx < 0 || idx >= upcoming.length) {
+        return sendMessage(msg.channel, "Укажите номер из `!event list`");
+      }
+      const cancelled = upcoming[idx];
+      settings.events = settings.events.filter((e) => e.id !== cancelled.id);
+      saveSettings(settings);
+      await sendMessage(msg.channel, `❌ Событие **${cancelled.title}** отменено.`);
+      auditLog("📅", `Событие **${cancelled.title}** отменено <@${msg.author}>`);
+
+    } else {
+      return sendMessage(msg.channel, "Подкоманды: `create \"Название\" ГГГГ-ММ-ДД ЧЧ:ММ [описание]`, `list`, `cancel <N>`");
+    }
+  },
 };
 
 // --- XP processing on messages ---
@@ -1078,6 +1214,40 @@ async function processXp(data) {
   // Save every 10 messages (reduce disk I/O)
   if (Math.random() < 0.1) saveSettings(settings);
 }
+
+// --- Audit log ---
+function auditLog(icon, text) {
+  const al = settings.auditLog;
+  if (!al.enabled || !al.channel) return;
+  const time = new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+  sendMessage(al.channel, `${icon} \`${time}\` ${text}`).catch(() => {});
+}
+
+// --- Event reminders check ---
+function checkEventReminders() {
+  const now = Date.now();
+  for (const evt of settings.events) {
+    if (evt.reminded) continue;
+    const evtTime = new Date(evt.date).getTime();
+    const diff = evtTime - now;
+    // Remind 15 minutes before
+    if (diff > 0 && diff <= 15 * 60000) {
+      evt.reminded = true;
+      const rsvpYes = evt.rsvp.yes.map((id) => `<@${id}>`).join(", ") || "никто";
+      sendMessage(evt.channelId, [
+        `⏰ **Напоминание: ${evt.title}**`,
+        `Начало через **15 минут**!`,
+        `Участники: ${rsvpYes}`,
+      ].join("\n")).catch(() => {});
+      saveSettings(settings);
+    }
+    // Event passed — clean up
+    if (diff < -3600000) {
+      evt.reminded = true;
+    }
+  }
+}
+setInterval(checkEventReminders, 60000);
 
 // --- Giveaway end logic ---
 async function endGiveaway(messageId, reroll = false) {
@@ -1380,6 +1550,20 @@ async function handleReaction(data) {
     }
   }
 
+  // --- Event RSVP ---
+  if (userId && userId !== botUserId) {
+    const evtMsg = settings.events.find((e) => e.messageId === msgId);
+    if (evtMsg) {
+      evtMsg.rsvp.yes = evtMsg.rsvp.yes.filter((id) => id !== userId);
+      evtMsg.rsvp.maybe = evtMsg.rsvp.maybe.filter((id) => id !== userId);
+      evtMsg.rsvp.no = evtMsg.rsvp.no.filter((id) => id !== userId);
+      if (emoji === "✅") evtMsg.rsvp.yes.push(userId);
+      else if (emoji === "🤔") evtMsg.rsvp.maybe.push(userId);
+      else if (emoji === "❌") evtMsg.rsvp.no.push(userId);
+      saveSettings(settings);
+    }
+  }
+
   // --- Starboard ---
   const sb = settings.starboard;
   if (!sb.enabled || !sb.channel) return;
@@ -1478,12 +1662,30 @@ function connect() {
         handleReaction(event);
         break;
       case "ServerMemberJoin":
-        if (SERVER_ID && event.id === SERVER_ID) handleMemberJoin(event);
+        if (SERVER_ID && event.id === SERVER_ID) {
+          handleMemberJoin(event);
+          auditLog("📥", `<@${event.member?.id?.user || event.user}> присоединился к серверу`);
+        }
         break;
       case "ServerMemberLeave":
-        if (SERVER_ID && event.id === SERVER_ID) handleMemberLeave(event);
+        if (SERVER_ID && event.id === SERVER_ID) {
+          handleMemberLeave(event);
+          auditLog("📤", `<@${event.user}> покинул сервер (${event.reason || "вышел"})`);
+        }
+        break;
+      case "MessageUpdate":
+        if (event.data?.content !== undefined) {
+          auditLog("✏️", `Сообщение отредактировано <@${event.data?.author || "?"}> в <#${event.channel}>`);
+        }
+        break;
+      case "MessageDelete":
+        auditLog("🗑️", `Сообщение удалено в <#${event.channel}> (ID: \`${event.id}\`)`);
+        break;
+      case "BulkMessageDelete":
+        auditLog("🗑️", `**${event.ids?.length || "?"}** сообщений удалено в <#${event.channel}>`);
         break;
       case "ChannelCreate":
+        auditLog("➕", `Канал создан: **${event.name || "?"}** (<#${event._id || event.id}>)`);
         if (isTriggerChannel(event)) {
           triggerChannelIds.add(event._id || event.id);
           console.log(`[TEMP] New trigger channel created: ${event.name}`);
@@ -1495,11 +1697,22 @@ function connect() {
           console.log(`[TEMP] New temp channel created: ${event.name}`);
         }
         break;
+      case "ChannelUpdate":
+        auditLog("📝", `Канал обновлён: <#${event.id}>`);
+        break;
       case "ChannelDelete":
+        auditLog("➖", `Канал удалён: \`${event.id}\``);
         triggerChannelIds.delete(event.id);
         tempChannels.delete(event.id);
         break;
+      case "ServerRoleUpdate":
+        auditLog("🏷️", `Роль обновлена: \`${event.role_id || event.id}\``);
+        break;
+      case "VoiceChannelJoin":
+        auditLog("🎤", `<@${event.user || event.id}> зашёл в голосовой`);
+        break;
       case "VoiceChannelLeave": {
+        auditLog("🔇", `<@${event.user || event.id}> вышел из голосового`);
         const chId = event.id || event.channel;
         if (tempChannels.has(chId)) {
           console.log(`[TEMP] User left temp channel ${chId}, checking in 3s...`);

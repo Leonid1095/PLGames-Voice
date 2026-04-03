@@ -23,4 +23,10 @@ contextBridge.exposeInMainWorld("native", {
     });
   },
   getGameActivity: () => ipcRenderer.sendSync("get-game-activity"),
+
+  // Screenshot
+  onScreenshot: (callback: (data: { path: string; filename: string; size: number }) => void) => {
+    ipcRenderer.on("screenshot-taken", (_event, data) => callback(data));
+  },
+  getLastScreenshot: () => ipcRenderer.invoke("get-last-screenshot"),
 });
