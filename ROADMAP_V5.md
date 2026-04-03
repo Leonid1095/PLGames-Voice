@@ -269,7 +269,7 @@ TWA (Trusted Web Activity) обёртка вокруг PWA. Скрипт сбо�
 **Приоритет:** 🔴 | **Статус:** ✅ PWA (Safari Add to Home Screen, apple-touch-icon, apple-mobile-web-app-capable)
 
 ### 6.3 Linux/macOS десктоп
-**Приоритет:** 🟡 | **Статус:** ⬜
+**Приоритет:** 🟡 | **Статус:** ✅ 2026-04-03 (DMG maker + multi-platform CI: Windows/Linux/macOS)
 Electron: .deb/.AppImage (Linux), .dmg (macOS)
 
 ---
@@ -297,7 +297,7 @@ Google, GitHub, VK, Yandex.
 Для презентаций, AMA. Спикеры + слушатели, "поднять руку".
 
 ### 7.6 Видеозвонки
-**Статус:** ⬜ Требует UI (LiveKit уже поддерживает видео)
+**Статус:** ✅ Уже реализовано (камера, видео-треки, VoiceCallCard + LiveKit)
 Камера в голосовых каналах. LiveKit поддерживает, нужен UI.
 
 ### 7.7 Расширенный поиск
@@ -327,8 +327,8 @@ Google, GitHub, VK, Yandex.
 | 3 | Календарь✅, турниры✅, формы✅, "играет в"✅, скриншоты✅, аналитика✅ | Guilded/Steam | **6/6 ✅** |
 | 4 | Сохранённые✅, перевод✅, транскрипция✅, опросы✅ | Telegram | **4/4 ✅** |
 | 5 | Premium✅, бусты✅, стикеры✅ | Discord Nitro | **3/3 ✅** |
-| 6 | Android✅(TWA), iOS✅(PWA), Linux/macOS⬜ | Все конкуренты | **2/3** |
-| 7 | Команды✅, треды✅, OAuth⬜, саундборд✅, stage⬜, видео⬜, поиск✅, анонсы⬜, вики✅, тикеты✅ | Slack/Discord/Guilded | **7/10** |
+| 6 | Android✅(TWA), iOS✅(PWA), Linux/macOS✅ | Все конкуренты | **3/3 ✅** |
+| 7 | Команды✅, треды✅, OAuth⬜, саундборд✅, stage⬜, видео✅, поиск✅, анонсы⬜, вики✅, тикеты✅ | Slack/Discord/Guilded | **8/10** |
 
 ---
 
