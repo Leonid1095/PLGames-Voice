@@ -83,7 +83,8 @@ if (!settings.boosts) settings.boosts = {
   level: 0,  // calculated: 0-3
 };
 if (!settings.stickers) settings.stickers = [];
-// Each: { id, name, url, author, pack }
+if (!settings.autoTranslate) settings.autoTranslate = {};
+// { [channelId]: { targetLang: "ru"|"en", enabled: true } }
 saveSettings(settings);
 
 if (!BOT_TOKEN || !API_URL || !WS_URL) {
@@ -316,6 +317,14 @@ const COMMANDS = {
       "**Стикеры:**",
       `\`${PREFIX}sticker add "Название" <url> [пак]\` — добавить`,
       `\`${PREFIX}sticker list\` / \`send <имя>\` / \`remove <id>\``,
+      "",
+      "**Перевод:**",
+      `\`${PREFIX}translate <текст>\` — перевести (авто-определение ru↔en)`,
+      `\`${PREFIX}autotranslate on [channel_id] [язык]\` — авто-перевод канала`,
+      `\`${PREFIX}autotranslate off [channel_id]\` / \`list\``,
+      "",
+      "**Транскрипция:**",
+      `\`${PREFIX}transcribe <message_id>\` — распознать голосовое`,
     ].join("\n");
     await sendMessage(msg.channel, text);
   },
@@ -1798,7 +1807,135 @@ const COMMANDS = {
       return sendMessage(msg.channel, "Подкоманды: `add \"Название\" <url> [пак]`, `list`, `send <имя>`, `remove <id>`");
     }
   },
+
+  // --- Translation ---
+  async translate(msg, args) {
+    const text = args.join(" ");
+    if (!text) return sendMessage(msg.channel, "Формат: `!translate <текст>`");
+
+    try {
+      const isRu = /[а-яА-ЯёЁ]/.test(text);
+      const langpair = isRu ? "ru|en" : "en|ru";
+      const res = await fetch(
+        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text.slice(0, 500))}&langpair=${langpair}`
+      );
+      const data = await res.json();
+      const translated = data?.responseData?.translatedText;
+      if (translated) {
+        await sendMessage(msg.channel, `🌐 **Перевод** (${isRu ? "ru→en" : "en→ru"}):\n> ${translated}`);
+      } else {
+        await sendMessage(msg.channel, "Не удалось перевести.");
+      }
+    } catch (e) {
+      await sendMessage(msg.channel, "Ошибка перевода.");
+    }
+  },
+
+  async autotranslate(msg, args) {
+    if (!(await isAdmin(SERVER_ID, msg.author))) {
+      return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+    }
+    const sub = (args[0] || "").toLowerCase();
+
+    if (sub === "on") {
+      const channelId = validateId(args[1]) || msg.channel;
+      const lang = args[2] || "ru";
+      settings.autoTranslate[channelId] = { targetLang: lang, enabled: true };
+      saveSettings(settings);
+      return sendMessage(msg.channel, `🌐 Авто-перевод включён в <#${channelId}> → **${lang}**`);
+    }
+    if (sub === "off") {
+      const channelId = validateId(args[1]) || msg.channel;
+      delete settings.autoTranslate[channelId];
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Авто-перевод выключен в <#${channelId}>`);
+    }
+    if (sub === "list") {
+      const entries = Object.entries(settings.autoTranslate);
+      if (!entries.length) return sendMessage(msg.channel, "Нет каналов с авто-переводом.");
+      const lines = entries.map(([ch, cfg]) => `- <#${ch}> → ${(cfg as any).targetLang}`);
+      return sendMessage(msg.channel, `**🌐 Авто-перевод:**\n${lines.join("\n")}`);
+    }
+    return sendMessage(msg.channel, "Подкоманды: `on [channel_id] [язык]`, `off [channel_id]`, `list`");
+  },
+
+  // --- Transcription ---
+  async transcribe(msg, args) {
+    // Transcribe a voice message by replying to it
+    // Since we can't easily access voice message audio from the bot API,
+    // this provides a manual transcription request
+    const msgId = args[0];
+    if (!msgId) {
+      return sendMessage(msg.channel, [
+        "🎤 **Транскрипция голосовых сообщений**",
+        "",
+        "Формат: `!transcribe <message_id>`",
+        "Укажите ID голосового сообщения для распознавания.",
+        "",
+        "_Примечание: автоматическая транскрипция голосовых будет добавлена в будущем обновлении._",
+      ].join("\n"));
+    }
+
+    try {
+      const message = await api("GET", `/channels/${msg.channel}/messages/${msgId}`);
+      if (!message) return sendMessage(msg.channel, "Сообщение не найдено.");
+
+      // Check if message has audio attachments
+      const attachments = message.attachments || [];
+      const audioFile = attachments.find((a) =>
+        a.metadata?.type === "Audio" || a.filename?.match(/\.(ogg|mp3|wav|webm|m4a)$/i)
+      );
+
+      if (!audioFile) {
+        return sendMessage(msg.channel, "В этом сообщении нет аудио-вложений.");
+      }
+
+      // For now, provide the audio URL and note about future Whisper integration
+      const audioUrl = `${API_URL.replace("/api", "")}/autumn/attachments/${audioFile._id}/${audioFile.filename}`;
+      await sendMessage(msg.channel, [
+        `🎤 **Голосовое сообщение от <@${message.author}>**`,
+        `Файл: \`${audioFile.filename}\` (${(audioFile.size / 1024).toFixed(0)} КБ)`,
+        "",
+        `_Полная транскрипция через Whisper API будет доступна в Premium._`,
+        `_Сейчас: скачайте и используйте любой речь-в-текст сервис._`,
+      ].join("\n"));
+    } catch (e) {
+      await sendMessage(msg.channel, safeErrorMessage(e));
+    }
+  },
 };
+
+// --- Auto-translate message handler ---
+async function autoTranslateCheck(data) {
+  const channelId = data.channel;
+  const atConfig = settings.autoTranslate[channelId];
+  if (!atConfig || !atConfig.enabled) return;
+  if (data.author === botUserId) return;
+
+  const content = data.content;
+  if (!content || content.startsWith(PREFIX)) return;
+
+  // Detect if translation needed
+  const targetLang = atConfig.targetLang || "ru";
+  const isRu = /[а-яА-ЯёЁ]/.test(content);
+  const needsTranslation = (targetLang === "ru" && !isRu) || (targetLang === "en" && isRu);
+
+  if (!needsTranslation) return;
+
+  try {
+    const langpair = isRu ? "ru|en" : "en|ru";
+    const res = await fetch(
+      `https://api.mymemory.translated.net/get?q=${encodeURIComponent(content.slice(0, 500))}&langpair=${langpair}`
+    );
+    const data2 = await res.json();
+    const translated = data2?.responseData?.translatedText;
+    if (translated && translated.toLowerCase() !== content.toLowerCase()) {
+      await sendMessage(channelId, `🌐 > ${translated}`);
+    }
+  } catch {
+    // Silently fail auto-translation
+  }
+}
 
 // --- XP processing on messages ---
 async function processXp(data) {
@@ -2062,6 +2199,9 @@ function handleMessage(data) {
 
   // XP processing
   processXp(data).catch((e) => console.error("[XP ERROR]", e.message));
+
+  // Auto-translate
+  autoTranslateCheck(data).catch(() => {});
 
   const content = data.content || "";
   if (!content.startsWith(PREFIX)) return;
