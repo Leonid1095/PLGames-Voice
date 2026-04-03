@@ -75,7 +75,15 @@ if (!settings.auditLog) settings.auditLog = {
   channel: "",
 };
 if (!settings.events) settings.events = [];
-// Each: { id, title, description, date, channelId, author, rsvp: { yes: [], maybe: [], no: [] }, reminded: false }
+if (!settings.premium) settings.premium = {
+  users: {}, // { [userId]: { since, expires, tier: "premium"|"premium_plus" } }
+};
+if (!settings.boosts) settings.boosts = {
+  users: {}, // { [userId]: timestamp }
+  level: 0,  // calculated: 0-3
+};
+if (!settings.stickers) settings.stickers = [];
+// Each: { id, name, url, author, pack }
 saveSettings(settings);
 
 if (!BOT_TOKEN || !API_URL || !WS_URL) {
@@ -294,6 +302,20 @@ const COMMANDS = {
       "",
       "**Аналитика:**",
       `\`${PREFIX}stats\` — статистика сервера`,
+      "",
+      "**Premium:**",
+      `\`${PREFIX}premium check [@user]\` — статус подписки`,
+      `\`${PREFIX}premium give @user [plus] [дней]\` — выдать`,
+      `\`${PREFIX}premium remove @user\` — снять`,
+      `\`${PREFIX}premium list\` — все Premium`,
+      "",
+      "**Бусты:**",
+      `\`${PREFIX}boost\` — бустнуть сервер`,
+      `\`${PREFIX}boosts\` — статус бустов`,
+      "",
+      "**Стикеры:**",
+      `\`${PREFIX}sticker add "Название" <url> [пак]\` — добавить`,
+      `\`${PREFIX}sticker list\` / \`send <имя>\` / \`remove <id>\``,
     ].join("\n");
     await sendMessage(msg.channel, text);
   },
@@ -1596,6 +1618,184 @@ const COMMANDS = {
 
     } else {
       return sendMessage(msg.channel, "Подкоманды: `create`, `join`, `start`, `result`, `bracket`, `list`");
+    }
+  },
+
+  // --- Premium ---
+  async premium(msg, args) {
+    const sub = (args[0] || "").toLowerCase();
+    const pm = settings.premium;
+
+    if (!sub || sub === "check") {
+      const targetId = extractUserId(args[1]) || msg.author;
+      const user = pm.users[targetId];
+      if (!user) return sendMessage(msg.channel, `<@${targetId}> — без подписки.`);
+      const expires = user.expires ? new Date(user.expires).toLocaleDateString("ru-RU") : "бессрочно";
+      return sendMessage(msg.channel, [
+        `💎 **Premium: <@${targetId}>**`,
+        `Уровень: **${user.tier === "premium_plus" ? "Premium+" : "Premium"}**`,
+        `С: ${new Date(user.since).toLocaleDateString("ru-RU")}`,
+        `До: ${expires}`,
+      ].join("\n"));
+    }
+
+    if (sub === "give") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      const userId = extractUserId(args[1]);
+      if (!userId) return sendMessage(msg.channel, "Укажите пользователя: `!premium give @user [plus] [дней]`");
+      const tier = args[2] === "plus" ? "premium_plus" : "premium";
+      const daysArg = parseInt(args[tier === "premium_plus" ? 3 : 2]) || 30;
+      const expires = Date.now() + daysArg * 86400000;
+
+      pm.users[userId] = { since: Date.now(), expires, tier };
+      saveSettings(settings);
+
+      await sendMessage(msg.channel, `💎 <@${userId}> получил **${tier === "premium_plus" ? "Premium+" : "Premium"}** на ${daysArg} дней!`);
+      auditLog("💎", `Premium выдан <@${userId}> (${tier}, ${daysArg}д) — <@${msg.author}>`);
+    }
+
+    if (sub === "remove") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      const userId = extractUserId(args[1]);
+      if (!userId) return sendMessage(msg.channel, "Укажите пользователя.");
+      delete pm.users[userId];
+      saveSettings(settings);
+      await sendMessage(msg.channel, `<@${userId}> — Premium снят.`);
+    }
+
+    if (sub === "list") {
+      const entries = Object.entries(pm.users);
+      if (!entries.length) return sendMessage(msg.channel, "Нет Premium-пользователей.");
+      const lines = entries.map(([id, u]) => {
+        const tier = (u as any).tier === "premium_plus" ? "💎+" : "💎";
+        return `${tier} <@${id}> — до ${(u as any).expires ? new Date((u as any).expires).toLocaleDateString("ru-RU") : "∞"}`;
+      });
+      return sendMessage(msg.channel, `**Premium-пользователи:**\n${lines.join("\n")}`);
+    }
+  },
+
+  // --- Boosts ---
+  async boost(msg) {
+    const bs = settings.boosts;
+    const userId = msg.author;
+
+    if (bs.users[userId]) {
+      return sendMessage(msg.channel, "Вы уже бустите этот сервер! ✨");
+    }
+
+    bs.users[userId] = Date.now();
+    // Calculate level
+    const boostCount = Object.keys(bs.users).length;
+    bs.level = boostCount >= 15 ? 3 : boostCount >= 7 ? 2 : boostCount >= 2 ? 1 : 0;
+    saveSettings(settings);
+
+    const levelNames = ["Без уровня", "Уровень 1", "Уровень 2", "Уровень 3"];
+    await sendMessage(msg.channel, [
+      `✨ <@${userId}> бустит сервер! Спасибо!`,
+      `Бустов: **${boostCount}** | Уровень сервера: **${levelNames[bs.level]}**`,
+    ].join("\n"));
+    auditLog("✨", `<@${userId}> бустнул сервер (${boostCount} бустов, ур. ${bs.level})`);
+  },
+
+  async boosts(msg) {
+    const bs = settings.boosts;
+    const boostCount = Object.keys(bs.users).length;
+    const levelNames = ["Без уровня", "Уровень 1 (2+)", "Уровень 2 (7+)", "Уровень 3 (15+)"];
+    const perks = [
+      [],
+      ["+50 эмодзи", "HD голос"],
+      ["+100 эмодзи", "Баннер сервера", "Кастомный инвайт"],
+      ["+250 эмодзи", "Анимированный баннер", "VIP поддержка"],
+    ];
+
+    const lines = [
+      `✨ **Бусты сервера**`,
+      `Бустов: **${boostCount}** | Уровень: **${levelNames[bs.level]}**`,
+    ];
+    if (bs.level > 0) {
+      lines.push(`Бонусы: ${perks[bs.level].join(", ")}`);
+    }
+    const nextLevel = bs.level < 3 ? [2, 7, 15][bs.level] : null;
+    if (nextLevel) {
+      lines.push(`До следующего уровня: ${nextLevel - boostCount} бустов`);
+    }
+
+    const boosters = Object.entries(bs.users).slice(0, 10);
+    if (boosters.length) {
+      lines.push("", "**Бустеры:**");
+      for (const [id, ts] of boosters) {
+        lines.push(`- <@${id}> (с ${new Date(ts as number).toLocaleDateString("ru-RU")})`);
+      }
+    }
+
+    await sendMessage(msg.channel, lines.join("\n"));
+  },
+
+  // --- Stickers ---
+  async sticker(msg, args) {
+    const sub = (args[0] || "").toLowerCase();
+
+    if (sub === "add") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      // !sticker add "название" <url> [пак]
+      const raw = args.slice(1).join(" ");
+      const nameMatch = raw.match(/"([^"]+)"/);
+      if (!nameMatch) return sendMessage(msg.channel, 'Формат: `!sticker add "Название" <url> [пак]`');
+      const name = nameMatch[1];
+      const afterName = raw.slice(raw.indexOf(nameMatch[0]) + nameMatch[0].length).trim();
+      const urlParts = afterName.split(/\s+/);
+      const url = urlParts[0];
+      if (!url || !url.startsWith("http")) return sendMessage(msg.channel, "Укажите URL изображения.");
+      const pack = urlParts.slice(1).join(" ") || "Основной";
+
+      const stickerId = `stk-${Date.now()}`;
+      settings.stickers.push({ id: stickerId, name, url, author: msg.author, pack });
+      saveSettings(settings);
+      await sendMessage(msg.channel, `🖼️ Стикер **${name}** добавлен в пак "${pack}"!`);
+
+    } else if (sub === "list") {
+      if (!settings.stickers.length) return sendMessage(msg.channel, "Нет стикеров. Добавьте: `!sticker add`");
+      const packs = {};
+      for (const s of settings.stickers) {
+        const p = s.pack || "Основной";
+        if (!packs[p]) packs[p] = [];
+        packs[p].push(s);
+      }
+      const lines = [];
+      for (const [pack, stickers] of Object.entries(packs)) {
+        lines.push(`**${pack}** (${(stickers as any[]).length}):`);
+        for (const s of stickers as any[]) {
+          lines.push(`  - ${s.name} (\`${s.id}\`)`);
+        }
+      }
+      return sendMessage(msg.channel, `🖼️ **Стикеры:**\n${lines.join("\n")}`);
+
+    } else if (sub === "send") {
+      const stickerIdOrName = args.slice(1).join(" ");
+      if (!stickerIdOrName) return sendMessage(msg.channel, "Укажите имя или ID стикера.");
+      const sticker = settings.stickers.find(
+        (s) => s.id === stickerIdOrName || s.name.toLowerCase() === stickerIdOrName.toLowerCase()
+      );
+      if (!sticker) return sendMessage(msg.channel, "Стикер не найден. Список: `!sticker list`");
+      await sendMessage(msg.channel, `![${sticker.name}](${sticker.url})`);
+
+    } else if (sub === "remove") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      const stickerId = args[1];
+      settings.stickers = settings.stickers.filter((s) => s.id !== stickerId);
+      saveSettings(settings);
+      return sendMessage(msg.channel, "Стикер удалён.");
+
+    } else {
+      return sendMessage(msg.channel, "Подкоманды: `add \"Название\" <url> [пак]`, `list`, `send <имя>`, `remove <id>`");
     }
   },
 };
