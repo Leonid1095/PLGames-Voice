@@ -374,3 +374,21 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
+
+  # PLG Voice Admin Bot (moderation, XP, events, tournaments, etc.)
+  bot:
+    build:
+      context: ./bot
+      dockerfile: Dockerfile
+    image: plg-voice-bot:latest
+    restart: always
+    depends_on:
+      api:
+        condition: service_started
+    env_file: .env
+    volumes:
+      - ./data/bot:/app/data
+    deploy:
+      resources:
+        limits:
+          memory: 256M

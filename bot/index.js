@@ -18,7 +18,7 @@ const SERVER_ID = process.env.SERVER_ID;
 const WELCOME_CHANNEL = process.env.WELCOME_CHANNEL;
 
 // --- Persistent settings (JSON file) ---
-const SETTINGS_FILE = path.resolve(__dirname, "settings.json");
+const SETTINGS_FILE = process.env.SETTINGS_PATH || path.resolve(__dirname, "data", "settings.json");
 
 function loadSettings() {
   try {
@@ -1031,7 +1031,7 @@ const COMMANDS = {
     const lvl = settings.levels;
     if (!lvl.enabled) return sendMessage(msg.channel, "Система уровней не включена.");
     const sorted = Object.entries(lvl.users)
-      .map(([id, data]) => ({ id, ...(data as any) }))
+      .map(([id, data]) => ({ id, ...data }))
       .sort((a, b) => b.xp - a.xp)
       .slice(0, 15);
     if (!sorted.length) return sendMessage(msg.channel, "Таблица лидеров пуста.");
@@ -1399,9 +1399,9 @@ const COMMANDS = {
       // XP stats
       const lvl = settings.levels || {};
       const xpUsers = Object.keys(lvl.users || {}).length;
-      const totalXp = Object.values(lvl.users || {}).reduce((sum, u) => sum + ((u as any).xp || 0), 0);
+      const totalXp = Object.values(lvl.users || {}).reduce((sum, u) => sum + (u.xp || 0), 0);
       const topUser = Object.entries(lvl.users || {})
-        .sort((a, b) => (b[1] as any).xp - (a[1] as any).xp)[0];
+        .sort((a, b) => b[1].xp - a[1].xp)[0];
 
       // Event stats
       const upcomingEvents = (settings.events || []).filter((e) => new Date(e.date).getTime() > Date.now()).length;
@@ -1423,7 +1423,7 @@ const COMMANDS = {
         `⭐ **XP система:**`,
         `   Участников с XP: ${xpUsers}`,
         `   Всего XP: ${totalXp}`,
-        topUser ? `   Лидер: <@${topUser[0]}> (${(topUser[1] as any).xp} XP, ур. ${(topUser[1] as any).level})` : "",
+        topUser ? `   Лидер: <@${topUser[0]}> (${topUser[1].xp} XP, ур. ${topUser[1].level})` : "",
         "",
         `📅 Предстоящих событий: ${upcomingEvents}`,
         `🎉 Активных розыгрышей: ${activeGiveaways}`,
@@ -1701,8 +1701,8 @@ const COMMANDS = {
       const entries = Object.entries(pm.users);
       if (!entries.length) return sendMessage(msg.channel, "Нет Premium-пользователей.");
       const lines = entries.map(([id, u]) => {
-        const tier = (u as any).tier === "premium_plus" ? "💎+" : "💎";
-        return `${tier} <@${id}> — до ${(u as any).expires ? new Date((u as any).expires).toLocaleDateString("ru-RU") : "∞"}`;
+        const tier = u.tier === "premium_plus" ? "💎+" : "💎";
+        return `${tier} <@${id}> — до ${u.expires ? new Date(u.expires).toLocaleDateString("ru-RU") : "∞"}`;
       });
       return sendMessage(msg.channel, `**Premium-пользователи:**\n${lines.join("\n")}`);
     }
@@ -1758,7 +1758,7 @@ const COMMANDS = {
     if (boosters.length) {
       lines.push("", "**Бустеры:**");
       for (const [id, ts] of boosters) {
-        lines.push(`- <@${id}> (с ${new Date(ts as number).toLocaleDateString("ru-RU")})`);
+        lines.push(`- <@${id}> (с ${new Date(ts).toLocaleDateString("ru-RU")})`);
       }
     }
 
@@ -1799,8 +1799,8 @@ const COMMANDS = {
       }
       const lines = [];
       for (const [pack, stickers] of Object.entries(packs)) {
-        lines.push(`**${pack}** (${(stickers as any[]).length}):`);
-        for (const s of stickers as any[]) {
+        lines.push(`**${pack}** (${stickers.length}):`);
+        for (const s of stickers) {
           lines.push(`  - ${s.name} (\`${s.id}\`)`);
         }
       }
@@ -1874,7 +1874,7 @@ const COMMANDS = {
     if (sub === "list") {
       const entries = Object.entries(settings.autoTranslate);
       if (!entries.length) return sendMessage(msg.channel, "Нет каналов с авто-переводом.");
-      const lines = entries.map(([ch, cfg]) => `- <#${ch}> → ${(cfg as any).targetLang}`);
+      const lines = entries.map(([ch, cfg]) => `- <#${ch}> → ${cfg.targetLang}`);
       return sendMessage(msg.channel, `**🌐 Авто-перевод:**\n${lines.join("\n")}`);
     }
     return sendMessage(msg.channel, "Подкоманды: `on [channel_id] [язык]`, `off [channel_id]`, `list`");
