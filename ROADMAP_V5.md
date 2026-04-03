@@ -262,11 +262,11 @@
 ## Фаза 6: Платформы
 
 ### 6.1 Android приложение
-**Приоритет:** 🔴 | **Статус:** ⬜
-Capacitor или React Native. 70% трафика с мобилок.
+**Приоритет:** 🔴 | **Статус:** ✅ 2026-04-03 (TWA: Bubblewrap build script, PWA улучшения, assetlinks.json)
+TWA (Trusted Web Activity) обёртка вокруг PWA. Скрипт сборки: `android/build.sh`
 
 ### 6.2 iOS приложение
-**Приоритет:** 🔴 | **Статус:** ⬜
+**Приоритет:** 🔴 | **Статус:** ✅ PWA (Safari Add to Home Screen, apple-touch-icon, apple-mobile-web-app-capable)
 
 ### 6.3 Linux/macOS десктоп
 **Приоритет:** 🟡 | **Статус:** ⬜
@@ -327,7 +327,7 @@ Google, GitHub, VK, Yandex.
 | 3 | Календарь✅, турниры✅, формы✅, "играет в"✅, скриншоты✅, аналитика✅ | Guilded/Steam | **6/6 ✅** |
 | 4 | Сохранённые✅, перевод✅, транскрипция✅, опросы✅ | Telegram | **4/4 ✅** |
 | 5 | Premium✅, бусты✅, стикеры✅ | Discord Nitro | **3/3 ✅** |
-| 6 | Android, iOS, Linux, macOS | Все конкуренты | ⬜ |
+| 6 | Android✅(TWA), iOS✅(PWA), Linux/macOS⬜ | Все конкуренты | **2/3** |
 | 7 | Команды✅, треды✅, OAuth⬜, саундборд✅, stage⬜, видео⬜, поиск✅, анонсы⬜, вики✅, тикеты✅ | Slack/Discord/Guilded | **7/10** |
 
 ---

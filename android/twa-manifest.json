@@ -1,0 +1,48 @@
+{
+  "packageId": "ru.plgames.voice",
+  "host": "plgames-voice.ru",
+  "name": "PLG Voice",
+  "launcherName": "PLG Voice",
+  "display": "standalone",
+  "themeColor": "#000000",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#000000",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "https://plgames-voice.ru/assets/web/android-chrome-512x512.png",
+  "maskableIconUrl": "https://plgames-voice.ru/assets/web/masking-512x512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "android.keystore",
+    "alias": "plgvoice"
+  },
+  "appVersionCode": 1,
+  "appVersionName": "1.0.0",
+  "shortcuts": [
+    {
+      "name": "Друзья",
+      "short_name": "Друзья",
+      "url": "/friends",
+      "icons": []
+    },
+    {
+      "name": "Сохранённые",
+      "short_name": "Сохранённые",
+      "url": "/saved",
+      "icons": []
+    }
+  ],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://plgames-voice.ru/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://plgames-voice.ru/",
+  "minSdkVersion": 19,
+  "orientation": "portrait",
+  "fingerprints": []
+}

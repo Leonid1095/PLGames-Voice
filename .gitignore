@@ -19,3 +19,6 @@ node_modules/
 /server/.mongo/
 /server/.env
 /bot/settings.json
+/android/app/
+/android/android.keystore
+/android/*.apk

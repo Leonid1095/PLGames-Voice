@@ -69,8 +69,16 @@
 		}
 	}
 
+	# Allow .well-known for PWA/TWA verification
+	route /.well-known/* {
+		reverse_proxy http://web:5000
+	}
+
 	# Block access to hidden files (.git, .env, etc.)
-	@hidden path_regexp hidden \/\.
+	@hidden {
+		path_regexp hidden \/\.
+		not path /.well-known/*
+	}
 	respond @hidden 404
 
 	reverse_proxy http://web:5000
