@@ -107,6 +107,22 @@ export const HomeSidebar = (props: Props) => {
 
           <div style={{ height: "5px" }} />
 
+          <a href="/saved">
+            <MenuButton
+              size="normal"
+              icon={<Symbol>bookmark</Symbol>}
+              attention={
+                location.pathname === "/saved" ? "selected" : "normal"
+              }
+            >
+              <ButtonTitle>
+                <Trans>Saved Messages</Trans>
+              </ButtonTitle>
+            </MenuButton>
+          </a>
+
+          <div style={{ height: "5px" }} />
+
           <Switch
             fallback={
               <MenuButton

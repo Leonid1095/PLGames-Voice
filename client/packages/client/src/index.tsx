@@ -47,6 +47,7 @@ import { DevelopmentPage } from "./interface/Development";
 import { Discover } from "./interface/Discover";
 import { Friends } from "./interface/Friends";
 import { HomePage } from "./interface/Home";
+import { SavedMessages } from "./interface/SavedMessages";
 import { ServerHome } from "./interface/ServerHome";
 import { ChannelPage } from "./interface/channels/ChannelPage";
 import AppDownloadPage from "./AppDownload";
@@ -170,6 +171,7 @@ render(
           <Route path="/invite/:code" component={InviteRedirect} />
           <Route path="/bot/:code" component={BotRedirect} />
           <Route path="/friends" component={Friends} />
+          <Route path="/saved" component={SavedMessages} />
           <Route path="/server/:server/*">
             <Route path="/channel/:channel/*" component={ChannelPage} />
             <Route path="/*" component={ServerHome} />

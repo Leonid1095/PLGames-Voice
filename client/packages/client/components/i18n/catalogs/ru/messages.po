@@ -4730,3 +4730,39 @@ msgstr "Онлайн"
 #: src/interface/channels/text/MemberSidebar.tsx
 msgid "Оффлайн"
 msgstr "Оффлайн"
+
+#: src/interface/SavedMessages.tsx
+msgid "Сохранённые сообщения"
+msgstr "Сохранённые сообщения"
+
+#: src/interface/SavedMessages.tsx
+msgid "Поиск по сохранённым..."
+msgstr "Поиск по сохранённым..."
+
+#: src/interface/SavedMessages.tsx
+msgid "Очистить все"
+msgstr "Очистить все"
+
+#: src/interface/SavedMessages.tsx
+msgid "Нет сохранённых сообщений"
+msgstr "Нет сохранённых сообщений"
+
+#: src/interface/SavedMessages.tsx
+msgid "Нажмите правой кнопкой на сообщение и выберите \"Сохранить\""
+msgstr "Нажмите правой кнопкой на сообщение и выберите \"Сохранить\""
+
+#: src/interface/SavedMessages.tsx
+msgid "Без текста"
+msgstr "Без текста"
+
+#: src/interface/SavedMessages.tsx
+msgid "Перейти"
+msgstr "Перейти"
+
+#: src/interface/SavedMessages.tsx
+msgid "Копировать"
+msgstr "Копировать"
+
+#: src/interface/navigation/channels/HomeSidebar.tsx
+msgid "Saved Messages"
+msgstr "Сохранённые"

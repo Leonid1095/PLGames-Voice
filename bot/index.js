@@ -60,6 +60,16 @@ if (!settings.starboard) settings.starboard = {
   emoji: "⭐",
   posted: [], // message IDs already posted
 };
+if (!settings.reactionRoles) settings.reactionRoles = [];
+// Each: { messageId, channelId, emoji, roleId, mode: "toggle"|"exclusive_group" }
+if (!settings.levels) settings.levels = {
+  enabled: false,
+  xpPerMessage: 10,
+  cooldown: 60, // seconds
+  notifyChannel: "",
+  roleRewards: [], // { level, roleId }
+  users: {}, // { [userId]: { xp, level, lastXpTime } }
+};
 saveSettings(settings);
 
 if (!BOT_TOKEN || !API_URL || !WS_URL) {
@@ -246,6 +256,16 @@ const COMMANDS = {
       `\`${PREFIX}automod duplicates <on|off|N>\` — антидубликаты`,
       `\`${PREFIX}automod log <channel_id>\` — канал логов`,
       `\`${PREFIX}automod on\` / \`off\` — вкл/выкл`,
+      "",
+      "**Reaction Roles:**",
+      `\`${PREFIX}rr create <эмодзи> <role_id> [текст]\` — создать`,
+      `\`${PREFIX}rr add <msg_id> <эмодзи> <role_id>\` — добавить к сообщению`,
+      `\`${PREFIX}rr list\` / \`remove <N>\` — список / удалить`,
+      "",
+      "**XP/Уровни:**",
+      `\`${PREFIX}level [@user]\` — посмотреть уровень`,
+      `\`${PREFIX}leaderboard\` — таблица лидеров`,
+      `\`${PREFIX}xp\` — настройки (on/off/amount/cooldown/notify/reward)`,
     ].join("\n");
     await sendMessage(msg.channel, text);
   },
@@ -838,7 +858,226 @@ const COMMANDS = {
     }
     return sendMessage(msg.channel, "Подкоманды: `spam`, `spamaction`, `addword`, `removeword`, `words`, `duplicates`, `log`, `on`, `off`");
   },
+
+  // --- Reaction Roles ---
+  async rr(msg, args) {
+    if (!(await isAdmin(SERVER_ID, msg.author))) {
+      return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+    }
+    const sub = (args[0] || "").toLowerCase();
+
+    if (sub === "create") {
+      // !rr create <emoji> <role_id> <текст сообщения>
+      const emoji = args[1];
+      const roleId = args[2];
+      const text = args.slice(3).join(" ");
+      if (!emoji || !roleId) {
+        return sendMessage(msg.channel, 'Формат: `!rr create <эмодзи> <role_id> [текст]`');
+      }
+      const content = text || `Нажмите ${emoji} чтобы получить роль!`;
+      try {
+        const sent = await sendMessage(msg.channel, `**Роль по реакции**\n\n${content}`);
+        await api("PUT", `/channels/${msg.channel}/messages/${sent._id}/reactions/${encodeURIComponent(emoji)}`);
+        settings.reactionRoles.push({
+          messageId: sent._id,
+          channelId: msg.channel,
+          emoji,
+          roleId,
+        });
+        saveSettings(settings);
+        await sendMessage(msg.channel, `✅ Reaction Role создан: ${emoji} → роль \`${roleId}\``);
+      } catch (e) {
+        await sendMessage(msg.channel, safeErrorMessage(e));
+      }
+
+    } else if (sub === "add") {
+      // !rr add <message_id> <emoji> <role_id>
+      const msgId = args[1];
+      const emoji = args[2];
+      const roleId = args[3];
+      if (!msgId || !emoji || !roleId) {
+        return sendMessage(msg.channel, "Формат: `!rr add <message_id> <эмодзи> <role_id>`");
+      }
+      try {
+        await api("PUT", `/channels/${msg.channel}/messages/${msgId}/reactions/${encodeURIComponent(emoji)}`);
+        settings.reactionRoles.push({
+          messageId: msgId,
+          channelId: msg.channel,
+          emoji,
+          roleId,
+        });
+        saveSettings(settings);
+        await sendMessage(msg.channel, `✅ Добавлено: ${emoji} → роль \`${roleId}\` на сообщение \`${msgId}\``);
+      } catch (e) {
+        await sendMessage(msg.channel, safeErrorMessage(e));
+      }
+
+    } else if (sub === "list") {
+      const rrs = settings.reactionRoles;
+      if (!rrs.length) return sendMessage(msg.channel, "Нет reaction roles.");
+      const lines = rrs.map((r, i) => `${i + 1}. ${r.emoji} → \`${r.roleId}\` (msg: \`${r.messageId.slice(0, 8)}...\`)`);
+      return sendMessage(msg.channel, `**Reaction Roles (${rrs.length}):**\n${lines.join("\n")}`);
+
+    } else if (sub === "remove") {
+      const idx = parseInt(args[1]) - 1;
+      if (isNaN(idx) || idx < 0 || idx >= settings.reactionRoles.length) {
+        return sendMessage(msg.channel, "Укажите номер из `!rr list`");
+      }
+      settings.reactionRoles.splice(idx, 1);
+      saveSettings(settings);
+      return sendMessage(msg.channel, "✅ Reaction Role удалён.");
+
+    } else {
+      return sendMessage(msg.channel, "Подкоманды: `create <эмодзи> <role_id> [текст]`, `add <msg_id> <эмодзи> <role_id>`, `list`, `remove <N>`");
+    }
+  },
+
+  // --- XP / Levels ---
+  async level(msg, args) {
+    const lvl = settings.levels;
+    if (!lvl.enabled) return sendMessage(msg.channel, "Система уровней не включена. Админ: `!xp on`");
+    const targetId = extractUserId(args[0]) || msg.author;
+    const userData = lvl.users[targetId] || { xp: 0, level: 0 };
+    const nextLevelXp = Math.pow(userData.level + 1, 2) * 100;
+    return sendMessage(msg.channel, [
+      `📊 **Уровень <@${targetId}>**`,
+      `Уровень: **${userData.level}**`,
+      `XP: **${userData.xp}** / ${nextLevelXp}`,
+      `Прогресс: ${"█".repeat(Math.min(10, Math.floor((userData.xp / nextLevelXp) * 10)))}${"░".repeat(Math.max(0, 10 - Math.floor((userData.xp / nextLevelXp) * 10)))}`,
+    ].join("\n"));
+  },
+
+  async leaderboard(msg) {
+    const lvl = settings.levels;
+    if (!lvl.enabled) return sendMessage(msg.channel, "Система уровней не включена.");
+    const sorted = Object.entries(lvl.users)
+      .map(([id, data]) => ({ id, ...(data as any) }))
+      .sort((a, b) => b.xp - a.xp)
+      .slice(0, 15);
+    if (!sorted.length) return sendMessage(msg.channel, "Таблица лидеров пуста.");
+    const medals = ["🥇", "🥈", "🥉"];
+    const lines = sorted.map((u, i) =>
+      `${medals[i] || `${i + 1}.`} <@${u.id}> — Ур. **${u.level}** (${u.xp} XP)`
+    );
+    return sendMessage(msg.channel, `**🏆 Таблица лидеров:**\n${lines.join("\n")}`);
+  },
+
+  async xp(msg, args) {
+    if (!(await isAdmin(SERVER_ID, msg.author))) {
+      return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+    }
+    const lvl = settings.levels;
+    const sub = (args[0] || "").toLowerCase();
+
+    if (!sub) {
+      const lines = [
+        `**Настройки XP/Уровней:**`,
+        `Статус: ${lvl.enabled ? "✅ включено" : "❌ выключено"}`,
+        `XP за сообщение: ${lvl.xpPerMessage}`,
+        `Кулдаун: ${lvl.cooldown} сек`,
+        `Канал уведомлений: ${lvl.notifyChannel ? `<#${lvl.notifyChannel}>` : "не задан"}`,
+        `Награды: ${lvl.roleRewards.length} ролей`,
+        `Участников с XP: ${Object.keys(lvl.users).length}`,
+      ];
+      return sendMessage(msg.channel, lines.join("\n"));
+    }
+
+    if (sub === "on") { lvl.enabled = true; saveSettings(settings); return sendMessage(msg.channel, "✅ XP/Уровни включены."); }
+    if (sub === "off") { lvl.enabled = false; saveSettings(settings); return sendMessage(msg.channel, "❌ XP/Уровни выключены."); }
+    if (sub === "amount") {
+      const n = parseInt(args[1]);
+      if (!n || n < 1 || n > 100) return sendMessage(msg.channel, "XP за сообщение: 1–100");
+      lvl.xpPerMessage = n;
+      saveSettings(settings);
+      return sendMessage(msg.channel, `XP за сообщение: ${n}`);
+    }
+    if (sub === "cooldown") {
+      const n = parseInt(args[1]);
+      if (!n || n < 5 || n > 600) return sendMessage(msg.channel, "Кулдаун: 5–600 секунд");
+      lvl.cooldown = n;
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Кулдаун: ${n} сек`);
+    }
+    if (sub === "notify") {
+      const id = validateId(args[1]);
+      if (!id) return sendMessage(msg.channel, "Укажите ID канала.");
+      lvl.notifyChannel = id;
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Канал уведомлений: <#${id}>`);
+    }
+    if (sub === "reward") {
+      const level = parseInt(args[1]);
+      const roleId = args[2];
+      if (!level || !roleId) return sendMessage(msg.channel, "Формат: `!xp reward <уровень> <role_id>`");
+      lvl.roleRewards = lvl.roleRewards.filter((r) => r.level !== level);
+      lvl.roleRewards.push({ level, roleId });
+      lvl.roleRewards.sort((a, b) => a.level - b.level);
+      saveSettings(settings);
+      return sendMessage(msg.channel, `Награда: уровень ${level} → роль \`${roleId}\``);
+    }
+    if (sub === "rewards") {
+      if (!lvl.roleRewards.length) return sendMessage(msg.channel, "Нет наград за уровни.");
+      const lines = lvl.roleRewards.map((r) => `Ур. ${r.level} → \`${r.roleId}\``);
+      return sendMessage(msg.channel, `**Награды:**\n${lines.join("\n")}`);
+    }
+    return sendMessage(msg.channel, "Подкоманды: `on`, `off`, `amount`, `cooldown`, `notify`, `reward <ур> <role_id>`, `rewards`");
+  },
 };
+
+// --- XP processing on messages ---
+async function processXp(data) {
+  const lvl = settings.levels;
+  if (!lvl.enabled) return;
+  if (data.author === botUserId) return;
+
+  const userId = data.author;
+  const now = Date.now();
+
+  if (!lvl.users[userId]) {
+    lvl.users[userId] = { xp: 0, level: 0, lastXpTime: 0 };
+  }
+  const user = lvl.users[userId];
+
+  // Cooldown check
+  if (now - user.lastXpTime < lvl.cooldown * 1000) return;
+
+  user.xp += lvl.xpPerMessage;
+  user.lastXpTime = now;
+
+  // Check level up
+  const newLevel = Math.floor(Math.sqrt(user.xp / 100));
+  if (newLevel > user.level) {
+    const oldLevel = user.level;
+    user.level = newLevel;
+
+    // Notify
+    if (lvl.notifyChannel) {
+      sendMessage(lvl.notifyChannel, `🎉 <@${userId}> достиг уровня **${newLevel}**!`)
+        .catch(() => {});
+    }
+
+    // Role rewards
+    for (const reward of lvl.roleRewards) {
+      if (reward.level <= newLevel && reward.level > oldLevel && SERVER_ID) {
+        try {
+          const member = await api("GET", `/servers/${SERVER_ID}/members/${userId}`);
+          const roles = member.roles || [];
+          if (!roles.includes(reward.roleId)) {
+            await api("PATCH", `/servers/${SERVER_ID}/members/${userId}`, {
+              roles: [...roles, reward.roleId],
+            });
+            console.log(`[XP] Role ${reward.roleId} awarded to ${userId} at level ${newLevel}`);
+          }
+        } catch (e) {
+          console.error("[XP] Role reward error:", e.message);
+        }
+      }
+    }
+  }
+
+  // Save every 10 messages (reduce disk I/O)
+  if (Math.random() < 0.1) saveSettings(settings);
+}
 
 // --- Giveaway end logic ---
 async function endGiveaway(messageId, reroll = false) {
@@ -1011,6 +1250,9 @@ function handleMessage(data) {
   // Automod check (before command processing)
   automodCheck(data).catch((e) => console.error("[AUTOMOD ERROR]", e.message));
 
+  // XP processing
+  processXp(data).catch((e) => console.error("[XP ERROR]", e.message));
+
   const content = data.content || "";
   if (!content.startsWith(PREFIX)) return;
 
@@ -1101,13 +1343,48 @@ async function handleMemberLeave(data) {
 
 // --- Starboard handler ---
 async function handleReaction(data) {
+  const msgId = data.id;
+  const channelId = data.channel_id;
+  const emoji = data.emoji_id || data.emoji;
+  const userId = data.user_id;
+
+  // --- Reaction Roles ---
+  if (userId && userId !== botUserId) {
+    const rr = settings.reactionRoles.find(
+      (r) => r.messageId === msgId && r.emoji === emoji,
+    );
+    if (rr && SERVER_ID) {
+      try {
+        // Get current member roles
+        const member = await api("GET", `/servers/${SERVER_ID}/members/${userId}`);
+        const currentRoles = member.roles || [];
+        const hasRole = currentRoles.includes(rr.roleId);
+
+        if (hasRole) {
+          // Remove role (toggle off)
+          await api("PATCH", `/servers/${SERVER_ID}/members/${userId}`, {
+            roles: currentRoles.filter((r) => r !== rr.roleId),
+          });
+          console.log(`[RR] Removed role ${rr.roleId} from ${userId}`);
+        } else {
+          // Add role
+          const newRoles = [...currentRoles, rr.roleId];
+          await api("PATCH", `/servers/${SERVER_ID}/members/${userId}`, {
+            roles: newRoles,
+          });
+          console.log(`[RR] Added role ${rr.roleId} to ${userId}`);
+        }
+      } catch (e) {
+        console.error("[RR] Error:", e.message);
+      }
+    }
+  }
+
+  // --- Starboard ---
   const sb = settings.starboard;
   if (!sb.enabled || !sb.channel) return;
 
   try {
-    const msgId = data.id; // message ID
-    const channelId = data.channel_id;
-    const emoji = data.emoji_id || data.emoji;
 
     // Only track configured emoji
     if (emoji !== sb.emoji) return;

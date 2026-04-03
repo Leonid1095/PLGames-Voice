@@ -75,23 +75,29 @@ export function MessageContextMenu(props: { message?: Message; file?: File }) {
   }
 
   /**
-   * Save message to Saved Messages
+   * Save message to local Saved Messages (localStorage)
    */
-  async function saveMessage() {
+  function saveMessage() {
     try {
-      const c = client();
-      if (!c) return;
-      const savedChannel = [...c.channels.values()].find(
-        (ch) => ch.type === "SavedMessages",
-      );
-      if (!savedChannel) return;
+      const msg = props.message!;
+      const saved = JSON.parse(localStorage.getItem("plg_saved_messages") || "[]");
 
-      const author = props.message!.author?.username ?? "Unknown";
-      const content = props.message!.content
-        ? `📌 **${author}:**\n> ${props.message!.content.split("\n").join("\n> ")}`
-        : `📌 *Saved from **${author}***`;
+      // Don't save duplicates
+      if (saved.some((s: any) => s.id === msg.id)) return;
 
-      await savedChannel.sendMessage(content);
+      saved.unshift({
+        id: msg.id,
+        channelId: msg.channelId,
+        serverId: msg.server?.id || null,
+        author: msg.author?.username || "?",
+        authorId: msg.authorId,
+        content: msg.content || "",
+        timestamp: Date.now(),
+      });
+
+      // Keep last 200
+      if (saved.length > 200) saved.length = 200;
+      localStorage.setItem("plg_saved_messages", JSON.stringify(saved));
     } catch {}
   }
 
