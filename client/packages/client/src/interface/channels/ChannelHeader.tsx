@@ -332,6 +332,18 @@ export function ChannelHeader(props: Props) {
                   if (el) { el.value += " pinned:true"; el.focus(); props.setSidebarState!({ state: "search", query: el.value }); }
                 }}>pinned:</SearchChip>
               </Show>
+              <Show when={!searchValue()!.includes("before:")}>
+                <SearchChip onClick={() => {
+                  const el = document.querySelector(`.${searchInput}`) as HTMLInputElement;
+                  if (el) { el.value += " before:"; el.focus(); props.setSidebarState!({ state: "search", query: el.value }); }
+                }}>before:</SearchChip>
+              </Show>
+              <Show when={!searchValue()!.includes("after:")}>
+                <SearchChip onClick={() => {
+                  const el = document.querySelector(`.${searchInput}`) as HTMLInputElement;
+                  if (el) { el.value += " after:"; el.focus(); props.setSidebarState!({ state: "search", query: el.value }); }
+                }}>after:</SearchChip>
+              </Show>
             </SearchHints>
           </Show>
         </SearchWrapper>

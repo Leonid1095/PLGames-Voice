@@ -84,7 +84,14 @@ if (!settings.boosts) settings.boosts = {
 };
 if (!settings.stickers) settings.stickers = [];
 if (!settings.autoTranslate) settings.autoTranslate = {};
-// { [channelId]: { targetLang: "ru"|"en", enabled: true } }
+if (!settings.tickets) settings.tickets = [];
+// Each: { id, userId, channelId, createdAt, status: "open"|"closed", transcript: [] }
+if (!settings.reminders) settings.reminders = [];
+// Each: { id, userId, channelId, text, fireAt, fired }
+if (!settings.sounds) settings.sounds = [];
+// Each: { id, name, url, author }
+if (!settings.wiki) settings.wiki = {};
+// { [channelId]: { content, lastEditor, updatedAt } }
 saveSettings(settings);
 
 if (!BOT_TOKEN || !API_URL || !WS_URL) {
@@ -325,6 +332,20 @@ const COMMANDS = {
       "",
       "**Транскрипция:**",
       `\`${PREFIX}transcribe <message_id>\` — распознать голосовое`,
+      "",
+      "**Тикеты:**",
+      `\`${PREFIX}ticket create [тема]\` — создать тикет`,
+      `\`${PREFIX}ticket close <N>\` / \`list\``,
+      "",
+      "**Напоминания:**",
+      `\`${PREFIX}remind <время> <текст>\` — создать (10m, 1h, 2d)`,
+      `\`${PREFIX}reminders\` — мои напоминания`,
+      "",
+      "**Саундборд:**",
+      `\`${PREFIX}sound add "Название" <url>\` / \`list\` / \`play <имя>\``,
+      "",
+      "**Wiki:**",
+      `\`${PREFIX}wiki show\` / \`set <текст>\` / \`append <текст>\` / \`clear\``,
     ].join("\n");
     await sendMessage(msg.channel, text);
   },
@@ -1903,7 +1924,251 @@ const COMMANDS = {
       await sendMessage(msg.channel, safeErrorMessage(e));
     }
   },
+
+  // --- Tickets ---
+  async ticket(msg, args) {
+    const sub = (args[0] || "").toLowerCase();
+
+    if (sub === "create" || !sub) {
+      const topic = args.slice(1).join(" ") || "Запрос поддержки";
+      const ticketId = settings.tickets.length + 1;
+
+      // Create a message thread for the ticket
+      const ticket = {
+        id: ticketId,
+        userId: msg.author,
+        channelId: msg.channel,
+        topic: sanitizeText(topic, 100),
+        createdAt: Date.now(),
+        status: "open",
+        messages: [],
+      };
+      settings.tickets.push(ticket);
+      saveSettings(settings);
+
+      await sendMessage(msg.channel, [
+        `🎫 **Тикет #${ticketId}** создан`,
+        `Тема: **${ticket.topic}**`,
+        `Автор: <@${msg.author}>`,
+        `Статус: 🟢 Открыт`,
+        "",
+        `Отвечайте в этом канале. Закрыть: \`!ticket close ${ticketId}\``,
+      ].join("\n"));
+      auditLog("🎫", `Тикет #${ticketId} создан <@${msg.author}>: ${ticket.topic}`);
+
+    } else if (sub === "close") {
+      const ticketId = parseInt(args[1]);
+      const ticket = settings.tickets.find((t) => t.id === ticketId);
+      if (!ticket) return sendMessage(msg.channel, "Тикет не найден.");
+      if (ticket.status === "closed") return sendMessage(msg.channel, "Тикет уже закрыт.");
+
+      ticket.status = "closed";
+      ticket.closedAt = Date.now();
+      ticket.closedBy = msg.author;
+      saveSettings(settings);
+
+      await sendMessage(msg.channel, [
+        `🎫 **Тикет #${ticketId}** закрыт`,
+        `Тема: ${ticket.topic}`,
+        `Закрыл: <@${msg.author}>`,
+        `Был открыт: ${Math.round((Date.now() - ticket.createdAt) / 60000)} мин`,
+      ].join("\n"));
+      auditLog("🎫", `Тикет #${ticketId} закрыт <@${msg.author}>`);
+
+    } else if (sub === "list") {
+      const open = settings.tickets.filter((t) => t.status === "open");
+      if (!open.length) return sendMessage(msg.channel, "Нет открытых тикетов.");
+      const lines = open.map((t) =>
+        `#${t.id} — **${t.topic}** от <@${t.userId}> (${new Date(t.createdAt).toLocaleDateString("ru-RU")})`
+      );
+      return sendMessage(msg.channel, `**🎫 Открытые тикеты (${open.length}):**\n${lines.join("\n")}`);
+
+    } else {
+      return sendMessage(msg.channel, "Подкоманды: `create [тема]`, `close <N>`, `list`");
+    }
+  },
+
+  // --- Reminders ---
+  async remind(msg, args) {
+    if (!args.length) return sendMessage(msg.channel, "Формат: `!remind <время> <текст>`\nВремя: `10m`, `1h`, `2d`");
+
+    const timeStr = args[0];
+    const match = timeStr.match(/^(\d+)(m|h|d)$/);
+    if (!match) return sendMessage(msg.channel, "Формат времени: `10m`, `1h`, `2d`");
+
+    const amount = parseInt(match[1]);
+    const unit = match[2];
+    const ms = amount * (unit === "m" ? 60000 : unit === "h" ? 3600000 : 86400000);
+    if (ms > 30 * 86400000) return sendMessage(msg.channel, "Максимум 30 дней.");
+
+    const text = args.slice(1).join(" ") || "Напоминание!";
+    const fireAt = Date.now() + ms;
+    const reminderId = `r-${Date.now()}`;
+
+    settings.reminders.push({
+      id: reminderId,
+      userId: msg.author,
+      channelId: msg.channel,
+      text: sanitizeText(text, 200),
+      fireAt,
+      fired: false,
+    });
+    saveSettings(settings);
+
+    // Schedule
+    setTimeout(() => fireReminder(reminderId), ms);
+
+    const timeLabel = unit === "m" ? `${amount} мин` : unit === "h" ? `${amount} ч` : `${amount} д`;
+    await sendMessage(msg.channel, `⏰ Напоминание через **${timeLabel}**: ${sanitizeText(text, 100)}`);
+  },
+
+  async reminders(msg) {
+    const mine = settings.reminders.filter((r) => r.userId === msg.author && !r.fired);
+    if (!mine.length) return sendMessage(msg.channel, "У вас нет активных напоминаний.");
+    const lines = mine.map((r) =>
+      `- ${r.text} — ${new Date(r.fireAt).toLocaleString("ru-RU")}`
+    );
+    return sendMessage(msg.channel, `**⏰ Ваши напоминания:**\n${lines.join("\n")}`);
+  },
+
+  // --- Soundboard ---
+  async sound(msg, args) {
+    const sub = (args[0] || "").toLowerCase();
+
+    if (sub === "add") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      const raw = args.slice(1).join(" ");
+      const nameMatch = raw.match(/"([^"]+)"/);
+      if (!nameMatch) return sendMessage(msg.channel, 'Формат: `!sound add "Название" <url>`');
+      const name = nameMatch[1];
+      const url = raw.slice(raw.indexOf(nameMatch[0]) + nameMatch[0].length).trim();
+      if (!url || !url.startsWith("http")) return sendMessage(msg.channel, "Укажите URL аудио.");
+
+      const soundId = `snd-${Date.now()}`;
+      settings.sounds.push({ id: soundId, name, url, author: msg.author });
+      saveSettings(settings);
+      await sendMessage(msg.channel, `🔊 Звук **${name}** добавлен!`);
+
+    } else if (sub === "list") {
+      if (!settings.sounds.length) return sendMessage(msg.channel, "Библиотека звуков пуста.");
+      const lines = settings.sounds.map((s) => `- **${s.name}** (\`${s.id}\`)`);
+      return sendMessage(msg.channel, `**🔊 Саундборд (${settings.sounds.length}):**\n${lines.join("\n")}`);
+
+    } else if (sub === "play") {
+      const nameOrId = args.slice(1).join(" ");
+      if (!nameOrId) return sendMessage(msg.channel, "Укажите звук: `!sound play <имя>`");
+      const sound = settings.sounds.find(
+        (s) => s.id === nameOrId || s.name.toLowerCase() === nameOrId.toLowerCase()
+      );
+      if (!sound) return sendMessage(msg.channel, "Звук не найден. Список: `!sound list`");
+      // Send as audio embed
+      await sendMessage(msg.channel, `🔊 **${sound.name}**\n[Воспроизвести](${sound.url})`);
+
+    } else if (sub === "remove") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      const soundId = args[1];
+      settings.sounds = settings.sounds.filter((s) => s.id !== soundId);
+      saveSettings(settings);
+      return sendMessage(msg.channel, "Звук удалён.");
+
+    } else {
+      return sendMessage(msg.channel, "Подкоманды: `add \"Название\" <url>`, `list`, `play <имя>`, `remove <id>`");
+    }
+  },
+
+  // --- Wiki / Canvas ---
+  async wiki(msg, args) {
+    const sub = (args[0] || "").toLowerCase();
+    const channelId = msg.channel;
+
+    if (sub === "show" || !sub) {
+      const page = settings.wiki[channelId];
+      if (!page) return sendMessage(channelId, "📝 Wiki-страница не создана. Создайте: `!wiki set <текст>`");
+      return sendMessage(channelId, [
+        `📝 **Wiki канала**`,
+        "",
+        page.content,
+        "",
+        `_Обновлено: ${new Date(page.updatedAt).toLocaleString("ru-RU")} — <@${page.lastEditor}>_`,
+      ].join("\n"));
+
+    } else if (sub === "set") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      const content = args.slice(1).join(" ");
+      if (!content) return sendMessage(msg.channel, "Формат: `!wiki set <текст wiki>`");
+
+      settings.wiki[channelId] = {
+        content: sanitizeText(content, 2000),
+        lastEditor: msg.author,
+        updatedAt: Date.now(),
+      };
+      saveSettings(settings);
+      await sendMessage(channelId, "📝 Wiki-страница обновлена!");
+      auditLog("📝", `Wiki обновлена в <#${channelId}> — <@${msg.author}>`);
+
+    } else if (sub === "append") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      const addition = args.slice(1).join(" ");
+      if (!addition) return sendMessage(msg.channel, "Формат: `!wiki append <текст>`");
+
+      if (!settings.wiki[channelId]) {
+        settings.wiki[channelId] = { content: "", lastEditor: msg.author, updatedAt: Date.now() };
+      }
+      settings.wiki[channelId].content += "\n" + sanitizeText(addition, 2000);
+      settings.wiki[channelId].lastEditor = msg.author;
+      settings.wiki[channelId].updatedAt = Date.now();
+      saveSettings(settings);
+      await sendMessage(channelId, "📝 Wiki дополнена!");
+
+    } else if (sub === "clear") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      delete settings.wiki[channelId];
+      saveSettings(settings);
+      return sendMessage(channelId, "Wiki-страница удалена.");
+
+    } else {
+      return sendMessage(msg.channel, "Подкоманды: `show`, `set <текст>`, `append <текст>`, `clear`");
+    }
+  },
 };
+
+// --- Reminder fire logic ---
+async function fireReminder(reminderId) {
+  const reminder = settings.reminders.find((r) => r.id === reminderId);
+  if (!reminder || reminder.fired) return;
+
+  reminder.fired = true;
+  saveSettings(settings);
+
+  try {
+    await sendMessage(reminder.channelId, `⏰ <@${reminder.userId}> Напоминание: **${reminder.text}**`);
+  } catch (e) {
+    console.error("[REMIND] Error:", e.message);
+  }
+}
+
+// Restore reminder timers on startup
+function restoreReminderTimers() {
+  for (const r of settings.reminders) {
+    if (r.fired) continue;
+    const remaining = r.fireAt - Date.now();
+    if (remaining <= 0) {
+      fireReminder(r.id);
+    } else {
+      setTimeout(() => fireReminder(r.id), remaining);
+    }
+  }
+}
 
 // --- Auto-translate message handler ---
 async function autoTranslateCheck(data) {
@@ -2528,4 +2793,5 @@ function connect() {
 // --- Start ---
 console.log("[BOT] PLG Voice Admin Bot starting...");
 restoreGiveawayTimers();
+restoreReminderTimers();
 connect();
