@@ -1,6 +1,6 @@
 import { Show } from "solid-js";
 
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { Server } from "stoat.js";
 import { css } from "styled-system/css";
 
@@ -104,6 +104,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
    * @returns List
    */
   list() {
+    const { t } = useLingui();
     const { pop } = useModals();
     const { logout } = useClientLifecycle();
 
@@ -147,7 +148,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
       ),
       entries: [
         {
-          title: <Trans>User Settings</Trans>,
+          title: t`Настройки пользователя`,
           entries: [
             {
               id: "account",
@@ -158,12 +159,12 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             {
               id: "profile",
               icon: <MdAccountCircle {...iconSize(20)} />,
-              title: <Trans>Profile</Trans>,
+              title: t`Профиль`,
             },
             {
               id: "sessions",
               icon: <MdVerifiedUser {...iconSize(20)} />,
-              title: <Trans>Sessions</Trans>,
+              title: t`Сессии`,
             },
           ],
         },
@@ -173,28 +174,28 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             {
               id: "bots",
               icon: <MdSmartToy {...iconSize(20)} />,
-              title: <Trans>My Bots</Trans>,
+              title: t`Мои боты`,
             },
             {
               id: "feedback",
               icon: <MdRateReview {...iconSize(20)} />,
-              title: <Trans>Feedback</Trans>,
+              title: t`Обратная связь`,
             },
           ],
         },
         {
-          title: <Trans>Subscriptions</Trans>,
+          title: t`Подписки`,
           hidden: false,
           entries: [
             {
               id: "subscribe",
               icon: <MdWorkspacePremium {...iconSize(20)} />,
-              title: <Trans>Premium</Trans>,
+              title: t`Премиум`,
             },
           ],
         },
         {
-          title: <Trans>Client Settings</Trans>,
+          title: t`Настройки клиента`,
           entries: [
             // {
             //   id: "audio",
@@ -206,12 +207,12 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             {
               id: "voice",
               icon: <MdMic {...iconSize(20)} />,
-              title: <Trans>Voice</Trans>,
+              title: t`Голос`,
             },
             {
               id: "appearance",
               icon: <MdPalette {...iconSize(20)} />,
-              title: <Trans>Appearance</Trans>,
+              title: t`Внешний вид`,
             },
             // {
             //   id: "accessibility",
@@ -237,7 +238,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             {
               id: "language",
               icon: <MdLanguage {...iconSize(20)} />,
-              title: <Trans>Language</Trans>,
+              title: t`Язык`,
             },
             // {
             //   id: "sync",
@@ -248,7 +249,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               id: "native",
               hidden: !window.native,
               icon: <Symbol size={20}>desktop_windows</Symbol>,
-              title: <Trans>Desktop</Trans>,
+              title: t`Рабочий стол`,
             },
             // {
             //   id: "experiments",
@@ -269,23 +270,19 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               id: "advanced",
               hidden: true,
               icon: <MdMemory {...iconSize(20)} />,
-              title: <Trans>Source Code</Trans>,
+              title: t`Исходный код`,
             },
             {
               id: "advanced",
               icon: <MdScience {...iconSize(20)} />,
-              title: <Trans>Advanced</Trans>,
+              title: t`Расширенные`,
             },
             {
               id: "logout",
               icon: (
                 <MdLogout {...iconSize(20)} fill="var(--md-sys-color-error)" />
               ),
-              title: (
-                <ColouredText colour="var(--md-sys-color-error)">
-                  <Trans>Log Out</Trans>
-                </ColouredText>
-              ),
+              title: t`Выйти`,
               onClick() {
                 pop();
                 logout();

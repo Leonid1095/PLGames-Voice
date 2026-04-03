@@ -4766,3 +4766,111 @@ msgstr "Копировать"
 #: src/interface/navigation/channels/HomeSidebar.tsx
 msgid "Saved Messages"
 msgstr "Сохранённые"
+
+#: components/app/interface/settings/ServerSettings.tsx
+msgid "Обзор"
+msgstr "Обзор"
+
+msgid "Приветствия и роли"
+msgstr "Приветствия и роли"
+
+msgid "XP и уровни"
+msgstr "XP и уровни"
+
+msgid "Кастомизация"
+msgstr "Кастомизация"
+
+msgid "Эмодзи"
+msgstr "Эмодзи"
+
+msgid "Управление"
+msgstr "Управление"
+
+msgid "Участники"
+msgstr "Участники"
+
+msgid "Роли"
+msgstr "Роли"
+
+msgid "Приглашения"
+msgstr "Приглашения"
+
+msgid "Баны"
+msgstr "Баны"
+
+msgid "События"
+msgstr "События"
+
+msgid "Формы"
+msgstr "Формы"
+
+msgid "Розыгрыши"
+msgstr "Розыгрыши"
+
+msgid "Роли по реакции"
+msgstr "Роли по реакции"
+
+msgid "Автомодерация"
+msgstr "Автомодерация"
+
+msgid "Аналитика"
+msgstr "Аналитика"
+
+msgid "Аудит-лог"
+msgstr "Аудит-лог"
+
+msgid "Удалить сервер"
+msgstr "Удалить сервер"
+
+#: components/app/interface/settings/UserSettings.tsx
+msgid "Настройки пользователя"
+msgstr "Настройки пользователя"
+
+msgid "Профиль"
+msgstr "Профиль"
+
+msgid "Сессии"
+msgstr "Сессии"
+
+msgid "Мои боты"
+msgstr "Мои боты"
+
+msgid "Обратная связь"
+msgstr "Обратная связь"
+
+msgid "Подписки"
+msgstr "Подписки"
+
+msgid "Премиум"
+msgstr "Премиум"
+
+msgid "Настройки клиента"
+msgstr "Настройки клиента"
+
+msgid "Голос"
+msgstr "Голос"
+
+msgid "Внешний вид"
+msgstr "Внешний вид"
+
+msgid "Язык"
+msgstr "Язык"
+
+msgid "Рабочий стол"
+msgstr "Рабочий стол"
+
+msgid "Исходный код"
+msgstr "Исходный код"
+
+msgid "Расширенные"
+msgstr "Расширенные"
+
+msgid "Выйти"
+msgstr "Выйти"
+
+#: components/app/interface/settings/ChannelSettings.tsx
+msgid "Права доступа"
+msgstr "Права доступа"
+
+msgid "Вебхуки"
+msgstr "Вебхуки"

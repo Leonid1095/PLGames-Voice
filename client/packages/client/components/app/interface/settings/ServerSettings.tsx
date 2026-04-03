@@ -118,6 +118,7 @@ const Config: SettingsConfiguration<Server> = {
    * @returns List
    */
   list(server) {
+    const { t } = useLingui();
     const user = useUser();
     const { openModal } = useModals();
 
@@ -130,30 +131,30 @@ const Config: SettingsConfiguration<Server> = {
             {
               id: "overview",
               icon: <BiSolidInfoCircle size={20} />,
-              title: <Trans>Overview</Trans>,
+              title: t`Обзор`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "welcome",
               icon: <BiSolidEnvelope size={20} />,
-              title: <Trans>Welcome & Roles</Trans>,
+              title: t`Приветствия и роли`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "leveling",
               icon: <BiSolidFlagAlt size={20} />,
-              title: <Trans>XP & Leveling</Trans>,
+              title: t`XP и уровни`,
             },
           ],
         },
         {
           hidden: !server.havePermission("ManageCustomisation"),
-          title: <Trans>Customisation</Trans>,
+          title: t`Кастомизация`,
           entries: [
             {
               id: "emojis",
               icon: <BiSolidHappyBeaming size={20} />,
-              title: <Trans>Emojis</Trans>,
+              title: t`Эмодзи`,
             },
           ],
         },
@@ -161,13 +162,13 @@ const Config: SettingsConfiguration<Server> = {
           hidden:
             !server.havePermission("ManageServer") &&
             !server.havePermission("BanMembers"),
-          title: <Trans>User Management</Trans>,
+          title: t`Управление`,
           entries: [
             {
               hidden: true,
               id: "members",
               icon: <BiSolidGroup size={20} />,
-              title: <Trans>Members</Trans>,
+              title: t`Участники`,
             },
             {
               hidden: !(
@@ -176,61 +177,61 @@ const Config: SettingsConfiguration<Server> = {
               ),
               id: "roles",
               icon: <BiSolidFlagAlt size={20} />,
-              title: <Trans>Roles</Trans>,
+              title: t`Роли`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "invites",
               icon: <BiSolidEnvelope size={20} />,
-              title: <Trans>Invites</Trans>,
+              title: t`Приглашения`,
             },
             {
               hidden: !server.havePermission("BanMembers"),
               id: "bans",
               icon: <BiSolidUserX size={20} />,
-              title: <Trans>Bans</Trans>,
+              title: t`Баны`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "events",
               icon: <BiSolidInfoCircle size={20} />,
-              title: <Trans>Events</Trans>,
+              title: t`События`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "forms",
               icon: <BiSolidEnvelope size={20} />,
-              title: <Trans>Forms</Trans>,
+              title: t`Формы`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "giveaways",
               icon: <BiSolidFlagAlt size={20} />,
-              title: <Trans>Giveaways</Trans>,
+              title: t`Розыгрыши`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "reaction-roles",
               icon: <BiSolidHappyBeaming size={20} />,
-              title: <Trans>Reaction Roles</Trans>,
+              title: t`Роли по реакции`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "automod",
               icon: <BiSolidShield size={20} />,
-              title: <Trans>Automod & Starboard</Trans>,
+              title: t`Автомодерация`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "analytics",
               icon: <BiSolidInfoCircle size={20} />,
-              title: <Trans>Analytics</Trans>,
+              title: t`Аналитика`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "audit-log",
               icon: <BiSolidShield size={20} />,
-              title: <Trans>Audit Log</Trans>,
+              title: t`Аудит-лог`,
             },
           ],
         },
@@ -241,11 +242,7 @@ const Config: SettingsConfiguration<Server> = {
               icon: (
                 <BiSolidTrash size={20} color="var(--md-sys-color-error)" />
               ),
-              title: (
-                <ColouredText colour="var(--md-sys-color-error)">
-                  <Trans>Delete Server</Trans>
-                </ColouredText>
-              ),
+              title: t`Удалить сервер`,
               /**
                * Handle server deletion request
                */
