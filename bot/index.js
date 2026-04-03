@@ -281,6 +281,19 @@ const COMMANDS = {
       `\`${PREFIX}event create "Название" ГГГГ-ММ-ДД ЧЧ:ММ [описание]\``,
       `\`${PREFIX}event list\` — предстоящие`,
       `\`${PREFIX}event cancel <N>\` — отменить`,
+      "",
+      "**Формы заявок:**",
+      `\`${PREFIX}form create "Название" "Вопрос 1" "Вопрос 2"\` — создать`,
+      `\`${PREFIX}apply <form_id> Ответ1 | Ответ2\` — подать заявку`,
+      `\`${PREFIX}form submissions <form_id>\` — просмотр заявок`,
+      `\`${PREFIX}form accept/reject <form_id> <N>\``,
+      "",
+      "**Турниры:**",
+      `\`${PREFIX}tournament create "Название" [single|double]\``,
+      `\`${PREFIX}tournament join/start/result/bracket/list\``,
+      "",
+      "**Аналитика:**",
+      `\`${PREFIX}stats\` — статистика сервера`,
     ].join("\n");
     await sendMessage(msg.channel, text);
   },
@@ -1156,6 +1169,433 @@ const COMMANDS = {
 
     } else {
       return sendMessage(msg.channel, "Подкоманды: `create \"Название\" ГГГГ-ММ-ДД ЧЧ:ММ [описание]`, `list`, `cancel <N>`");
+    }
+  },
+
+  // --- Forms / Applications ---
+  async form(msg, args) {
+    if (!settings.forms) settings.forms = [];
+    const sub = (args[0] || "").toLowerCase();
+
+    if (sub === "create") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      // !form create "Заявка на модератора" "Имя" "Возраст" "Опыт" "Почему хотите стать модератором?"
+      const raw = args.slice(1).join(" ");
+      const parts = [];
+      const regex = /"([^"]+)"/g;
+      let m;
+      while ((m = regex.exec(raw)) !== null) parts.push(m[1]);
+
+      if (parts.length < 2) {
+        return sendMessage(msg.channel, 'Формат: `!form create "Название формы" "Вопрос 1" "Вопрос 2" ...`');
+      }
+
+      const title = parts[0];
+      const questions = parts.slice(1);
+      const formId = `form-${Date.now()}`;
+
+      const form = {
+        id: formId,
+        title,
+        questions,
+        channelId: msg.channel,
+        author: msg.author,
+        submissions: [],
+      };
+      settings.forms.push(form);
+      saveSettings(settings);
+
+      const text = [
+        `📋 **${sanitizeText(title, 100)}**`,
+        "",
+        ...questions.map((q, i) => `${i + 1}. ${q}`),
+        "",
+        `Чтобы подать заявку, напишите: \`!apply ${formId}\``,
+      ].join("\n");
+
+      await sendMessage(msg.channel, text);
+      auditLog("📋", `Форма **${title}** создана <@${msg.author}>`);
+
+    } else if (sub === "list") {
+      if (!settings.forms.length) return sendMessage(msg.channel, "Нет активных форм.");
+      const lines = settings.forms.map((f, i) =>
+        `${i + 1}. **${f.title}** — ${f.submissions.length} заявок (ID: \`${f.id}\`)`
+      );
+      return sendMessage(msg.channel, `**📋 Формы:**\n${lines.join("\n")}`);
+
+    } else if (sub === "submissions") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      const formId = args[1];
+      const form = settings.forms.find((f) => f.id === formId);
+      if (!form) return sendMessage(msg.channel, "Форма не найдена. Используйте `!form list`");
+
+      const pending = form.submissions.filter((s) => s.status === "pending");
+      if (!pending.length) return sendMessage(msg.channel, "Нет новых заявок.");
+
+      for (const sub of pending.slice(0, 5)) {
+        const answers = sub.answers.map((a, i) => `**${form.questions[i]}**\n> ${a}`);
+        await sendMessage(msg.channel, [
+          `📋 **Заявка #${sub.id}** от <@${sub.userId}>`,
+          "",
+          ...answers,
+          "",
+          `Принять: \`!form accept ${formId} ${sub.id}\``,
+          `Отклонить: \`!form reject ${formId} ${sub.id}\``,
+        ].join("\n"));
+      }
+      if (pending.length > 5) {
+        await sendMessage(msg.channel, `... и ещё ${pending.length - 5} заявок.`);
+      }
+
+    } else if (sub === "accept" || sub === "reject") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      const formId = args[1];
+      const subId = parseInt(args[2]);
+      const form = settings.forms.find((f) => f.id === formId);
+      if (!form) return sendMessage(msg.channel, "Форма не найдена.");
+      const submission = form.submissions.find((s) => s.id === subId);
+      if (!submission) return sendMessage(msg.channel, "Заявка не найдена.");
+
+      const status = sub === "accept" ? "accepted" : "rejected";
+      const statusRu = sub === "accept" ? "✅ принята" : "❌ отклонена";
+      submission.status = status;
+      saveSettings(settings);
+
+      await sendMessage(msg.channel, `Заявка #${subId} от <@${submission.userId}> — **${statusRu}**`);
+
+      // DM the applicant
+      try {
+        const dm = await api("GET", `/users/${submission.userId}/dm`);
+        await sendMessage(dm._id, `Ваша заявка **${form.title}** — ${statusRu}`);
+      } catch {}
+
+      auditLog("📋", `Заявка #${subId} (${form.title}) ${statusRu} — <@${msg.author}>`);
+
+    } else if (sub === "delete") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      const formId = args[1];
+      settings.forms = settings.forms.filter((f) => f.id !== formId);
+      saveSettings(settings);
+      return sendMessage(msg.channel, "Форма удалена.");
+
+    } else {
+      return sendMessage(msg.channel, "Подкоманды: `create`, `list`, `submissions <form_id>`, `accept/reject <form_id> <N>`, `delete <form_id>`");
+    }
+  },
+
+  // !apply <form_id> — submit application via DM questions
+  async apply(msg, args) {
+    const formId = args[0];
+    if (!formId) return sendMessage(msg.channel, "Укажите ID формы. Список: `!form list`");
+
+    const form = settings.forms?.find((f) => f.id === formId);
+    if (!form) return sendMessage(msg.channel, "Форма не найдена.");
+
+    // Check if already submitted
+    if (form.submissions.some((s) => s.userId === msg.author && s.status === "pending")) {
+      return sendMessage(msg.channel, "Вы уже подали заявку. Ожидайте рассмотрения.");
+    }
+
+    // Simple single-message application: user provides answers separated by |
+    const raw = args.slice(1).join(" ");
+    const answers = raw.split("|").map((a) => a.trim());
+
+    if (answers.length < form.questions.length || !raw) {
+      const qList = form.questions.map((q, i) => `${i + 1}. ${q}`).join("\n");
+      return sendMessage(msg.channel, [
+        `📋 **${form.title}**`,
+        "",
+        qList,
+        "",
+        `Ответьте одним сообщением, разделяя ответы символом \`|\`:`,
+        `\`!apply ${formId} Ответ 1 | Ответ 2 | Ответ 3\``,
+      ].join("\n"));
+    }
+
+    const subId = (form.submissions.length || 0) + 1;
+    form.submissions.push({
+      id: subId,
+      userId: msg.author,
+      answers: answers.slice(0, form.questions.length),
+      status: "pending",
+      timestamp: Date.now(),
+    });
+    saveSettings(settings);
+
+    await sendMessage(msg.channel, `✅ Заявка **${form.title}** отправлена! Номер: #${subId}`);
+    auditLog("📋", `Новая заявка **${form.title}** #${subId} от <@${msg.author}>`);
+  },
+
+  // --- Server Stats / Analytics ---
+  async stats(msg) {
+    if (!SERVER_ID) return sendMessage(msg.channel, "SERVER_ID не настроен.");
+    try {
+      const server = await api("GET", `/servers/${SERVER_ID}`);
+      const members = await api("GET", `/servers/${SERVER_ID}/members`);
+      const rooms = await roomService.listRooms();
+      const activeRooms = rooms.filter((r) => r.numParticipants > 0);
+      const totalVoiceUsers = activeRooms.reduce((sum, r) => sum + r.numParticipants, 0);
+
+      // XP stats
+      const lvl = settings.levels || {};
+      const xpUsers = Object.keys(lvl.users || {}).length;
+      const totalXp = Object.values(lvl.users || {}).reduce((sum, u) => sum + ((u as any).xp || 0), 0);
+      const topUser = Object.entries(lvl.users || {})
+        .sort((a, b) => (b[1] as any).xp - (a[1] as any).xp)[0];
+
+      // Event stats
+      const upcomingEvents = (settings.events || []).filter((e) => new Date(e.date).getTime() > Date.now()).length;
+
+      // Giveaway stats
+      const activeGiveaways = (settings.giveaways || []).filter((g) => !g.ended).length;
+
+      // Forms stats
+      const pendingApps = (settings.forms || []).reduce((sum, f) =>
+        sum + f.submissions.filter((s) => s.status === "pending").length, 0);
+
+      const text = [
+        `📊 **Статистика сервера: ${server.name}**`,
+        "",
+        `👥 **Участники:** ${members.members.length}`,
+        `📢 **Каналы:** ${server.channels.length}`,
+        `🎤 **В голосе:** ${totalVoiceUsers} (${activeRooms.length} комнат)`,
+        "",
+        `⭐ **XP система:**`,
+        `   Участников с XP: ${xpUsers}`,
+        `   Всего XP: ${totalXp}`,
+        topUser ? `   Лидер: <@${topUser[0]}> (${(topUser[1] as any).xp} XP, ур. ${(topUser[1] as any).level})` : "",
+        "",
+        `📅 Предстоящих событий: ${upcomingEvents}`,
+        `🎉 Активных розыгрышей: ${activeGiveaways}`,
+        `📋 Заявок на рассмотрении: ${pendingApps}`,
+        `⭐ Reaction Roles: ${(settings.reactionRoles || []).length}`,
+      ].filter(Boolean).join("\n");
+
+      await sendMessage(msg.channel, text);
+    } catch (e) {
+      await sendMessage(msg.channel, safeErrorMessage(e));
+    }
+  },
+
+  // --- Tournament brackets ---
+  async tournament(msg, args) {
+    if (!settings.tournaments) settings.tournaments = [];
+    const sub = (args[0] || "").toLowerCase();
+
+    if (sub === "create") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      // !tournament create "Турнир по CS2" single
+      const raw = args.slice(1).join(" ");
+      const nameMatch = raw.match(/"([^"]+)"/);
+      if (!nameMatch) return sendMessage(msg.channel, 'Формат: `!tournament create "Название" [single|double]`');
+
+      const name = nameMatch[1];
+      const format = raw.includes("double") ? "double" : "single";
+      const tId = `t-${Date.now()}`;
+
+      const tournament = {
+        id: tId,
+        name,
+        format,
+        channelId: msg.channel,
+        author: msg.author,
+        status: "registration", // registration → active → finished
+        participants: [],
+        matches: [],
+        round: 0,
+      };
+      settings.tournaments.push(tournament);
+      saveSettings(settings);
+
+      const text = [
+        `🏆 **Турнир: ${sanitizeText(name, 100)}**`,
+        `Формат: **${format === "double" ? "Double Elimination" : "Single Elimination"}**`,
+        `Статус: 📝 Регистрация открыта`,
+        "",
+        `Чтобы участвовать: \`!tournament join ${tId}\``,
+        `Начать: \`!tournament start ${tId}\``,
+      ].join("\n");
+
+      await sendMessage(msg.channel, text);
+      auditLog("🏆", `Турнир **${name}** создан <@${msg.author}>`);
+
+    } else if (sub === "join") {
+      const tId = args[1];
+      const t = settings.tournaments.find((t) => t.id === tId);
+      if (!t) return sendMessage(msg.channel, "Турнир не найден.");
+      if (t.status !== "registration") return sendMessage(msg.channel, "Регистрация закрыта.");
+      if (t.participants.includes(msg.author)) return sendMessage(msg.channel, "Вы уже зарегистрированы.");
+
+      t.participants.push(msg.author);
+      saveSettings(settings);
+      await sendMessage(msg.channel, `✅ <@${msg.author}> зарегистрирован! Участников: **${t.participants.length}**`);
+
+    } else if (sub === "start") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      const tId = args[1];
+      const t = settings.tournaments.find((t) => t.id === tId);
+      if (!t) return sendMessage(msg.channel, "Турнир не найден.");
+      if (t.participants.length < 2) return sendMessage(msg.channel, "Нужно минимум 2 участника.");
+      if (t.status !== "registration") return sendMessage(msg.channel, "Турнир уже начат.");
+
+      t.status = "active";
+      t.round = 1;
+
+      // Shuffle participants
+      const shuffled = [...t.participants].sort(() => Math.random() - 0.5);
+
+      // Generate round 1 matches
+      const matches = [];
+      for (let i = 0; i < shuffled.length; i += 2) {
+        const matchId = matches.length + 1;
+        if (i + 1 < shuffled.length) {
+          matches.push({
+            id: matchId,
+            round: 1,
+            player1: shuffled[i],
+            player2: shuffled[i + 1],
+            winner: null,
+            score: "",
+          });
+        } else {
+          // Bye — auto-advance
+          matches.push({
+            id: matchId,
+            round: 1,
+            player1: shuffled[i],
+            player2: null,
+            winner: shuffled[i],
+            score: "bye",
+          });
+        }
+      }
+      t.matches = matches;
+      saveSettings(settings);
+
+      const lines = matches.map((m) =>
+        m.player2
+          ? `⚔️ Матч #${m.id}: <@${m.player1}> vs <@${m.player2}>`
+          : `✅ Матч #${m.id}: <@${m.player1}> — bye (авто-проход)`
+      );
+
+      await sendMessage(msg.channel, [
+        `🏆 **${t.name} — Раунд ${t.round}**`,
+        `Участников: ${t.participants.length}`,
+        "",
+        ...lines,
+        "",
+        `Записать результат: \`!tournament result ${tId} <матч> <победитель_@>\``,
+      ].join("\n"));
+
+    } else if (sub === "result") {
+      if (!(await isAdmin(SERVER_ID, msg.author))) {
+        return sendMessage(msg.channel, "У вас нет прав для этой команды.");
+      }
+      const tId = args[1];
+      const matchId = parseInt(args[2]);
+      const winnerId = extractUserId(args[3]);
+      const t = settings.tournaments.find((t) => t.id === tId);
+      if (!t) return sendMessage(msg.channel, "Турнир не найден.");
+      if (t.status !== "active") return sendMessage(msg.channel, "Турнир не активен.");
+
+      const match = t.matches.find((m) => m.id === matchId);
+      if (!match) return sendMessage(msg.channel, "Матч не найден.");
+      if (!winnerId || (winnerId !== match.player1 && winnerId !== match.player2)) {
+        return sendMessage(msg.channel, "Победитель должен быть одним из участников матча.");
+      }
+
+      match.winner = winnerId;
+      match.score = args.slice(4).join(" ") || "1:0";
+      saveSettings(settings);
+
+      await sendMessage(msg.channel, `✅ Матч #${matchId}: победитель — <@${winnerId}> (${match.score})`);
+
+      // Check if all matches in current round are done
+      const currentRound = t.matches.filter((m) => m.round === t.round);
+      const allDone = currentRound.every((m) => m.winner);
+
+      if (allDone) {
+        const winners = currentRound.map((m) => m.winner);
+        if (winners.length <= 1) {
+          // Tournament finished
+          t.status = "finished";
+          saveSettings(settings);
+          await sendMessage(msg.channel, [
+            `🏆🏆🏆 **${t.name} — ЗАВЕРШЁН!**`,
+            `Победитель: <@${winners[0]}>! 🎉`,
+          ].join("\n"));
+          auditLog("🏆", `Турнир **${t.name}** завершён. Победитель: <@${winners[0]}>`);
+        } else {
+          // Generate next round
+          t.round++;
+          const nextMatches = [];
+          for (let i = 0; i < winners.length; i += 2) {
+            const mId = t.matches.length + nextMatches.length + 1;
+            if (i + 1 < winners.length) {
+              nextMatches.push({ id: mId, round: t.round, player1: winners[i], player2: winners[i + 1], winner: null, score: "" });
+            } else {
+              nextMatches.push({ id: mId, round: t.round, player1: winners[i], player2: null, winner: winners[i], score: "bye" });
+            }
+          }
+          t.matches.push(...nextMatches);
+          saveSettings(settings);
+
+          const lines = nextMatches.map((m) =>
+            m.player2
+              ? `⚔️ Матч #${m.id}: <@${m.player1}> vs <@${m.player2}>`
+              : `✅ Матч #${m.id}: <@${m.player1}> — bye`
+          );
+          await sendMessage(msg.channel, [
+            `🏆 **${t.name} — Раунд ${t.round}**`,
+            "",
+            ...lines,
+            "",
+            `Записать результат: \`!tournament result ${tId} <матч> <победитель_@>\``,
+          ].join("\n"));
+        }
+      }
+
+    } else if (sub === "bracket") {
+      const tId = args[1];
+      const t = settings.tournaments.find((t) => t.id === tId);
+      if (!t) return sendMessage(msg.channel, "Турнир не найден.");
+
+      const maxRound = Math.max(...t.matches.map((m) => m.round), 0);
+      const lines = [];
+      for (let r = 1; r <= maxRound; r++) {
+        lines.push(`**Раунд ${r}:**`);
+        const roundMatches = t.matches.filter((m) => m.round === r);
+        for (const m of roundMatches) {
+          const p1 = `<@${m.player1}>`;
+          const p2 = m.player2 ? `<@${m.player2}>` : "bye";
+          const result = m.winner ? ` → 🏆 <@${m.winner}> ${m.score}` : " ⏳";
+          lines.push(`  #${m.id}: ${p1} vs ${p2}${result}`);
+        }
+        lines.push("");
+      }
+      await sendMessage(msg.channel, `🏆 **${t.name}** (${t.status})\n\n${lines.join("\n")}`);
+
+    } else if (sub === "list") {
+      if (!settings.tournaments.length) return sendMessage(msg.channel, "Нет турниров.");
+      const lines = settings.tournaments.map((t) =>
+        `- **${t.name}** [${t.status}] ${t.participants.length} участников (ID: \`${t.id}\`)`
+      );
+      return sendMessage(msg.channel, `**🏆 Турниры:**\n${lines.join("\n")}`);
+
+    } else {
+      return sendMessage(msg.channel, "Подкоманды: `create`, `join`, `start`, `result`, `bracket`, `list`");
     }
   },
 };
