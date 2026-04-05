@@ -19,6 +19,14 @@ public_key = "${VAPID_PUBLIC_KEY}"
 [files]
 encryption_key = "${FILES_ENCRYPTION_KEY}"
 
+[files.s3]
+endpoint = "http://minio:9000"
+path_style_buckets = false
+region = "minio"
+access_key_id = "${MINIO_USER}"
+secret_access_key = "${MINIO_PASS}"
+default_bucket = "revolt-uploads"
+
 [rabbit]
 host = "rabbit"
 port = 5672
