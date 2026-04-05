@@ -564,7 +564,7 @@ const BtnMobileMenuPrimary = styled("a", {
 const DOWNLOAD_WIN =
   "https://github.com/Leonid1095/PLGames-Voice/releases/latest/download/plg-voice-desktop-setup.exe";
 const DOWNLOAD_LINUX =
-  "https://github.com/Leonid1095/PLGames-Voice/releases/latest/download/plg-voice-desktop_2.0.0_amd64.deb";
+  "https://github.com/Leonid1095/PLGames-Voice/releases/latest/download/PLG-Voice-linux-x64-2.0.0.zip";
 
 /* ── Landing page ──────────────────────────────────── */
 
