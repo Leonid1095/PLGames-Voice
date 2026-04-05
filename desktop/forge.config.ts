@@ -1,6 +1,5 @@
 import { MakerAppX } from "@electron-forge/maker-appx";
 import { MakerDeb } from "@electron-forge/maker-deb";
-import { MakerDMG } from "@electron-forge/maker-dmg";
 import { MakerFlatpak } from "@electron-forge/maker-flatpak";
 import { MakerFlatpakOptionsConfig } from "@electron-forge/maker-flatpak/dist/Config";
 import { MakerSquirrel } from "@electron-forge/maker-squirrel";
@@ -39,12 +38,20 @@ const makers: ForgeConfig["makers"] = [
     copyright: "Copyright (C) 2025 PLG Voice Team",
   }),
   new MakerZIP({}),
-  new MakerDMG({
-    name: "PLGVoice",
-    icon: `${ASSET_DIR}/icon.icns`,
-    format: "ULFO",
-  }),
 ];
+
+// DMG maker only works on macOS (appdmg is a native dependency)
+if (process.platform === "darwin") {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { MakerDMG } = require("@electron-forge/maker-dmg");
+  makers.push(
+    new MakerDMG({
+      name: "PLGVoice",
+      icon: `${ASSET_DIR}/icon.icns`,
+      format: "ULFO",
+    }),
+  );
+}
 
 // skip these makers in CI/CD
 if (!process.env.PLATFORM) {

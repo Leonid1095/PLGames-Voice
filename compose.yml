@@ -177,9 +177,8 @@ services:
     restart: always
 
   # File server
-  # NOTE: images from ghcr.io/stoatchat/* are pulled from upstream registry
   autumn:
-    image: ghcr.io/stoatchat/file-server:latest
+    image: plg-voice-autumn:latest
     depends_on:
       database:
         condition: service_healthy
@@ -196,9 +195,9 @@ services:
           memory: 512M
     restart: always
 
-  # Metadata and image proxy (upstream registry image)
+  # Metadata and image proxy
   january:
-    image: ghcr.io/stoatchat/proxy:latest
+    image: plg-voice-january:latest
     volumes:
       - type: bind
         source: ./Revolt.toml
@@ -210,9 +209,9 @@ services:
           memory: 256M
     restart: always
 
-  # Regular task daemon (upstream registry image)
+  # Regular task daemon
   crond:
-    image: ghcr.io/stoatchat/crond:latest
+    image: plg-voice-crond:latest
     depends_on:
       database:
         condition: service_healthy
@@ -229,9 +228,9 @@ services:
           memory: 256M
     restart: always
 
-  # Push notification daemon (upstream registry image)
+  # Push notification daemon
   pushd:
-    image: ghcr.io/stoatchat/pushd:latest
+    image: plg-voice-pushd:latest
     restart: always
     depends_on:
       database:
@@ -252,9 +251,9 @@ services:
         limits:
           memory: 256M
 
-  # Voice ingress daemon (upstream registry image)
+  # Voice ingress daemon
   voice-ingress:
-    image: ghcr.io/stoatchat/voice-ingress:latest
+    image: plg-voice-voice-ingress:latest
     restart: always
     depends_on:
       database:
@@ -275,9 +274,9 @@ services:
         limits:
           memory: 256M
 
-  # Voice server (upstream registry image)
+  # Voice server
   livekit:
-    image: ghcr.io/stoatchat/livekit-server:v1.9.6
+    image: plg-voice-livekit:v1.9.6
     command: --config /etc/livekit.yml
     volumes:
       - ./livekit.yml:/etc/livekit.yml:ro

@@ -44,5 +44,10 @@
   "fullScopeUrl": "https://plgames-voice.ru/",
   "minSdkVersion": 19,
   "orientation": "portrait",
-  "fingerprints": []
+  "fingerprints": [
+    {
+      "type": "sha256_cert",
+      "value": "E3:93:73:14:76:52:AB:08:6C:18:AE:A6:6F:8A:93:18:21:0C:F3:EC:B5:E0:E9:92:B5:06:84:86:3C:11:FC:D4"
+    }
+  ]
 }
