@@ -453,7 +453,7 @@ impl Settings {
 
 pub async fn init() {
     println!(
-        ":: Revolt Configuration ::\n\x1b[32m{:?}\x1b[0m",
+        ":: PLG Voice Configuration ::\n\x1b[32m{:?}\x1b[0m",
         config().await
     );
 }
@@ -472,7 +472,7 @@ pub async fn config() -> Settings {
     }
 
     // auto-detect production nodes
-    if config.hosts.api.contains("https") && config.hosts.api.contains("revolt.chat") {
+    if config.hosts.api.contains("https") && config.hosts.api.contains("plgames-voice.ru") {
         config.production = true;
     }
 

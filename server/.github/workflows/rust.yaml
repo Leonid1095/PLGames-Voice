@@ -64,7 +64,7 @@ jobs:
         if: github.event_name != 'pull_request' && github.ref_name == 'main'
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
-          repository: stoatchat/javascript-client-api
+          repository: Leonid1095/javascript-client-api
           path: api
           ssh-key: ${{ secrets.DEPLOY_KEY_JAVASCRIPT_CLIENT_API }}
 
@@ -78,6 +78,6 @@ jobs:
         with:
           cwd: "api"
           add: "*.json"
-          author_name: Stoat CI
-          author_email: stoat-ci@users.noreply.github.com
+          author_name: PLG Voice CI
+          author_email: plgvoice-ci@users.noreply.github.com
           message: "chore: generate OpenAPI specification"

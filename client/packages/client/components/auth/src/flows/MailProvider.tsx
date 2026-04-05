@@ -102,8 +102,6 @@ function mapMailProvider(email?: string): [string, string] | undefined {
     case "ro.ru":
     case "rambler.ua":
       return ["Rambler", "https://rambler.ru/"];
-    case "revolt.chat":
-    case "revolt.wtf":
     case "plgames-voice.ru":
       return ["PLG Voice Mail", ""];
     default:

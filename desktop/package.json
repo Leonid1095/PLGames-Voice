@@ -16,8 +16,8 @@
   },
   "keywords": [],
   "author": {
-    "name": "izzy",
-    "email": "me@insrt.uk"
+    "name": "PLG Games Team",
+    "email": "support@plgames-voice.ru"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.9.0",

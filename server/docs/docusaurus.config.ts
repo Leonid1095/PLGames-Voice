@@ -4,19 +4,19 @@ import type * as Preset from '@docusaurus/preset-classic';
 import type { ScalarOptions } from '@scalar/docusaurus';
 
 const config: Config = {
-  title: 'Stoat Developers',
-  tagline: 'Developer documentation for Stoat',
-  favicon: 'https://stoat.chat/favicon.svg',
+  title: 'PLG Voice Developers',
+  tagline: 'Developer documentation for PLG Voice',
+  favicon: 'https://plgames-voice.ru/favicon.svg',
 
   future: {
     v4: true,
   },
 
-  url: 'https://developers.stoat.chat',
-  baseUrl: '/',
+  url: 'https://plgames-voice.ru',
+  baseUrl: '/docs/',
 
-  organizationName: 'stoatchat',
-  projectName: 'stoatchat',
+  organizationName: 'Leonid1095',
+  projectName: 'PLGames-Voice',
 
   onBrokenLinks: 'throw',
 
@@ -33,7 +33,7 @@ const config: Config = {
           routeBasePath: '/',
           sidebarPath: './sidebars.ts',
           editUrl:
-            'https://github.com/stoatchat/stoatchat/tree/main/docs/',
+            'https://github.com/Leonid1095/PLGames-Voice/tree/main/server/docs/',
         },
       } satisfies Preset.Options,
     ],
@@ -47,7 +47,7 @@ const config: Config = {
         route: '/api-reference',
         showNavLink: true,
         configuration: {
-          url: 'https://stoat.chat/api/openapi.json',
+          url: 'https://plgames-voice.ru/api/openapi.json',
         },
       } as ScalarOptions,
     ],
@@ -56,7 +56,6 @@ const config: Config = {
       {
         fromExtensions: ['html', 'htm'],
         redirects: [
-          // legacy docs website (stoatchat/developer-wiki)
           {
             from: '/developers/api/reference.html',
             to: '/api-reference',
@@ -75,15 +74,14 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // image: 'img/docusaurus-social-card.jpg',
     colorMode: {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'Stoat Developers',
+      title: 'PLG Voice Developers',
       logo: {
-        alt: 'Stoat',
-        src: 'https://stoat.chat/favicon.svg',
+        alt: 'PLG Voice',
+        src: 'https://plgames-voice.ru/favicon.svg',
       },
       items: [
         {
@@ -92,7 +90,7 @@ const config: Config = {
           label: 'Docs'
         },
         {
-          href: 'https://github.com/stoatchat',
+          href: 'https://github.com/Leonid1095/PLGames-Voice',
           label: 'GitHub',
           position: 'right',
         },
@@ -106,71 +104,21 @@ const config: Config = {
           items: [
             {
               label: 'Source Code',
-              href: 'https://github.com/stoatchat'
-            },
-            {
-              label: 'Help Translate',
-              href: 'https://translate.stoat.chat'
+              href: 'https://github.com/Leonid1095/PLGames-Voice'
             },
           ],
         },
         {
-          title: 'Team',
+          title: 'PLG Voice',
           items: [
             {
-              label: 'About',
-              href: 'https://stoat.chat/about'
-            },
-            {
-              label: 'Blog and Changelogs',
-              href: 'https://stoat.chat/updates'
-            },
-            {
-              label: 'Contact',
-              href: 'https://support.stoat.chat'
-            },
-          ],
-        },
-        {
-          title: 'Stoat on Socials',
-          items: [
-            {
-              label: 'Bluesky',
-              href: 'https://bsky.app/profile/stoat.chat'
-            },
-            {
-              label: 'Reddit',
-              href: 'https://reddit.com/r/stoatchat'
-            },
-            {
-              label: 'Stoat Server',
-              href: 'https://stt.gg/Testers'
-            },
-          ],
-        },
-        {
-          title: 'Legal',
-          items: [
-            {
-              label: 'Community Guidelines',
-              href: 'https://stoat.chat/legal/community-guidelines'
-            },
-            {
-              label: 'Terms of Service',
-              href: 'https://stoat.chat/legal/terms'
-            },
-            {
-              label: 'Privacy Policy',
-              href: 'https://stoat.chat/legal/privacy'
-            },
-            {
-              label: 'Imprint',
-              href: 'https://stoat.chat/legal/imprint'
+              label: 'Website',
+              href: 'https://plgames-voice.ru'
             },
           ],
         },
       ],
-      copyright: `© Revolt Platforms Ltd, ${new Date().getFullYear()}`,
+      copyright: `PLG Voice, ${new Date().getFullYear()}`,
     },
     prism: {
       theme: prismThemes.github,

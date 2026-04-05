@@ -64,7 +64,7 @@ cat > .env <<EOF
 PLG_VOICE_HOST=$DOMAIN
 
 # MongoDB
-MONGO_USER=stoatadmin
+MONGO_USER=plgadmin
 MONGO_PASS=$MONGO_PASS
 
 # RabbitMQ

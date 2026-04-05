@@ -13,7 +13,7 @@ import { MailProvider } from "./MailProvider";
 /**
  * Keep track of email within the same session
  */
-let email = "postmaster@revolt.wtf";
+let email = "postmaster@plgames-voice.ru";
 
 /**
  * Persist email information temporarily

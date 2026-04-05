@@ -1,6 +1,25 @@
 // deno run -A lifecycle/migrateTranslations.ts
+//
+// NOTE: This script was a one-time migration tool used by the original upstream
+// project to convert JSON translations to gettext .po files. It references
+// hardcoded paths from the original developer's machine and is no longer
+// functional or needed. Kept for historical reference only.
+//
+// Original paths referenced (removed):
+//   /home/insert/Projects/revolt-translations/
+//   /home/insert/Projects/stoat-frontend/
+
 import { Languages } from "../packages/client/components/i18n/Languages.ts";
 
+console.warn(
+  "migrateTranslations.ts: This script is deprecated and no longer functional. " +
+  "Translation management is now handled via lingui extract/compile.",
+);
+
+// Script body commented out -- all paths were hardcoded to the original
+// developer's machine and are not applicable to this project.
+
+/*
 // 1. construct STRING -> OBJECT PATH mapping
 const source = JSON.parse(
   await Deno.readTextFile("/home/insert/Projects/revolt-translations/en.json"),
@@ -69,3 +88,4 @@ msgstr "${value}"`,
     source_gettext,
   );
 }
+*/

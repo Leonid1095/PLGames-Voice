@@ -1,4 +1,4 @@
-name: stoat
+name: plg-voice
 
 services:
   # MongoDB: Database
@@ -10,7 +10,7 @@ services:
     volumes:
       - ./data/db:/data/db
     environment:
-      MONGO_USER: ${MONGO_USER:-stoatadmin}
+      MONGO_USER: ${MONGO_USER:-plgadmin}
       MONGO_PASS: ${MONGO_PASS:?Set MONGO_PASS in .env}
     deploy:
       resources:
@@ -177,6 +177,7 @@ services:
     restart: always
 
   # File server
+  # NOTE: images from ghcr.io/stoatchat/* are pulled from upstream registry
   autumn:
     image: ghcr.io/stoatchat/file-server:latest
     depends_on:
@@ -195,7 +196,7 @@ services:
           memory: 512M
     restart: always
 
-  # Metadata and image proxy
+  # Metadata and image proxy (upstream registry image)
   january:
     image: ghcr.io/stoatchat/proxy:latest
     volumes:
@@ -209,7 +210,7 @@ services:
           memory: 256M
     restart: always
 
-  # Regular task daemon
+  # Regular task daemon (upstream registry image)
   crond:
     image: ghcr.io/stoatchat/crond:latest
     depends_on:
@@ -228,7 +229,7 @@ services:
           memory: 256M
     restart: always
 
-  # Push notification daemon
+  # Push notification daemon (upstream registry image)
   pushd:
     image: ghcr.io/stoatchat/pushd:latest
     restart: always
@@ -251,7 +252,7 @@ services:
         limits:
           memory: 256M
 
-  # Voice ingress daemon
+  # Voice ingress daemon (upstream registry image)
   voice-ingress:
     image: ghcr.io/stoatchat/voice-ingress:latest
     restart: always
@@ -274,6 +275,7 @@ services:
         limits:
           memory: 256M
 
+  # Voice server (upstream registry image)
   livekit:
     image: ghcr.io/stoatchat/livekit-server:v1.9.6
     command: --config /etc/livekit.yml

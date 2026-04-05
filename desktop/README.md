@@ -1,13 +1,13 @@
 <div align="center">
 <h1>
-  Stoat for Desktop
+  PLG Voice Desktop
   
-  [![Stars](https://img.shields.io/github/stars/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/stargazers)
-  [![Forks](https://img.shields.io/github/forks/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/network/members)
-  [![Pull Requests](https://img.shields.io/github/issues-pr/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/pulls)
-  [![Issues](https://img.shields.io/github/issues/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/issues)
-  [![Contributors](https://img.shields.io/github/contributors/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/graphs/contributors)
-  [![License](https://img.shields.io/github/license/stoatchat/for-desktop?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-desktop/blob/main/LICENSE)
+  [![Stars](https://img.shields.io/github/stars/Leonid1095/PLGames-Voice?style=flat-square&logoColor=white)](https://github.com/Leonid1095/PLGames-Voice/stargazers)
+  [![Forks](https://img.shields.io/github/forks/Leonid1095/PLGames-Voice?style=flat-square&logoColor=white)](https://github.com/Leonid1095/PLGames-Voice/network/members)
+  [![Pull Requests](https://img.shields.io/github/issues-pr/Leonid1095/PLGames-Voice?style=flat-square&logoColor=white)](https://github.com/Leonid1095/PLGames-Voice/pulls)
+  [![Issues](https://img.shields.io/github/issues/Leonid1095/PLGames-Voice?style=flat-square&logoColor=white)](https://github.com/Leonid1095/PLGames-Voice/issues)
+  [![Contributors](https://img.shields.io/github/contributors/Leonid1095/PLGames-Voice?style=flat-square&logoColor=white)](https://github.com/Leonid1095/PLGames-Voice/graphs/contributors)
+  [![License](https://img.shields.io/github/license/Leonid1095/PLGames-Voice?style=flat-square&logoColor=white)](https://github.com/Leonid1095/PLGames-Voice/blob/main/LICENSE)
 </h1>
 Application for Windows, macOS, and Linux.
 </div>
@@ -15,17 +15,12 @@ Application for Windows, macOS, and Linux.
 
 ## Installation
 
-<a href="https://repology.org/project/stoat-desktop/versions">
-    <img src="https://repology.org/badge/vertical-allrepos/stoat-desktop.svg" alt="Packaging status" align="right">
-</a>
-
-- All downloads and instructions for Stoat can be found on our [Website](https://stoat.chat/download).
+- All downloads and instructions can be found on our [Website](https://plgames-voice.ru).
 
 ## Development Guide
 
 _Contribution guidelines for Desktop app TBA!_
 
-<!-- Before contributing, make yourself familiar with [our contribution guidelines](https://developers.revolt.chat/contrib.html), the [code style guidelines](./GUIDELINES.md), and the [technical documentation for this project](https://revoltchat.github.io/frontend/). -->
 
 Before getting started, you'll want to install:
 
@@ -37,8 +32,8 @@ Then proceed to setup:
 
 ```bash
 # clone the repository
-git clone --recursive https://github.com/stoatchat/for-desktop stoat-for-desktop
-cd stoat-for-desktop
+git clone --recursive https://github.com/Leonid1095/PLGames-Voice plgames-voice
+cd plgames-voice/desktop
 
 # install all packages
 pnpm i --frozen-lockfile
@@ -72,9 +67,9 @@ pnpm run:nix --force-server=http://localhost:5173
 # Electron Forge where system Electron is
 ```
 
-### Pulling in Stoat's assets
+### Pulling in assets
 
-If you want to pull in Stoat brand assets after pulling, run the following:
+If you want to pull in brand assets after pulling, run the following:
 
 ```bash
 # update the assets

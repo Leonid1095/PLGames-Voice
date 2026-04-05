@@ -138,7 +138,7 @@ impl Database {
                                 .api
                                 .smtp
                                 .reply_to
-                                .unwrap_or("support@stoat.chat".into()),
+                                .unwrap_or("support@plgames-voice.ru".into()),
                         ),
                         port: config.api.smtp.port,
                         use_tls: config.api.smtp.use_tls,
@@ -152,19 +152,19 @@ impl Database {
                     templates: if config.production {
                         Templates {
                             verify: Template {
-                                title: "Verify your Stoat account.".into(),
+                                title: "Verify your PLG Voice account.".into(),
                                 text: include_str!("../../templates/verify.txt").into(),
                                 url: format!("{}/login/verify/", config.hosts.app),
                                 html: Some(include_str!("../../templates/verify.html").into()),
                             },
                             reset: Template {
-                                title: "Reset your Stoat password.".into(),
+                                title: "Reset your PLG Voice password.".into(),
                                 text: include_str!("../../templates/reset.txt").into(),
                                 url: format!("{}/login/reset/", config.hosts.app),
                                 html: Some(include_str!("../../templates/reset.html").into()),
                             },
                             reset_existing: Template {
-                                title: "You already have a Stoat account, reset your password."
+                                title: "You already have a PLG Voice account, reset your password."
                                     .into(),
                                 text: include_str!("../../templates/reset-existing.txt").into(),
                                 url: format!("{}/login/reset/", config.hosts.app),

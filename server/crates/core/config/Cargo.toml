@@ -3,9 +3,8 @@ name = "revolt-config"
 version = "0.11.5"
 edition = "2021"
 license = "MIT"
-authors = ["Paul Makles <me@insrt.uk>"]
-description = "Revolt Backend: Configuration"
-repository = "https://github.com/stoatchat/stoatchat"
+authors = ["PLG Games Team"]
+description = "PLG Voice Backend: Configuration"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

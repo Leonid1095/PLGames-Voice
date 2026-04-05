@@ -2,33 +2,27 @@
 
 > **Дата:** 2026-02-28
 > **Репозиторий:** [Leonid1095/PLGames-Voice](https://github.com/Leonid1095/PLGames-Voice)
-> **База:** Revolt/Stoat (stoatchat) — Solid.js клиент, Rust бэкенд, LiveKit голос
+> **Стек:** Solid.js клиент, Rust бэкенд, LiveKit голос
 
 ---
 
 ## ВЫПОЛНЕНО (22 февраля 2026)
 
-### 1. Миграция с Spacebar на Revolt/Stoat
+### 1. Начальная сборка
 
-**Причина миграции:** Spacebar Client заброшен, голос отсутствует (0%), только 23/73 функций работали (31%). Revolt/Stoat имеет работающий голос (LiveKit), активную разработку, Solid.js (быстрее React), Rust бэкенд.
+- Веб-клиент (Solid.js + Vite)
+- Десктоп-приложение (Electron Forge)
+- Серверная часть (Rust — API, Events, File server, Proxy)
 
-| Компонент | Исходный проект | Ветка в репозитории |
-|-----------|----------------|---------------------|
-| Веб-клиент | [stoatchat/for-web](https://github.com/stoatchat/for-web) | `revolt-client` |
-| Десктоп-приложение | [stoatchat/for-desktop](https://github.com/stoatchat/for-desktop) | `revolt-desktop` |
-| Серверная часть | [stoatchat/self-hosted](https://github.com/stoatchat/self-hosted) | `revolt-server` |
+### 2. Брендинг PLG Voice
 
-### 2. Полный ребрендинг Stoat → PLG Voice
-
-#### Веб-клиент (351 файл изменён)
+#### Веб-клиент (351 файл)
 - **HTML/PWA:** title, manifest → "PLG Voice"
-- **Все API URL:** перенаправлены на `plgames-voice.ru` (API, WebSocket, Media, Proxy)
-- **Компоненты авторизации:** FlowHome, FlowLogin, SignedOut — все тексты PLG Voice
+- **Все API URL:** `plgames-voice.ru` (API, WebSocket, Media, Proxy)
+- **Компоненты авторизации:** FlowHome, FlowLogin, SignedOut
 - **Контроллер сессий:** friendly_name → "PLG Voice for Web"
-- **Темы:** переименована функция createPlgVoiceWebVariables
 - **Настройки, модалки, контекстные меню:** все строки обновлены
-- **Переводы (i18n):** Stoat → PLG Voice в русском каталоге (3187 строк)
-- **Ссылки:** stoat.chat, admin.stoat.chat → plgames-voice.ru
+- **Переводы (i18n):** русский каталог (3187 строк)
 
 #### Десктоп-приложение (10 файлов)
 - **package.json:** name, productName → plg-voice-desktop
@@ -37,11 +31,9 @@
 - **Трей:** tooltip, метки → "PLG Voice for Desktop"
 - **Discord RPC:** state, кнопки → PLG Voice
 - **Автозапуск:** name → "PLG Voice"
-- **D-Bus:** пути → com.plgvoice.desktop
-- **Метаданные:** .desktop и .metainfo.xml переименованы
 
 #### Серверная часть
-- Конфигурация параметризована через `generate_config.sh` — изменения не требуются
+- Конфигурация параметризована через `generate_config.sh`
 - Домен задаётся при генерации: `./generate_config.sh plgames-voice.ru`
 
 ### 3. Русский язык по умолчанию
@@ -49,11 +41,6 @@
 - `browserPreferredLanguage()` использует `Language.RUSSIAN` как fallback
 - Locale store по умолчанию: `Language.RUSSIAN`
 - Русские переводы уже встроены (3187 строк .po файла)
-
-### 4. Коммиты
-- `revolt-client` ветка: `bb8c580a` — "feat: PLG Voice full rebranding from Stoat/Revolt"
-- `revolt-desktop` ветка: `009827c` — "feat: PLG Voice desktop rebranding from Stoat"
-- `revolt-server` ветка: без изменений (конфигурация штатная)
 
 ### 5. Сборка десктоп-приложения (.exe) — 28 февраля 2026
 
@@ -144,7 +131,7 @@ GitHub Actions workflows лежали в `desktop/.github/workflows/` — GitHub
 - Дизайн в стиле Obsidian Amethyst (согласован с лендингом)
 
 #### Исправление сборки Docker
-- `stoat.js/tsconfig.json`: добавлен `exclude: ["tests", "vitest.config.ts"]` — тесты вне `rootDir` ломали `tsc` при Docker-сборке
+- `client/packages/stoat.js/tsconfig.json`: добавлен `exclude: ["tests", "vitest.config.ts"]` — тесты вне `rootDir` ломали `tsc` при Docker-сборке
 - Пересобран образ `plg-voice-web:latest`, задеплоен на сервер
 
 #### Файлы
@@ -166,7 +153,7 @@ GitHub Actions workflows лежали в `desktop/.github/workflows/` — GitHub
 | # | Задача | Описание | Статус |
 |---|--------|----------|--------|
 | 1 | Остановить старый Spacebar | Остановить Docker-контейнеры Spacebar на plgames-voice.ru | ✅ |
-| 2 | Развернуть Revolt/Stoat сервер | `./generate_config.sh plgames-voice.ru` + `docker compose up -d` | ✅ |
+| 2 | Развернуть сервер | `./generate_config.sh plgames-voice.ru` + `docker compose up -d` | ✅ |
 | 3 | Настроить DNS | Убедиться что plgames-voice.ru указывает на сервер | ✅ |
 | 4 | Открыть порты | 80, 443 (HTTP/S), 7881/tcp (LiveKit signaling), 50000-50100/udp (media) | ✅ |
 | 5 | Проверить все сервисы | 14+ Docker-сервисов healthy: API, Events, MongoDB, Redis, RabbitMQ, MinIO, LiveKit и др. | ✅ |
@@ -227,9 +214,7 @@ GitHub Actions workflows лежали в `desktop/.github/workflows/` — GitHub
 
 ---
 
-## ЧТО УЖЕ ЕСТЬ «ИЗ КОРОБКИ» (Revolt/Stoat)
-
-В отличие от Spacebar, Revolt/Stoat предоставляет:
+## ЧТО УЖЕ ЕСТЬ «ИЗ КОРОБКИ»
 
 | Функция | Статус |
 |---------|--------|
@@ -424,9 +409,9 @@ GitHub Actions workflows лежали в `desktop/.github/workflows/` — GitHub
 ## КОМАНДЫ ДЛЯ РАЗВЁРТЫВАНИЯ
 
 ```bash
-# 1. Клонировать серверную конфигурацию
-git clone -b revolt-server https://github.com/Leonid1095/PLGames-Voice.git plg-voice-server
-cd plg-voice-server
+# 1. Клонировать репозиторий
+git clone https://github.com/Leonid1095/PLGames-Voice.git
+cd PLGames-Voice
 
 # 2. Сгенерировать конфиг для домена
 ./generate_config.sh plgames-voice.ru

@@ -18,7 +18,9 @@ export function ProfileBanner(props: {
   return (
     <Banner
       style={{
-        "background-image": `linear-gradient(rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0.7)), url('${props.bannerUrl}')`,
+        "background-image": props.bannerUrl
+          ? `linear-gradient(rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0.7)), url('${props.bannerUrl}')`
+          : `linear-gradient(rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0.7))`,
       }}
       isLink={typeof props.onClick !== "undefined"}
       onClick={props.onClick}

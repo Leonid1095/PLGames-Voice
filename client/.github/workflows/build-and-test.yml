@@ -42,8 +42,8 @@ jobs:
         id: commit
         uses: EndBug/add-and-commit@v4
         with:
-          author_name: Stoat CI
-          author_email: stoat-ci@users.noreply.github.com
+          author_name: PLG Voice CI
+          author_email: plgvoice-ci@users.noreply.github.com
           message: "chore: generate i18n catalog"
 
   typecheck:

@@ -2,7 +2,7 @@
 
 ## Architecture
 - **Frontend**: Solid.js 1.9 + Vite 5 + Panda CSS + ProseMirror (client/)
-- **Backend**: Rust (Rocket, Tokio) — API (delta), Events (bonfire), services (server/)
+- **Backend**: Rust (Rocket, Tokio) — API, Events, services (server/)
 - **Voice**: LiveKit 1.9.6 + Krisp noise cancellation + Egress/Ingress
 - **Bot**: Node.js admin bot — XP, moderation, tournaments, streams (bot/)
 - **Desktop**: Electron Forge — Windows/macOS/Linux (desktop/)
@@ -36,7 +36,7 @@
 - `Caddyfile` — внутренний реверс-прокси
 - `client/packages/client/components/common/lib/env.ts` — API/WS/Media URLs
 - `client/packages/client/components/i18n/catalogs/ru/messages.po` — русская локализация
-- `client/packages/stoat.js/` — API SDK клиента
+- `client/packages/stoat.js/` — API SDK
 - `bot/index.js` — точка входа бота
 
 ## CRITICAL RULES
@@ -76,8 +76,8 @@
 ## Service Ports (internal)
 | Service | Port |
 |---------|------|
-| API (delta) | 14702 |
-| Events (bonfire) | 14703 |
+| API | 14702 |
+| Events | 14703 |
 | Autumn (files) | 14704 |
 | January (proxy) | 14705 |
 | LiveKit | 7880-7881 |

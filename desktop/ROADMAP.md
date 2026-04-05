@@ -2,7 +2,7 @@
 
 > **Дата:** 2026-02-22
 > **Репозиторий:** [Leonid1095/PLGames-Voice](https://github.com/Leonid1095/PLGames-Voice)
-> **База:** Revolt/Stoat (stoatchat) — Solid.js клиент, Rust бэкенд, LiveKit голос
+> **База:** PLG Voice — Solid.js клиент, Rust бэкенд, LiveKit голос
 
 ---
 
@@ -14,9 +14,9 @@
 
 | Компонент | Исходный проект | Ветка в репозитории |
 |-----------|----------------|---------------------|
-| Веб-клиент | [stoatchat/for-web](https://github.com/stoatchat/for-web) | `revolt-client` |
-| Десктоп-приложение | [stoatchat/for-desktop](https://github.com/stoatchat/for-desktop) | `revolt-desktop` |
-| Серверная часть | [stoatchat/self-hosted](https://github.com/stoatchat/self-hosted) | `revolt-server` |
+| Веб-клиент | [Leonid1095/PLGames-Voice](https://github.com/Leonid1095/PLGames-Voice) | `client` |
+| Десктоп-приложение | [Leonid1095/PLGames-Voice](https://github.com/Leonid1095/PLGames-Voice) | `desktop` |
+| Серверная часть | [Leonid1095/PLGames-Voice](https://github.com/Leonid1095/PLGames-Voice) | `server` |
 
 ### 2. Полный ребрендинг Stoat → PLG Voice
 

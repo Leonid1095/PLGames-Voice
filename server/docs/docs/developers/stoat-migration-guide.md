@@ -1,22 +1,10 @@
-# Stoat Migration Guide
+# Migration Guide
 
-:::warning
+This page is no longer applicable. PLG Voice uses its own endpoints:
 
-This is not yet finished.
-
-:::
-
-## Endpoint changes
-
-| Service    | Old URL                             | New URL                                 |
-| ---------- | ----------------------------------- | --------------------------------------- |
-| **API**    | `https://api.revolt.chat`           | `https://stoat.chat/api`                |
-|            | `https://app.revolt.chat/api`       | `https://stoat.chat/api`                |
-|            | `https://revolt.chat/api`           | No equivalent                           |
-| **Events** | `wss://ws.revolt.chat`              | `wss://stoat.chat/events`               |
-|            | `wss://app.revolt.chat/events`      | `wss://stoat.chat/events`               |
-|            | `wss://revolt.chat/events`          | No equivalent                           |
-| **Files**  | `https://autumn.revolt.chat`        | `https://cdn.stoatusercontent.com`      |
-|            | `https://cdn.revoltusercontent.com` | `https://cdn.stoatusercontent.com`      |
-| **Proxy**  | `https://jan.revolt.chat`           | `https://external.stoatusercontent.com` |
-| **Voice**  | `https://vortex.revolt.chat`        | Superseded by Voice Chats v2            |
+| Service    | URL                                     |
+| ---------- | --------------------------------------- |
+| **API**    | `https://plgames-voice.ru/api`          |
+| **Events** | `wss://plgames-voice.ru/events`         |
+| **Files**  | `https://plgames-voice.ru/autumn`       |
+| **Proxy**  | `https://plgames-voice.ru/january`      |

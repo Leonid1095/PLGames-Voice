@@ -68,13 +68,13 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ghcr.io/${{ github.repository_owner }}/base:latest
 
-      # stoatchat/api
+      # leonid1095/api
       - name: Docker meta
         id: meta-delta
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/stoatchat/api
+            ghcr.io/leonid1095/api
       - name: Publish
         uses: docker/build-push-action@v4
         with:
@@ -87,13 +87,13 @@ jobs:
             BASE_IMAGE=ghcr.io/${{ github.repository_owner }}/base:latest
           labels: ${{ steps.meta-delta.outputs.labels }}
 
-      # stoatchat/events
+      # leonid1095/events
       - name: Docker meta
         id: meta-bonfire
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/stoatchat/events
+            ghcr.io/leonid1095/events
       - name: Publish
         uses: docker/build-push-action@v4
         with:
@@ -106,13 +106,13 @@ jobs:
             BASE_IMAGE=ghcr.io/${{ github.repository_owner }}/base:latest
           labels: ${{ steps.meta-bonfire.outputs.labels }}
 
-      # stoatchat/file-server
+      # leonid1095/file-server
       - name: Docker meta
         id: meta-autumn
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/stoatchat/file-server
+            ghcr.io/leonid1095/file-server
       - name: Publish
         uses: docker/build-push-action@v4
         with:
@@ -125,13 +125,13 @@ jobs:
             BASE_IMAGE=ghcr.io/${{ github.repository_owner }}/base:latest
           labels: ${{ steps.meta-autumn.outputs.labels }}
 
-      # stoatchat/proxy
+      # leonid1095/proxy
       - name: Docker meta
         id: meta-january
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/stoatchat/proxy
+            ghcr.io/leonid1095/proxy
       - name: Publish
         uses: docker/build-push-action@v4
         with:
@@ -144,13 +144,13 @@ jobs:
             BASE_IMAGE=ghcr.io/${{ github.repository_owner }}/base:latest
           labels: ${{ steps.meta-january.outputs.labels }}
 
-      # stoatchat/gifbox
+      # leonid1095/gifbox
       - name: Docker meta
         id: meta-gifbox
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/stoatchat/gifbox
+            ghcr.io/leonid1095/gifbox
       - name: Publish
         uses: docker/build-push-action@v4
         with:
@@ -163,13 +163,13 @@ jobs:
             BASE_IMAGE=ghcr.io/${{ github.repository_owner }}/base:latest
           labels: ${{ steps.meta-gifbox.outputs.labels }}
 
-      # stoatchat/crond
+      # leonid1095/crond
       - name: Docker meta
         id: meta-crond
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/stoatchat/crond
+            ghcr.io/leonid1095/crond
       - name: Publish
         uses: docker/build-push-action@v4
         with:
@@ -182,13 +182,13 @@ jobs:
             BASE_IMAGE=ghcr.io/${{ github.repository_owner }}/base:latest
           labels: ${{ steps.meta-crond.outputs.labels }}
 
-      # stoatchat/pushd
+      # leonid1095/pushd
       - name: Docker meta
         id: meta-pushd
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/stoatchat/pushd
+            ghcr.io/leonid1095/pushd
       - name: Publish
         uses: docker/build-push-action@v4
         with:
@@ -201,13 +201,13 @@ jobs:
             BASE_IMAGE=ghcr.io/${{ github.repository_owner }}/base:latest
           labels: ${{ steps.meta-pushd.outputs.labels }}
 
-      # stoatchat/voice-ingress
+      # leonid1095/voice-ingress
       - name: Docker meta
         id: meta-voice-ingress
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/stoatchat/voice-ingress
+            ghcr.io/leonid1095/voice-ingress
       - name: Publish
         uses: docker/build-push-action@v4
         with:

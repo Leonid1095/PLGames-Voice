@@ -1,6 +1,6 @@
-# Stoat for Web & Friends
+# PLG Voice Frontend Documentation
 
-Welcome to the developer documentation for the Stoat for Web project and general guidelines for other platforms we build for.
+Welcome to the developer documentation for the PLG Voice web client and general guidelines for other platforms.
 
 This is very much incomplete and needs more work!
 

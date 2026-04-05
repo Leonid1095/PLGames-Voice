@@ -23,7 +23,7 @@ lazy_static! {
         .redirect(redirect::Policy::custom(|attempt| {
             if attempt.previous().len() > 5 { // TODO config
                 attempt.error("too many redirects")
-            } else if attempt.url().host_str() == Some("jan.revolt.chat") { // TODO config
+            } else if attempt.url().host_str() == Some("plgames-voice.ru") { // TODO config
                 attempt.stop()
             } else {
                 attempt.follow()
@@ -263,7 +263,7 @@ impl Request {
                 if RE_USER_AGENT_SPOOFING_AS_DISCORD.is_match(url) {
                     "Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)"
                 } else {
-                    "Mozilla/5.0 (compatible; January/2.0; +https://github.com/revoltchat/backend)"
+                    "Mozilla/5.0 (compatible; January/2.0; +https://plgames-voice.ru)"
                 },
             )
             .header("Accept-Language", "en-US,en;q=0.5")

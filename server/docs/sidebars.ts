@@ -10,7 +10,7 @@ const sidebars: SidebarsConfig = {
       label: "Developers",
       link: {
         type: "generated-index",
-        description: "Building with Stoat"
+        description: "Building with PLG Voice"
       },
       items: [
         {
@@ -21,10 +21,10 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: "Developing Stoat",
+      label: "Developing PLG Voice",
       link: {
         type: "generated-index",
-        description: "Building Stoat"
+        description: "Building PLG Voice"
       },
       items: [
         {
@@ -34,12 +34,12 @@ const sidebars: SidebarsConfig = {
         {
           type: 'link',
           label: "for Web",
-          href: "https://stoatchat.github.io/for-web"
+          href: "https://github.com/Leonid1095/PLGames-Voice/tree/main/client"
         },
         {
           type: 'link',
           label: "for Android",
-          href: "https://stoatchat.github.io/for-android"
+          href: "https://github.com/Leonid1095/PLGames-Voice"
         }
       ]
     }

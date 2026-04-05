@@ -1,6 +1,10 @@
-// This file synchronises issues and their status from OpenProject to GitHub
+// This file was an upstream tool for synchronising issues between OpenProject and GitHub.
+// It references the original Revolt/Stoat project infrastructure and is no longer functional.
+// Kept for historical reference only.
+//
 // deno run --allow-net --allow-env lifecycle/syncOpenProject.ts
 
+/*
 const GH_TOKEN = Deno.env.get("GH_TOKEN");
 const OP_TOKEN = Deno.env.get("OP_TOKEN");
 
@@ -159,3 +163,4 @@ for (const issue of issues) {
       });
   }
 }
+*/

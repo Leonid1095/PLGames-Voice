@@ -2,23 +2,23 @@
 
 > **Дата:** 2026-02-22
 > **Репозиторий:** [Leonid1095/PLGames-Voice](https://github.com/Leonid1095/PLGames-Voice)
-> **База:** Revolt/Stoat (stoatchat) — Solid.js клиент, Rust бэкенд, LiveKit голос
+> **База:** Solid.js клиент, Rust бэкенд, LiveKit голос
 
 ---
 
 ## ВЫПОЛНЕНО (22 февраля 2026)
 
-### 1. Миграция с Spacebar на Revolt/Stoat
+### 1. Миграция с Spacebar на PLG Voice
 
-**Причина миграции:** Spacebar Client заброшен, голос отсутствует (0%), только 23/73 функций работали (31%). Revolt/Stoat имеет работающий голос (LiveKit), активную разработку, Solid.js (быстрее React), Rust бэкенд.
+**Причина миграции:** Spacebar Client заброшен, голос отсутствует (0%), только 23/73 функций работали (31%). PLG Voice имеет работающий голос (LiveKit), активную разработку, Solid.js (быстрее React), Rust бэкенд.
 
 | Компонент | Исходный проект | Ветка в репозитории |
 |-----------|----------------|---------------------|
-| Веб-клиент | [stoatchat/for-web](https://github.com/stoatchat/for-web) | `revolt-client` |
-| Десктоп-приложение | [stoatchat/for-desktop](https://github.com/stoatchat/for-desktop) | `revolt-desktop` |
-| Серверная часть | [stoatchat/self-hosted](https://github.com/stoatchat/self-hosted) | `revolt-server` |
+| Веб-клиент | [Leonid1095/PLGames-Voice](https://github.com/Leonid1095/PLGames-Voice) | `main` |
+| Десктоп-приложение | [Leonid1095/PLGames-Voice](https://github.com/Leonid1095/PLGames-Voice) | `desktop` |
+| Серверная часть | [Leonid1095/PLGames-Voice](https://github.com/Leonid1095/PLGames-Voice) | `server` |
 
-### 2. Полный ребрендинг Stoat → PLG Voice
+### 2. Полный ребрендинг → PLG Voice
 
 #### Веб-клиент (351 файл изменён)
 - **HTML/PWA:** title, manifest → "PLG Voice"
@@ -27,8 +27,8 @@
 - **Контроллер сессий:** friendly_name → "PLG Voice for Web"
 - **Темы:** переименована функция createPlgVoiceWebVariables
 - **Настройки, модалки, контекстные меню:** все строки обновлены
-- **Переводы (i18n):** Stoat → PLG Voice в русском каталоге (3187 строк)
-- **Ссылки:** stoat.chat, admin.stoat.chat → plgames-voice.ru
+- **Переводы (i18n):** PLG Voice в русском каталоге (3187 строк)
+- **Ссылки:** plgames-voice.ru
 
 #### Десктоп-приложение (10 файлов)
 - **package.json:** name, productName → plg-voice-desktop
@@ -51,9 +51,9 @@
 - Русские переводы уже встроены (3187 строк .po файла)
 
 ### 4. Коммиты
-- `revolt-client` ветка: `bb8c580a` — "feat: PLG Voice full rebranding from Stoat/Revolt"
-- `revolt-desktop` ветка: `009827c` — "feat: PLG Voice desktop rebranding from Stoat"
-- `revolt-server` ветка: без изменений (конфигурация штатная)
+- Клиент: `bb8c580a` — "feat: PLG Voice full rebranding"
+- Десктоп: `009827c` — "feat: PLG Voice desktop rebranding"
+- Сервер: без изменений (конфигурация штатная)
 
 ---
 
@@ -64,7 +64,7 @@
 | # | Задача | Описание | Статус |
 |---|--------|----------|--------|
 | 1 | Остановить старый Spacebar | Остановить Docker-контейнеры Spacebar на plgames-voice.ru | ⬜ |
-| 2 | Развернуть Revolt/Stoat сервер | `./generate_config.sh plgames-voice.ru` + `docker compose up -d` | ⬜ |
+| 2 | Развернуть PLG Voice сервер | `./generate_config.sh plgames-voice.ru` + `docker compose up -d` | ⬜ |
 | 3 | Настроить DNS | Убедиться что plgames-voice.ru указывает на сервер | ⬜ |
 | 4 | Открыть порты | 80, 443 (HTTP/S), 7881/tcp (LiveKit signaling), 50000-50100/udp (media) | ⬜ |
 | 5 | Проверить все сервисы | 16 Docker-сервисов: API, Events, MongoDB, KeyDB, MinIO, Caddy, LiveKit и др. | ⬜ |
@@ -99,9 +99,9 @@
 
 ---
 
-## ЧТО УЖЕ ЕСТЬ «ИЗ КОРОБКИ» (Revolt/Stoat)
+## ЧТО УЖЕ ЕСТЬ «ИЗ КОРОБКИ» (PLG Voice)
 
-В отличие от Spacebar, Revolt/Stoat предоставляет:
+В отличие от Spacebar, PLG Voice предоставляет:
 
 | Функция | Статус |
 |---------|--------|
@@ -146,7 +146,7 @@
 |-----------|---------|----------|
 | Высокий | Видеозвонки | LiveKit поддерживает видео — нужна интеграция в клиент |
 | Высокий | Демонстрация экрана | Electron desktopCapturer + LiveKit screen share |
-| Высокий | Мобильное приложение | Android (Revolt уже имеет Early Access) |
+| Высокий | Мобильное приложение | Android |
 | Средний | Кастомные эмодзи сервера | Загрузка и использование пользовательских эмодзи |
 | Средний | Автомодерация | Фильтры спама, стоп-слов |
 | Средний | Вебхуки | Интеграция с внешними сервисами |
@@ -191,7 +191,7 @@
 
 ```bash
 # 1. Клонировать серверную конфигурацию
-git clone -b revolt-server https://github.com/Leonid1095/PLGames-Voice.git plg-voice-server
+git clone https://github.com/Leonid1095/PLGames-Voice.git plg-voice-server
 cd plg-voice-server
 
 # 2. Сгенерировать конфиг для домена

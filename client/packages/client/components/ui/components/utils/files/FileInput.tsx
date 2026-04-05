@@ -4,6 +4,7 @@ import { css } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
 import MdClose from "@material-design-icons/svg/filled/close.svg?component-solid";
+import MdAddAPhoto from "@material-design-icons/svg/filled/add_a_photo.svg?component-solid";
 
 import { Button, Ripple } from "../../design";
 import { Row } from "../../layout";
@@ -121,7 +122,18 @@ export function FileInput(props: Props) {
             rounded={props.imageRounded ?? true}
           >
             <Ripple />
-            <Show when={local.file}>
+            <Show
+              when={local.file}
+              fallback={
+                <UploadPlaceholder>
+                  <MdAddAPhoto
+                    fill="currentColor"
+                    width="24"
+                    height="24"
+                  />
+                </UploadPlaceholder>
+              }
+            >
               <img src={imageSrc()} />
             </Show>
           </ImagePreview>
@@ -140,6 +152,22 @@ export function FileInput(props: Props) {
     </Switch>
   );
 }
+
+const UploadPlaceholder = styled("div", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+    width: "100%",
+    color: "var(--md-sys-color-on-surface-variant)",
+    opacity: 0.6,
+    transition: "opacity 0.2s",
+    _hover: {
+      opacity: 1,
+    },
+  },
+});
 
 const ImagePreview = styled("div", {
   base: {

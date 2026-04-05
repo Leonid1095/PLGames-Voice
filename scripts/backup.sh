@@ -16,7 +16,7 @@ if [ -f "$PROJECT_DIR/.env" ]; then
   set +a
 fi
 
-MONGO_USER="${MONGO_USER:-stoatadmin}"
+MONGO_USER="${MONGO_USER:-plgadmin}"
 MONGO_PASS="${MONGO_PASS:?MONGO_PASS not set}"
 
 mkdir -p "$BACKUP_DIR"

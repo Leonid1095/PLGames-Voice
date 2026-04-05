@@ -25,8 +25,8 @@ jobs:
       - id: app-token
         uses: actions/create-github-app-token@v2
         with:
-          app-id: ${{ secrets.GH_STOAT_RELEASE_APP_ID }}
-          private-key: ${{ secrets.GH_STOAT_RELEASE_APP_PRIVATE_KEY }}
+          app-id: ${{ secrets.GH_PLG_RELEASE_APP_ID }}
+          private-key: ${{ secrets.GH_PLG_RELEASE_APP_PRIVATE_KEY }}
       - id: rp
         uses: googleapis/release-please-action@v4
         with:
