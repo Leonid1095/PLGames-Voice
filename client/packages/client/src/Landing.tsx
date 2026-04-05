@@ -561,8 +561,10 @@ const BtnMobileMenuPrimary = styled("a", {
   },
 });
 
-const DOWNLOAD_URL =
+const DOWNLOAD_WIN =
   "https://github.com/Leonid1095/PLGames-Voice/releases/latest/download/plg-voice-desktop-setup.exe";
+const DOWNLOAD_LINUX =
+  "https://github.com/Leonid1095/PLGames-Voice/releases/latest/download/plg-voice-desktop_2.0.0_amd64.deb";
 
 /* ── Landing page ──────────────────────────────────── */
 
@@ -579,8 +581,11 @@ export default function LandingPage() {
           <Logo />
           {/* Desktop buttons */}
           <NavButtons>
-            <BtnDownload href={DOWNLOAD_URL} target="_blank">
-              <Trans>Download for Windows</Trans>
+            <BtnDownload href={DOWNLOAD_WIN} target="_blank">
+              Windows
+            </BtnDownload>
+            <BtnDownload href={DOWNLOAD_LINUX} target="_blank">
+              Linux
             </BtnDownload>
             <BtnSecondary href="/login">
               <Trans>Log in</Trans>
@@ -604,8 +609,11 @@ export default function LandingPage() {
             <BtnMobileMenu href="/login">
               <Trans>Log in</Trans>
             </BtnMobileMenu>
-            <BtnMobileMenu href={DOWNLOAD_URL} target="_blank">
-              <Trans>Download for Windows</Trans>
+            <BtnMobileMenu href={DOWNLOAD_WIN} target="_blank">
+              Windows
+            </BtnMobileMenu>
+            <BtnMobileMenu href={DOWNLOAD_LINUX} target="_blank">
+              Linux (.deb)
             </BtnMobileMenu>
           </MobileMenu>
         </Show>
@@ -629,9 +637,14 @@ export default function LandingPage() {
               <Trans>I already have an account</Trans>
             </BtnSecondary>
           </HeroCTA>
-          <BtnDownload href={DOWNLOAD_URL} target="_blank">
-            <Trans>Download for Windows</Trans>
-          </BtnDownload>
+          <HeroCTA>
+            <BtnDownload href={DOWNLOAD_WIN} target="_blank">
+              Windows (.exe)
+            </BtnDownload>
+            <BtnDownload href={DOWNLOAD_LINUX} target="_blank">
+              Linux (.deb)
+            </BtnDownload>
+          </HeroCTA>
         </Hero>
 
         {/* ── Features ── */}
