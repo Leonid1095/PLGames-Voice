@@ -403,17 +403,8 @@ export function TextChannel(props: ChannelPageProps) {
 function InlineVoiceRoom(props: { channel: Channel }) {
   const voice = useVoice();
 
-  // Auto-connect only on initial mount (not reactively)
-  // This prevents re-connecting when another channel's connect() triggers intermediate states
-  onMount(() => {
-    if (
-      props.channel.isVoice &&
-      voice.state() === "READY" &&
-      !voice.channel()
-    ) {
-      voice.connect(props.channel);
-    }
-  });
+  // Voice channels require explicit user action to join (click in sidebar)
+  // No auto-connect on page load/navigation — matches Discord/Revolt behavior
 
   const inThisChannel = () => voice.channel()?.id === props.channel.id;
   const inOtherChannel = () =>
