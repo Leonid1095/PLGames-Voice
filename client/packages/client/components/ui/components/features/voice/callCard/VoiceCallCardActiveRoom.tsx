@@ -1,4 +1,4 @@
-import { Show, Switch, Match } from "solid-js";
+import { Show, Switch, Match, For, createMemo, createSignal } from "solid-js";
 import {
   TrackLoop,
   TrackReference,
@@ -26,7 +26,7 @@ import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { VoiceStatefulUserIcons } from "../VoiceStatefulUserIcons";
 
 /**
- * Call card (active) — participant grid only
+ * Call card (active) — participant grid with speaker focus
  * Controls (status, mute, deafen, disconnect) are in VoiceBottomBar
  */
 export function VoiceCallCardActiveRoom() {
@@ -59,33 +59,88 @@ const Call = styled("div", {
   base: {
     flexGrow: 1,
     minHeight: 0,
-    overflowY: "scroll",
+    overflowY: "auto",
   },
 });
 
 /**
- * Show a grid of participants
+ * Show participants with smart layout:
+ * - If screen share exists: main view (screen) + side strip (cameras)
+ * - Otherwise: grid with speaker focus (speaking user gets larger tile)
  */
 function Participants() {
-  const tracks = useTracks(
-    [
-      { source: Track.Source.Camera, withPlaceholder: true },
-      { source: Track.Source.ScreenShare, withPlaceholder: false },
-    ],
+  const cameraTracks = useTracks(
+    [{ source: Track.Source.Camera, withPlaceholder: true }],
     { onlySubscribed: false },
   );
 
+  const screenTracks = useTracks(
+    [{ source: Track.Source.ScreenShare, withPlaceholder: false }],
+    { onlySubscribed: false },
+  );
+
+  const hasScreenShare = () => screenTracks.length > 0;
+
   return (
-    <Grid>
-      <TrackLoop tracks={tracks}>{() => <ParticipantTile />}</TrackLoop>
-      {/* <div class={tile()} />
-      <div class={tile()} />
-      <div class={tile()} />
-      <div class={tile()} />
-      <div class={tile()} /> */}
-    </Grid>
+    <Show
+      when={hasScreenShare()}
+      fallback={
+        <Grid>
+          <TrackLoop tracks={cameraTracks}>
+            {() => <UserTile />}
+          </TrackLoop>
+        </Grid>
+      }
+    >
+      <ScreenShareLayout>
+        <MainView>
+          <TrackLoop tracks={screenTracks}>
+            {() => <ScreenshareTile />}
+          </TrackLoop>
+        </MainView>
+        <SideStrip>
+          <TrackLoop tracks={cameraTracks}>
+            {() => <UserTile compact />}
+          </TrackLoop>
+        </SideStrip>
+      </ScreenShareLayout>
+    </Show>
   );
 }
+
+/**
+ * Screen share layout: main view + side camera strip
+ */
+const ScreenShareLayout = styled("div", {
+  base: {
+    display: "flex",
+    flexDirection: "row",
+    gap: "var(--gap-md)",
+    height: "100%",
+    minHeight: 0,
+  },
+});
+
+const MainView = styled("div", {
+  base: {
+    flexGrow: 1,
+    minWidth: 0,
+    display: "flex",
+    flexDirection: "column",
+    gap: "var(--gap-md)",
+  },
+});
+
+const SideStrip = styled("div", {
+  base: {
+    width: "200px",
+    flexShrink: 0,
+    display: "flex",
+    flexDirection: "column",
+    gap: "var(--gap-sm)",
+    overflowY: "auto",
+  },
+});
 
 const Grid = styled("div", {
   base: {
@@ -97,24 +152,9 @@ const Grid = styled("div", {
 });
 
 /**
- * Individual participant tile
+ * Individual participant tile (camera or placeholder)
  */
-function ParticipantTile() {
-  const track = useTrackRefContext();
-
-  return (
-    <Switch fallback={<UserTile />}>
-      <Match when={track.source === Track.Source.ScreenShare}>
-        <ScreenshareTile />
-      </Match>
-    </Switch>
-  );
-}
-
-/**
- * Shown when the track source is a camera or placeholder
- */
-function UserTile() {
+function UserTile(props: { compact?: boolean }) {
   const participant = useEnsureParticipant();
   const track = useMaybeTrackRefContext();
 
@@ -131,6 +171,7 @@ function UserTile() {
     <div
       class={tile({
         speaking: isSpeaking(),
+        compact: props.compact,
       })}
       use:floating={{
         userCard: {
@@ -148,7 +189,7 @@ function UserTile() {
             <Avatar
               src={user().avatar}
               fallback={user().username}
-              size={48}
+              size={props.compact ? 32 : 48}
               interactive={false}
             />
           </AvatarOnly>
@@ -171,6 +212,9 @@ function UserTile() {
             muted={isMuted()}
           />
         </OverlayInner>
+        <Show when={isSpeaking()}>
+          <SpeakingBar />
+        </Show>
       </Overlay>
     </div>
   );
@@ -181,6 +225,22 @@ const AvatarOnly = styled("div", {
     gridArea: "1/1",
     display: "grid",
     placeItems: "center",
+  },
+});
+
+/**
+ * Green speaking indicator bar at bottom of tile
+ */
+const SpeakingBar = styled("div", {
+  base: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: "3px",
+    background: "var(--md-sys-color-primary)",
+    borderRadius: "0 0 var(--borderRadius-lg) var(--borderRadius-lg)",
+    animation: "pulse 1.5s ease-in-out infinite",
   },
 });
 
@@ -198,7 +258,7 @@ function ScreenshareTile() {
   });
 
   return (
-    <div class={tile() + " group"}>
+    <div class={screenTile() + " group"}>
       <VideoTrack
         style={{ "grid-area": "1/1" }}
         trackRef={track as TrackReference}
@@ -207,6 +267,7 @@ function ScreenshareTile() {
 
       <Overlay showOnHover>
         <OverlayInner>
+          <Symbol size={16} fill>screen_share</Symbol>
           <OverflowingText>{user().username}</OverflowingText>
           <Show when={isMuted()}>
             <Symbol size={18}>no_sound</Symbol>
@@ -223,9 +284,10 @@ const tile = cva({
     aspectRatio: "16/9",
     transition: ".3s ease all",
     borderRadius: "var(--borderRadius-lg)",
+    position: "relative",
 
     color: "var(--md-sys-color-on-surface)",
-    background: "#0002",
+    background: "var(--md-sys-color-surface-container-high)",
 
     overflow: "hidden",
     outlineWidth: "3px",
@@ -237,8 +299,35 @@ const tile = cva({
     speaking: {
       true: {
         outlineColor: "var(--md-sys-color-primary)",
+        boxShadow: "0 0 12px color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent)",
       },
     },
+    compact: {
+      true: {
+        aspectRatio: "4/3",
+        borderRadius: "var(--borderRadius-md)",
+      },
+    },
+  },
+});
+
+/**
+ * Screen share tile — takes up most of the space
+ */
+const screenTile = cva({
+  base: {
+    display: "grid",
+    aspectRatio: "16/9",
+    transition: ".3s ease all",
+    borderRadius: "var(--borderRadius-lg)",
+    position: "relative",
+    flexGrow: 1,
+
+    color: "var(--md-sys-color-on-surface)",
+    background: "var(--md-sys-color-surface-container-highest)",
+
+    overflow: "hidden",
+    border: "2px solid var(--md-sys-color-outline-variant)",
   },
 });
 
@@ -246,24 +335,30 @@ const Overlay = styled("div", {
   base: {
     minWidth: 0,
     gridArea: "1/1",
+    position: "relative",
 
     padding: "var(--gap-md) var(--gap-lg)",
 
     opacity: 1,
     display: "flex",
     alignItems: "end",
-    flexDirection: "row",
+    flexDirection: "column",
+    justifyContent: "end",
 
     transition: "var(--transitions-fast) all",
     transitionTimingFunction: "ease",
+
+    background: "linear-gradient(transparent 50%, rgba(0,0,0,0.5) 100%)",
   },
   variants: {
     showOnHover: {
       true: {
         opacity: 0,
+        background: "transparent",
 
         _groupHover: {
           opacity: 1,
+          background: "linear-gradient(transparent 50%, rgba(0,0,0,0.5) 100%)",
         },
       },
       false: {
@@ -279,11 +374,16 @@ const Overlay = styled("div", {
 const OverlayInner = styled("div", {
   base: {
     minWidth: 0,
+    width: "100%",
 
     display: "flex",
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
+    gap: "var(--gap-sm)",
+
+    color: "white",
+    textShadow: "0 1px 3px rgba(0,0,0,0.5)",
 
     _first: {
       flexGrow: 1,

@@ -416,10 +416,12 @@ function InlineVoiceRoom(props: { channel: Channel }) {
         <div
           class={css({
             width: "100%",
-            height: "40vh",
+            height: "50vh",
+            minHeight: "300px",
             flexShrink: 0,
             borderRadius: "var(--borderRadius-lg)",
-            background: "var(--md-sys-color-secondary-container)",
+            background: "var(--md-sys-color-surface-container)",
+            border: "1px solid var(--md-sys-color-outline-variant)",
             overflow: "hidden",
           })}
         >
