@@ -122,8 +122,8 @@ export function MessageToolbar(props: { message?: Message }) {
 
 const Base = styled("div", {
   base: {
-    top: "-18px",
-    right: "16px",
+    top: "-14px",
+    right: "8px",
     position: "absolute",
 
     alignItems: "center",
@@ -136,6 +136,8 @@ const Base = styled("div", {
 
     fill: "var(--md-sys-color-on-secondary-container)",
     background: "var(--md-sys-color-secondary-container)",
+
+    animation: "popIn 0.15s ease-out",
   },
 });
 

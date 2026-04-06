@@ -112,6 +112,16 @@ export default defineConfig({
             transform: "translateY(-4px)",
           },
         },
+        toastSlideIn: {
+          "0%": {
+            transform: "translateX(100%)",
+            opacity: "0",
+          },
+          "100%": {
+            transform: "translateX(0)",
+            opacity: "1",
+          },
+        },
       },
     },
   },

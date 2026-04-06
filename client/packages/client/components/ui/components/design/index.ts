@@ -47,6 +47,7 @@ export { Skeleton, SkeletonMessage, SkeletonMessages } from "./Skeleton";
 export { Slider } from "./Slider";
 export { Switch } from "./Switch";
 export { Text, typography } from "./Text";
+export { ToastContainer, showToast, dismissToast } from "./Toast";
 export { TextEditor } from "./TextEditor";
 export { TextField } from "./TextField";
 export { Unreads } from "./Unreads";

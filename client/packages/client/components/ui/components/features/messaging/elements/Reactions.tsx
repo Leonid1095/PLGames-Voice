@@ -252,6 +252,11 @@ const ReactionBase = styled("button", {
     fontWeight: 600,
     fontFeatureSettings: "'tnum' 1",
 
+    "&:hover": {
+      transform: "scale(1.08)",
+      boxShadow: "0 2px 6px color-mix(in srgb, var(--md-sys-color-shadow) 20%, transparent)",
+    },
+
     "& img": {
       width: "1.2em",
       height: "1.2em",
@@ -283,13 +288,19 @@ const AddReaction = styled(ReactionBase, {
     // for <Ripple />
     position: "relative",
 
-    opacity: 0,
+    opacity: 0.4,
     justifyContent: "center",
     fontSize: "var(--emoji-size)",
-    background: "var(--md-sys-color-surface-bright)",
+    background: "var(--md-sys-color-surface-container-low)",
     height: "33px",
     aspectRatio: "1/1",
     padding: "var(--gap-sm)",
+
+    "&:hover": {
+      opacity: 1,
+      background: "var(--md-sys-color-primary-container)",
+      color: "var(--md-sys-color-on-primary-container)",
+    },
   },
 });
 
@@ -315,7 +326,7 @@ const List = styled("div", {
     alignItems: "center",
     gap: "var(--gap-sm)",
     "&:hover .add": {
-      opacity: 1,
+      opacity: 0.7,
     },
   },
 });

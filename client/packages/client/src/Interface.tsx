@@ -14,6 +14,7 @@ import { useModals } from "@revolt/modal";
 import { Navigate, useBeforeLeave, useLocation } from "@revolt/routing";
 import { useState } from "@revolt/state";
 import { LAYOUT_SECTIONS } from "@revolt/state/stores/Layout";
+import { ToastContainer } from "@revolt/ui/components/design";
 import { Sidebar } from "./interface/Sidebar";
 import { ThemeSetup } from "./interface/ThemeSetup";
 
@@ -202,6 +203,7 @@ const Interface = (props: { children: JSX.Element }) => {
         <NotificationsWorker />
         <ThemeSetup />
         <CommandPalette />
+        <ToastContainer />
       </div>
     </MessageCache>
   );

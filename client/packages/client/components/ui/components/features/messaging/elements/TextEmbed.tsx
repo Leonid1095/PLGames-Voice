@@ -22,11 +22,19 @@ const Base = styled("div", {
     maxWidth: "calc(min(100%, 420px))",
     flexDirection: "row",
     gap: "var(--gap-md)",
-    padding: "var(--gap-md)",
+    padding: "var(--gap-lg)",
     borderRadius: "var(--borderRadius-md)",
-    color: "var(--md-sys-color-on-primary-container)",
-    background: "var(--md-sys-color-primary-container)",
-    borderInlineStart: "var(--gap-sm) solid var(--md-sys-color-primary)",
+    color: "var(--md-sys-color-on-surface)",
+    background: "color-mix(in srgb, var(--md-sys-color-surface-container-high) 60%, transparent)",
+    borderInlineStart: "3px solid var(--md-sys-color-primary)",
+    border: "1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 30%, transparent)",
+    borderInlineStart: "3px solid var(--md-sys-color-primary)",
+    boxShadow: "0 1px 4px color-mix(in srgb, var(--md-sys-color-shadow) 8%, transparent)",
+    transition: "var(--transitions-fast) box-shadow",
+
+    "&:hover": {
+      boxShadow: "0 2px 8px color-mix(in srgb, var(--md-sys-color-shadow) 15%, transparent)",
+    },
   },
 });
 
@@ -48,9 +56,10 @@ const Favicon = styled("img", {
 
 const PreviewImage = styled("img", {
   base: {
-    maxWidth: "120px",
-    maxHeight: "120px",
-    borderRadius: "var(--borderRadius-md)",
+    maxWidth: "180px",
+    maxHeight: "180px",
+    borderRadius: "var(--borderRadius-sm)",
+    objectFit: "cover",
   },
 });
 

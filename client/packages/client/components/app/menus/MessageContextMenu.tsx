@@ -28,6 +28,8 @@ import MdShield from "@material-design-icons/svg/outlined/shield.svg?component-s
 
 import MdSentimentContent from "@material-symbols/svg-400/outlined/sentiment_content.svg?component-solid";
 
+import { showToast } from "@revolt/ui/components/design";
+
 import {
   ContextMenu,
   ContextMenuButton,
@@ -98,6 +100,7 @@ export function MessageContextMenu(props: { message?: Message; file?: File }) {
       // Keep last 200
       if (saved.length > 200) saved.length = 200;
       localStorage.setItem("plg_saved_messages", JSON.stringify(saved));
+      showToast("success", "Сообщение сохранено", 2000);
     } catch {}
   }
 
@@ -123,6 +126,7 @@ export function MessageContextMenu(props: { message?: Message; file?: File }) {
    */
   function copyText() {
     navigator.clipboard.writeText(props.message!.content);
+    showToast("success", "Текст скопирован", 2000);
   }
 
   /**
@@ -169,6 +173,7 @@ export function MessageContextMenu(props: { message?: Message; file?: File }) {
         props.message!.server ? `/server/${props.message!.server?.id}` : ""
       }/channel/${props.message!.channelId}/${props.message!.id}`,
     );
+    showToast("success", "Ссылка скопирована", 2000);
   }
 
   /**
@@ -176,6 +181,7 @@ export function MessageContextMenu(props: { message?: Message; file?: File }) {
    */
   function copyId() {
     navigator.clipboard.writeText(props.message!.id);
+    showToast("info", "ID скопирован", 2000);
   }
 
   /**
