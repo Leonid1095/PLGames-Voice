@@ -1294,6 +1294,11 @@ msgstr "Тёмная"
 msgid "Database error, please contact support. ({0})"
 msgstr "Ошибка базы данных, пожалуйста, обратитесь в поддержку. ({0})"
 
+#: src/interface/channels/ChannelHeader.tsx
+#: src/interface/channels/ChannelHeader.tsx
+msgid "date"
+msgstr "дата"
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Deafen lower-ranking members in voice call"
@@ -1508,9 +1513,6 @@ msgstr "Поддержал PLG Voice"
 msgid "Done"
 msgstr "Готово"
 
-#: src/Landing.tsx
-#: src/Landing.tsx
-#: src/Landing.tsx
 #: src/AppDownload.tsx
 msgid "Download for Windows"
 msgstr "Скачать для Windows"
@@ -1777,6 +1779,10 @@ msgstr "полей"
 #: components/app/interface/settings/server/Forms.tsx
 msgid "Fields"
 msgstr "Поля"
+
+#: src/interface/channels/ChannelHeader.tsx
+msgid "file/link"
+msgstr "файл/ссылка"
 
 #: src/interface/Home.tsx
 #~ msgid "Find a community based on your hobbies or interests."
@@ -2934,6 +2940,10 @@ msgstr "Выберите имя пользователя, по которому 
 msgid "Pin message"
 msgstr "Закрепить сообщение"
 
+#: src/interface/channels/ChannelHeader.tsx
+msgid "Pinned"
+msgstr "Закреплённые"
+
 #: src/interface/channels/text/TextChannel.tsx
 msgid "Pinned Messages"
 msgstr "Закреплённые сообщения"
@@ -3452,6 +3462,10 @@ msgstr "Результаты поиска"
 #: src/interface/Discover.tsx
 msgid "Search servers by name..."
 msgstr "Поиск серверов по названию..."
+
+#: src/interface/channels/ChannelHeader.tsx
+msgid "Search..."
+msgstr "Поиск..."
 
 #: components/app/interface/settings/user/Feedback.tsx
 #~ msgid "See what we're currently working on."
@@ -4122,6 +4136,10 @@ msgstr "Используйте код или ссылку-приглашение
 #: components/app/interface/settings/user/Native.tsx
 msgid "Use the graphics card to improve performance."
 msgstr "Использовать видеокарту для повышения производительности."
+
+#: src/interface/channels/ChannelHeader.tsx
+msgid "user"
+msgstr "пользователь"
 
 #: components/app/interface/CommandPalette.tsx
 #: components/app/interface/settings/server/bans/ListBans.tsx
