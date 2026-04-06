@@ -1,6 +1,6 @@
 import { Match, Show, Switch } from "solid-js";
 
-import { Trans, t } from "@lingui-solid/solid/macro";
+import { Trans } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
 import { useVoice } from "@revolt/rtc";
@@ -57,7 +57,7 @@ export function VoiceBottomBar() {
             variant={voice.microphone() ? "filled" : "tonal"}
             onPress={() => voice.toggleMute()}
             isDisabled={!voice.speakingPermission}
-            use:floating={{ tooltip: { placement: "top", content: () => voice.microphone() ? t`Mute` : t`Unmute` } }}
+            title={voice.microphone() ? "Выкл. микрофон" : "Вкл. микрофон"}
           >
             <Show
               when={voice.microphone()}
@@ -73,7 +73,7 @@ export function VoiceBottomBar() {
             }
             onPress={() => voice.toggleDeafen()}
             isDisabled={!voice.listenPermission}
-            use:floating={{ tooltip: { placement: "top", content: () => voice.deafen() ? t`Undeafen` : t`Deafen` } }}
+            title={voice.deafen() ? "Вкл. звук" : "Выкл. звук"}
           >
             <Show
               when={voice.deafen() || !voice.listenPermission}
@@ -86,7 +86,7 @@ export function VoiceBottomBar() {
             size="xs"
             variant={voice.video() ? "filled" : "tonal"}
             onPress={() => voice.toggleCamera()}
-            use:floating={{ tooltip: { placement: "top", content: () => voice.video() ? t`Turn off camera` : t`Turn on camera` } }}
+            title={voice.video() ? "Выкл. камеру" : "Вкл. камеру"}
           >
             <Show
               when={voice.video()}
@@ -99,7 +99,7 @@ export function VoiceBottomBar() {
             size="xs"
             variant={voice.screenshare() ? "filled" : "tonal"}
             onPress={() => voice.toggleScreenshare()}
-            use:floating={{ tooltip: { placement: "top", content: () => voice.screenshare() ? t`Stop sharing` : t`Share screen` } }}
+            title={voice.screenshare() ? "Остановить трансляцию" : "Демонстрация экрана"}
           >
             <Show
               when={voice.screenshare()}
@@ -112,7 +112,7 @@ export function VoiceBottomBar() {
             size="xs"
             variant="tonal"
             onPress={() => voice.disconnect()}
-            use:floating={{ tooltip: { placement: "top", content: t`Disconnect` } }}
+            title="Отключиться"
           >
             <Symbol size={18}>call_end</Symbol>
           </DisconnectButton>
