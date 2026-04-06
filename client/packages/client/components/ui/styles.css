@@ -75,8 +75,8 @@ body {
 */
 
 .hljs {
-  color: #c9d1d9;
-  background: #0d1117;
+  color: var(--md-sys-color-on-surface);
+  background: var(--md-sys-color-surface-container-high);
 }
 
 .hljs-doctag,

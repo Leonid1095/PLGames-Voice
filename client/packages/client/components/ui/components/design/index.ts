@@ -43,6 +43,7 @@ export { MenuItem } from "./Menu";
 export { MenuButton } from "./MenuButton";
 export { Radio2 } from "./Radio";
 export { Ripple } from "./Ripple";
+export { Skeleton, SkeletonMessage, SkeletonMessages } from "./Skeleton";
 export { Slider } from "./Slider";
 export { Switch } from "./Switch";
 export { Text, typography } from "./Text";

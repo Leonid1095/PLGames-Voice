@@ -68,8 +68,12 @@ msgstr "{0, plural, one {Drop a file} other {Drop # files}}"
 #. placeholder {0}: users() .slice(0, -1) .map((user) => user!.username) .join(", ")
 #. placeholder {1}: users().slice(-1)[0]!.username
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
-msgid "{0} and {1} are typing…"
-msgstr "{0} and {1} are typing…"
+msgid "{0} and {1} are typing"
+msgstr "{0} and {1} are typing"
+
+#: components/ui/components/features/messaging/composition/TypingIndicator.tsx
+#~ msgid "{0} and {1} are typing…"
+#~ msgstr "{0} and {1} are typing…"
 
 #. placeholder {0}: (message.systemMessage as ChannelEditSystemMessage).by?.username
 #: components/client/NotificationsWorker.tsx
@@ -93,8 +97,12 @@ msgstr "{0} files exceed the maximum size limit of {maxSizeFormatted} and were n
 
 #. placeholder {0}: users()[0]!.username
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
-msgid "{0} is typing…"
-msgstr "{0} is typing…"
+msgid "{0} is typing"
+msgstr "{0} is typing"
+
+#: components/ui/components/features/messaging/composition/TypingIndicator.tsx
+#~ msgid "{0} is typing…"
+#~ msgstr "{0} is typing…"
 
 #. placeholder {0}: (message.systemMessage as UserSystemMessage).user?.username
 #: components/client/NotificationsWorker.tsx
@@ -1232,6 +1240,11 @@ msgstr "Dark"
 msgid "Database error, please contact support. ({0})"
 msgstr "Database error, please contact support. ({0})"
 
+#: src/interface/channels/ChannelHeader.tsx
+#: src/interface/channels/ChannelHeader.tsx
+msgid "date"
+msgstr "date"
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Deafen lower-ranking members in voice call"
@@ -1422,9 +1435,6 @@ msgstr "Donated to PLG Voice"
 msgid "Done"
 msgstr "Done"
 
-#: src/Landing.tsx
-#: src/Landing.tsx
-#: src/Landing.tsx
 #: src/AppDownload.tsx
 msgid "Download for Windows"
 msgstr "Download for Windows"
@@ -1679,6 +1689,10 @@ msgstr "fields"
 #: components/app/interface/settings/server/Forms.tsx
 msgid "Fields"
 msgstr "Fields"
+
+#: src/interface/channels/ChannelHeader.tsx
+msgid "file/link"
+msgstr "file/link"
 
 #: src/interface/Home.tsx
 #~ msgid "Find a community based on your hobbies or interests."
@@ -2772,6 +2786,10 @@ msgstr "Pick a username that you want people to be able to find you by. This can
 msgid "Pin message"
 msgstr "Pin message"
 
+#: src/interface/channels/ChannelHeader.tsx
+msgid "Pinned"
+msgstr "Pinned"
+
 #: src/interface/channels/text/TextChannel.tsx
 msgid "Pinned Messages"
 msgstr "Pinned Messages"
@@ -3267,6 +3285,10 @@ msgstr "Search Results"
 msgid "Search servers by name..."
 msgstr "Search servers by name..."
 
+#: src/interface/channels/ChannelHeader.tsx
+msgid "Search..."
+msgstr "Search..."
+
 #: components/app/interface/settings/user/Feedback.tsx
 #~ msgid "See what we're currently working on."
 #~ msgstr "See what we're currently working on."
@@ -3460,8 +3482,12 @@ msgid "Setup recovery codes"
 msgstr "Setup recovery codes"
 
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
-msgid "Several people are typing…"
-msgstr "Several people are typing…"
+msgid "Several people are typing"
+msgstr "Several people are typing"
+
+#: components/ui/components/features/messaging/composition/TypingIndicator.tsx
+#~ msgid "Several people are typing…"
+#~ msgstr "Several people are typing…"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -3932,6 +3958,10 @@ msgstr "Use a code or invite link"
 #: components/app/interface/settings/user/Native.tsx
 msgid "Use the graphics card to improve performance."
 msgstr "Use the graphics card to improve performance."
+
+#: src/interface/channels/ChannelHeader.tsx
+msgid "user"
+msgstr "user"
 
 #: components/app/interface/CommandPalette.tsx
 #: components/app/interface/settings/server/bans/ListBans.tsx

@@ -111,7 +111,7 @@ const base = cva({
 
     color: "var(--color)",
     fill: "var(--color)",
-    transition: "var(--transitions-fast) background-color, var(--transitions-fast) color",
+    transition: "var(--transitions-fast) background-color, var(--transitions-fast) color, var(--transitions-fast) box-shadow, var(--transitions-fast) transform",
 
     "& > svg": {
       alignSelf: "center",
@@ -143,6 +143,7 @@ const base = cva({
         "&:hover": {
           background: "color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent)",
           "--color": "var(--md-sys-color-on-surface-variant)",
+          boxShadow: "0 1px 3px color-mix(in srgb, var(--md-sys-color-shadow) 15%, transparent)",
         },
       },
       muted: {
@@ -161,6 +162,7 @@ const base = cva({
         background: "transparent",
         "&:hover": {
           background: "color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent)",
+          boxShadow: "0 1px 3px color-mix(in srgb, var(--md-sys-color-shadow) 15%, transparent)",
         },
       },
       selected: {

@@ -2,6 +2,7 @@ import { For, Match, Switch } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { User } from "stoat.js";
+import { css } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
 import { useUsers } from "@revolt/markdown/users";
@@ -60,9 +61,9 @@ export function TypingIndicator(props: Props) {
             </For>
           </Avatars>
           <OverflowingText class={typography({ class: "body", size: "small" })}>
-            <Switch fallback={<Trans>Several people are typing…</Trans>}>
+            <Switch fallback={<Trans>Several people are typing</Trans>}>
               <Match when={users().length === 1}>
-                <Trans>{users()[0]!.username} is typing…</Trans>
+                <Trans>{users()[0]!.username} is typing</Trans>
               </Match>
               <Match when={users().length < 5}>
                 <Trans>
@@ -70,10 +71,15 @@ export function TypingIndicator(props: Props) {
                     .slice(0, -1)
                     .map((user) => user!.username)
                     .join(", ")}{" "}
-                  and {users().slice(-1)[0]!.username} are typing…
+                  and {users().slice(-1)[0]!.username} are typing
                 </Trans>
               </Match>
             </Switch>
+            <TypingDots>
+              <span class={dotClass} />
+              <span class={dotClass} style={{ "animation-delay": "150ms" }} />
+              <span class={dotClass} style={{ "animation-delay": "300ms" }} />
+            </TypingDots>
           </OverflowingText>
         </Bar>
       </Match>
@@ -116,4 +122,30 @@ const Bar = styled("div", {
 
     color: "var(--md-sys-color-on-surface)",
   },
+});
+
+/**
+ * Animated typing dots container
+ */
+const TypingDots = styled("span", {
+  base: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "2px",
+    marginLeft: "2px",
+    verticalAlign: "middle",
+  },
+});
+
+/**
+ * Individual bouncing dot
+ */
+const dotClass = css({
+  display: "inline-block",
+  width: "4px",
+  height: "4px",
+  borderRadius: "50%",
+  background: "currentColor",
+  opacity: 0.7,
+  animation: "typingBounce 1.2s ease-in-out infinite",
 });

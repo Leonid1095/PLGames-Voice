@@ -104,6 +104,14 @@ export default defineConfig({
             transform: "translateY(0)",
           },
         },
+        typingBounce: {
+          "0%, 60%, 100%": {
+            transform: "translateY(0)",
+          },
+          "30%": {
+            transform: "translateY(-4px)",
+          },
+        },
       },
     },
   },

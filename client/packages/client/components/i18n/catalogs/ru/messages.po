@@ -68,8 +68,12 @@ msgstr "{0, plural, one {Перетащите файл} few {Перетащит�
 #. placeholder {0}: users() .slice(0, -1) .map((user) => user!.username) .join(", ")
 #. placeholder {1}: users().slice(-1)[0]!.username
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
-msgid "{0} and {1} are typing…"
-msgstr "{0} и {1} печатают…"
+msgid "{0} and {1} are typing"
+msgstr "{0} и {1} печатают"
+
+#: components/ui/components/features/messaging/composition/TypingIndicator.tsx
+#~ msgid "{0} and {1} are typing…"
+#~ msgstr "{0} и {1} печатают…"
 
 #. placeholder {0}: (message.systemMessage as ChannelEditSystemMessage).by?.username
 #: components/client/NotificationsWorker.tsx
@@ -93,8 +97,12 @@ msgstr "{0} файлов превышают максимальный разме�
 
 #. placeholder {0}: users()[0]!.username
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
-msgid "{0} is typing…"
-msgstr "{0} печатает…"
+msgid "{0} is typing"
+msgstr "{0} печатает"
+
+#: components/ui/components/features/messaging/composition/TypingIndicator.tsx
+#~ msgid "{0} is typing…"
+#~ msgstr "{0} печатает…"
 
 #. placeholder {0}: (message.systemMessage as UserSystemMessage).user?.username
 #: components/client/NotificationsWorker.tsx
@@ -3660,8 +3668,12 @@ msgid "Setup recovery codes"
 msgstr "Настроить коды восстановления"
 
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
-msgid "Several people are typing…"
-msgstr "Несколько людей печатают…"
+msgid "Several people are typing"
+msgstr "Несколько людей печатают"
+
+#: components/ui/components/features/messaging/composition/TypingIndicator.tsx
+#~ msgid "Several people are typing…"
+#~ msgstr "Несколько людей печатают…"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx

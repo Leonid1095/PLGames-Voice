@@ -5,8 +5,9 @@ import { styled } from "styled-system/jsx";
 
 const Codeblock = styled("pre", {
   base: {
-    color: "#c9d1d9",
-    background: "#0d1117",
+    color: "var(--md-sys-color-on-surface)",
+    background: "var(--md-sys-color-surface-container-high)",
+    border: "1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 40%, transparent)",
 
     position: "relative",
     width: "fit-content",
@@ -47,15 +48,15 @@ const copyBtnClass = css({
 
   fontSize: "12px",
   fontFamily: "inherit",
-  color: "#c9d1d9",
-  background: "rgba(110, 118, 129, 0.4)",
+  color: "var(--md-sys-color-on-surface)",
+  background: "color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent)",
 
   "&:hover": {
-    background: "rgba(110, 118, 129, 0.6)",
+    background: "color-mix(in srgb, var(--md-sys-color-on-surface) 20%, transparent)",
   },
 
   "&:active": {
-    background: "rgba(110, 118, 129, 0.8)",
+    background: "color-mix(in srgb, var(--md-sys-color-on-surface) 28%, transparent)",
   },
 });
 

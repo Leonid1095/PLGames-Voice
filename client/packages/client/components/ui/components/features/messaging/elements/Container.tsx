@@ -133,7 +133,7 @@ const base = cva({
     borderRadius: "var(--borderRadius-md)",
     minHeight: "1em",
 
-    transition: "background-color var(--transitions-fast)",
+    transition: "background-color var(--transitions-fast), box-shadow var(--transitions-fast)",
 
     "& a:hover": {
       textDecoration: "underline",
@@ -184,7 +184,8 @@ const base = cva({
         marginTop: "var(--message-group-spacing) !important",
 
         "&:hover": {
-          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 8%, var(--md-sys-color-surface-container-lowest))",
+          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 6%, var(--md-sys-color-surface-container-lowest))",
+          boxShadow: "0 1px 4px color-mix(in srgb, var(--md-sys-color-shadow) 10%, transparent)",
         },
       },
       hide: {},

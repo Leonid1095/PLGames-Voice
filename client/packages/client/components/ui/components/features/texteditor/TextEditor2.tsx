@@ -328,8 +328,8 @@ const editor = css({
 
     padding: "0.5px 4px",
 
-    color: "#c9d1d9",
-    background: "#0d1117",
+    color: "var(--md-sys-color-on-surface)",
+    background: "var(--md-sys-color-surface-container-high)",
   },
 
   // adapted from elements.ts
