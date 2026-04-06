@@ -1,6 +1,6 @@
 import { Accessor, Match, Setter, Show, Switch, createMemo, createResource } from "solid-js";
 
-import { Trans, useLingui } from "@lingui-solid/solid/macro";
+import { Trans, t, useLingui } from "@lingui-solid/solid/macro";
 import { Channel } from "stoat.js";
 import { css } from "styled-system/css";
 import { styled } from "styled-system/jsx";
@@ -299,7 +299,7 @@ export function ChannelHeader(props: Props) {
         <SearchWrapper>
           <input
             class={searchInput}
-            placeholder="Поиск... (from: has: pinned: before: after:)"
+            placeholder={t`Search...`}
             value={searchValue()!}
             onChange={(e) =>
               e.currentTarget.value
@@ -318,31 +318,31 @@ export function ChannelHeader(props: Props) {
                 <SearchChip onClick={() => {
                   const el = document.querySelector(`.${searchInput}`) as HTMLInputElement;
                   if (el) { el.value += " from:"; el.focus(); props.setSidebarState!({ state: "search", query: el.value }); }
-                }}>from:</SearchChip>
+                }}>from: <Trans>user</Trans></SearchChip>
               </Show>
               <Show when={!searchValue()!.includes("has:")}>
                 <SearchChip onClick={() => {
                   const el = document.querySelector(`.${searchInput}`) as HTMLInputElement;
                   if (el) { el.value += " has:"; el.focus(); props.setSidebarState!({ state: "search", query: el.value }); }
-                }}>has:</SearchChip>
+                }}>has: <Trans>file/link</Trans></SearchChip>
               </Show>
               <Show when={!searchValue()!.includes("pinned:")}>
                 <SearchChip onClick={() => {
                   const el = document.querySelector(`.${searchInput}`) as HTMLInputElement;
                   if (el) { el.value += " pinned:true"; el.focus(); props.setSidebarState!({ state: "search", query: el.value }); }
-                }}>pinned:</SearchChip>
+                }}><Trans>Pinned</Trans></SearchChip>
               </Show>
               <Show when={!searchValue()!.includes("before:")}>
                 <SearchChip onClick={() => {
                   const el = document.querySelector(`.${searchInput}`) as HTMLInputElement;
                   if (el) { el.value += " before:"; el.focus(); props.setSidebarState!({ state: "search", query: el.value }); }
-                }}>before:</SearchChip>
+                }}>before: <Trans>date</Trans></SearchChip>
               </Show>
               <Show when={!searchValue()!.includes("after:")}>
                 <SearchChip onClick={() => {
                   const el = document.querySelector(`.${searchInput}`) as HTMLInputElement;
                   if (el) { el.value += " after:"; el.focus(); props.setSidebarState!({ state: "search", query: el.value }); }
-                }}>after:</SearchChip>
+                }}>after: <Trans>date</Trans></SearchChip>
               </Show>
             </SearchHints>
           </Show>

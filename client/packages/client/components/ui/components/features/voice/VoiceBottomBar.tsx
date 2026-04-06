@@ -1,6 +1,6 @@
 import { Match, Show, Switch } from "solid-js";
 
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, t } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
 import { useVoice } from "@revolt/rtc";
@@ -57,6 +57,7 @@ export function VoiceBottomBar() {
             variant={voice.microphone() ? "filled" : "tonal"}
             onPress={() => voice.toggleMute()}
             isDisabled={!voice.speakingPermission}
+            use:floating={{ tooltip: { placement: "top", content: () => voice.microphone() ? t`Mute` : t`Unmute` } }}
           >
             <Show
               when={voice.microphone()}
@@ -72,6 +73,7 @@ export function VoiceBottomBar() {
             }
             onPress={() => voice.toggleDeafen()}
             isDisabled={!voice.listenPermission}
+            use:floating={{ tooltip: { placement: "top", content: () => voice.deafen() ? t`Undeafen` : t`Deafen` } }}
           >
             <Show
               when={voice.deafen() || !voice.listenPermission}
@@ -84,6 +86,7 @@ export function VoiceBottomBar() {
             size="xs"
             variant={voice.video() ? "filled" : "tonal"}
             onPress={() => voice.toggleCamera()}
+            use:floating={{ tooltip: { placement: "top", content: () => voice.video() ? t`Turn off camera` : t`Turn on camera` } }}
           >
             <Show
               when={voice.video()}
@@ -96,6 +99,7 @@ export function VoiceBottomBar() {
             size="xs"
             variant={voice.screenshare() ? "filled" : "tonal"}
             onPress={() => voice.toggleScreenshare()}
+            use:floating={{ tooltip: { placement: "top", content: () => voice.screenshare() ? t`Stop sharing` : t`Share screen` } }}
           >
             <Show
               when={voice.screenshare()}
@@ -108,6 +112,7 @@ export function VoiceBottomBar() {
             size="xs"
             variant="tonal"
             onPress={() => voice.disconnect()}
+            use:floating={{ tooltip: { placement: "top", content: t`Disconnect` } }}
           >
             <Symbol size={18}>call_end</Symbol>
           </DisconnectButton>
