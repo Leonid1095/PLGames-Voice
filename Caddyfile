@@ -55,9 +55,10 @@
 		uri strip_prefix /livekit
 		reverse_proxy http://livekit:7880 {
 			header_down Location "^/" "/livekit/"
+			flush_interval -1
 			transport http {
 				keepalive off
-				read_buffer 4096
+				read_buffer 8192
 			}
 		}
 	}

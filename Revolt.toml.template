@@ -38,6 +38,57 @@ encryption_key = "${MESSAGES_ENCRYPTION_KEY}"
 
 [features]
 webhooks_enabled = true
+mass_mentions_send_notifications = false
+mass_mentions_enabled = false
+
+[features.limits.global]
+group_size = 150
+message_embeds = 5
+message_replies = 5
+message_reactions = 20
+server_emoji = 200
+server_roles = 200
+server_channels = 200
+new_user_hours = 72
+body_limit_size = 20000000
+
+[features.limits.default]
+outgoing_friend_requests = 1000
+bots = 25
+message_length = 4000
+message_attachments = 5
+servers = 200
+voice_quality = 4
+video = true
+video_resolution = [1920, 1080]
+video_aspect_ratio = [0.2, 5.0]
+
+[features.limits.default.file_upload_size_limit]
+default = 20000000
+banner = 6000000
+icon = 4000000
+avatar = 4000000
+background = 6000000
+emoji = 500000
+
+[features.limits.new_user]
+outgoing_friend_requests = 5
+bots = 2
+message_length = 2000
+message_attachments = 3
+servers = 50
+voice_quality = 2
+video = true
+video_resolution = [1280, 720]
+video_aspect_ratio = [0.5, 3.0]
+
+[features.limits.new_user.file_upload_size_limit]
+default = 10000000
+banner = 4000000
+icon = 2500000
+avatar = 2500000
+background = 4000000
+emoji = 250000
 
 [api.livekit.nodes.worldwide]
 url = "http://livekit:7880"
