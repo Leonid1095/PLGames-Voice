@@ -335,6 +335,7 @@ export function TextChannel(props: ChannelPageProps) {
           }
         >
           <div
+            data-member-sidebar
             ref={sidebarScrollTargetElement}
             use:scrollable={{
               direction: "y",

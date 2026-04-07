@@ -29,6 +29,7 @@ import MdSettings from "@material-design-icons/svg/outlined/settings.svg?compone
 import MdKeep from "../../svg/keep.svg?component-solid";
 import { HeaderIcon } from "../common/CommonHeader";
 
+import { useMobile } from "../MobileContext";
 import { SidebarState } from "./text/TextChannel";
 
 interface Props {
@@ -57,6 +58,7 @@ export function ChannelHeader(props: Props) {
   const navigate = useNavigate();
   const { t } = useLingui();
   const state = useState();
+  const { toggleSidebar } = useMobile();
 
   const parentChannel = createMemo(() => {
     const parentId = props.channel.parentId;
@@ -89,6 +91,13 @@ export function ChannelHeader(props: Props) {
 
   return (
     <>
+      <IconButton
+        data-hamburger
+        onPress={toggleSidebar}
+      >
+        <Symbol size={22}>menu</Symbol>
+      </IconButton>
+
       <Switch>
         <Match when={props.channel.isThread && parentChannel()}>
           <BackButton

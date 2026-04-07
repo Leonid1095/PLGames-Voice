@@ -97,6 +97,14 @@ class Voice {
         noiseSuppression: this.#settings.noiseSupression,
         autoGainControl: this.#settings.autoGainControl,
       },
+      videoCaptureDefaults: {
+        facingMode: "user",
+        resolution: {
+          width: 1280,
+          height: 720,
+          frameRate: 30,
+        },
+      },
       audioOutput: {
         deviceId: this.#settings.preferredAudioOutputDevice,
       },
@@ -171,21 +179,43 @@ class Voice {
   async toggleCamera() {
     const room = this.room();
     if (!room) throw new Error("Voice: no active room");
-    await room.localParticipant.setCameraEnabled(
-      !room.localParticipant.isCameraEnabled,
-    );
-
-    this.#setVideo(room.localParticipant.isCameraEnabled);
+    try {
+      const enabling = !room.localParticipant.isCameraEnabled;
+      await room.localParticipant.setCameraEnabled(enabling, {
+        facingMode: "user",
+        resolution: {
+          width: 1280,
+          height: 720,
+          frameRate: 30,
+        },
+      });
+      this.#setVideo(room.localParticipant.isCameraEnabled);
+    } catch (e) {
+      console.error("Voice: failed to toggle camera:", e);
+      this.#setVideo(false);
+    }
   }
 
   async toggleScreenshare() {
     const room = this.room();
     if (!room) throw new Error("Voice: no active room");
-    await room.localParticipant.setScreenShareEnabled(
-      !room.localParticipant.isScreenShareEnabled,
-    );
-
-    this.#setScreenshare(room.localParticipant.isScreenShareEnabled);
+    try {
+      const enabling = !room.localParticipant.isScreenShareEnabled;
+      await room.localParticipant.setScreenShareEnabled(enabling, {
+        audio: true,
+        resolution: {
+          width: 1920,
+          height: 1080,
+          frameRate: 30,
+        },
+        contentHint: "detail",
+      });
+      this.#setScreenshare(room.localParticipant.isScreenShareEnabled);
+    } catch (e) {
+      // User cancelled the screen picker or permission denied
+      console.error("Voice: failed to toggle screenshare:", e);
+      this.#setScreenshare(false);
+    }
   }
 
   async #applyKrisp(track: LocalAudioTrack) {

@@ -44,7 +44,7 @@ export const Sidebar = (props: {
   const location = useLocation();
 
   return (
-    <div style={{ display: "flex", "flex-shrink": 0 }}>
+    <div style={{ display: "flex", "flex-shrink": 0, height: "100%" }}>
       <ServerList
         orderedServers={state.ordering.orderedServers(client())}
         setServerOrder={state.ordering.setServerOrder}

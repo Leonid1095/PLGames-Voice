@@ -15,6 +15,7 @@ import { Navigate, useBeforeLeave, useLocation } from "@revolt/routing";
 import { useState } from "@revolt/state";
 import { LAYOUT_SECTIONS } from "@revolt/state/stores/Layout";
 import { ToastContainer } from "@revolt/ui/components/design";
+import { MobileProvider, useMobile } from "./interface/MobileContext";
 import { Sidebar } from "./interface/Sidebar";
 import { ThemeSetup } from "./interface/ThemeSetup";
 
@@ -151,63 +152,126 @@ const Interface = (props: { children: JSX.Element }) => {
   }
 
   return (
-    <MessageCache client={client()}>
-      <div
-        style={{
-          display: "flex",
-          "flex-direction": "column",
-          height: "100%",
-        }}
-      >
-        <Switch fallback={<AppLoader />}>
-          <Match when={!isLoggedIn()}>
-            <Navigate href="/welcome" />
-          </Match>
-          <Match when={lifecycle.loadedOnce()}>
-            <Titlebar />
-            <Layout
-              disconnected={isDisconnected()}
-              style={{ "flex-grow": 1, "min-height": 0 }}
-              onDragOver={(e) => {
-                if (e.dataTransfer) e.dataTransfer.dropEffect = "none";
-              }}
-              onDrop={(e) => e.preventDefault()}
-            >
-              <Sidebar
-                menuGenerator={(target) => ({
-                  contextMenu: () => {
-                    return (
-                      <>
-                        {target instanceof Server ? (
-                          <ServerContextMenu server={target} />
-                        ) : (
-                          <ChannelContextMenu channel={target} />
-                        )}
-                      </>
-                    );
-                  },
-                })}
-              />
-              <Content
-                sidebar={state.layout.getSectionState(
-                  LAYOUT_SECTIONS.PRIMARY_SIDEBAR,
-                  true,
-                )}
+    <MobileProvider>
+      <MessageCache client={client()}>
+        <div
+          style={{
+            display: "flex",
+            "flex-direction": "column",
+            height: "100%",
+          }}
+        >
+          <Switch fallback={<AppLoader />}>
+            <Match when={!isLoggedIn()}>
+              <Navigate href="/welcome" />
+            </Match>
+            <Match when={lifecycle.loadedOnce()}>
+              <Titlebar />
+              <Layout
+                disconnected={isDisconnected()}
+                style={{ "flex-grow": 1, "min-height": 0 }}
+                onDragOver={(e) => {
+                  if (e.dataTransfer) e.dataTransfer.dropEffect = "none";
+                }}
+                onDrop={(e) => e.preventDefault()}
               >
-                {props.children}
-              </Content>
-            </Layout>
-          </Match>
-        </Switch>
+                <MobileSidebarWrapper
+                  menuGenerator={(target) => ({
+                    contextMenu: () => {
+                      return (
+                        <>
+                          {target instanceof Server ? (
+                            <ServerContextMenu server={target} />
+                          ) : (
+                            <ChannelContextMenu channel={target} />
+                          )}
+                        </>
+                      );
+                    },
+                  })}
+                />
+                <Content
+                  data-content
+                  sidebar={state.layout.getSectionState(
+                    LAYOUT_SECTIONS.PRIMARY_SIDEBAR,
+                    true,
+                  )}
+                >
+                  {props.children}
+                </Content>
+              </Layout>
+            </Match>
+          </Switch>
 
-        <NotificationsWorker />
-        <ThemeSetup />
-        <CommandPalette />
-        <ToastContainer />
-      </div>
-    </MessageCache>
+          <NotificationsWorker />
+          <ThemeSetup />
+          <CommandPalette />
+          <ToastContainer />
+        </div>
+      </MessageCache>
+    </MobileProvider>
   );
 };
+
+/**
+ * Mobile-aware sidebar wrapper with backdrop overlay + swipe support
+ */
+function MobileSidebarWrapper(props: {
+  menuGenerator: (target: any) => any;
+}) {
+  const { isMobile, sidebarOpen, openSidebar, closeSidebar } = useMobile();
+  const { pathname } = useLocation();
+
+  // Auto-close sidebar on navigation (user tapped a channel)
+  createEffect(() => {
+    pathname; // track
+    closeSidebar();
+  });
+
+  // Swipe-from-left-edge to open sidebar
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  const onTouchStart = (e: TouchEvent) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  };
+
+  const onTouchEnd = (e: TouchEvent) => {
+    if (!isMobile()) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+    // Swipe right from left edge (start < 30px, move > 60px, mostly horizontal)
+    if (touchStartX < 30 && dx > 60 && dy < dx) {
+      openSidebar();
+    }
+    // Swipe left to close (when sidebar open, move < -60px)
+    if (sidebarOpen() && dx < -60 && dy < Math.abs(dx)) {
+      closeSidebar();
+    }
+  };
+
+  onMount(() => {
+    document.addEventListener("touchstart", onTouchStart, { passive: true });
+    document.addEventListener("touchend", onTouchEnd, { passive: true });
+  });
+
+  return (
+    <>
+      <div
+        data-sidebar-backdrop
+        classList={{ "sidebar-open": sidebarOpen() }}
+        onClick={closeSidebar}
+      />
+      <div
+        data-sidebar
+        classList={{ "sidebar-open": sidebarOpen() }}
+      >
+        <Sidebar menuGenerator={props.menuGenerator} />
+      </div>
+    </>
+  );
+}
 
 /**
  * Parent container

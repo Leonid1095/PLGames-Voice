@@ -27,14 +27,18 @@ export function ForumView(props: ChannelPageProps) {
   const [newContent, setNewContent] = createSignal("");
   const [creating, setCreating] = createSignal(false);
 
+  const [threadsFailed, setThreadsFailed] = createSignal(false);
   const [threads, { refetch }] = createResource(
-    () => props.channel.id,
+    () => threadsFailed() ? null : props.channel.id,
     async (channelId) => {
+      if (!channelId) return [];
       const c = client();
       try {
         const res = await c.api.get(`/channels/${channelId}/threads` as any);
         return (res as any[]) || [];
       } catch {
+        // API doesn't support /threads endpoint — stop retrying
+        setThreadsFailed(true);
         return [];
       }
     },

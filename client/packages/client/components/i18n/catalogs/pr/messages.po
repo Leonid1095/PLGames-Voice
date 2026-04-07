@@ -68,8 +68,12 @@ msgstr ""
 #. placeholder {0}: users() .slice(0, -1) .map((user) => user!.username) .join(", ")
 #. placeholder {1}: users().slice(-1)[0]!.username
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
-msgid "{0} and {1} are typing…"
+msgid "{0} and {1} are typing"
 msgstr ""
+
+#: components/ui/components/features/messaging/composition/TypingIndicator.tsx
+#~ msgid "{0} and {1} are typing…"
+#~ msgstr ""
 
 #. placeholder {0}: (message.systemMessage as ChannelEditSystemMessage).by?.username
 #: components/client/NotificationsWorker.tsx
@@ -93,8 +97,12 @@ msgstr ""
 
 #. placeholder {0}: users()[0]!.username
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
-msgid "{0} is typing…"
+msgid "{0} is typing"
 msgstr ""
+
+#: components/ui/components/features/messaging/composition/TypingIndicator.tsx
+#~ msgid "{0} is typing…"
+#~ msgstr ""
 
 #. placeholder {0}: (message.systemMessage as UserSystemMessage).user?.username
 #: components/client/NotificationsWorker.tsx
@@ -1230,6 +1238,11 @@ msgstr ""
 msgid "Database error, please contact support. ({0})"
 msgstr ""
 
+#: src/interface/channels/ChannelHeader.tsx
+#: src/interface/channels/ChannelHeader.tsx
+msgid "date"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Deafen lower-ranking members in voice call"
@@ -1432,9 +1445,6 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: src/Landing.tsx
-#: src/Landing.tsx
-#: src/Landing.tsx
 #: src/AppDownload.tsx
 msgid "Download for Windows"
 msgstr ""
@@ -1688,6 +1698,10 @@ msgstr ""
 #: components/app/interface/settings/server/Forms.tsx
 #: components/app/interface/settings/server/Forms.tsx
 msgid "Fields"
+msgstr ""
+
+#: src/interface/channels/ChannelHeader.tsx
+msgid "file/link"
 msgstr ""
 
 #: src/interface/Home.tsx
@@ -2810,6 +2824,10 @@ msgstr "Grab ye' usarname that you want scallywags bein' able to travel to yer s
 msgid "Pin message"
 msgstr ""
 
+#: src/interface/channels/ChannelHeader.tsx
+msgid "Pinned"
+msgstr ""
+
 #: src/interface/channels/text/TextChannel.tsx
 msgid "Pinned Messages"
 msgstr ""
@@ -3305,6 +3323,10 @@ msgstr ""
 msgid "Search servers by name..."
 msgstr ""
 
+#: src/interface/channels/ChannelHeader.tsx
+msgid "Search..."
+msgstr ""
+
 #: components/app/interface/settings/user/Feedback.tsx
 #~ msgid "See what we're currently working on."
 #~ msgstr ""
@@ -3498,8 +3520,12 @@ msgid "Setup recovery codes"
 msgstr ""
 
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
-msgid "Several people are typing…"
-msgstr "Several scallywags be typing…"
+msgid "Several people are typing"
+msgstr ""
+
+#: components/ui/components/features/messaging/composition/TypingIndicator.tsx
+#~ msgid "Several people are typing…"
+#~ msgstr "Several scallywags be typing…"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -4001,6 +4027,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Use the graphics card to improve performance."
+msgstr ""
+
+#: src/interface/channels/ChannelHeader.tsx
+msgid "user"
 msgstr ""
 
 #: components/app/interface/CommandPalette.tsx

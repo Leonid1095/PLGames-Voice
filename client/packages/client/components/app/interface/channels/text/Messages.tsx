@@ -271,7 +271,7 @@ export function Messages(props: Props) {
       // If we're not at the end, restore scroll position
       if (existingState && !existingState.atEnd) {
         setTimeout(() =>
-          listRef!.scrollTo({
+          listRef?.scrollTo({
             top: existingState.scrollTop!,
             behavior: "instant",
           }),
@@ -280,7 +280,7 @@ export function Messages(props: Props) {
       // Or... reset scroll to the end
       else if (atEnd()) {
         setTimeout(() =>
-          listRef!.scrollTo({
+          listRef?.scrollTo({
             top: 9999999,
             behavior: "instant",
           }),

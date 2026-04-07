@@ -16,7 +16,7 @@ export function VoiceBottomBar() {
 
   return (
     <Show when={voice.channel()}>
-      <Bar>
+      <Bar data-voice-bar>
         <Info>
           <ChannelName>
             <Symbol size={16}>volume_up</Symbol>

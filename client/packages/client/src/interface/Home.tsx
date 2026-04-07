@@ -75,6 +75,12 @@ const Buttons = styled("div", {
 
     color: "var(--md-sys-color-on-surface-variant)",
     background: "var(--md-sys-color-surface-variant)",
+
+    "@media (max-width: 768px)": {
+      flexDirection: "column",
+      width: "100%",
+      maxWidth: "320px",
+    },
   },
 });
 
@@ -88,6 +94,11 @@ const SeparatedColumn = styled(Column, {
     width: "260px",
     "& > *": {
       flexGrow: 1,
+    },
+
+    "@media (max-width: 768px)": {
+      width: "100%",
+      marginInline: 0,
     },
   },
 });
