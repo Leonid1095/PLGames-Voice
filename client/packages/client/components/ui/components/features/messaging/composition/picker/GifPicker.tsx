@@ -19,37 +19,34 @@ import { CompositionMediaPickerContext } from "./CompositionMediaPicker";
 import { MyGifPicker } from "./MyGifPicker";
 
 /**
- * Tenor API v2 key (from env, or empty to disable search)
+ * Giphy API key (from env, or empty to disable search)
+ * Get a free key at https://developers.giphy.com/
  */
-const TENOR_API_KEY = import.meta.env.VITE_TENOR_API_KEY ?? "";
+const GIPHY_API_KEY = import.meta.env.VITE_GIPHY_API_KEY ?? "";
 
-interface TenorGif {
+interface GifResult {
   id: string;
   title: string;
   url: string;
   preview: string;
 }
 
-async function searchTenor(query: string): Promise<TenorGif[]> {
-  if (!TENOR_API_KEY) return [];
+async function searchGiphy(query: string): Promise<GifResult[]> {
+  if (!GIPHY_API_KEY) return [];
 
   const endpoint = query.trim()
-    ? `https://tenor.googleapis.com/v2/search?q=${encodeURIComponent(query)}&key=${TENOR_API_KEY}&limit=30&media_filter=gif,tinygif&locale=ru_RU`
-    : `https://tenor.googleapis.com/v2/featured?key=${TENOR_API_KEY}&limit=30&media_filter=gif,tinygif&locale=ru_RU`;
+    ? `https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_API_KEY}&q=${encodeURIComponent(query)}&limit=30&lang=ru&rating=pg-13`
+    : `https://api.giphy.com/v1/gifs/trending?api_key=${GIPHY_API_KEY}&limit=30&rating=pg-13`;
 
   try {
     const res = await fetch(endpoint);
     if (!res.ok) return [];
     const data = await res.json();
-    return (data.results ?? []).map((r: any) => ({
-      id: r.id,
-      title: r.title || "",
-      url: r.media_formats?.gif?.url ?? r.media_formats?.mediumgif?.url ?? "",
-      preview:
-        r.media_formats?.tinygif?.url ??
-        r.media_formats?.nanogif?.url ??
-        r.media_formats?.gif?.url ??
-        "",
+    return (data.data ?? []).map((g: any) => ({
+      id: g.id,
+      title: g.title || "",
+      url: g.images?.original?.url ?? g.images?.downsized_medium?.url ?? "",
+      preview: g.images?.fixed_width_small?.url ?? g.images?.preview_gif?.url ?? g.images?.fixed_width?.url ?? "",
     }));
   } catch {
     return [];
@@ -58,7 +55,7 @@ async function searchTenor(query: string): Promise<TenorGif[]> {
 
 export function GifPicker() {
   const { t } = useLingui();
-  const [tab, setTab] = createSignal<"my" | "search">(TENOR_API_KEY ? "search" : "my");
+  const [tab, setTab] = createSignal<"my" | "search">(GIPHY_API_KEY ? "search" : "my");
 
   return (
     <Stack>
@@ -86,7 +83,7 @@ export function GifPicker() {
       </TabBar>
       <Switch>
         <Match when={tab() === "search"}>
-          <TenorSearch />
+          <GiphySearch />
         </Match>
         <Match when={tab() === "my"}>
           <MyGifPicker />
@@ -96,21 +93,21 @@ export function GifPicker() {
   );
 }
 
-function TenorSearch() {
+function GiphySearch() {
   const { t } = useLingui();
   const state = useState();
   const { onMessage } = useContext(CompositionMediaPickerContext);
   const [query, setQuery] = createSignal("");
-  const [results, setResults] = createSignal<TenorGif[]>([]);
+  const [results, setResults] = createSignal<GifResult[]>([]);
   const [loading, setLoading] = createSignal(false);
   const [loaded, setLoaded] = createSignal(false);
 
   let debounceTimer: ReturnType<typeof setTimeout>;
 
-  // Load featured on mount
+  // Load trending on mount
   (async () => {
     setLoading(true);
-    const gifs = await searchTenor("");
+    const gifs = await searchGiphy("");
     setResults(gifs);
     setLoading(false);
     setLoaded(true);
@@ -121,7 +118,7 @@ function TenorSearch() {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(async () => {
       setLoading(true);
-      const gifs = await searchTenor(value);
+      const gifs = await searchGiphy(value);
       setResults(gifs);
       setLoading(false);
       setLoaded(true);
@@ -183,9 +180,9 @@ function TenorSearch() {
           )}
         </For>
       </GifGrid>
-      <TenorAttribution>
-        Powered by Tenor
-      </TenorAttribution>
+      <GiphyAttribution>
+        Powered by GIPHY
+      </GiphyAttribution>
     </SearchContainer>
   );
 }
@@ -328,7 +325,7 @@ const LoadingText = styled("div", {
   },
 });
 
-const TenorAttribution = styled("div", {
+const GiphyAttribution = styled("div", {
   base: {
     padding: "4px",
     textAlign: "center",
