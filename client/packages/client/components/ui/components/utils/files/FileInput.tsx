@@ -162,7 +162,7 @@ const UploadPlaceholder = styled("div", {
     width: "100%",
     color: "var(--md-sys-color-on-surface-variant)",
     opacity: 0.6,
-    transition: "opacity 0.2s",
+    transition: "opacity var(--transition-medium)",
     _hover: {
       opacity: 1,
     },

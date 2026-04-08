@@ -398,7 +398,7 @@ const Tab = styled("button", {
     fontSize: "13px",
     fontWeight: 500,
     fontFamily: "inherit",
-    transition: "all 0.15s",
+    transition: "all var(--transition-fast)",
     color: "var(--md-sys-color-on-surface-variant)",
     background: "transparent",
     whiteSpace: "nowrap",
@@ -450,7 +450,7 @@ const AddFriendButton = styled("button", {
     fontFamily: "inherit",
     color: "var(--md-sys-color-on-primary)",
     background: "var(--md-sys-color-primary)",
-    transition: "all 0.15s",
+    transition: "all var(--transition-fast)",
     whiteSpace: "nowrap",
 
     "&:hover": {
@@ -518,7 +518,7 @@ const FriendRow = styled("div", {
     padding: "8px 10px",
     borderRadius: "var(--borderRadius-md)",
     cursor: "pointer",
-    transition: "background 0.12s",
+    transition: "background var(--transition-fast)",
     userSelect: "none",
 
     "&:hover": {
@@ -572,6 +572,6 @@ const FriendActions = styled("div", {
     gap: "2px",
     flexShrink: 0,
     opacity: 0,
-    transition: "opacity 0.12s",
+    transition: "opacity var(--transition-fast)",
   },
 });

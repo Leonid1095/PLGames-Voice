@@ -35,7 +35,7 @@ const copyBtnClass = css({
   top: "6px",
   right: "6px",
   opacity: 0,
-  transition: "opacity 0.15s ease",
+  transition: "opacity var(--transition-fast)",
 
   display: "flex",
   alignItems: "center",

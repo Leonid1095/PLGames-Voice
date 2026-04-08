@@ -13,6 +13,11 @@
 :root {
   --glow-accent: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
   --border-accent: color-mix(in srgb, var(--md-sys-color-primary) 15%, transparent);
+
+  /* Standardized transition tokens */
+  --transition-fast: 100ms cubic-bezier(0.2, 0, 0, 1);
+  --transition-medium: 200ms cubic-bezier(0.2, 0, 0, 1);
+  --transition-slow: 350ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 /* Reduced motion */
@@ -173,6 +178,39 @@ body {
 .hljs-punctuation,
 .hljs-tag {
   /* purposely ignored */
+}
+
+/* ===== Focus Visible (keyboard navigation) ===== */
+:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Skip-to-content for screen readers */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 9999;
+}
+.skip-to-content:focus {
+  left: 8px;
+  top: 8px;
+  width: auto;
+  height: auto;
+  padding: 8px 16px;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-radius: 8px;
+  font-weight: 600;
 }
 
 /* ===== Mobile Responsive ===== */

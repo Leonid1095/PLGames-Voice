@@ -222,7 +222,7 @@ const ModeButton = styled("button", {
     fontFamily: "inherit",
     fontSize: "13px",
     fontWeight: 600,
-    transition: "all 0.2s",
+    transition: "all var(--transition-medium)",
   },
   variants: {
     active: {
@@ -251,7 +251,7 @@ const AccentDot = styled("button", {
     borderRadius: "50%",
     border: "3px solid transparent",
     cursor: "pointer",
-    transition: "all 0.2s",
+    transition: "all var(--transition-medium)",
     _hover: {
       transform: "scale(1.1)",
     },
@@ -279,7 +279,7 @@ const DoneButton = styled("button", {
     cursor: "pointer",
     color: "var(--md-sys-color-on-primary)",
     background: "var(--md-sys-color-primary)",
-    transition: "background 0.2s, box-shadow 0.2s",
+    transition: "background var(--transition-medium), box-shadow var(--transition-medium)",
     _hover: {
       boxShadow: "0 0 20px rgba(124,58,237,0.3)",
     },

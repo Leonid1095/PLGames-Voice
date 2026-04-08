@@ -148,7 +148,7 @@ const ChannelItem = styled("button", {
     color: "var(--md-sys-color-on-surface)",
     cursor: "pointer",
     textAlign: "left",
-    transition: "background 0.15s",
+    transition: "background var(--transition-fast)",
     "&:hover": {
       background: "var(--md-sys-color-surface-container-high)",
     },

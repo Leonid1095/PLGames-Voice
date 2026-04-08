@@ -123,7 +123,7 @@ const Base = styled("a", {
 
     userSelect: "none",
     cursor: "pointer",
-    transition: "background-color 0.1s ease-in-out",
+    transition: "background-color var(--transition-fast)",
 
     display: "flex",
     alignItems: "center",
@@ -365,7 +365,7 @@ const innerColumn = cva({
     gap: "var(--gap-xs)",
 
     borderRadius: "var(--borderRadius-md)",
-    transition: "0.3s",
+    transition: "var(--transition-slow)",
 
     scrollbarWidth: "none",
     "&::-webkit-scrollbar": {
@@ -393,7 +393,7 @@ const Details = styled("div", {
 
     /* add transition to the icon */
     "& summary div:last-child svg": {
-      transition: "0.3s",
+      transition: "var(--transition-slow)",
     },
 
     /* rotate chevron when it is open */
@@ -408,7 +408,7 @@ const Details = styled("div", {
 
     /* hide the default details component marker */
     "& summary": {
-      transition: "0.3s",
+      transition: "var(--transition-slow)",
       listStyle: "none",
     },
 

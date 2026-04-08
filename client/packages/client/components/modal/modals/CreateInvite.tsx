@@ -163,7 +163,7 @@ const CopyButton = styled("button", {
     fontWeight: 600,
     fontFamily: "inherit",
     whiteSpace: "nowrap",
-    transition: "all 0.15s",
+    transition: "all var(--transition-fast)",
     flexShrink: 0,
     background: "var(--md-sys-color-primary)",
     color: "var(--md-sys-color-on-primary)",

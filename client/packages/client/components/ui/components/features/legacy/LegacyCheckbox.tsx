@@ -12,7 +12,7 @@ const Base = styled("label", {
     userSelect: "none",
     alignItems: "center",
     borderRadius: "var(--borderRadius-md)",
-    transition: "0.1s ease background-color",
+    transition: "var(--transition-fast) ease background-color",
 
     "& input": {
       display: "none",
@@ -82,7 +82,7 @@ const Checkmark = styled("div", {
     borderRadius: "var(--borderRadius-md)",
     flexShrink: 0,
     margin: "4px",
-    transition: "0.1s ease-in-out all",
+    transition: "var(--transition-fast) ease-in-out all",
 
     "& .check": {
       transition: "inherit",

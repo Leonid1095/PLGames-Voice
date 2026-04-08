@@ -298,7 +298,7 @@ const HeaderActionButton = styled("button", {
     border: "none",
     cursor: "pointer",
     flexShrink: 0,
-    transition: "all 0.15s",
+    transition: "all var(--transition-fast)",
     color: "var(--md-sys-color-on-surface)",
     background: "transparent",
     padding: 0,

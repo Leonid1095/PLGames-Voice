@@ -421,7 +421,7 @@ const BackButton = styled("button", {
     border: "none",
     background: "transparent",
     color: "var(--md-sys-color-primary)",
-    transition: "all 0.15s",
+    transition: "all var(--transition-fast)",
     whiteSpace: "nowrap",
     "&:hover": {
       background: "var(--md-sys-color-surface-container-high)",
@@ -477,7 +477,7 @@ const SearchChip = styled("button", {
     border: "none",
     background: "var(--md-sys-color-secondary-container)",
     color: "var(--md-sys-color-on-secondary-container)",
-    transition: "all 0.15s",
+    transition: "all var(--transition-fast)",
     "&:hover": {
       background: "var(--md-sys-color-primary)",
       color: "var(--md-sys-color-on-primary)",

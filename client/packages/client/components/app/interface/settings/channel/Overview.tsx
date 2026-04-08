@@ -206,7 +206,7 @@ function SlowmodeSelect(props: {
             cursor: "pointer",
             "font-size": "13px",
             "font-weight": "500",
-            transition: "all 0.15s",
+            transition: "all var(--transition-fast)",
           }}
         >
           {opt.label}

@@ -62,7 +62,7 @@ export const ContextMenuItem = styled("a", {
     padding: "6px 8px",
     borderRadius: "4px",
     margin: "1px 0",
-    transition: "background-color 0.1s ease, color 0.1s ease, fill 0.1s ease",
+    transition: "background-color var(--transition-fast), color var(--transition-fast), fill var(--transition-fast)",
 
     "&:hover": {
       background: "var(--md-sys-color-primary)",

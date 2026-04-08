@@ -289,7 +289,7 @@ const TemplateCard = styled("div", {
     cursor: "pointer",
     border: "2px solid transparent",
     background: "var(--md-sys-color-surface-container)",
-    transition: "all 0.15s",
+    transition: "all var(--transition-fast)",
     "&:hover": {
       background: "var(--md-sys-color-surface-container-high)",
     },

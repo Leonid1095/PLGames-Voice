@@ -337,7 +337,7 @@ const ResultItem = styled("div", {
     borderRadius: "8px",
     cursor: "pointer",
     color: "var(--md-sys-color-on-surface)",
-    transition: "background 0.1s",
+    transition: "background var(--transition-fast)",
   },
   variants: {
     selected: {

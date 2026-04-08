@@ -358,7 +358,7 @@ const RsvpButton = styled("button", {
     cursor: "pointer",
     fontSize: "12px",
     fontWeight: 500,
-    transition: "all 0.15s",
+    transition: "all var(--transition-fast)",
     "&:hover": {
       background: "var(--md-sys-color-surface-container-high)",
     },

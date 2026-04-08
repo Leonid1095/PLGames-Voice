@@ -23,7 +23,7 @@ const AuthButton = styled("button", {
     cursor: "pointer",
     color: "#fff",
     background: "#7C3AED",
-    transition: "background 0.2s, box-shadow 0.2s",
+    transition: "background var(--transition-medium), box-shadow var(--transition-medium)",
     _hover: {
       background: "#6D28D9",
       boxShadow: "0 0 20px rgba(124,58,237,0.25)",

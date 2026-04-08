@@ -164,7 +164,7 @@ const button = cva({
 
     cursor: "pointer",
     border: "none",
-    transition: "background-color 0.17s ease, color 0.17s ease",
+    transition: "background-color var(--transition-medium), color var(--transition-medium)",
 
     color: "var(--color)",
     fill: "var(--color)",

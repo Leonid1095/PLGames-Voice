@@ -210,7 +210,7 @@ const Tab = styled("button", {
     fontWeight: 600,
     color: "var(--md-sys-color-on-surface-variant)",
     borderBottom: "2px solid transparent",
-    transition: "all 0.15s",
+    transition: "all var(--transition-fast)",
     "&:hover": {
       color: "var(--md-sys-color-on-surface)",
     },
@@ -306,7 +306,7 @@ const FavBtn = styled("div", {
     cursor: "pointer",
     color: "#fbbf24",
     fill: "#fbbf24",
-    transition: "opacity 0.15s",
+    transition: "opacity var(--transition-fast)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

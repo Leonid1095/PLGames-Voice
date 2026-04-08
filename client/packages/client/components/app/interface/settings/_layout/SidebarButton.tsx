@@ -18,7 +18,7 @@ export const SidebarButton = styled("a", {
     marginInlineEnd: "12px",
     fontSize: "15px",
     userSelect: "none",
-    transition: "background-color 0.1s ease-in-out",
+    transition: "background-color var(--transition-fast)",
     color: "var(--md-sys-color-on-surface)",
     fill: "var(--md-sys-color-on-surface)",
     background: "unset",
