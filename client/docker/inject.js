@@ -14,6 +14,7 @@ const REPLACEMENTS = {
   __VITE_PROXY_URL__: process.env.VITE_PROXY_URL || "",
   __VITE_GIFBOX_URL__: process.env.VITE_GIFBOX_URL || "",
   __VITE_HCAPTCHA_SITEKEY__: process.env.VITE_HCAPTCHA_SITEKEY || "",
+  __VITE_GIPHY_API_KEY__: process.env.VITE_GIPHY_API_KEY || "",
 };
 
 console.log("Preparing injected build...");
