@@ -8,7 +8,6 @@ import {
   createSignal,
   on,
   onCleanup,
-  onMount,
 } from "solid-js";
 
 import { useLingui } from "@lingui-solid/solid/macro";
@@ -32,6 +31,7 @@ import {
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { useSearchSpace } from "@revolt/ui/components/utils/autoComplete";
 
+import { ScheduleMessageButton, ScheduledMessagesWorker } from "./ScheduledMessages";
 import { VoiceRecorder } from "./VoiceRecorder";
 
 interface Props {
@@ -298,61 +298,6 @@ export function MessageComposition(props: Props) {
     state.draft.removeFile(props.channel.id, fileId);
   }
 
-  // Scheduled messages
-  const [showScheduler, setShowScheduler] = createSignal(false);
-  const [scheduleTime, setScheduleTime] = createSignal("");
-
-  function getScheduledMessages(): { channelId: string; content: string; sendAt: number }[] {
-    try {
-      return JSON.parse(localStorage.getItem("scheduled_messages") || "[]");
-    } catch {
-      return [];
-    }
-  }
-
-  function scheduleMessage() {
-    const content = draft()?.content?.trim();
-    if (!content || !scheduleTime()) return;
-
-    const sendAt = new Date(scheduleTime()).getTime();
-    if (sendAt <= Date.now()) return;
-
-    const scheduled = getScheduledMessages();
-    scheduled.push({ channelId: props.channel.id, content, sendAt });
-    localStorage.setItem("scheduled_messages", JSON.stringify(scheduled));
-
-    state.draft.setDraft(props.channel.id, { content: "" });
-    setInitialValue([""]);
-    setShowScheduler(false);
-    setScheduleTime("");
-  }
-
-  // Check scheduled messages every 15 seconds
-  onMount(() => {
-    const interval = setInterval(async () => {
-      const scheduled = getScheduledMessages();
-      const now = Date.now();
-      const remaining: typeof scheduled = [];
-
-      for (const msg of scheduled) {
-        if (msg.sendAt <= now) {
-          try {
-            const ch = client()?.channels.get(msg.channelId);
-            if (ch) await ch.sendMessage(msg.content);
-          } catch { /* skip */ }
-        } else {
-          remaining.push(msg);
-        }
-      }
-
-      if (remaining.length !== scheduled.length) {
-        localStorage.setItem("scheduled_messages", JSON.stringify(remaining));
-      }
-    }, 15000);
-
-    onCleanup(() => clearInterval(interval));
-  });
-
   const searchSpace = useSearchSpace(() => props.channel, client);
 
   return (
@@ -517,103 +462,21 @@ export function MessageComposition(props: Props) {
             >
               <Symbol size={18}>notifications_off</Symbol>
             </IconButton>
-            <div style={{ position: "relative" }}>
-              <IconButton
-                size="sm"
-                variant="tonal"
-                shape="square"
-                isDisabled={!canSend()}
-                onPress={() => setShowScheduler((v) => !v)}
-                use:floating={{
-                  tooltip: {
-                    placement: "top",
-                    content: t`Schedule message`,
-                  },
-                }}
-              >
-                <Symbol size={18}>schedule_send</Symbol>
-              </IconButton>
-              <Show when={showScheduler()}>
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: "40px",
-                    right: "0",
-                    background: "var(--md-sys-color-surface-container-high)",
-                    "border-radius": "12px",
-                    padding: "12px",
-                    "box-shadow": "0 8px 24px rgba(0,0,0,0.3)",
-                    "z-index": "100",
-                    display: "flex",
-                    "flex-direction": "column",
-                    gap: "8px",
-                    "min-width": "220px",
-                  }}
-                >
-                  <span
-                    style={{
-                      "font-size": "12px",
-                      "font-weight": "600",
-                      color: "var(--md-sys-color-on-surface-variant)",
-                    }}
-                  >
-                    {t`Schedule message`}
-                  </span>
-                  <input
-                    type="datetime-local"
-                    value={scheduleTime()}
-                    onInput={(e) => setScheduleTime(e.currentTarget.value)}
-                    min={new Date().toISOString().slice(0, 16)}
-                    style={{
-                      background: "var(--md-sys-color-surface-container)",
-                      border: "1px solid var(--md-sys-color-outline-variant)",
-                      "border-radius": "8px",
-                      padding: "8px",
-                      color: "var(--md-sys-color-on-surface)",
-                      "font-size": "13px",
-                    }}
-                  />
-                  <div style={{ display: "flex", gap: "6px", "justify-content": "flex-end" }}>
-                    <button
-                      onClick={() => setShowScheduler(false)}
-                      style={{
-                        background: "transparent",
-                        border: "none",
-                        color: "var(--md-sys-color-on-surface-variant)",
-                        cursor: "pointer",
-                        padding: "6px 12px",
-                        "border-radius": "6px",
-                        "font-size": "12px",
-                      }}
-                    >
-                      {t`Cancel`}
-                    </button>
-                    <button
-                      onClick={scheduleMessage}
-                      disabled={!scheduleTime()}
-                      style={{
-                        background: "var(--md-sys-color-primary)",
-                        border: "none",
-                        color: "var(--md-sys-color-on-primary)",
-                        cursor: "pointer",
-                        padding: "6px 12px",
-                        "border-radius": "6px",
-                        "font-size": "12px",
-                        "font-weight": "600",
-                        opacity: scheduleTime() ? "1" : "0.5",
-                      }}
-                    >
-                      {t`Schedule`}
-                    </button>
-                  </div>
-                </div>
-              </Show>
-            </div>
+            <ScheduleMessageButton
+              channelId={props.channel.id}
+              canSend={canSend()}
+              getContent={() => draft()?.content}
+              onScheduled={() => {
+                state.draft.setDraft(props.channel.id, { content: "" });
+                setInitialValue([""]);
+              }}
+            />
           </Show>
         }
       />
       <FilePasteCollector onFiles={onFiles} />
       <FileDropAnywhereCollector onFiles={onFiles} />
+      <ScheduledMessagesWorker />
     </>
   );
 }
