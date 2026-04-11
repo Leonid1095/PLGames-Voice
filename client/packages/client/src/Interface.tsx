@@ -254,12 +254,21 @@ function MobileSidebarWrapper(props: {
     }
   };
 
+  // Escape key closes sidebar
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Escape" && sidebarOpen()) {
+      closeSidebar();
+    }
+  };
+
   onMount(() => {
     document.addEventListener("touchstart", onTouchStart, { passive: true });
     document.addEventListener("touchend", onTouchEnd, { passive: true });
+    document.addEventListener("keydown", onKeyDown);
     onCleanup(() => {
       document.removeEventListener("touchstart", onTouchStart);
       document.removeEventListener("touchend", onTouchEnd);
+      document.removeEventListener("keydown", onKeyDown);
     });
   });
 
@@ -267,11 +276,16 @@ function MobileSidebarWrapper(props: {
     <>
       <div
         data-sidebar-backdrop
+        role="button"
+        aria-label="Close sidebar"
+        tabIndex={-1}
         classList={{ "sidebar-open": sidebarOpen() }}
         onClick={closeSidebar}
       />
       <div
         data-sidebar
+        role="navigation"
+        aria-hidden={!sidebarOpen()}
         classList={{ "sidebar-open": sidebarOpen() }}
       >
         <Sidebar menuGenerator={props.menuGenerator} />

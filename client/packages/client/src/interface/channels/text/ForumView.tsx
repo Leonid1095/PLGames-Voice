@@ -50,7 +50,7 @@ export function ForumView(props: ChannelPageProps) {
     let list = threads() || [];
     const tag = selectedTag();
     if (tag) {
-      list = list.filter((t: any) => t.tags && t.tags.includes(tag));
+      list = list.filter((thread: any) => thread.tags && thread.tags.includes(tag));
     }
     if (sortOrder() === "oldest") {
       list = [...list].reverse();

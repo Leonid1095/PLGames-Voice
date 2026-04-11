@@ -177,7 +177,15 @@ class Voice {
   }
 
   async toggleDeafen() {
-    this.#setDeafen((s) => !s);
+    const newDeafen = !this.deafen();
+    this.#setDeafen(newDeafen);
+
+    // Deafen = mute yourself + mute all others (standard voice chat behavior)
+    const room = this.room();
+    if (room && newDeafen && room.localParticipant.isMicrophoneEnabled) {
+      await room.localParticipant.setMicrophoneEnabled(false);
+      this.#setMicrophone(false);
+    }
   }
 
   async toggleMute() {

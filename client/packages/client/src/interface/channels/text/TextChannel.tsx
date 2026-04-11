@@ -10,7 +10,7 @@ import {
   onMount,
 } from "solid-js";
 
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { css, cva } from "styled-system/css";
 import { API, Channel, Client } from "stoat.js";
 import { styled } from "styled-system/jsx";
@@ -152,6 +152,7 @@ function parseSearchQuery(
 export function TextChannel(props: ChannelPageProps) {
   const state = useState();
   const client = useClient();
+  const { t } = useLingui();
 
   // Last unread message id
   const [lastId, setLastId] = createSignal<string>();
@@ -282,7 +283,7 @@ export function TextChannel(props: ChannelPageProps) {
               <ErrorFallback
                 error={err}
                 reset={reset}
-                label="Не удалось загрузить сообщения"
+                label={t`Failed to load messages`}
               />
             )}
           >
@@ -314,7 +315,7 @@ export function TextChannel(props: ChannelPageProps) {
               <ErrorFallback
                 error={err}
                 reset={reset}
-                label="Не удалось загрузить редактор"
+                label={t`Failed to load editor`}
               />
             )}
           >

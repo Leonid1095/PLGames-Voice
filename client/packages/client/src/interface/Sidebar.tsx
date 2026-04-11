@@ -8,6 +8,7 @@ import {
   createMemo,
 } from "solid-js";
 
+import { useLingui } from "@lingui-solid/solid/macro";
 import { Channel, Server as ServerI } from "stoat.js";
 import { VoiceBottomBar } from "@revolt/ui/components/features/voice/VoiceBottomBar";
 import { ErrorFallback } from "@revolt/ui";
@@ -131,6 +132,7 @@ const Home: Component = () => {
  */
 const Server: Component = () => {
   const { openModal } = useModals();
+  const { t } = useLingui();
   const params = useSmartParams();
   const client = useClient();
 
@@ -168,7 +170,7 @@ const Server: Component = () => {
           <ErrorFallback
             error={err}
             reset={reset}
-            label="Не удалось загрузить каналы"
+            label={t`Failed to load channels`}
           />
         )}
       >

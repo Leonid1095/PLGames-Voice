@@ -240,7 +240,7 @@ export function MessageComposition(props: Props) {
         const error = new Error(
           t`The file "${file.name}" (${fileSize}) exceeds the maximum size limit of ${maxSizeFormatted}.`,
         );
-        error.name = "Файл слишком большой";
+        error.name = t`File too large`;
         openModal({
           type: "error2",
           error,
@@ -249,7 +249,7 @@ export function MessageComposition(props: Props) {
         const error = new Error(
           t`${rejectedFiles.length} files exceed the maximum size limit of ${maxSizeFormatted} and were not uploaded.`,
         );
-        error.name = "Файлы слишком большие";
+        error.name = t`Files too large`;
         openModal({
           type: "error2",
           error,
@@ -368,7 +368,7 @@ export function MessageComposition(props: Props) {
                         const emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
                         const lines = [
                           `📊 **${question}**`,
-                          multi ? `*(можно выбрать несколько)*` : "",
+                          multi ? `*(${t`multiple choice`})*` : "",
                           "",
                           ...options.map((opt, i) => `${emojis[i] ?? `${i + 1}.`} ${opt}`),
                         ].filter(Boolean);
