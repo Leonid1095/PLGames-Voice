@@ -4,6 +4,7 @@ import {
   Show,
   Switch,
   createSignal,
+  onCleanup,
   useContext,
 } from "solid-js";
 
@@ -103,6 +104,7 @@ function GiphySearch() {
   const [loaded, setLoaded] = createSignal(false);
 
   let debounceTimer: ReturnType<typeof setTimeout>;
+  onCleanup(() => clearTimeout(debounceTimer));
 
   // Load trending on mount
   (async () => {

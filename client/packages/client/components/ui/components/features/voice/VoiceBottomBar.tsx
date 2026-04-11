@@ -1,6 +1,6 @@
 import { Match, Show, Switch } from "solid-js";
 
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
 import { useVoice } from "@revolt/rtc";
@@ -13,6 +13,7 @@ import { Symbol } from "@revolt/ui/components/utils/Symbol";
  */
 export function VoiceBottomBar() {
   const voice = useVoice();
+  const { t } = useLingui();
 
   return (
     <Show when={voice.channel()}>
@@ -57,7 +58,7 @@ export function VoiceBottomBar() {
             variant={voice.microphone() ? "filled" : "tonal"}
             onPress={() => voice.toggleMute()}
             isDisabled={!voice.speakingPermission}
-            title={voice.microphone() ? "Выкл. микрофон" : "Вкл. микрофон"}
+            title={voice.microphone() ? t`Mute microphone` : t`Unmute microphone`}
           >
             <Show
               when={voice.microphone()}
@@ -73,7 +74,7 @@ export function VoiceBottomBar() {
             }
             onPress={() => voice.toggleDeafen()}
             isDisabled={!voice.listenPermission}
-            title={voice.deafen() ? "Вкл. звук" : "Выкл. звук"}
+            title={voice.deafen() ? t`Undeafen` : t`Deafen`}
           >
             <Show
               when={voice.deafen() || !voice.listenPermission}
@@ -86,7 +87,7 @@ export function VoiceBottomBar() {
             size="xs"
             variant={voice.video() ? "filled" : "tonal"}
             onPress={() => voice.toggleCamera()}
-            title={voice.video() ? "Выкл. камеру" : "Вкл. камеру"}
+            title={voice.video() ? t`Turn off camera` : t`Turn on camera`}
           >
             <Show
               when={voice.video()}
@@ -99,7 +100,7 @@ export function VoiceBottomBar() {
             size="xs"
             variant={voice.screenshare() ? "filled" : "tonal"}
             onPress={() => voice.toggleScreenshare()}
-            title={voice.screenshare() ? "Остановить трансляцию" : "Демонстрация экрана"}
+            title={voice.screenshare() ? t`Stop screen share` : t`Share screen`}
           >
             <Show
               when={voice.screenshare()}
@@ -112,7 +113,7 @@ export function VoiceBottomBar() {
             size="xs"
             variant="tonal"
             onPress={() => voice.disconnect()}
-            title="Отключиться"
+            title={t`Disconnect`}
           >
             <Symbol size={18}>call_end</Symbol>
           </DisconnectButton>

@@ -60,7 +60,6 @@ export interface MessageFetchingState {
     messageId: string,
     listRef: HTMLDivElement | undefined,
     findMessageIndex: (id: string) => number,
-    atStartVal: boolean,
   ) => Promise<void>;
 
   /** Append a new message (real-time) */
@@ -351,14 +350,18 @@ export function useMessageFetching(): MessageFetchingState {
     messageId: string,
     listRef: HTMLDivElement | undefined,
     findMessageIndex: (id: string) => number,
-    atStartVal: boolean,
   ) {
-    if (messages().find((message) => message.id === messageId)) {
+    const scrollToMsg = () => {
       const index = findMessageIndex(messageId);
-      listRef!.children[index + (atStartVal ? 1 : 0)].scrollIntoView({
+      // +1 offset if ConversationStart is rendered (atStart === true)
+      listRef!.children[index + (atStart() ? 1 : 0)].scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
+    };
+
+    if (messages().find((message) => message.id === messageId)) {
+      scrollToMsg();
       return;
     }
 
@@ -379,12 +382,7 @@ export function useMessageFetching(): MessageFetchingState {
       setMessagesSafely(msgs);
 
       setTimeout(() => {
-        const index = findMessageIndex(messageId);
-        listRef!.children[index + (atStartVal ? 1 : 0)].scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-
+        scrollToMsg();
         setTimeout(() => {
           setFetching();
         }, 300);

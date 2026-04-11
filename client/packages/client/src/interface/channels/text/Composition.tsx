@@ -31,7 +31,7 @@ import {
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { useSearchSpace } from "@revolt/ui/components/utils/autoComplete";
 
-import { ScheduleMessageButton, ScheduledMessagesWorker } from "./ScheduledMessages";
+import { ScheduleMessageButton } from "./ScheduledMessages";
 import { VoiceRecorder } from "./VoiceRecorder";
 
 interface Props {
@@ -476,7 +476,6 @@ export function MessageComposition(props: Props) {
       />
       <FilePasteCollector onFiles={onFiles} />
       <FileDropAnywhereCollector onFiles={onFiles} />
-      <ScheduledMessagesWorker />
     </>
   );
 }

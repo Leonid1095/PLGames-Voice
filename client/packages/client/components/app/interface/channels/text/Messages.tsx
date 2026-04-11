@@ -121,7 +121,6 @@ export function Messages(props: Props) {
             messageId,
             listRef,
             findIndex,
-            fetch.atStart(),
           );
         }
       },
@@ -133,8 +132,11 @@ export function Messages(props: Props) {
     const c = client();
     const onMsg = (message: MessageInterface) =>
       fetch.onNewMessage(message, props.channel.id);
-    const onDel = (message: { id: string; channelId: string }) =>
-      fetch.onDeleteMessage(message.id, message.channelId);
+    const onDel = (message: { id: string; channelId: string }) => {
+      if (message.channelId === props.channel.id) {
+        fetch.onDeleteMessage(message.id, message.channelId);
+      }
+    };
 
     c.addListener("messageCreate", onMsg);
     c.addListener("messageDelete", onDel);

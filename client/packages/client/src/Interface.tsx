@@ -1,4 +1,4 @@
-import { JSX, Match, Switch, createEffect, onMount } from "solid-js";
+import { JSX, Match, Switch, createEffect, onCleanup, onMount } from "solid-js";
 
 import { Server } from "stoat.js";
 import { styled } from "styled-system/jsx";
@@ -15,6 +15,7 @@ import { Navigate, useBeforeLeave, useLocation } from "@revolt/routing";
 import { useState } from "@revolt/state";
 import { LAYOUT_SECTIONS } from "@revolt/state/stores/Layout";
 import { ToastContainer } from "@revolt/ui/components/design";
+import { ScheduledMessagesWorker } from "./interface/channels/text/ScheduledMessages";
 import { MobileProvider, useMobile } from "./interface/MobileContext";
 import { Sidebar } from "./interface/Sidebar";
 import { ThemeSetup } from "./interface/ThemeSetup";
@@ -130,6 +131,7 @@ const Interface = (props: { children: JSX.Element }) => {
       }
     };
     document.addEventListener("keydown", streamerHotkey, true);
+    onCleanup(() => document.removeEventListener("keydown", streamerHotkey, true));
   });
 
   // Initialize game activity detection on desktop
@@ -204,6 +206,7 @@ const Interface = (props: { children: JSX.Element }) => {
           </Switch>
 
           <NotificationsWorker />
+          <ScheduledMessagesWorker />
           <ThemeSetup />
           <CommandPalette />
           <ToastContainer />
@@ -254,6 +257,10 @@ function MobileSidebarWrapper(props: {
   onMount(() => {
     document.addEventListener("touchstart", onTouchStart, { passive: true });
     document.addEventListener("touchend", onTouchEnd, { passive: true });
+    onCleanup(() => {
+      document.removeEventListener("touchstart", onTouchStart);
+      document.removeEventListener("touchend", onTouchEnd);
+    });
   });
 
   return (

@@ -82,12 +82,14 @@ class Voice {
   }
 
   async connect(channel: Channel, auth?: { url: string; token: string }) {
-    // Clean up previous room without going through READY state
-    // (prevents reactive effects from seeing intermediate disconnected state)
+    // Prevent concurrent connect calls
+    if (this.state() === "CONNECTING") return;
+
+    // Clean up previous room — disconnect first, then strip listeners
     const oldRoom = this.room();
     if (oldRoom) {
-      oldRoom.removeAllListeners();
       oldRoom.disconnect();
+      oldRoom.removeAllListeners();
     }
 
     const room = new Room({
@@ -111,7 +113,6 @@ class Voice {
     });
 
     // Atomically transition from old channel to new channel
-    // State goes CONNECTED(A) → CONNECTING(B), never through READY
     batch(() => {
       this.#setRoom(room);
       this.#setChannel(channel);
@@ -127,24 +128,36 @@ class Voice {
     room.addListener("reconnecting", () => this.#setState("RECONNECTING"));
     room.addListener("disconnected", () => this.#setState("DISCONNECTED"));
 
-    if (!auth) {
-      auth = await channel.joinCall("worldwide");
-    }
+    try {
+      if (!auth) {
+        auth = await channel.joinCall("worldwide");
+      }
 
-    await room.connect(auth.url, auth.token, {
-      autoSubscribe: false,
-    });
+      await room.connect(auth.url, auth.token, {
+        autoSubscribe: false,
+      });
 
-    // Enable microphone after connection to avoid blocking on browser permission dialog
-    if (this.speakingPermission) {
-      room.localParticipant
-        .setMicrophoneEnabled(true)
-        .then(async (pub) => {
-          this.#setMicrophone(typeof pub !== "undefined");
-          if (pub?.track && this.#settings.krispNoiseCancellation) {
-            await this.#applyKrisp(pub.track as LocalAudioTrack);
-          }
-        });
+      // Enable microphone after connection
+      if (this.speakingPermission) {
+        room.localParticipant
+          .setMicrophoneEnabled(true)
+          .then(async (pub) => {
+            this.#setMicrophone(typeof pub !== "undefined");
+            if (pub?.track && this.#settings.krispNoiseCancellation) {
+              await this.#applyKrisp(pub.track as LocalAudioTrack);
+            }
+          })
+          .catch((e) => console.warn("Voice: mic enable failed:", e));
+      }
+    } catch (e) {
+      console.error("Voice: connect failed:", e);
+      room.disconnect();
+      room.removeAllListeners();
+      batch(() => {
+        this.#setState("READY");
+        this.#setRoom(undefined);
+        this.#setChannel(undefined);
+      });
     }
   }
 
@@ -152,8 +165,9 @@ class Voice {
     const room = this.room();
     if (!room) return;
 
-    room.removeAllListeners();
+    // Disconnect first (stops tracks), then remove listeners
     room.disconnect();
+    room.removeAllListeners();
 
     batch(() => {
       this.#setState("READY");

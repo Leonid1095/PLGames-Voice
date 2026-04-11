@@ -215,6 +215,11 @@ body {
 
 /* ===== Mobile Responsive ===== */
 
+/* Hide hamburger on desktop (must be BEFORE media query that shows it) */
+[data-hamburger] {
+  display: none !important;
+}
+
 /* CSS custom properties for mobile state — toggled via JS */
 :root {
   --mobile-sidebar-visible: 0;
@@ -293,11 +298,6 @@ body {
   [data-voice-bar] .voice-bar-info {
     max-width: 80px;
   }
-}
-
-/* Hide hamburger on desktop */
-[data-hamburger] {
-  display: none !important;
 }
 
 /* Touch device optimizations */
