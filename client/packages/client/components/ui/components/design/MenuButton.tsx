@@ -96,7 +96,8 @@ const base = cva({
     flexShrink: 0,
 
     fontWeight: 500,
-    fontSize: "15px",
+    fontSize: "14px",
+    letterSpacing: "-0.005em",
     userSelect: "none",
     cursor: "pointer",
 
@@ -105,13 +106,13 @@ const base = cva({
 
     display: "flex",
     alignItems: "center",
-    margin: "0 var(--gap-md)",
-    padding: "0 var(--gap-md)",
-    borderRadius: "var(--borderRadius-xl)",
+    margin: "0 8px",
+    padding: "0 10px",
+    borderRadius: "6px",
 
     color: "var(--color)",
     fill: "var(--color)",
-    transition: "var(--transitions-fast) background-color, var(--transitions-fast) color, var(--transitions-fast) box-shadow, var(--transitions-fast) transform",
+    transition: "background-color 140ms cubic-bezier(0.2,0,0,1), color 140ms cubic-bezier(0.2,0,0,1)",
 
     "& > svg": {
       alignSelf: "center",
@@ -125,12 +126,12 @@ const base = cva({
   variants: {
     size: {
       normal: {
-        height: "42px",
-        gap: "var(--gap-md)",
+        height: "32px",
+        gap: "8px",
       },
       thin: {
-        height: "32px",
-        gap: "var(--gap-sm)",
+        height: "28px",
+        gap: "6px",
 
         // implicitly align center since we won't stack anything
         alignItems: "center",
@@ -138,39 +139,39 @@ const base = cva({
     },
     attention: {
       normal: {
-        "--color": "var(--md-sys-color-outline)",
+        "--color": "var(--md-sys-color-on-surface-variant)",
         background: "transparent",
         "&:hover": {
-          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent)",
-          "--color": "var(--md-sys-color-on-surface-variant)",
-          boxShadow: "0 1px 3px color-mix(in srgb, var(--md-sys-color-shadow) 15%, transparent)",
+          background: "rgba(255,255,255,0.04)",
+          "--color": "var(--md-sys-color-on-surface)",
         },
       },
       muted: {
-        "--color": "var(--md-sys-color-outline-variant)",
+        "--color": "color-mix(in srgb, var(--md-sys-color-on-surface) 40%, transparent)",
         background: "transparent",
 
         "& img": {
-          opacity: "0.3",
+          opacity: "0.4",
         },
         "&:hover": {
-          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent)",
+          background: "rgba(255,255,255,0.03)",
         },
       },
       active: {
+        /* Channel has unread — slightly emphasized text, still no background */
         "--color": "var(--md-sys-color-on-surface)",
         background: "transparent",
+        fontWeight: "500",
         "&:hover": {
-          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent)",
-          boxShadow: "0 1px 3px color-mix(in srgb, var(--md-sys-color-shadow) 15%, transparent)",
+          background: "rgba(255,255,255,0.04)",
         },
       },
       selected: {
-        "--color": "var(--md-sys-color-on-primary-container)",
-        background: "var(--md-sys-color-primary-container)",
-        boxShadow: "0 1px 4px color-mix(in srgb, var(--md-sys-color-primary) 25%, transparent)",
+        /* Active route — subtle neutral surface, not bright accent. */
+        "--color": "var(--md-sys-color-on-surface)",
+        background: "rgba(255,255,255,0.07)",
         "&:hover": {
-          background: "color-mix(in srgb, var(--md-sys-color-primary-container) 85%, var(--md-sys-color-on-primary-container))",
+          background: "rgba(255,255,255,0.10)",
         },
       },
     },

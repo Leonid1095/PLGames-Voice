@@ -88,6 +88,9 @@
   --qp-glass-border: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
   --qp-glass-blur: saturate(180%) blur(24px);
 
+  /* Accent glow — used by primary button hover and emphasized elements */
+  --accent-glow: color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent);
+
   /* ---------- Border / divider ---------- */
   --qp-border-subtle: color-mix(in srgb, var(--md-sys-color-on-surface) 6%, transparent);
   --qp-border-default: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);

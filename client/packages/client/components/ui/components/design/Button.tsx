@@ -161,13 +161,18 @@ const button = cva({
 
     fontWeight: 500,
     fontFamily: "inherit",
+    letterSpacing: "-0.005em",
 
     cursor: "pointer",
-    border: "none",
-    transition: "background-color var(--transition-medium), color var(--transition-medium)",
+    border: "1px solid transparent",
+    transition: "background-color 180ms cubic-bezier(0.2,0,0,1), color 180ms cubic-bezier(0.2,0,0,1), transform 100ms cubic-bezier(0.2,0,0,1), box-shadow 180ms cubic-bezier(0.2,0,0,1), border-color 180ms cubic-bezier(0.2,0,0,1)",
 
     color: "var(--color)",
     fill: "var(--color)",
+
+    _active: {
+      transform: "scale(0.97)",
+    },
   },
   variants: {
     /**
@@ -182,17 +187,34 @@ const button = cva({
       filled: {
         background: "var(--md-sys-color-primary)",
         "--color": "var(--md-sys-color-on-primary)",
+        borderColor: "color-mix(in srgb, white 12%, transparent)",
+        boxShadow: "0 1px 2px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12)",
+        _hover: {
+          boxShadow: "0 4px 16px var(--accent-glow, rgba(139,92,246,0.22)), inset 0 1px 0 rgba(255,255,255,0.18)",
+        },
       },
       tonal: {
-        background: "var(--md-sys-color-secondary-container)",
-        "--color": "var(--md-sys-color-on-secondary-container)",
+        background: "rgba(255,255,255,0.04)",
+        borderColor: "var(--qp-border-default, rgba(255,255,255,0.10))",
+        "--color": "var(--md-sys-color-on-surface)",
+        _hover: {
+          background: "rgba(255,255,255,0.07)",
+          borderColor: "var(--qp-border-strong, rgba(255,255,255,0.16))",
+        },
       },
       outlined: {
         border: "1px solid var(--md-sys-color-outline-variant)",
         "--color": "var(--md-sys-color-on-surface-variant)",
+        _hover: {
+          borderColor: "var(--md-sys-color-outline)",
+        },
       },
       text: {
-        "--color": "var(--md-sys-color-primary)",
+        "--color": "var(--md-sys-color-on-surface-variant)",
+        _hover: {
+          background: "rgba(255,255,255,0.04)",
+          "--color": "var(--md-sys-color-on-surface)",
+        },
       },
       _error: {
         background: "var(--md-sys-color-error)",
