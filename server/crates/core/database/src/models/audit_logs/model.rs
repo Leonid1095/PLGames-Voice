@@ -29,6 +29,6 @@ pub async fn log_audit_action(
 
     // Best-effort: don't fail the main operation if audit logging fails
     if let Err(e) = db.insert_audit_log(&entry).await {
-        eprintln!("Failed to write audit log: {:?}", e);
+        log::error!("Failed to write audit log: {:?}", e);
     }
 }

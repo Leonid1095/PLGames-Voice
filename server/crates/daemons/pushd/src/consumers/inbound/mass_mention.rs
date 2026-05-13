@@ -286,7 +286,7 @@ impl AsyncConsumer for MassMessageConsumer {
             .await
         {
             revolt_config::capture_anyhow(&err);
-            eprintln!("Failed to process mass message event: {err:?}");
+            log::error!("Failed to process mass message event: {err:?}");
         }
     }
 }

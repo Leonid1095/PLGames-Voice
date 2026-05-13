@@ -184,7 +184,7 @@ impl AsyncConsumer for VapidOutboundConsumer {
             .await
         {
             revolt_config::capture_anyhow(&err);
-            eprintln!("Failed to process Vapid event: {err:?}");
+            log::error!("Failed to process Vapid event: {err:?}");
         }
     }
 }

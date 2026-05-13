@@ -9,7 +9,7 @@ use amqprs::{
 };
 use anyhow::Result;
 use async_trait::async_trait;
-use log::debug;
+use log::{debug, error};
 use revolt_database::{events::rabbit::*, Database};
 
 pub struct GenericConsumer {
@@ -140,7 +140,7 @@ impl AsyncConsumer for GenericConsumer {
             .await
         {
             revolt_config::capture_anyhow(&err);
-            eprintln!("Failed to process generic event: {err:?}");
+            error!("Failed to process generic event: {err:?}");
         }
     }
 }

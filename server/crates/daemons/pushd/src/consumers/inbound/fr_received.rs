@@ -9,7 +9,7 @@ use amqprs::{
 };
 use anyhow::Result;
 use async_trait::async_trait;
-use log::debug;
+use log::{debug, error};
 use revolt_database::{events::rabbit::*, Database};
 
 pub struct FRReceivedConsumer {
@@ -134,7 +134,7 @@ impl AsyncConsumer for FRReceivedConsumer {
             .await
         {
             revolt_config::capture_anyhow(&err);
-            eprintln!("Failed to process friend request received event: {err:?}");
+            error!("Failed to process friend request received event: {err:?}");
         }
     }
 }

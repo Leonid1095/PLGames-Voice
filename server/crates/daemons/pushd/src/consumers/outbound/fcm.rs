@@ -243,7 +243,7 @@ impl AsyncConsumer for FcmOutboundConsumer {
             .await
         {
             revolt_config::capture_anyhow(&err);
-            eprintln!("Failed to process FCM event: {err:?}");
+            log::error!("Failed to process FCM event: {err:?}");
         }
     }
 }

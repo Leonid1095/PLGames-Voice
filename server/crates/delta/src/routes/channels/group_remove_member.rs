@@ -167,7 +167,7 @@ mod test {
             .dispatch()
             .await;
 
-        dbg!(response.into_string().await);
+        let _ = response.into_string().await;
         // FIXME: finish impl
         // assert_eq!(response.status(), Status::NotFound);
     }

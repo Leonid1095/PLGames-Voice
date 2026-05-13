@@ -29,7 +29,10 @@ async fn main() {
     revolt_config::configure!(pushd);
 
     // Setup database
-    let db = revolt_database::DatabaseInfo::Auto.connect().await.unwrap();
+    let db = revolt_database::DatabaseInfo::Auto
+        .connect()
+        .await
+        .expect("pushd: failed to connect to database");
     let authifier: authifier::Database;
 
     if let Some(client) = match &db {
@@ -134,13 +137,20 @@ async fn main() {
                 &config.pushd.apn.queue,
                 &config.pushd.apn.queue,
                 None,
-                ApnsOutboundConsumer::new(db.clone()).await.unwrap(),
+                ApnsOutboundConsumer::new(db.clone())
+                    .await
+                    .expect("pushd: failed to initialise APNS consumer"),
             )
             .await,
         );
 
         let mut table = FieldTable::new();
-        table.insert("x-message-deduplication".try_into().unwrap(), "true".into());
+        table.insert(
+            "x-message-deduplication"
+                .try_into()
+                .expect("static AMQP header key is valid"),
+            "true".into(),
+        );
 
         connections.push(
             make_queue_and_consume(
@@ -161,7 +171,9 @@ async fn main() {
                 &config.pushd.fcm.queue,
                 &config.pushd.fcm.queue,
                 None,
-                FcmOutboundConsumer::new(db.clone()).await.unwrap(),
+                FcmOutboundConsumer::new(db.clone())
+                    .await
+                    .expect("pushd: failed to initialise FCM consumer"),
             )
             .await,
         )
@@ -174,7 +186,9 @@ async fn main() {
                 &config.pushd.vapid.queue,
                 &config.pushd.vapid.queue,
                 None,
-                VapidOutboundConsumer::new(db.clone()).await.unwrap(),
+                VapidOutboundConsumer::new(db.clone())
+                    .await
+                    .expect("pushd: failed to initialise VAPID consumer"),
             )
             .await,
         )
@@ -206,9 +220,12 @@ where
         &config.rabbit.password,
     ))
     .await
-    .unwrap();
+    .expect("pushd: failed to open AMQP connection to RabbitMQ");
 
-    let channel = connection.open_channel(None).await.unwrap();
+    let channel = connection
+        .open_channel(None)
+        .await
+        .expect("pushd: failed to open AMQP channel");
 
     channel
         .exchange_declare(
@@ -237,7 +254,11 @@ where
     }
 
     let args = args.finish();
-    _ = channel.queue_declare(args).await.unwrap().unwrap();
+    _ = channel
+        .queue_declare(args)
+        .await
+        .expect("pushd: queue_declare AMQP call failed")
+        .expect("pushd: queue_declare returned no queue info (passive mode mismatch?)");
 
     channel
         .queue_bind(QueueBindArguments::new(
@@ -254,7 +275,10 @@ where
         .manual_ack(false)
         .finish();
 
-    let routing_key = channel.basic_consume(consumer, args).await.unwrap();
+    let routing_key = channel
+        .basic_consume(consumer, args)
+        .await
+        .expect("pushd: failed to start basic_consume on AMQP channel");
     info!(
         "Consuming routing key {} as queue {}, tag {}",
         routing_key, queue_name, routing_key

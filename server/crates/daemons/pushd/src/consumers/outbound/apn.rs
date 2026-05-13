@@ -429,7 +429,7 @@ impl AsyncConsumer for ApnsOutboundConsumer {
             .await
         {
             revolt_config::capture_anyhow(&err);
-            eprintln!("Failed to process APN event: {err:?}");
+            log::error!("Failed to process APN event: {err:?}");
         }
     }
 }
