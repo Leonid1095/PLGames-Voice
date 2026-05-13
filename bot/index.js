@@ -17,6 +17,15 @@ const PUBLIC_URL = process.env.PUBLIC_URL || "https://plgames-voice.ru";
 const SERVER_ID = process.env.SERVER_ID;
 const WELCOME_CHANNEL = process.env.WELCOME_CHANNEL;
 
+// --- Global error handling: never crash silently ---
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("[FATAL] Unhandled promise rejection:", reason);
+  if (reason instanceof Error && reason.stack) console.error(reason.stack);
+});
+process.on("uncaughtException", (err) => {
+  console.error("[FATAL] Uncaught exception:", err && err.stack ? err.stack : err);
+});
+
 // --- Persistent settings (JSON file) ---
 const SETTINGS_FILE = process.env.SETTINGS_PATH || path.resolve(__dirname, "data", "settings.json");
 
@@ -2789,6 +2798,24 @@ function connect() {
     }
   }, 30000);
 }
+
+// --- Graceful shutdown ---
+let shuttingDown = false;
+function shutdown(signal) {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  console.log(`[BOT] Received ${signal}, shutting down...`);
+  try { clearInterval(pingInterval); } catch (_) {}
+  try {
+    if (ws && ws.readyState === WebSocket.OPEN) ws.close(1000, "shutdown");
+  } catch (_) {}
+  // Flush settings to disk
+  try { saveSettings(settings); } catch (_) {}
+  // Give the WS a moment to flush then exit
+  setTimeout(() => process.exit(0), 500);
+}
+process.on("SIGINT", () => shutdown("SIGINT"));
+process.on("SIGTERM", () => shutdown("SIGTERM"));
 
 // --- Start ---
 console.log("[BOT] PLG Voice Admin Bot starting...");
