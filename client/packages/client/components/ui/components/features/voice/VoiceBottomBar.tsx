@@ -126,15 +126,15 @@ export function VoiceBottomBar() {
 const Bar = styled("div", {
   base: {
     flexShrink: 0,
-    padding: "var(--gap-sm) var(--gap-md)",
+    padding: "8px 12px",
 
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: "var(--gap-sm)",
+    gap: "8px",
 
-    background: "var(--md-sys-color-surface-container)",
-    borderTop: "1px solid var(--md-sys-color-outline-variant)",
+    background: "var(--md-sys-color-surface-container-low)",
+    borderTop: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
   },
 });
 
@@ -156,7 +156,8 @@ const ChannelName = styled("div", {
 
     fontSize: "13px",
     fontWeight: 600,
-    color: "var(--md-sys-color-primary)",
+    letterSpacing: "-0.005em",
+    color: "var(--md-sys-color-on-surface)",
     minWidth: 0,
   },
 });

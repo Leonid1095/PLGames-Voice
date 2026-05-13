@@ -281,31 +281,32 @@ function ScreenshareTile() {
 const tile = cva({
   base: {
     display: "grid",
-    aspectRatio: "16/9",
-    transition: ".3s ease all",
-    borderRadius: "var(--borderRadius-lg)",
+    aspectRatio: "16/10",
+    transition: "outline-color 220ms cubic-bezier(0.05, 0.7, 0.1, 1), box-shadow 220ms cubic-bezier(0.05, 0.7, 0.1, 1), border-color 220ms cubic-bezier(0.05, 0.7, 0.1, 1)",
+    borderRadius: "10px",
     position: "relative",
 
     color: "var(--md-sys-color-on-surface)",
-    background: "var(--md-sys-color-surface-container-high)",
+    background: "var(--md-sys-color-surface-container-low)",
+    border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
 
     overflow: "hidden",
-    outlineWidth: "3px",
+    outlineWidth: "2px",
     outlineStyle: "solid",
-    outlineOffset: "-3px",
+    outlineOffset: "-1px",
     outlineColor: "transparent",
   },
   variants: {
     speaking: {
       true: {
         outlineColor: "var(--md-sys-color-primary)",
-        boxShadow: "0 0 12px color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent)",
+        boxShadow: "0 0 0 4px color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent), 0 0 24px color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent)",
       },
     },
     compact: {
       true: {
         aspectRatio: "4/3",
-        borderRadius: "var(--borderRadius-md)",
+        borderRadius: "8px",
       },
     },
   },

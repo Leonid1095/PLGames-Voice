@@ -136,11 +136,11 @@ const CategoryTitle = styled("span", {
     textOverflow: "ellipsis",
 
     textTransform: "uppercase",
-    fontSize: "0.75rem",
-    fontWeight: 700,
-    margin: "0 8px",
-    marginInlineEnd: "20px",
+    fontSize: "11px",
+    fontWeight: 600,
+    letterSpacing: "0.08em",
+    margin: "16px 12px 6px",
 
-    color: "var(--md-sys-color-outline)",
+    color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
   },
 });

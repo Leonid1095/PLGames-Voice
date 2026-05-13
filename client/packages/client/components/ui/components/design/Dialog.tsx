@@ -156,10 +156,14 @@ Dialog.Scrim = styled("div", {
     },
     dark: {
       true: {
-        "--background": "rgba(0, 0, 0, 0.9)",
+        "--background": "rgba(0, 0, 0, 0.7)",
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
       },
       false: {
-        "--background": "rgba(0, 0, 0, 0.85)",
+        "--background": "rgba(0, 0, 0, 0.55)",
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
       },
     },
   },
@@ -174,17 +178,19 @@ Dialog.Scrim = styled("div", {
 const Container = styled("div", {
   base: {
     padding: "0",
-    minWidth: "280px",
-    maxWidth: "480px",
-    borderRadius: "8px",
+    minWidth: "320px",
+    maxWidth: "440px",
+    borderRadius: "14px",
     overflow: "hidden",
 
     display: "flex",
     flexDirection: "column",
 
     color: "var(--md-sys-color-on-surface)",
-    background: "var(--md-sys-color-surface-container-high)",
-    boxShadow: "0 4px 8px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,0,0,0.15)",
+    background: "var(--md-sys-color-surface-container-low)",
+    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+    boxShadow: "0 24px 64px rgba(0,0,0,0.55), 0 8px 16px rgba(0,0,0,0.30)",
+    animation: "modalIn 220ms cubic-bezier(0.05, 0.7, 0.1, 1)",
   },
 });
 
@@ -226,7 +232,8 @@ const Actions = styled("div", {
     gap: "8px",
     display: "flex",
     justifyContent: "end",
-    padding: "16px",
+    padding: "12px 24px",
     background: "var(--md-sys-color-surface-container)",
+    borderTop: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
   },
 });

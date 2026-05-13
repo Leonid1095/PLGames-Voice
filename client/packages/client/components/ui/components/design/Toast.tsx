@@ -77,39 +77,45 @@ const Container = styled("div", {
 const ToastItem = styled("div", {
   base: {
     display: "flex",
-    alignItems: "center",
-    gap: "var(--gap-md)",
+    alignItems: "flex-start",
+    gap: "12px",
     padding: "12px 16px",
-    borderRadius: "var(--borderRadius-md)",
-    boxShadow: "var(--elevation-3)",
+    borderRadius: "10px",
+    /* Glass-bg with type-coloured slice on the left (via inset border) */
+    background: "var(--qp-glass-bg, color-mix(in srgb, var(--md-sys-color-surface) 80%, transparent))",
+    backdropFilter: "saturate(180%) blur(20px)",
+    WebkitBackdropFilter: "saturate(180%) blur(20px)",
+    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+    boxShadow: "0 12px 32px rgba(0,0,0,0.40)",
     cursor: "pointer",
     pointerEvents: "auto",
     animation: "toastSlideIn 0.3s cubic-bezier(0.2, 0, 0, 1)",
-    transition: "var(--transitions-fast) opacity, var(--transitions-fast) transform",
+    transition: "opacity 140ms cubic-bezier(0.2,0,0,1), transform 140ms cubic-bezier(0.2,0,0,1)",
     userSelect: "none",
-    minWidth: "280px",
+    minWidth: "300px",
+    color: "var(--md-sys-color-on-surface)",
 
     "&:hover": {
-      opacity: 0.9,
+      opacity: 0.92,
     },
   },
   variants: {
     type: {
       success: {
-        background: "var(--md-sys-color-primary-container)",
-        color: "var(--md-sys-color-on-primary-container)",
+        boxShadow: "0 12px 32px rgba(0,0,0,0.40), inset 3px 0 0 var(--brand-presence-online)",
+        "& svg": { color: "var(--brand-presence-online)" },
       },
       error: {
-        background: "var(--md-sys-color-error-container)",
-        color: "var(--md-sys-color-on-error-container)",
+        boxShadow: "0 12px 32px rgba(0,0,0,0.40), inset 3px 0 0 var(--brand-presence-busy)",
+        "& svg": { color: "var(--brand-presence-busy)" },
       },
       info: {
-        background: "var(--md-sys-color-secondary-container)",
-        color: "var(--md-sys-color-on-secondary-container)",
+        boxShadow: "0 12px 32px rgba(0,0,0,0.40), inset 3px 0 0 var(--md-sys-color-primary)",
+        "& svg": { color: "var(--md-sys-color-primary)" },
       },
       warning: {
-        background: "var(--md-sys-color-tertiary-container)",
-        color: "var(--md-sys-color-on-tertiary-container)",
+        boxShadow: "0 12px 32px rgba(0,0,0,0.40), inset 3px 0 0 var(--brand-presence-idle)",
+        "& svg": { color: "var(--brand-presence-idle)" },
       },
     },
   },
@@ -122,6 +128,8 @@ const ToastMessage = styled("span", {
   base: {
     fontSize: "14px",
     fontWeight: 500,
+    letterSpacing: "-0.005em",
     lineHeight: 1.4,
+    color: "var(--md-sys-color-on-surface)",
   },
 });

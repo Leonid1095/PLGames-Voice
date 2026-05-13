@@ -12,16 +12,23 @@ export const SidebarButton = styled("a", {
 
     display: "flex",
     alignItems: "center",
-    padding: "6px 8px",
-    borderRadius: "8px",
+    padding: "8px 12px",
+    borderRadius: "6px",
     fontWeight: 500,
-    marginInlineEnd: "12px",
-    fontSize: "15px",
+    letterSpacing: "-0.005em",
+    marginInlineEnd: "8px",
+    fontSize: "14px",
     userSelect: "none",
-    transition: "background-color var(--transition-fast)",
-    color: "var(--md-sys-color-on-surface)",
-    fill: "var(--md-sys-color-on-surface)",
-    background: "unset",
+    transition: "background-color 140ms cubic-bezier(0.2,0,0,1), color 140ms cubic-bezier(0.2,0,0,1)",
+    color: "var(--md-sys-color-on-surface-variant)",
+    fill: "var(--md-sys-color-on-surface-variant)",
+    background: "transparent",
+
+    "&:hover": {
+      background: "rgba(255,255,255,0.04)",
+      color: "var(--md-sys-color-on-surface)",
+      fill: "var(--md-sys-color-on-surface)",
+    },
 
     "& svg": {
       flexShrink: 0,
@@ -30,7 +37,12 @@ export const SidebarButton = styled("a", {
   variants: {
     "aria-selected": {
       true: {
-        background: "var(--md-sys-color-primary-container)",
+        background: "rgba(255,255,255,0.07)",
+        color: "var(--md-sys-color-on-surface)",
+        fill: "var(--md-sys-color-on-surface)",
+        "&:hover": {
+          background: "rgba(255,255,255,0.10)",
+        },
       },
     },
   },
