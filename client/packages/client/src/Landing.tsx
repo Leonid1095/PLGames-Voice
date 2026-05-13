@@ -7,16 +7,20 @@ import { Titlebar } from "@revolt/app/interface/desktop/Titlebar";
 import { useClientLifecycle } from "@revolt/client";
 import { Navigate } from "@revolt/routing";
 
-/* ── Obsidian Amethyst palette ─────────────────────── */
+/* ── Quiet Pro palette — refined neutrals + restrained accent ─────── */
 
-const BG = "#0C0A1A";
-const SURFACE = "#231F33";
-const ACCENT = "#7C3AED";
-const ACCENT_HOVER = "#6D28D9";
-const GLOW = "rgba(124,58,237,0.15)";
-const TEXT = "#F0ECF9";
-const TEXT_SECONDARY = "#A098B8";
-const TEXT_DIMMED = "#6E6889";
+const BG = "#0B0A12";
+const SURFACE = "#181722";
+const SURFACE_ELEVATED = "#1F1D2C";
+const ACCENT = "#8B5CF6";
+const ACCENT_HOVER = "#A78BFA";
+const ACCENT_SUBTLE = "rgba(139,92,246,0.08)";
+const GLOW = "rgba(139,92,246,0.18)";
+const TEXT = "#F5F5F7";
+const TEXT_SECONDARY = "#9A98A8";
+const TEXT_DIMMED = "#5C5A6E";
+const BORDER_SUBTLE = "rgba(255,255,255,0.06)";
+const BORDER_DEFAULT = "rgba(255,255,255,0.10)";
 
 /* ── Logo ──────────────────────────────────────────── */
 
@@ -91,9 +95,17 @@ const Page = styled("div", {
     height: "100%",
     overflowY: "auto",
     overflowX: "hidden",
-    background: `radial-gradient(ellipse at 30% 0%, ${GLOW} 0%, transparent 50%), radial-gradient(ellipse at 70% 100%, rgba(37,99,235,0.10) 0%, transparent 50%), ${BG}`,
+    /* Subtle mesh gradient — Apple/Linear style, low saturation */
+    background: `
+      radial-gradient(ellipse 80% 50% at 50% -10%, ${GLOW} 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 90% 30%, rgba(56,189,248,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 10% 80%, rgba(244,114,182,0.04) 0%, transparent 60%),
+      ${BG}
+    `,
     color: TEXT,
-    fontFamily: "Inter, sans-serif",
+    fontFamily: "var(--qp-font-sans)",
+    fontFeatureSettings: '"ss01","cv02","cv11"',
+    letterSpacing: "var(--qp-tracking-snug)",
   },
 });
 
@@ -105,12 +117,13 @@ const Nav = styled("nav", {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: "12px 16px",
-    backdropFilter: "blur(16px)",
-    background: "rgba(12,10,26,0.75)",
-    borderBottom: "1px solid rgba(124,58,237,0.1)",
+    padding: "14px 20px",
+    backdropFilter: "saturate(180%) blur(20px)",
+    WebkitBackdropFilter: "saturate(180%) blur(20px)",
+    background: "rgba(11,10,18,0.72)",
+    borderBottom: `1px solid ${BORDER_SUBTLE}`,
     md: {
-      padding: "16px 32px",
+      padding: "18px 40px",
     },
   },
 });
@@ -150,10 +163,11 @@ const MobileMenu = styled("div", {
     display: "flex",
     flexDirection: "column",
     gap: "8px",
-    padding: "12px 16px 16px",
-    background: "rgba(12,10,26,0.95)",
-    backdropFilter: "blur(16px)",
-    borderBottom: "1px solid rgba(124,58,237,0.15)",
+    padding: "14px 20px 18px",
+    background: "rgba(11,10,18,0.92)",
+    backdropFilter: "saturate(180%) blur(20px)",
+    WebkitBackdropFilter: "saturate(180%) blur(20px)",
+    borderBottom: `1px solid ${BORDER_SUBTLE}`,
     md: {
       display: "none",
     },
@@ -183,11 +197,14 @@ const Hero = styled("section", {
 
 const HeroTitle = styled("h1", {
   base: {
-    fontSize: "clamp(28px, 7vw, 64px)",
-    fontWeight: 700,
-    lineHeight: 1.1,
+    fontSize: "clamp(36px, 7.5vw, 72px)",
+    fontWeight: 600,
+    lineHeight: 1.05,
+    letterSpacing: "-0.035em",
     margin: 0,
-    background: `linear-gradient(135deg, ${ACCENT}, #2563EB)`,
+    color: TEXT,
+    /* Single hint of color via subtle vertical gradient — Apple style */
+    background: `linear-gradient(180deg, ${TEXT} 0%, color-mix(in srgb, ${TEXT} 78%, ${ACCENT}) 100%)`,
     backgroundClip: "text",
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
@@ -196,10 +213,12 @@ const HeroTitle = styled("h1", {
 
 const HeroSubtitle = styled("p", {
   base: {
-    fontSize: "clamp(15px, 3vw, 20px)",
+    fontSize: "clamp(16px, 2.4vw, 20px)",
+    fontWeight: 400,
     color: TEXT_SECONDARY,
-    maxWidth: "560px",
-    lineHeight: 1.6,
+    maxWidth: "640px",
+    lineHeight: 1.55,
+    letterSpacing: "-0.005em",
     margin: 0,
     padding: "0 8px",
   },
@@ -245,18 +264,20 @@ const Features = styled("section", {
 
 const FeatureCard = styled("div", {
   base: {
-    background: "rgba(26,23,38,0.6)",
-    backdropFilter: "blur(20px)",
-    border: "1px solid rgba(124,58,237,0.15)",
-    borderRadius: "16px",
-    padding: "24px",
+    background: SURFACE_ELEVATED,
+    backdropFilter: "saturate(140%) blur(12px)",
+    WebkitBackdropFilter: "saturate(140%) blur(12px)",
+    border: `1px solid ${BORDER_SUBTLE}`,
+    borderRadius: "14px",
+    padding: "28px",
     display: "flex",
     flexDirection: "column",
-    gap: "12px",
-    transition: "border-color 0.2s, box-shadow 0.2s",
+    gap: "14px",
+    transition: "border-color 220ms cubic-bezier(0.2,0,0,1), transform 220ms cubic-bezier(0.2,0,0,1), box-shadow 220ms cubic-bezier(0.2,0,0,1)",
     _hover: {
-      borderColor: "rgba(124,58,237,0.4)",
-      boxShadow: `0 4px 32px ${GLOW}`,
+      borderColor: BORDER_DEFAULT,
+      transform: "translateY(-2px)",
+      boxShadow: `0 12px 32px rgba(0,0,0,0.32), 0 0 0 1px ${BORDER_DEFAULT} inset`,
     },
     md: {
       padding: "32px",
@@ -266,30 +287,33 @@ const FeatureCard = styled("div", {
 
 const FeatureIcon = styled("div", {
   base: {
-    fontSize: "28px",
-    width: "48px",
-    height: "48px",
+    fontSize: "24px",
+    width: "44px",
+    height: "44px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: "12px",
-    background: "rgba(124,58,237,0.1)",
+    borderRadius: "10px",
+    background: ACCENT_SUBTLE,
+    border: `1px solid ${BORDER_SUBTLE}`,
     md: {
-      fontSize: "32px",
-      width: "56px",
-      height: "56px",
+      fontSize: "26px",
+      width: "48px",
+      height: "48px",
     },
   },
 });
 
 const FeatureTitle = styled("h3", {
   base: {
-    fontSize: "18px",
+    fontSize: "17px",
     fontWeight: 600,
+    letterSpacing: "-0.015em",
+    lineHeight: 1.3,
     margin: 0,
     color: TEXT,
     md: {
-      fontSize: "20px",
+      fontSize: "18px",
     },
   },
 });
@@ -333,8 +357,10 @@ const InstallSection = styled("section", {
 
 const InstallTitle = styled("h2", {
   base: {
-    fontSize: "clamp(22px, 4vw, 32px)",
-    fontWeight: 700,
+    fontSize: "clamp(24px, 4vw, 36px)",
+    fontWeight: 600,
+    letterSpacing: "-0.025em",
+    lineHeight: 1.1,
     margin: 0,
     color: TEXT,
   },
@@ -354,13 +380,13 @@ const InstallCards = styled("div", {
 
 const InstallCard = styled("div", {
   base: {
-    background: "rgba(26,23,38,0.6)",
-    border: "1px solid rgba(124,58,237,0.15)",
-    borderRadius: "16px",
-    padding: "24px",
+    background: SURFACE_ELEVATED,
+    border: `1px solid ${BORDER_SUBTLE}`,
+    borderRadius: "14px",
+    padding: "28px",
     display: "flex",
     flexDirection: "column",
-    gap: "12px",
+    gap: "14px",
     textAlign: "left",
   },
 });
@@ -393,15 +419,17 @@ const StepNumber = styled("span", {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    minWidth: "22px",
-    height: "22px",
+    minWidth: "20px",
+    height: "20px",
     borderRadius: "50%",
-    background: "rgba(124,58,237,0.2)",
-    color: ACCENT,
-    fontSize: "12px",
-    fontWeight: 700,
+    background: ACCENT_SUBTLE,
+    border: `1px solid ${BORDER_SUBTLE}`,
+    color: ACCENT_HOVER,
+    fontSize: "11px",
+    fontWeight: 600,
+    fontVariantNumeric: "tabular-nums",
     flexShrink: 0,
-    marginTop: "1px",
+    marginTop: "2px",
   },
 });
 
@@ -428,8 +456,10 @@ const CTASection = styled("section", {
 
 const CTATitle = styled("h2", {
   base: {
-    fontSize: "clamp(24px, 4vw, 40px)",
-    fontWeight: 700,
+    fontSize: "clamp(26px, 4.5vw, 42px)",
+    fontWeight: 600,
+    letterSpacing: "-0.03em",
+    lineHeight: 1.1,
     margin: 0,
   },
 });
@@ -437,12 +467,13 @@ const CTATitle = styled("h2", {
 const Footer = styled("footer", {
   base: {
     textAlign: "center",
-    padding: "24px 16px",
+    padding: "32px 16px",
     color: TEXT_DIMMED,
     fontSize: "13px",
-    borderTop: "1px solid rgba(124,58,237,0.1)",
+    letterSpacing: "-0.005em",
+    borderTop: `1px solid ${BORDER_SUBTLE}`,
     md: {
-      padding: "32px 24px",
+      padding: "40px 24px",
       fontSize: "14px",
     },
   },
@@ -455,22 +486,28 @@ const BtnPrimary = styled("a", {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "12px 24px",
-    borderRadius: "8px",
-    fontSize: "15px",
-    fontWeight: 600,
+    padding: "11px 22px",
+    borderRadius: "10px",
+    fontSize: "14px",
+    fontWeight: 500,
+    letterSpacing: "-0.005em",
     textDecoration: "none",
     color: "#fff",
     background: ACCENT,
-    transition: "background 0.2s, box-shadow 0.2s",
+    border: "1px solid color-mix(in srgb, white 12%, transparent)",
+    boxShadow: "0 1px 2px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.10)",
+    transition: "background 180ms cubic-bezier(0.2,0,0,1), transform 140ms cubic-bezier(0.2,0,0,1), box-shadow 180ms cubic-bezier(0.2,0,0,1)",
     cursor: "pointer",
     _hover: {
       background: ACCENT_HOVER,
-      boxShadow: `0 0 24px ${GLOW}`,
+      boxShadow: `0 4px 16px ${GLOW}, inset 0 1px 0 rgba(255,255,255,0.15)`,
+    },
+    _active: {
+      transform: "scale(0.98)",
     },
     md: {
-      padding: "14px 32px",
-      fontSize: "16px",
+      padding: "13px 26px",
+      fontSize: "15px",
     },
   },
 });
@@ -480,21 +517,27 @@ const BtnSecondary = styled("a", {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "12px 24px",
-    borderRadius: "8px",
-    fontSize: "15px",
-    fontWeight: 600,
+    padding: "11px 22px",
+    borderRadius: "10px",
+    fontSize: "14px",
+    fontWeight: 500,
+    letterSpacing: "-0.005em",
     textDecoration: "none",
     color: TEXT,
-    background: SURFACE,
-    transition: "background 0.2s",
+    background: "rgba(255,255,255,0.04)",
+    border: `1px solid ${BORDER_DEFAULT}`,
+    transition: "background 180ms cubic-bezier(0.2,0,0,1), border-color 180ms cubic-bezier(0.2,0,0,1), transform 140ms cubic-bezier(0.2,0,0,1)",
     cursor: "pointer",
     _hover: {
-      background: "rgba(35,31,51,0.8)",
+      background: "rgba(255,255,255,0.07)",
+      borderColor: "rgba(255,255,255,0.16)",
+    },
+    _active: {
+      transform: "scale(0.98)",
     },
     md: {
-      padding: "14px 32px",
-      fontSize: "16px",
+      padding: "13px 26px",
+      fontSize: "15px",
     },
   },
 });
@@ -504,23 +547,30 @@ const BtnDownload = styled("a", {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: "8px",
-    padding: "12px 24px",
-    borderRadius: "8px",
-    fontSize: "15px",
-    fontWeight: 600,
+    gap: "10px",
+    padding: "11px 22px",
+    borderRadius: "10px",
+    fontSize: "14px",
+    fontWeight: 500,
+    letterSpacing: "-0.005em",
     textDecoration: "none",
     color: "#fff",
-    background: "linear-gradient(135deg, #2563EB, #7C3AED)",
-    transition: "box-shadow 0.2s, transform 0.15s",
+    background: ACCENT,
+    border: "1px solid color-mix(in srgb, white 12%, transparent)",
+    boxShadow: "0 1px 2px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.10)",
+    transition: "background 180ms cubic-bezier(0.2,0,0,1), transform 140ms cubic-bezier(0.2,0,0,1), box-shadow 180ms cubic-bezier(0.2,0,0,1)",
     cursor: "pointer",
     _hover: {
-      boxShadow: "0 0 32px rgba(37,99,235,0.3)",
+      background: ACCENT_HOVER,
+      boxShadow: `0 4px 16px ${GLOW}, inset 0 1px 0 rgba(255,255,255,0.15)`,
       transform: "translateY(-1px)",
     },
+    _active: {
+      transform: "scale(0.98)",
+    },
     md: {
-      padding: "14px 32px",
-      fontSize: "16px",
+      padding: "13px 26px",
+      fontSize: "15px",
     },
   },
 });

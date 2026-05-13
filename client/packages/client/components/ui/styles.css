@@ -5,6 +5,7 @@
 @import "@fontsource/inter/700";
 @import "@fontsource/inter/800";
 @import "@fontsource/jetbrains-mono";
+@import "./themes/quietPro.css";
 
 * {
   box-sizing: border-box;
@@ -30,8 +31,9 @@
 
 body {
   margin: 0;
-  background: #0C0A1A;
-  font-family: var(--fonts-primary);
+  background: var(--md-sys-color-surface, #0C0A1A);
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--qp-font-sans);
 }
 
 /* Тонкий тематический скроллбар */
@@ -180,11 +182,12 @@ body {
   /* purposely ignored */
 }
 
-/* ===== Focus Visible (keyboard navigation) ===== */
+/* ===== Focus Visible (keyboard navigation) — soft double-ring ===== */
 :focus-visible {
-  outline: 2px solid var(--md-sys-color-primary);
-  outline-offset: 2px;
-  border-radius: 4px;
+  outline: none;
+  box-shadow: var(--qp-focus-ring);
+  border-radius: var(--qp-radius-sm);
+  transition: box-shadow var(--qp-duration-fast) var(--qp-ease-standard);
 }
 
 :focus:not(:focus-visible) {

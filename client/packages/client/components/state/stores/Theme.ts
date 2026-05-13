@@ -9,7 +9,7 @@ import { AbstractStore } from ".";
 /**
  * Bump this when theme defaults change — triggers migration for existing users
  */
-const THEME_VERSION = 2;
+const THEME_VERSION = 3;
 
 export type TypeTheme = {
   /**
@@ -139,12 +139,14 @@ export class Theme extends AbstractStore {
       preset: "you",
       mode: "dark",
 
-      m3Accent: "#7C3AED",
+      // Quiet Pro defaults — restrained accent, desaturated surfaces (Apple/Notion vibe).
+      // Users can switch to vibrant variants in settings.
+      m3Accent: "#8B5CF6",
       m3Contrast: 0.0,
-      m3Variant: "vibrant",
+      m3Variant: "neutral",
 
       interfaceFont: "Inter",
-      monospaceFont: "Fira Code",
+      monospaceFont: "JetBrains Mono",
 
       blur: true,
       messageSize: 14,
