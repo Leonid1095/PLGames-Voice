@@ -1,7 +1,7 @@
 [package]
 name = "revolt-ratelimits"
 version = "0.11.5"
-edition = "2024"
+edition = "2021"
 license = "MIT"
 authors = ["PLG Games Team"]
 description = "PLG Voice Backend: Ratelimit Handler"
