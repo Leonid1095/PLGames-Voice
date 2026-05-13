@@ -1,5 +1,6 @@
 import { Match, Switch } from "solid-js";
 
+import { Trans } from "@lingui-solid/solid/macro";
 import { Handler } from "mdast-util-to-hast";
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
@@ -20,7 +21,7 @@ export function RenderMention(props: {
   disabled?: boolean;
 }) {
   return (
-    <Switch fallback={<span>Invalid Mention Element</span>}>
+    <Switch fallback={<span><Trans>Invalid mention</Trans></span>}>
       <Match when={props.mentions?.startsWith("user:")}>
         <UserMention
           userId={props.mentions!.substring(5)}
@@ -51,7 +52,7 @@ export function UserMention(props: { userId: string; disabled?: boolean }) {
 
   return (
     <Switch
-      fallback={<span class={mention({ valid: false })}>Unknown User</span>}
+      fallback={<span class={mention({ valid: false })}><Trans>Unknown user</Trans></span>}
     >
       <Match when={user().user}>
         <div
@@ -92,7 +93,7 @@ export function RoleMention(props: { roleId: string }) {
 
   return (
     <Switch
-      fallback={<span class={mention({ valid: false })}>Unknown Role</span>}
+      fallback={<span class={mention({ valid: false })}><Trans>Unknown role</Trans></span>}
     >
       <Match when={role()}>
         <div class={mention()}>

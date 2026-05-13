@@ -12,6 +12,16 @@ import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { ChannelHeader } from "../ChannelHeader";
 import { ChannelPageProps } from "../ChannelPage";
 
+// Forum thread shape returned by the /channels/:id/threads endpoint.
+// The API does not yet provide a typed schema; this captures the fields
+// the UI actually reads. Widen as we discover more.
+interface ForumThread {
+  _id: string;
+  name?: string;
+  tags?: string[];
+  last_message_id?: string;
+}
+
 /**
  * Forum channel view — shows thread cards
  */
@@ -35,11 +45,11 @@ export function ForumView(props: ChannelPageProps) {
       const c = client();
       try {
         const res = await c.api.get(`/channels/${channelId}/threads` as any);
-        return (res as any[]) || [];
+        return (res as ForumThread[]) || [];
       } catch {
         // API doesn't support /threads endpoint — stop retrying
         setThreadsFailed(true);
-        return [];
+        return [] as ForumThread[];
       }
     },
   );
@@ -50,7 +60,7 @@ export function ForumView(props: ChannelPageProps) {
     let list = threads() || [];
     const tag = selectedTag();
     if (tag) {
-      list = list.filter((thread: any) => thread.tags && thread.tags.includes(tag));
+      list = list.filter((thread) => thread.tags?.includes(tag));
     }
     if (sortOrder() === "oldest") {
       list = [...list].reverse();
@@ -204,7 +214,7 @@ export function ForumView(props: ChannelPageProps) {
           >
             <ThreadGrid>
               <For each={filteredThreads()}>
-                {(thread: any) => (
+                {(thread) => (
                   <ThreadCard onClick={() => navigate(`/server/${props.channel.serverId}/channel/${thread._id}`)}>
                     <ThreadTitle>{thread.name}</ThreadTitle>
                     <ThreadInfo>

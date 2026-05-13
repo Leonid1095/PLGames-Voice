@@ -407,7 +407,6 @@ export function HomePage() {
             </CategoryButton>
           </SeparatedColumn>
           <SeparatedColumn>
-            {/* Discover disabled — stt.gg unavailable */}
             <CategoryButton
               onClick={() =>
                 openModal({

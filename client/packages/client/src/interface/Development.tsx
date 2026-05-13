@@ -198,13 +198,13 @@ export function DevelopmentPage() {
       <TextField
         variant="outlined"
         label="Outlined Input"
-        placeholder="Type here :D"
+        placeholder="Type here"
       />
 
       <TextField
         variant="filled"
         label="Filled Input"
-        placeholder="Type here :D"
+        placeholder="Type here"
       />
 
       <div
@@ -239,7 +239,7 @@ export function DevelopmentPage() {
           <CategoryCollapse
             icon={<BiSolidSpeaker size={24} />}
             description="description!"
-            title="Choose output device tbh"
+            title="Choose output device"
           >
             <CategoryButton
               description="Active device"
