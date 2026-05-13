@@ -447,31 +447,32 @@ const CategoryBase = styled("div", {
   base: {
     display: "flex",
     alignItems: "center",
-    gap: "var(--gap-sm)",
+    gap: "4px",
 
-    padding: "0 var(--gap-sm)",
-    paddingLeft: "calc(var(--gap-lg) + 5px)",
-    paddingTop: "10px",
+    padding: "0 12px",
+    paddingTop: "12px",
+    paddingBottom: "4px",
 
     cursor: "pointer",
     userSelect: "none",
-    transition: "var(--transitions-fast) all",
+    transition: "color 140ms cubic-bezier(0.2,0,0,1)",
 
-    "--color": "var(--md-sys-color-on-surface)",
+    "--color": "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
     color: "var(--color)",
     fill: "var(--color)",
 
     ...typography.raw({ class: "label", size: "small" }),
-    fontSize: "12px",
+    fontSize: "11px",
+    fontWeight: 600,
     textTransform: "uppercase",
-    letterSpacing: "0.05em",
+    letterSpacing: "0.08em",
 
     "&:hover": {
-      "--color": "var(--md-sys-color-on-surface-variant)",
+      "--color": "var(--md-sys-color-on-surface)",
     },
 
     "& svg": {
-      transition: "var(--transitions-fast) transform",
+      transition: "transform 140ms cubic-bezier(0.2,0,0,1)",
     },
   },
   variants: {

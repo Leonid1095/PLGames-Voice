@@ -325,7 +325,9 @@ const ServerListBase = styled("div", {
     flexDirection: "column",
 
     fill: "var(--md-sys-color-on-surface)",
-    background: "linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--md-sys-color-primary) 3%, transparent) 100%)",
+    /* Flat dark rail — same surface as the rest, no gradient. */
+    background: "var(--md-sys-color-surface)",
+    borderRight: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
   },
 });
 
@@ -344,7 +346,7 @@ const listBase = cva({
 const entryContainer = cva({
   base: {
     width: "56px",
-    height: "56px",
+    height: "52px",
     position: "relative",
     display: "grid",
     flexShrink: 0,
@@ -353,38 +355,41 @@ const entryContainer = cva({
     "&:before": {
       content: "' '",
       position: "absolute",
-      width: "4px",
+      width: "3px",
       height: "0px",
       left: "0px",
-      borderRadius: "0 4px 4px 0",
-      background: "var(--md-sys-color-primary)",
-      transition: "var(--transitions-medium) all",
+      borderRadius: "0 3px 3px 0",
+      background: "var(--md-sys-color-on-surface)",
+      transition: "height 200ms cubic-bezier(0.2,0,0,1), opacity 200ms cubic-bezier(0.2,0,0,1)",
+      opacity: 0,
     },
 
     "&:hover:before": {
-      height: "20px",
+      height: "16px",
+      opacity: 0.6,
     },
 
     "&:hover > a > svg": {
-      transform: "scale(1.08)",
+      transform: "scale(1.05)",
     },
 
     "& > a > svg": {
-      transition: "var(--transitions-medium) transform",
+      transition: "transform 180ms cubic-bezier(0.2,0,0,1)",
     },
   },
   variants: {
     indicator: {
       selected: {
         "&:before": {
-          height: "36px !important",
-          boxShadow: "0 0 8px color-mix(in srgb, var(--md-sys-color-primary) 60%, transparent)",
+          height: "28px !important",
+          opacity: "1 !important",
         },
       },
       alert: {
         "&:before": {
           height: "8px",
-          background: "var(--md-sys-color-on-surface)",
+          background: "var(--md-sys-color-primary)",
+          opacity: 1,
         },
       },
     },
@@ -398,9 +403,8 @@ const LineDivider = styled("div", {
   base: {
     height: "1px",
     flexShrink: 0,
-    margin: "6px auto",
-    width: "calc(100% - 24px)",
-    background: "linear-gradient(90deg, transparent, var(--md-sys-color-outline-variant), transparent)",
+    margin: "8px 14px",
+    background: "var(--qp-border-subtle, rgba(255,255,255,0.06))",
   },
 });
 
