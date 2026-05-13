@@ -151,7 +151,8 @@ const base = cva({
     },
     mentioned: {
       true: {
-        background: "var(--md-sys-color-primary-container)",
+        background: "color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent)",
+        boxShadow: "inset 2px 0 0 var(--md-sys-color-primary)",
       },
     },
     highlight: {
@@ -184,8 +185,8 @@ const base = cva({
         marginTop: "var(--message-group-spacing) !important",
 
         "&:hover": {
-          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 6%, var(--md-sys-color-surface-container-lowest))",
-          boxShadow: "0 1px 4px color-mix(in srgb, var(--md-sys-color-shadow) 10%, transparent)",
+          /* Subtle hover — Notion/Linear style, no shadow */
+          background: "rgba(255,255,255,0.025)",
         },
       },
       hide: {},

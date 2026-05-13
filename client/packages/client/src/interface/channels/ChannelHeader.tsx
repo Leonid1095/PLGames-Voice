@@ -366,10 +366,10 @@ export function ChannelHeader(props: Props) {
  */
 const Divider = styled("div", {
   base: {
-    height: "20px",
-    margin: "0px 5px",
-    paddingLeft: "1px",
-    backgroundColor: "var(--md-sys-color-outline-variant)",
+    width: "1px",
+    height: "16px",
+    margin: "0 8px",
+    backgroundColor: "var(--qp-border-default, rgba(255,255,255,0.10))",
   },
 });
 
@@ -442,17 +442,24 @@ const SearchWrapper = styled("div", {
 });
 
 const searchInput = css({
-  height: "40px",
-  width: "280px",
-  paddingInline: "16px",
-  borderRadius: "var(--borderRadius-full)",
-  background: "var(--md-sys-color-surface-container-high)",
+  height: "32px",
+  width: "240px",
+  paddingInline: "12px",
+  borderRadius: "6px",
+  background: "rgba(255,255,255,0.04)",
+  border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
   color: "var(--md-sys-color-on-surface)",
-  border: "none",
   outline: "none",
   fontSize: "13px",
+  letterSpacing: "-0.005em",
+  transition: "border-color 140ms cubic-bezier(0.2,0,0,1), box-shadow 140ms cubic-bezier(0.2,0,0,1)",
   "&::placeholder": {
-    fontSize: "12px",
+    fontSize: "13px",
+    color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
+  },
+  "&:focus": {
+    borderColor: "var(--md-sys-color-primary)",
+    boxShadow: "0 0 0 3px color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent)",
   },
 });
 

@@ -235,43 +235,48 @@ const ReactionBase = styled("button", {
     position: "relative",
 
     // reset button styles
-    border: "none",
     font: "inherit",
 
-    display: "flex",
+    display: "inline-flex",
+    alignItems: "center",
     overflow: "hidden",
     flexDirection: "row",
-    gap: "var(--gap-md)",
+    gap: "4px",
     cursor: "pointer",
     userSelect: "none",
     verticalAlign: "middle",
-    padding: "var(--gap-md)",
-    borderRadius: "var(--borderRadius-md)",
+    padding: "2px 8px",
+    borderRadius: "9999px",
+    border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
 
-    transition: "var(--transitions-fast) all",
-    fontWeight: 600,
+    transition: "background 140ms cubic-bezier(0.2,0,0,1), border-color 140ms cubic-bezier(0.2,0,0,1), color 140ms cubic-bezier(0.2,0,0,1)",
+    fontSize: "12px",
+    fontWeight: 500,
     fontFeatureSettings: "'tnum' 1",
 
-    "&:hover": {
-      transform: "scale(1.08)",
-      boxShadow: "0 2px 6px color-mix(in srgb, var(--md-sys-color-shadow) 20%, transparent)",
-    },
-
     "& img": {
-      width: "1.2em",
-      height: "1.2em",
+      width: "1.1em",
+      height: "1.1em",
       objectFit: "contain",
     },
   },
   variants: {
     active: {
       true: {
-        color: "var(--md-sys-color-on-secondary-container)",
-        background: "var(--md-sys-color-secondary-container)",
+        color: "var(--md-sys-color-primary)",
+        background: "color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent)",
+        borderColor: "color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent)",
+        "&:hover": {
+          background: "color-mix(in srgb, var(--md-sys-color-primary) 16%, transparent)",
+        },
       },
       false: {
-        color: "var(--md-sys-color-on-surface)",
+        color: "var(--md-sys-color-on-surface-variant)",
         background: "var(--md-sys-color-surface-container-low)",
+        "&:hover": {
+          background: "var(--md-sys-color-surface-container-high)",
+          borderColor: "var(--qp-border-default, rgba(255,255,255,0.10))",
+        },
       },
     },
   },
@@ -288,18 +293,18 @@ const AddReaction = styled(ReactionBase, {
     // for <Ripple />
     position: "relative",
 
-    opacity: 0.4,
+    opacity: 0.55,
     justifyContent: "center",
-    fontSize: "var(--emoji-size)",
+    fontSize: "13px",
     background: "var(--md-sys-color-surface-container-low)",
-    height: "33px",
-    aspectRatio: "1/1",
-    padding: "var(--gap-sm)",
+    width: "26px",
+    height: "22px",
+    padding: 0,
 
     "&:hover": {
       opacity: 1,
-      background: "var(--md-sys-color-primary-container)",
-      color: "var(--md-sys-color-on-primary-container)",
+      background: "var(--md-sys-color-surface-container-high)",
+      color: "var(--md-sys-color-on-surface)",
     },
   },
 });

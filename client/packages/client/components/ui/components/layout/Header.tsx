@@ -12,21 +12,20 @@ export interface Props {
  */
 export const Header = styled("div", {
   base: {
-    gap: "10px",
+    gap: "12px",
     flex: "0 auto",
     display: "flex",
     flexShrink: 0,
-    padding: "0 16px",
+    padding: "0 20px",
     alignItems: "center",
     fontWeight: 600,
+    letterSpacing: "-0.01em",
     userSelect: "none",
     overflow: "hidden",
     height: "48px",
-    borderRadius: "var(--borderRadius-lg)",
 
     color: "var(--md-sys-color-on-surface)",
     fill: "var(--md-sys-color-on-surface)",
-    boxShadow: "var(--elevation-1), 0 1px 0 color-mix(in srgb, var(--md-sys-color-outline-variant) 10%, transparent)",
 
     backgroundSize: "cover !important",
     backgroundPosition: "center !important",
@@ -37,16 +36,15 @@ export const Header = styled("div", {
   variants: {
     placement: {
       primary: {
-        margin: "var(--gap-md) var(--gap-md) var(--gap-md) 0",
-        backdropFilter: "blur(12px)",
-        background: "color-mix(in srgb, var(--md-sys-color-surface-container) 70%, transparent)",
-        boxShadow: "var(--elevation-1), 0 1px 0 color-mix(in srgb, var(--md-sys-color-outline-variant) 10%, transparent), inset 0 1px 0 color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent)",
+        /* Glass-blur header — sits on top of messages without a hard edge. */
+        backdropFilter: "saturate(180%) blur(20px)",
+        WebkitBackdropFilter: "saturate(180%) blur(20px)",
+        background: "var(--qp-glass-bg, color-mix(in srgb, var(--md-sys-color-surface) 75%, transparent))",
+        borderBottom: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
       },
       secondary: {
-        margin: "var(--gap-md)",
-        backgroundColor: "var(--md-sys-color-surface-variant)",
-        borderBottom: "1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 20%, transparent)",
-        boxShadow: "var(--elevation-1)",
+        backgroundColor: "var(--md-sys-color-surface-container-low)",
+        borderBottom: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
       },
     },
     image: {

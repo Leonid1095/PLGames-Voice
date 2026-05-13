@@ -96,28 +96,24 @@ const Base = styled("div", {
   base: {
     flexGrow: 1,
 
-    paddingInlineEnd: "var(--gap-md)",
-    paddingBlock: "var(--gap-sm)",
-    borderStartRadius: "var(--borderRadius-xl)",
+    paddingInlineEnd: "12px",
+    paddingBlock: "8px",
+    borderRadius: "14px",
 
     display: "flex",
-    background: "var(--md-sys-color-surface-container-high)",
+    background: "var(--md-sys-color-surface-container-low)",
     color: "var(--md-sys-color-on-surface)",
-    transition: "box-shadow var(--transitions-fast), border-color var(--transitions-fast)",
-    border: "1px solid transparent",
+    transition: "box-shadow 180ms cubic-bezier(0.2,0,0,1), border-color 180ms cubic-bezier(0.2,0,0,1)",
+    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
     "&:focus-within": {
       borderColor: "var(--md-sys-color-primary)",
-      boxShadow: "0 0 0 1px var(--md-sys-color-primary)",
+      boxShadow: "0 0 0 4px color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent)",
     },
   },
   variants: {
     hasActionsAppend: {
-      true: {
-        borderEndRadius: "var(--borderRadius-md)",
-      },
-      false: {
-        borderEndRadius: "var(--borderRadius-xl)",
-      },
+      true: {},
+      false: {},
     },
   },
   defaultVariants: {
