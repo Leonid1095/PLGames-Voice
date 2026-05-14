@@ -15,8 +15,16 @@ const Base = styled("div", {
     userSelect: "none",
     overflowY: "auto",
 
-    color: "#F0ECF9",
-    background: "radial-gradient(ellipse at 20% 0%, rgba(124,58,237,0.15) 0%, transparent 60%), radial-gradient(ellipse at 80% 100%, rgba(37,99,235,0.10) 0%, transparent 60%), #0C0A1A",
+    color: "#F5F5F7",
+    /* Same Quiet Pro mesh as Landing — restrained accent + neutral base */
+    background: `
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(139,92,246,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 90% 30%, rgba(56,189,248,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 10% 80%, rgba(244,114,182,0.04) 0%, transparent 60%),
+      #0B0A12
+    `,
+    fontFamily: "var(--qp-font-sans)",
+    letterSpacing: "var(--qp-tracking-snug)",
 
     display: "flex",
     alignItems: "center",

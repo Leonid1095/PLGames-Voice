@@ -123,6 +123,45 @@ html, :root {
   background-color: #0B0A12 !important;
 }
 
+/* ---------------------------------------------------------------------
+   MDUI component re-theming.
+
+   MDUI exposes its components as web-components with closed shadow DOM,
+   but every shadow DOM still resolves CSS custom properties from the
+   light DOM. We override the relevant tokens so MDUI fields, selects
+   and switches inherit the Quiet Pro look.
+   ------------------------------------------------------------------- */
+
+mdui-text-field,
+mdui-select {
+  /* Smaller corner radius matches our 6px input radius */
+  --mdui-shape-corner-extra-small: 6px;
+  --mdui-shape-corner-small: 8px;
+  /* Subtle filled-input surface */
+  --mdui-color-surface-container-highest: 26, 24, 39;
+  --mdui-color-surface-container-high: 33, 31, 50;
+  /* Outline tone aligned with our border-default */
+  --mdui-color-outline: 255, 255, 255;
+  --mdui-color-outline-variant: 255, 255, 255;
+  font-family: var(--qp-font-sans);
+}
+
+mdui-text-field::part(container),
+mdui-text-field::part(input) {
+  font-family: var(--qp-font-sans) !important;
+}
+
+/* Switch — match Quiet Pro toggle */
+mdui-switch {
+  --mdui-color-primary: 139, 92, 246;
+  --mdui-shape-corner-full: 9999px;
+}
+
+/* Slider — accent colour */
+mdui-slider {
+  --mdui-color-primary: 139, 92, 246;
+}
+
 code, kbd, pre, samp {
   font-family: var(--qp-font-mono);
   font-feature-settings: "calt", "liga";

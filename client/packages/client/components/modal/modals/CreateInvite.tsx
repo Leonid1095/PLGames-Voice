@@ -106,9 +106,9 @@ const LinkRow = styled("div", {
   base: {
     display: "flex",
     gap: "0",
-    borderRadius: "var(--borderRadius-md)",
+    borderRadius: "10px",
     overflow: "hidden",
-    border: "1px solid var(--md-sys-color-outline-variant)",
+    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
   },
 });
 
@@ -117,23 +117,24 @@ const LinkInput = styled("div", {
     flex: 1,
     display: "flex",
     alignItems: "center",
-    padding: "10px 12px",
-    background: "var(--md-sys-color-surface-container)",
+    padding: "10px 14px",
+    background: "var(--md-sys-color-surface-container-low)",
     cursor: "pointer",
     minWidth: 0,
     overflow: "hidden",
+    transition: "background 140ms cubic-bezier(0.2,0,0,1)",
 
     "&:hover": {
-      background: "var(--md-sys-color-surface-container-high)",
+      background: "var(--md-sys-color-surface-container)",
     },
   },
 });
 
 const LinkText = styled("span", {
   base: {
-    fontSize: "14px",
-    fontFamily: "var(--fonts-monospace)",
-    color: "var(--md-sys-color-primary)",
+    fontSize: "13px",
+    fontFamily: "var(--qp-font-mono, monospace)",
+    color: "var(--md-sys-color-on-surface)",
     fontWeight: 500,
     whiteSpace: "nowrap",
     overflow: "hidden",
@@ -155,21 +156,23 @@ const CopyButton = styled("button", {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: "4px",
-    padding: "10px 16px",
+    gap: "6px",
+    padding: "10px 18px",
     border: "none",
     cursor: "pointer",
     fontSize: "13px",
-    fontWeight: 600,
+    fontWeight: 500,
+    letterSpacing: "-0.005em",
     fontFamily: "inherit",
     whiteSpace: "nowrap",
-    transition: "all var(--transition-fast)",
+    transition: "background 140ms cubic-bezier(0.2,0,0,1)",
     flexShrink: 0,
     background: "var(--md-sys-color-primary)",
     color: "var(--md-sys-color-on-primary)",
+    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.12)",
 
     "&:hover": {
-      filter: "brightness(1.1)",
+      background: "color-mix(in srgb, var(--md-sys-color-primary) 92%, white)",
     },
   },
   variants: {

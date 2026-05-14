@@ -14,19 +14,19 @@ export const FlowBase = styled("div", {
     gap: "20px",
     flexGrow: 0,
 
-    background: "#1A1726",
-    color: "#F0ECF9",
+    background: "#181722",
+    color: "#F5F5F7",
 
-    width: "480px",
+    width: "440px",
     maxWidth: "calc(100vw - 40px)",
     padding: "32px",
-    borderRadius: "12px",
-    border: "1px solid rgba(124,58,237,0.2)",
-    boxShadow: "0 4px 24px 0 rgba(124,58,237,0.15)",
+    borderRadius: "14px",
+    border: "1px solid rgba(255,255,255,0.10)",
+    boxShadow: "0 24px 64px rgba(0,0,0,0.55), 0 8px 16px rgba(0,0,0,0.30)",
 
-    animationName: "contentFadeIn",
-    animationDuration: "0.3s",
-    animationTimingFunction: "ease-out",
+    animationName: "modalIn",
+    animationDuration: "0.22s",
+    animationTimingFunction: "cubic-bezier(0.05, 0.7, 0.1, 1)",
     animationFillMode: "both",
   },
 });
@@ -50,9 +50,10 @@ export function FlowTitle(props: {
         class="title"
         size="large"
         style={{
-          "font-size": "24px",
+          "font-size": "22px",
           "font-weight": "600",
-          color: "#F0ECF9",
+          "letter-spacing": "-0.02em",
+          color: "#F5F5F7",
         }}
       >
         {props.children}
@@ -62,7 +63,8 @@ export function FlowTitle(props: {
           class="label"
           style={{
             "font-size": "14px",
-            color: "#A098B8",
+            "letter-spacing": "-0.005em",
+            color: "#9A98A8",
           }}
         >
           {props.subtitle}
