@@ -197,11 +197,12 @@ const Hero = styled("section", {
 
 const HeroTitle = styled("h1", {
   base: {
-    fontSize: "clamp(36px, 7.5vw, 72px)",
+    fontSize: "clamp(36px, 6vw, 56px)",
     fontWeight: 600,
     lineHeight: 1.05,
     letterSpacing: "-0.035em",
     margin: 0,
+    maxWidth: "820px",
     color: TEXT,
     /* Single hint of color via subtle vertical gradient — Apple style */
     background: `linear-gradient(180deg, ${TEXT} 0%, color-mix(in srgb, ${TEXT} 78%, ${ACCENT}) 100%)`,
@@ -287,20 +288,15 @@ const FeatureCard = styled("div", {
 
 const FeatureIcon = styled("div", {
   base: {
-    fontSize: "24px",
-    width: "44px",
-    height: "44px",
+    width: "40px",
+    height: "40px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: "10px",
     background: ACCENT_SUBTLE,
     border: `1px solid ${BORDER_SUBTLE}`,
-    md: {
-      fontSize: "26px",
-      width: "48px",
-      height: "48px",
-    },
+    color: ACCENT_HOVER,
   },
 });
 
@@ -547,30 +543,25 @@ const BtnDownload = styled("a", {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: "10px",
-    padding: "11px 22px",
-    borderRadius: "10px",
-    fontSize: "14px",
+    gap: "8px",
+    padding: "9px 16px",
+    borderRadius: "8px",
+    fontSize: "13px",
     fontWeight: 500,
     letterSpacing: "-0.005em",
     textDecoration: "none",
-    color: "#fff",
-    background: ACCENT,
-    border: "1px solid color-mix(in srgb, white 12%, transparent)",
-    boxShadow: "0 1px 2px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.10)",
-    transition: "background 180ms cubic-bezier(0.2,0,0,1), transform 140ms cubic-bezier(0.2,0,0,1), box-shadow 180ms cubic-bezier(0.2,0,0,1)",
+    color: TEXT_SECONDARY,
+    background: "transparent",
+    border: `1px solid ${BORDER_DEFAULT}`,
+    transition: "background 180ms cubic-bezier(0.2,0,0,1), border-color 180ms cubic-bezier(0.2,0,0,1), color 180ms cubic-bezier(0.2,0,0,1)",
     cursor: "pointer",
     _hover: {
-      background: ACCENT_HOVER,
-      boxShadow: `0 4px 16px ${GLOW}, inset 0 1px 0 rgba(255,255,255,0.15)`,
-      transform: "translateY(-1px)",
+      background: "rgba(255,255,255,0.04)",
+      borderColor: "rgba(255,255,255,0.18)",
+      color: TEXT,
     },
     _active: {
       transform: "scale(0.98)",
-    },
-    md: {
-      padding: "13px 26px",
-      fontSize: "15px",
     },
   },
 });
@@ -687,20 +678,18 @@ export default function LandingPage() {
               <Trans>I already have an account</Trans>
             </BtnSecondary>
           </HeroCTA>
-          <HeroCTA>
-            <BtnDownload href={DOWNLOAD_WIN} target="_blank">
-              Windows (.exe)
-            </BtnDownload>
-            <BtnDownload href={DOWNLOAD_LINUX} target="_blank">
-              Linux (.deb)
-            </BtnDownload>
-          </HeroCTA>
         </Hero>
 
         {/* ── Features ── */}
         <Features>
           <FeatureCard>
-            <FeatureIcon>🎙️</FeatureIcon>
+            <FeatureIcon>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="2" width="6" height="12" rx="3" />
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                <path d="M12 19v3" />
+              </svg>
+            </FeatureIcon>
             <FeatureTitle>
               <Trans>Crystal-clear voice</Trans>
             </FeatureTitle>
@@ -713,7 +702,11 @@ export default function LandingPage() {
           </FeatureCard>
 
           <FeatureCard>
-            <FeatureIcon>💬</FeatureIcon>
+            <FeatureIcon>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+              </svg>
+            </FeatureIcon>
             <FeatureTitle>
               <Trans>Rich messaging</Trans>
             </FeatureTitle>
@@ -726,7 +719,13 @@ export default function LandingPage() {
           </FeatureCard>
 
           <FeatureCard>
-            <FeatureIcon>🏠</FeatureIcon>
+            <FeatureIcon>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="6" rx="2" />
+                <rect x="2" y="15" width="20" height="6" rx="2" />
+                <path d="M6 6h.01M6 18h.01" />
+              </svg>
+            </FeatureIcon>
             <FeatureTitle>
               <Trans>Your own servers</Trans>
             </FeatureTitle>
