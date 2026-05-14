@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="theme-color" content="#0C0A1A" />
+    <meta name="theme-color" content="#0B0A12" />
     <link rel="apple-touch-icon" sizes="192x192" href="/assets/web/android-chrome-192x192.png" />
     <link rel="apple-touch-icon" sizes="512x512" href="/assets/web/android-chrome-512x512.png" />
 
@@ -37,30 +37,33 @@
     />
     <title>PLG Voice</title>
     <style>
-      body { margin: 0; background: #0C0A1A; }
+      /* Inline boot styles. Must keep the body dark at all times because
+         this runs before SolidJS hydrates the theme — otherwise MDUI's
+         light-mode --md-sys-color-surface flashes pale lavender. */
+      html, body { margin: 0; background: #0B0A12; color: #F5F5F7; }
       #splash {
         position: fixed; inset: 0; z-index: 9999;
         display: flex; align-items: center; justify-content: center;
         flex-direction: column; gap: 24px;
-        background: radial-gradient(ellipse at 30% 20%, rgba(124,58,237,0.08) 0%, transparent 50%),
-                    radial-gradient(ellipse at 70% 80%, rgba(37,99,235,0.06) 0%, transparent 50%),
-                    #0C0A1A;
+        background: radial-gradient(ellipse at 30% 20%, rgba(139,92,246,0.10) 0%, transparent 50%),
+                    radial-gradient(ellipse at 70% 80%, rgba(56,189,248,0.06) 0%, transparent 50%),
+                    #0B0A12;
         font-family: Inter, system-ui, sans-serif;
         transition: opacity 0.4s ease;
       }
       #splash.hide { opacity: 0; pointer-events: none; }
       #splash svg { animation: splashPulse 2s ease-in-out infinite; }
       #splash .splash-text {
-        color: #A098B8; font-size: 14px; font-weight: 500; letter-spacing: 2px;
+        color: #9A98A8; font-size: 12px; font-weight: 500; letter-spacing: 0.16em;
         text-transform: uppercase;
       }
       #splash .splash-bar {
         width: 120px; height: 2px; border-radius: 1px;
-        background: #231F33; overflow: hidden;
+        background: rgba(255,255,255,0.08); overflow: hidden;
       }
       #splash .splash-bar::after {
         content: ''; display: block; width: 40%; height: 100%;
-        background: linear-gradient(90deg, #7C3AED, #2563EB);
+        background: #8B5CF6;
         border-radius: 1px;
         animation: splashLoad 1.5s ease-in-out infinite;
       }
@@ -80,7 +83,7 @@
       <svg width="56" height="56" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M16 2 L28 9 L28 23 L16 30 L4 23 L4 9 Z" fill="url(#sg)" opacity="0.9"/>
         <path d="M16 10 L16 22 M11 13 L16 10 L21 13 M11 19 L16 22 L21 19" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <defs><linearGradient id="sg" x1="4" y1="2" x2="28" y2="30"><stop offset="0%" stop-color="#7C3AED"/><stop offset="100%" stop-color="#2563EB"/></linearGradient></defs>
+        <defs><linearGradient id="sg" x1="4" y1="2" x2="28" y2="30"><stop offset="0%" stop-color="#A78BFA"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs>
       </svg>
       <div class="splash-text">PLG Voice</div>
       <div class="splash-bar"></div>

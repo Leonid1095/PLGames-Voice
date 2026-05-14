@@ -112,6 +112,17 @@ body {
   line-height: var(--qp-leading-normal);
 }
 
+/* MDUI ships with light-theme defaults applied to :root via its global
+   stylesheet (`color-scheme: light; background-color: rgb(254,247,255)`).
+   That paints the canvas pale lavender before SolidJS hydrates the real
+   theme. Force dark on the html root so the page stays dark from the
+   first paint. The internal theme system still customises everything
+   inside <body>. */
+html, :root {
+  color-scheme: dark !important;
+  background-color: #0B0A12 !important;
+}
+
 code, kbd, pre, samp {
   font-family: var(--qp-font-mono);
   font-feature-settings: "calt", "liga";

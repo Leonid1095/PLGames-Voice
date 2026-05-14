@@ -31,8 +31,11 @@
 
 body {
   margin: 0;
-  background: var(--md-sys-color-surface, #0C0A1A);
-  color: var(--md-sys-color-on-surface);
+  /* Hardcoded dark base — must not depend on --md-sys-color-surface because
+     MDUI ships with light-theme defaults for that token, which would flash a
+     pale lavender background before SolidJS hydrates the user theme. */
+  background: #0B0A12;
+  color: #F5F5F7;
   font-family: var(--qp-font-sans);
 }
 
