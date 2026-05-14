@@ -414,8 +414,9 @@ const Preview = styled("div", {
   base: {
     height: "126px",
     overflow: "hidden",
-    borderRadius: "var(--borderRadius-lg)",
-    background: "var(--md-sys-color-surface-container-highest)",
+    borderRadius: "10px",
+    border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    background: "var(--md-sys-color-surface-container-low)",
   },
 });
 

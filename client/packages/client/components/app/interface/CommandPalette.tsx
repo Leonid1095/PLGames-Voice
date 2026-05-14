@@ -282,7 +282,9 @@ const Scrim = styled("div", {
     alignItems: "flex-start",
     justifyContent: "center",
     paddingTop: "15vh",
-    background: "rgba(0, 0, 0, 0.6)",
+    background: "rgba(0, 0, 0, 0.55)",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
     animationName: "fadeIn",
     animationDuration: "0.1s",
   },
@@ -290,32 +292,32 @@ const Scrim = styled("div", {
 
 const Palette = styled("div", {
   base: {
-    width: "520px",
-    maxHeight: "420px",
-    borderRadius: "12px",
-    background: "var(--md-sys-color-surface-container-high)",
-    boxShadow: "0 16px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)",
+    width: "560px",
+    maxHeight: "440px",
+    borderRadius: "14px",
+    background: "var(--md-sys-color-surface-container-low)",
+    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+    boxShadow: "0 24px 64px rgba(0,0,0,0.55), 0 8px 16px rgba(0,0,0,0.30)",
     display: "flex",
     flexDirection: "column",
     overflow: "hidden",
-    animationName: "popIn",
-    animationDuration: "0.15s",
-    animationTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+    animation: "modalIn 220ms cubic-bezier(0.05, 0.7, 0.1, 1)",
   },
 });
 
 const SearchInput = styled("input", {
   base: {
     padding: "16px 20px",
-    fontSize: "16px",
+    fontSize: "15px",
+    letterSpacing: "-0.005em",
     fontFamily: "inherit",
     border: "none",
     outline: "none",
     background: "transparent",
     color: "var(--md-sys-color-on-surface)",
-    borderBottom: "1px solid var(--md-sys-color-outline-variant)",
+    borderBottom: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
     "&::placeholder": {
-      color: "var(--md-sys-color-on-surface-variant)",
+      color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
     },
   },
 });
@@ -334,17 +336,21 @@ const ResultItem = styled("div", {
     alignItems: "center",
     gap: "12px",
     padding: "8px 12px",
-    borderRadius: "8px",
+    borderRadius: "6px",
     cursor: "pointer",
     color: "var(--md-sys-color-on-surface)",
-    transition: "background var(--transition-fast)",
+    transition: "background 100ms cubic-bezier(0.2,0,0,1)",
+
+    "&:hover": {
+      background: "rgba(255,255,255,0.04)",
+    },
   },
   variants: {
     selected: {
       true: {
-        background: "var(--md-sys-color-primary)",
-        color: "var(--md-sys-color-on-primary)",
-        fill: "var(--md-sys-color-on-primary)",
+        background: "rgba(255,255,255,0.07) !important",
+        color: "var(--md-sys-color-on-surface)",
+        fill: "var(--md-sys-color-on-surface)",
       },
     },
   },
@@ -416,18 +422,20 @@ const EmptyState = styled("div", {
 
 const Footer = styled("div", {
   base: {
-    padding: "8px 16px",
+    padding: "10px 16px",
     fontSize: "12px",
+    letterSpacing: "-0.005em",
     color: "var(--md-sys-color-on-surface-variant)",
-    borderTop: "1px solid var(--md-sys-color-outline-variant)",
+    borderTop: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
     display: "flex",
     alignItems: "center",
-    gap: "4px",
+    gap: "6px",
     "& span": {
-      fontFamily: "monospace",
+      fontFamily: "var(--qp-font-mono, monospace)",
       padding: "2px 6px",
       borderRadius: "4px",
       background: "var(--md-sys-color-surface-container)",
+      border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
       fontSize: "11px",
     },
   },

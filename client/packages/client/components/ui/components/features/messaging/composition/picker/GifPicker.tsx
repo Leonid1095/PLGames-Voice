@@ -193,23 +193,24 @@ const TabBar = styled("div", {
   base: {
     display: "flex",
     gap: "2px",
-    borderBottom: "1px solid var(--md-sys-color-outline-variant)",
-    marginBottom: "var(--gap-sm)",
+    borderBottom: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    marginBottom: "8px",
   },
 });
 
 const Tab = styled("button", {
   base: {
     flex: 1,
-    padding: "var(--gap-sm) var(--gap-md)",
+    padding: "8px 12px",
     background: "none",
     border: "none",
     cursor: "pointer",
     fontSize: "13px",
-    fontWeight: 600,
+    fontWeight: 500,
+    letterSpacing: "-0.005em",
     color: "var(--md-sys-color-on-surface-variant)",
     borderBottom: "2px solid transparent",
-    transition: "all var(--transition-fast)",
+    transition: "color 140ms cubic-bezier(0.2,0,0,1), border-color 140ms cubic-bezier(0.2,0,0,1)",
     "&:hover": {
       color: "var(--md-sys-color-on-surface)",
     },
@@ -217,8 +218,9 @@ const Tab = styled("button", {
   variants: {
     active: {
       true: {
-        color: "var(--md-sys-color-primary)",
+        color: "var(--md-sys-color-on-surface)",
         borderBottomColor: "var(--md-sys-color-primary)",
+        fontWeight: 600,
       },
     },
   },
@@ -245,18 +247,21 @@ const SearchContainer = styled("div", {
 const SearchInput = styled("input", {
   base: {
     padding: "8px 12px",
-    border: "1px solid var(--md-sys-color-outline-variant)",
-    borderRadius: "var(--borderRadius-md)",
-    background: "var(--md-sys-color-surface-container)",
+    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+    borderRadius: "6px",
+    background: "rgba(255,255,255,0.04)",
     color: "var(--md-sys-color-on-surface)",
-    fontSize: "14px",
+    fontSize: "13px",
+    letterSpacing: "-0.005em",
     outline: "none",
-    margin: "0 var(--gap-sm)",
+    margin: "0 8px",
+    transition: "border-color 140ms cubic-bezier(0.2,0,0,1), box-shadow 140ms cubic-bezier(0.2,0,0,1)",
     "&:focus": {
       borderColor: "var(--md-sys-color-primary)",
+      boxShadow: "0 0 0 3px color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent)",
     },
     "&::placeholder": {
-      color: "var(--md-sys-color-on-surface-variant)",
+      color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
     },
   },
 });
@@ -277,8 +282,13 @@ const GifThumb = styled("div", {
     position: "relative",
     aspectRatio: "1",
     cursor: "pointer",
-    borderRadius: "var(--borderRadius-sm)",
+    borderRadius: "8px",
+    border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
     overflow: "hidden",
+    transition: "border-color 140ms cubic-bezier(0.2,0,0,1)",
+    "&:hover": {
+      borderColor: "var(--qp-border-default, rgba(255,255,255,0.10))",
+    },
     "&:hover > div": {
       opacity: 1,
     },

@@ -312,10 +312,15 @@ const EmojiOption = styled("div", {
         width: "100%",
         cursor: "pointer",
         position: "relative",
-        padding: "var(--gap-sm)",
-        borderRadius: "var(--borderRadius-sm)",
+        padding: "6px",
+        borderRadius: "6px",
+        transition: "background 100ms cubic-bezier(0.2,0,0,1)",
 
         "--emoji-size": "100%",
+
+        "&:hover": {
+          background: "rgba(255,255,255,0.06)",
+        },
 
         "& img": {
           width: "100%",
