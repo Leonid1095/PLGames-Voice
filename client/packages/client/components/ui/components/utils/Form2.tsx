@@ -86,10 +86,11 @@ const FormTextEditor = (
 
 const EditorBox = styled("div", {
   base: {
-    background: "var(--md-sys-color-surface-container-highest)",
-    color: "var(--md-sys-color-on-surface-container)",
-    borderRadius: "var(--borderRadius-sm)",
-    padding: "var(--gap-md)",
+    background: "var(--md-sys-color-surface-container-low)",
+    color: "var(--md-sys-color-on-surface)",
+    borderRadius: "10px",
+    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+    padding: "12px",
   },
 });
 

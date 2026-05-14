@@ -117,13 +117,14 @@ const Base = styled("a", {
     // for <Ripple />:
     position: "relative",
 
-    gap: "16px",
-    padding: "13px",
-    borderRadius: "var(--borderRadius-md)",
+    gap: "14px",
+    padding: "14px 16px",
+    borderRadius: "10px",
+    border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
 
     userSelect: "none",
     cursor: "pointer",
-    transition: "background-color var(--transition-fast)",
+    transition: "background-color 180ms cubic-bezier(0.2,0,0,1), border-color 180ms cubic-bezier(0.2,0,0,1), transform 100ms cubic-bezier(0.2,0,0,1)",
 
     display: "flex",
     alignItems: "center",
@@ -131,20 +132,36 @@ const Base = styled("a", {
 
     color: "var(--color)",
     fill: "var(--color)",
+
+    _hover: {
+      borderColor: "var(--qp-border-default, rgba(255,255,255,0.10))",
+    },
+    _active: {
+      transform: "scale(0.995)",
+    },
   },
   variants: {
     variant: {
       filled: {
         background: "var(--md-sys-color-primary)",
         "--color": "var(--md-sys-color-on-primary)",
+        borderColor: "color-mix(in srgb, white 12%, transparent)",
+        boxShadow: "0 1px 2px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12)",
       },
       tonal: {
-        background: "var(--md-sys-color-secondary-container)",
-        "--color": "var(--md-sys-color-on-secondary-container)",
+        background: "var(--md-sys-color-surface-container-low)",
+        "--color": "var(--md-sys-color-on-surface)",
+        _hover: {
+          background: "var(--md-sys-color-surface-container)",
+        },
       },
       tertiary: {
-        background: "var(--md-sys-color-tertiary-container)",
-        "--color": "var(--md-sys-color-on-tertiary-container)",
+        background: "color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent)",
+        borderColor: "color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent)",
+        "--color": "var(--md-sys-color-on-surface)",
+        _hover: {
+          background: "color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent)",
+        },
       },
     },
     isLink: {
@@ -190,10 +207,11 @@ const Content = styled("div", {
 const IconWrapper = styled("div", {
   base: {
     fill: "var(--md-sys-color-on-surface)",
-    background: "var(--md-sys-color-surface-dim)",
+    background: "color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent)",
+    border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
 
-    width: "36px",
-    height: "36px",
+    width: "40px",
+    height: "40px",
     display: "flex",
     flexShrink: 0,
     alignItems: "center",
@@ -202,10 +220,10 @@ const IconWrapper = styled("div", {
   variants: {
     rounded: {
       true: {
-        borderRadius: "var(--borderRadius-full)",
+        borderRadius: "50%",
       },
       false: {
-        borderRadius: "var(--borderRadius-md)",
+        borderRadius: "10px",
       },
     },
   },
@@ -259,10 +277,7 @@ export const CategoryButtonGroup = styled("div", {
   base: {
     display: "flex",
     flexDirection: "column",
-    gap: "var(--gap-xs)",
-
-    borderRadius: "var(--borderRadius-xl)",
-    overflow: "hidden",
+    gap: "8px",
   },
 });
 
