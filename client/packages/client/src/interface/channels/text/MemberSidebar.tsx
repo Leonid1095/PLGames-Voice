@@ -311,10 +311,12 @@ const Container = styled("div", {
  */
 const CategoryTitle = styled("div", {
   base: {
-    padding: "28px 14px 0",
-    color: "var(--md-sys-color-on-surface)",
-
-    ...typography.raw({ class: "label", size: "small" }),
+    padding: "20px 14px 4px",
+    color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
+    fontSize: "11px",
+    fontWeight: 600,
+    textTransform: "uppercase",
+    letterSpacing: "0.08em",
   },
 });
 

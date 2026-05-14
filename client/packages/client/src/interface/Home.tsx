@@ -68,13 +68,12 @@ const content = cva({
  */
 const Buttons = styled("div", {
   base: {
-    gap: "8px",
-    padding: "8px",
+    gap: "12px",
+    padding: 0,
     display: "flex",
-    borderRadius: "var(--borderRadius-lg)",
 
     color: "var(--md-sys-color-on-surface-variant)",
-    background: "var(--md-sys-color-surface-variant)",
+    background: "transparent",
 
     "@media (max-width: 768px)": {
       flexDirection: "column",
@@ -121,11 +120,11 @@ const StreamsTitle = styled("div", {
     display: "flex",
     alignItems: "center",
     gap: "8px",
-    fontSize: "14px",
+    fontSize: "11px",
     fontWeight: 600,
     textTransform: "uppercase",
-    letterSpacing: "0.05em",
-    color: "var(--md-sys-color-on-surface-variant)",
+    letterSpacing: "0.08em",
+    color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
   },
 });
 
@@ -141,11 +140,12 @@ const StreamCard = styled("a", {
   base: {
     display: "flex",
     flexDirection: "column",
-    borderRadius: "var(--borderRadius-lg)",
+    borderRadius: "10px",
     overflow: "hidden",
-    background: "var(--md-sys-color-surface-container)",
+    background: "var(--md-sys-color-surface-container-low)",
+    border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
     cursor: "pointer",
-    transition: "transform var(--transition-fast), box-shadow var(--transition-fast)",
+    transition: "transform 180ms cubic-bezier(0.2,0,0,1), border-color 180ms cubic-bezier(0.2,0,0,1)",
     textDecoration: "none",
     color: "inherit",
     "&:hover": {

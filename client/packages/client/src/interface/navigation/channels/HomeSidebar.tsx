@@ -239,25 +239,30 @@ const ButtonTitle = styled("div", {
 
 const PendingBadge = styled("div", {
   base: {
-    ...typography.raw({ class: "label", size: "small" }),
-    padding: "var(--gap-sm) var(--gap-md)",
+    fontSize: "11px",
+    fontWeight: 600,
+    fontVariantNumeric: "tabular-nums",
+    padding: "1px 7px",
     color: "var(--md-sys-color-on-error)",
     background: "var(--md-sys-color-error)",
-    borderRadius: "var(--borderRadius-md)",
+    borderRadius: "9999px",
   },
 });
 
 const Category = styled("div", {
   base: {
     display: "flex",
-    paddingInline: "var(--gap-lg)",
+    paddingInline: "12px",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingTop: "calc(var(--gap-xl) - 5px)",
-    paddingBottom: "var(--gap-md)",
+    paddingTop: "16px",
+    paddingBottom: "6px",
 
-    ...typography.raw({ class: "label", size: "small" }),
-    fontSize: "13px",
+    fontSize: "11px",
+    fontWeight: 600,
+    letterSpacing: "0.08em",
+    textTransform: "uppercase",
+    color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
   },
 });
 

@@ -392,29 +392,32 @@ const Tab = styled("button", {
     alignItems: "center",
     gap: "6px",
     padding: "6px 12px",
-    borderRadius: "var(--borderRadius-full)",
-    border: "none",
+    borderRadius: "6px",
+    border: "1px solid transparent",
     cursor: "pointer",
     fontSize: "13px",
     fontWeight: 500,
+    letterSpacing: "-0.005em",
     fontFamily: "inherit",
-    transition: "all var(--transition-fast)",
+    transition: "background 140ms cubic-bezier(0.2,0,0,1), color 140ms cubic-bezier(0.2,0,0,1), border-color 140ms cubic-bezier(0.2,0,0,1)",
     color: "var(--md-sys-color-on-surface-variant)",
     background: "transparent",
     whiteSpace: "nowrap",
 
     "&:hover": {
-      background: "color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent)",
+      background: "rgba(255,255,255,0.04)",
+      color: "var(--md-sys-color-on-surface)",
     },
   },
   variants: {
     active: {
       true: {
-        color: "var(--md-sys-color-on-secondary-container)",
-        background: "var(--md-sys-color-secondary-container)",
+        color: "var(--md-sys-color-on-surface)",
+        background: "rgba(255,255,255,0.07)",
+        borderColor: "var(--qp-border-subtle, rgba(255,255,255,0.06))",
 
         "&:hover": {
-          background: "color-mix(in srgb, var(--md-sys-color-secondary-container) 85%, var(--md-sys-color-on-secondary-container))",
+          background: "rgba(255,255,255,0.10)",
         },
       },
     },
@@ -441,20 +444,26 @@ const AddFriendButton = styled("button", {
     display: "flex",
     alignItems: "center",
     gap: "6px",
-    padding: "6px 14px",
-    borderRadius: "var(--borderRadius-full)",
-    border: "none",
+    padding: "7px 14px",
+    borderRadius: "10px",
+    border: "1px solid color-mix(in srgb, white 12%, transparent)",
     cursor: "pointer",
     fontSize: "13px",
-    fontWeight: 600,
+    fontWeight: 500,
+    letterSpacing: "-0.005em",
     fontFamily: "inherit",
     color: "var(--md-sys-color-on-primary)",
     background: "var(--md-sys-color-primary)",
-    transition: "all var(--transition-fast)",
+    boxShadow: "0 1px 2px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12)",
+    transition: "background 180ms cubic-bezier(0.2,0,0,1), box-shadow 180ms cubic-bezier(0.2,0,0,1), transform 100ms cubic-bezier(0.2,0,0,1)",
     whiteSpace: "nowrap",
 
     "&:hover": {
-      filter: "brightness(1.1)",
+      background: "color-mix(in srgb, var(--md-sys-color-primary) 92%, white)",
+      boxShadow: "0 4px 16px var(--accent-glow, rgba(139,92,246,0.22)), inset 0 1px 0 rgba(255,255,255,0.18)",
+    },
+    "&:active": {
+      transform: "scale(0.97)",
     },
   },
 });
@@ -473,12 +482,12 @@ const SectionHeader = styled("div", {
     display: "flex",
     alignItems: "center",
     gap: "8px",
-    padding: "12px 8px 6px",
+    padding: "16px 8px 6px",
     fontSize: "11px",
     fontWeight: 600,
     textTransform: "uppercase",
-    letterSpacing: "0.05em",
-    color: "var(--md-sys-color-on-surface-variant)",
+    letterSpacing: "0.08em",
+    color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
   },
 });
 
@@ -514,19 +523,19 @@ const FriendRow = styled("div", {
   base: {
     display: "flex",
     alignItems: "center",
-    gap: "10px",
+    gap: "12px",
     padding: "8px 10px",
-    borderRadius: "var(--borderRadius-md)",
+    borderRadius: "8px",
     cursor: "pointer",
-    transition: "background var(--transition-fast)",
+    transition: "background 140ms cubic-bezier(0.2,0,0,1)",
     userSelect: "none",
 
     "&:hover": {
-      background: "color-mix(in srgb, var(--md-sys-color-on-surface) 6%, transparent)",
+      background: "rgba(255,255,255,0.04)",
     },
 
     "&:active": {
-      background: "color-mix(in srgb, var(--md-sys-color-on-surface) 10%, transparent)",
+      background: "rgba(255,255,255,0.07)",
     },
 
     "&:hover [data-actions]": {
