@@ -65,7 +65,11 @@ export function Symbol(rawProps: Props & HTMLStyledProps<"span">) {
   });
 
   const memoFontVarSettings = createMemo(() => {
-    return `"FILL" ${local.fill ? 1 : 0}, "wght" 400, "GRAD" ${local.grade ?? 0}${
+    // Quiet Pro defaults to weight 300 — Material Symbols at the M3-default
+    // 400 read as too heavy next to Inter UI text and feel out of step with
+    // the lucide-style stroke weight in the design mockup.
+    const wght = local.weight ?? 300;
+    return `"FILL" ${local.fill ? 1 : 0}, "wght" ${wght}, "GRAD" ${local.grade ?? 0}${
       (local.opticalSize ?? "auto") === "auto"
         ? ""
         : `, "opsz" ${local.opticalSize}`
