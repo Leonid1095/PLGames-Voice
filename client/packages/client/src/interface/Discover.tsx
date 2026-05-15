@@ -184,20 +184,26 @@ const SearchBox = styled("div", {
     display: "flex",
     alignItems: "center",
     gap: "10px",
-    padding: "10px 16px",
-    borderRadius: "12px",
-    background: "color-mix(in srgb, var(--md-sys-color-surface-container-high) 80%, transparent)",
-    border: "1px solid var(--md-sys-color-outline-variant)",
-    fill: "var(--md-sys-color-on-surface-variant)",
+    padding: "8px 14px",
+    borderRadius: "8px",
+    background: "rgba(255,255,255,0.04)",
+    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+    fill: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
+    transition: "border-color 140ms cubic-bezier(0.2,0,0,1), box-shadow 140ms cubic-bezier(0.2,0,0,1)",
+    _focusWithin: {
+      borderColor: "var(--md-sys-color-primary)",
+      boxShadow: "0 0 0 3px color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent)",
+    },
     "& input": {
       flex: 1,
       border: "none",
       background: "transparent",
       color: "var(--md-sys-color-on-surface)",
-      fontSize: "0.95rem",
+      fontSize: "14px",
+      letterSpacing: "-0.005em",
       outline: "none",
       "&::placeholder": {
-        color: "var(--md-sys-color-on-surface-variant)",
+        color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
       },
     },
   },
@@ -206,11 +212,11 @@ const SearchBox = styled("div", {
 const SectionTitle = styled("h3", {
   base: {
     margin: 0,
-    fontSize: "0.85rem",
+    fontSize: "11px",
     fontWeight: 600,
     textTransform: "uppercase",
-    letterSpacing: "0.05em",
-    color: "var(--md-sys-color-on-surface-variant)",
+    letterSpacing: "0.08em",
+    color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
   },
 });
 
@@ -225,15 +231,14 @@ const Grid = styled("div", {
 const Card = styled("div", {
   base: {
     padding: "16px",
-    borderRadius: "16px",
+    borderRadius: "10px",
     cursor: "pointer",
-    background: "color-mix(in srgb, var(--md-sys-color-surface-container) 60%, transparent)",
-    backdropFilter: "blur(12px)",
-    border: "1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 40%, transparent)",
-    transition: "var(--transitions-medium) all",
+    background: "var(--md-sys-color-surface-container-low)",
+    border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    transition: "border-color 220ms cubic-bezier(0.2,0,0,1), transform 220ms cubic-bezier(0.2,0,0,1), box-shadow 220ms cubic-bezier(0.2,0,0,1)",
     "&:hover": {
-      background: "color-mix(in srgb, var(--md-sys-color-surface-container-high) 80%, transparent)",
-      boxShadow: "0 4px 16px color-mix(in srgb, var(--md-sys-color-shadow) 15%, transparent)",
+      borderColor: "var(--qp-border-default, rgba(255,255,255,0.10))",
+      boxShadow: "0 12px 32px rgba(0,0,0,0.32)",
       transform: "translateY(-2px)",
     },
   },
@@ -289,7 +294,7 @@ const EmptyState = styled("div", {
 const Divider = styled("div", {
   base: {
     height: "1px",
-    background: "linear-gradient(90deg, transparent, var(--md-sys-color-outline-variant), transparent)",
+    background: "var(--qp-border-subtle, rgba(255,255,255,0.06))",
     margin: "8px 0",
   },
 });

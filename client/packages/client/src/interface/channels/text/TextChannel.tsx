@@ -421,9 +421,9 @@ function InlineVoiceRoom(props: { channel: Channel }) {
             height: "50vh",
             minHeight: "300px",
             flexShrink: 0,
-            borderRadius: "var(--borderRadius-lg)",
-            background: "var(--md-sys-color-surface-container)",
-            border: "1px solid var(--md-sys-color-outline-variant)",
+            borderRadius: "10px",
+            background: "var(--md-sys-color-surface-container-low)",
+            border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
             overflow: "hidden",
           })}
         >
@@ -438,8 +438,9 @@ function InlineVoiceRoom(props: { channel: Channel }) {
             alignSelf: "center",
             flexShrink: 0,
             height: "120px",
-            borderRadius: "var(--borderRadius-lg)",
-            background: "var(--md-sys-color-secondary-container)",
+            borderRadius: "10px",
+            background: "var(--md-sys-color-surface-container-low)",
+            border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
             cursor: "pointer",
           })}
         >
