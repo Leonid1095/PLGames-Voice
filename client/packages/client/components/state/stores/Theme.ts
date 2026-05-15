@@ -9,7 +9,7 @@ import { AbstractStore } from ".";
 /**
  * Bump this when theme defaults change — triggers migration for existing users
  */
-const THEME_VERSION = 3;
+const THEME_VERSION = 4;
 
 export type TypeTheme = {
   /**
@@ -166,11 +166,13 @@ export class Theme extends AbstractStore {
 
     if (needsMigration) {
       // Migrate the user silently to the new defaults (Quiet Pro palette,
-      // Inter+JetBrains Mono fonts, neutral M3 variant). Keep _setupDone
-      // as-is so existing users aren't forced back through onboarding.
-      // Override accent/variant/mode/fonts with the new defaults from
-      // this.default() — they already match `data`.
-      data._setupDone = input._setupDone ?? false;
+      // Inter+JetBrains Mono fonts, neutral M3 variant). Force
+      // _setupDone=true for any returning user — v3 shipped a bug that
+      // reset this flag and trapped people on the onboarding wizard.
+      // Only brand-new stores (no _version at all AND no recorded mode)
+      // should see the wizard.
+      const isFreshStore = !input._version && input.mode === undefined;
+      data._setupDone = isFreshStore ? false : true;
     } else {
       data._setupDone = input._setupDone ?? true;
 
