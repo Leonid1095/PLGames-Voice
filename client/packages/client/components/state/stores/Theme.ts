@@ -165,10 +165,12 @@ export class Theme extends AbstractStore {
     const needsMigration = !input._version || input._version < THEME_VERSION;
 
     if (needsMigration) {
-      // Reset accent/variant/mode to new defaults, mark setup as not done
-      data._setupDone = false;
-      // Don't restore old accent/variant/mode — use new defaults
-      // But DO keep non-theme preferences like fonts, sizes, blur
+      // Migrate the user silently to the new defaults (Quiet Pro palette,
+      // Inter+JetBrains Mono fonts, neutral M3 variant). Keep _setupDone
+      // as-is so existing users aren't forced back through onboarding.
+      // Override accent/variant/mode/fonts with the new defaults from
+      // this.default() — they already match `data`.
+      data._setupDone = input._setupDone ?? false;
     } else {
       data._setupDone = input._setupDone ?? true;
 
