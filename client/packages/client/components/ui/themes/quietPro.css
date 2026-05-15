@@ -91,6 +91,15 @@
   /* Accent glow — used by primary button hover and emphasized elements */
   --accent-glow: color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent);
 
+  /* Quiet Pro accent — explicit Material primary override.
+     The M3 "neutral" variant we use for surfaces also desaturates the
+     primary tone, producing a pale lavender that reads as disabled.
+     We force a single saturated accent across every primary action. */
+  --md-sys-color-primary: #8B5CF6 !important;
+  --md-sys-color-on-primary: #FFFFFF !important;
+  --md-sys-color-primary-container: #4F378B !important;
+  --md-sys-color-on-primary-container: #EADDFF !important;
+
   /* ---------- Border / divider ---------- */
   --qp-border-subtle: color-mix(in srgb, var(--md-sys-color-on-surface) 6%, transparent);
   --qp-border-default: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
