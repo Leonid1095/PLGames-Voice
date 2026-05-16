@@ -40,16 +40,20 @@ export function ForumView(props: ChannelPageProps) {
 
   // The /threads endpoint isn't in stoat-api's typed route list, so going
   // through c.api.{get,post} serialises the request incorrectly (POST body
-  // gets dropped into the query string → server returns 422). Talk to the
-  // API directly via fetch with the user session token.
+  // gets dropped into the query string → 422). Talk to the API directly
+  // via fetch using the client's own auth header (X-Session-Token /
+  // X-Bot-Token), which is the same one stoat-api uses internally.
   function api(path: string, init: RequestInit = {}): Promise<Response> {
     const url = (CONFIGURATION.DEFAULT_API_URL || "") + path;
-    const session = (client() as unknown as { sessionToken?: string }).sessionToken;
+    const c = client() as unknown as {
+      authenticationHeader?: [string, string];
+    };
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
       ...(init.headers as Record<string, string> | undefined),
     };
-    if (session) headers["X-Session-Token"] = session;
+    const [headerName, headerValue] = c.authenticationHeader ?? ["", ""];
+    if (headerName && headerValue) headers[headerName] = headerValue;
     return fetch(url, { ...init, headers });
   }
 
