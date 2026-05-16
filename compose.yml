@@ -438,6 +438,10 @@ services:
     env_file: .env
     volumes:
       - ./data/bot:/app/data
+    ports:
+      # Expose the bot's stream service (HTTP) to the host so the nginx
+      # reverse proxy in plgvoice.conf can reach /stream/* via 127.0.0.1:3939.
+      - "127.0.0.1:3939:3939"
     deploy:
       resources:
         limits:

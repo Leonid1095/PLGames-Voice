@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PLG Voice — Quiet Pro light preview</title>
+<link rel="preconnect" href="https://rsms.me/" />
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+<style>
+  :root {
+    /* light surfaces — Apple/Notion warm neutrals */
+    --bg: #FAFAFA;
+    --surface: #FFFFFF;
+    --surface-2: #F5F5F7;
+    --surface-3: #ECECEF;
+    --surface-hover: rgba(0,0,0,0.04);
+    --surface-active: rgba(0,0,0,0.07);
+
+    /* text */
+    --text: #1D1D1F;
+    --text-muted: #6E6E73;
+    --text-dim: #98989F;
+
+    /* accent — slightly deeper than dark mode for better contrast on light */
+    --accent: #7C3AED;
+    --accent-hover: #6D28D9;
+    --accent-subtle: rgba(124,58,237,0.08);
+    --accent-glow: rgba(124,58,237,0.18);
+
+    /* semantic */
+    --success: #10B981;
+    --warning: #D97706;
+    --danger:  #DC2626;
+    --online:  #10B981;
+    --idle:    #D97706;
+    --busy:    #DC2626;
+
+    /* borders */
+    --border-subtle: rgba(0,0,0,0.06);
+    --border-default: rgba(0,0,0,0.10);
+    --border-strong: rgba(0,0,0,0.16);
+
+    /* spacing / radius */
+    --space-1: 4px;  --space-2: 8px;   --space-3: 12px;  --space-4: 16px;
+    --space-5: 20px; --space-6: 24px;  --space-8: 32px;  --space-12: 48px;
+    --space-16: 64px;
+    --r-xs: 4px;  --r-sm: 6px;  --r-md: 10px;  --r-lg: 14px;  --r-xl: 20px;
+    --r-pill: 9999px;
+
+    /* type */
+    --font-sans: "Inter", system-ui, -apple-system, "SF Pro Text", sans-serif;
+    --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+
+    /* motion */
+    --ease: cubic-bezier(0.2, 0, 0, 1);
+    --dur-fast: 140ms;
+    --dur-med: 220ms;
+
+    /* shadows — much softer on light */
+    --shadow-1: 0 1px 2px rgba(0,0,0,0.04), 0 1px 1px rgba(0,0,0,0.02);
+    --shadow-2: 0 4px 12px rgba(0,0,0,0.06);
+    --shadow-3: 0 12px 32px rgba(0,0,0,0.08);
+    --shadow-4: 0 24px 64px rgba(0,0,0,0.12);
+
+    /* glass */
+    --glass-bg: rgba(255,255,255,0.72);
+    --glass-blur: saturate(180%) blur(20px);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01","cv02","cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.01em;
+    line-height: 1.5;
+  }
+  code, pre, kbd, samp { font-family: var(--font-mono); }
+
+  .page {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: var(--space-12) var(--space-6);
+  }
+  .page-header {
+    margin-bottom: var(--space-12);
+    padding-bottom: var(--space-8);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .page-header h1 {
+    font-size: 38px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin: 0 0 var(--space-3);
+  }
+  .page-header p {
+    color: var(--text-muted);
+    font-size: 16px;
+    max-width: 640px;
+    margin: 0;
+  }
+
+  section { margin-bottom: var(--space-16); scroll-margin-top: var(--space-8); }
+  .sec-head { display: flex; align-items: baseline; gap: var(--space-3); margin-bottom: var(--space-2); }
+  .sec-head h2 { font-size: 24px; font-weight: 600; letter-spacing: -0.025em; margin: 0; }
+  .sec-head .tag {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--text-dim); background: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    padding: 2px 8px; border-radius: var(--r-pill);
+  }
+  .sec-desc { color: var(--text-muted); font-size: 14px; max-width: 720px; margin: 0 0 var(--space-6); }
+
+  /* nav */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: var(--space-3) var(--space-6);
+    display: flex; gap: var(--space-2); overflow-x: auto; white-space: nowrap;
+  }
+  .nav a {
+    color: var(--text-muted); text-decoration: none;
+    font-size: 13px; font-weight: 500;
+    padding: 6px 12px; border-radius: var(--r-sm);
+    transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+  }
+  .nav a:hover { color: var(--text); background: var(--surface-hover); }
+  .nav-logo { font-weight: 600; color: var(--text); margin-right: var(--space-4); padding: 6px 0; }
+
+  /* swatches */
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--space-3);
+  }
+  .swatch {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-md);
+    padding: var(--space-3);
+    display: flex; align-items: center; gap: var(--space-3);
+  }
+  .swatch .chip {
+    width: 44px; height: 44px; border-radius: var(--r-sm);
+    flex-shrink: 0;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+  }
+  .swatch .info { min-width: 0; }
+  .swatch .name { font-size: 13px; font-weight: 500; }
+  .swatch .code {
+    display: block; font-family: var(--font-mono);
+    font-size: 11px; color: var(--text-muted); margin-top: 2px;
+  }
+
+  /* type rows */
+  .type-row {
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: var(--space-6); align-items: baseline;
+    padding: var(--space-3) 0; border-bottom: 1px solid var(--border-subtle);
+  }
+  .type-row:last-child { border-bottom: none; }
+  .type-row .label { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); }
+  .type-row .sample { color: var(--text); }
+
+  /* buttons */
+  .btn-row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: var(--space-2);
+    padding: 9px 16px; border-radius: var(--r-md);
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    letter-spacing: -0.005em;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease),
+                border-color var(--dur-fast) var(--ease),
+                transform 100ms var(--ease),
+                box-shadow var(--dur-fast) var(--ease);
+    text-decoration: none; color: var(--text);
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary {
+    background: var(--accent); color: #fff;
+    border-color: color-mix(in srgb, black 8%, transparent);
+    box-shadow: var(--shadow-1), inset 0 1px 0 rgba(255,255,255,0.18);
+  }
+  .btn-primary:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 4px 16px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.22);
+  }
+  .btn-secondary {
+    background: var(--surface);
+    border-color: var(--border-default);
+  }
+  .btn-secondary:hover {
+    background: var(--surface-2);
+    border-color: var(--border-strong);
+  }
+  .btn-ghost { background: transparent; color: var(--text-muted); }
+  .btn-ghost:hover { background: var(--surface-hover); color: var(--text); }
+  .btn-danger {
+    background: rgba(220,38,38,0.08); color: var(--danger);
+    border-color: rgba(220,38,38,0.20);
+  }
+  .btn-danger:hover { background: rgba(220,38,38,0.14); border-color: rgba(220,38,38,0.30); }
+  .btn-sm { padding: 6px 12px; font-size: 13px; border-radius: var(--r-sm); }
+  .btn-lg { padding: 12px 22px; font-size: 15px; border-radius: var(--r-md); }
+  .btn-icon { padding: 8px; aspect-ratio: 1; }
+
+  .icon { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.75; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* chat composite */
+  .chat {
+    display: grid; grid-template-columns: 72px 248px 1fr 280px;
+    height: 640px;
+    background: var(--bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+  }
+  .rail {
+    background: var(--surface-2);
+    padding: var(--space-3);
+    display: flex; flex-direction: column; align-items: center;
+    gap: var(--space-2);
+    border-right: 1px solid var(--border-subtle);
+  }
+  .server-icon {
+    width: 44px; height: 44px; border-radius: var(--r-md);
+    background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted); font-weight: 600; font-size: 14px;
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease), border-radius var(--dur-fast) var(--ease);
+    border: 1px solid var(--border-subtle);
+    position: relative;
+  }
+  .server-icon:hover { border-radius: var(--r-lg); background: var(--accent-subtle); }
+  .server-icon.active {
+    background: var(--accent); color: #fff; border-color: transparent;
+  }
+  .server-icon.active::before {
+    content: ""; position: absolute;
+    left: -12px; top: 8px; bottom: 8px;
+    width: 3px; background: var(--text);
+    border-radius: 0 3px 3px 0;
+  }
+
+  .channels {
+    background: var(--surface);
+    display: flex; flex-direction: column;
+    border-right: 1px solid var(--border-subtle);
+  }
+  .channels-head {
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .channels-head .title { font-weight: 600; font-size: 14px; letter-spacing: -0.01em; }
+  .channels-list { flex: 1; overflow-y: auto; padding: var(--space-2); }
+  .category {
+    display: flex; align-items: center; gap: 4px;
+    padding: var(--space-2) var(--space-2) 4px;
+    font-size: 11px; font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    cursor: pointer; user-select: none;
+  }
+  .channel {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 8px; border-radius: var(--r-sm);
+    cursor: pointer; color: var(--text-muted);
+    font-size: 14px;
+    transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+    margin-bottom: 1px;
+  }
+  .channel:hover { background: var(--surface-hover); color: var(--text); }
+  .channel.active { background: var(--surface-active); color: var(--text); font-weight: 500; }
+  .channel .ch-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .channel .badge {
+    background: var(--accent); color: #fff;
+    font-size: 10px; font-weight: 600;
+    padding: 1px 6px; border-radius: var(--r-pill);
+  }
+  .channel.unread { color: var(--text); }
+  .channel.unread .ch-name { font-weight: 500; }
+  .channel.unread::after {
+    content: ""; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--accent);
+  }
+
+  .user-card {
+    padding: var(--space-3) var(--space-4);
+    border-top: 1px solid var(--border-subtle);
+    display: flex; align-items: center; gap: var(--space-3);
+  }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, #8B5CF6, #38BDF8);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 600; font-size: 14px;
+    position: relative;
+  }
+  .avatar .presence {
+    position: absolute; bottom: -1px; right: -1px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--online);
+    border: 2px solid var(--surface);
+  }
+  .user-card .info { flex: 1; min-width: 0; }
+  .user-card .name { font-size: 14px; font-weight: 500; }
+  .user-card .status { font-size: 12px; color: var(--text-muted); }
+  .user-card .actions { display: flex; gap: 4px; }
+  .icon-btn {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--r-sm);
+    color: var(--text-muted); cursor: pointer;
+    transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  }
+  .icon-btn:hover { background: var(--surface-hover); color: var(--text); }
+
+  .main {
+    display: flex; flex-direction: column;
+    background: var(--bg); min-width: 0;
+  }
+  .ch-header {
+    padding: var(--space-4) var(--space-6);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex; align-items: center; gap: var(--space-4);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    background: var(--glass-bg);
+    flex-shrink: 0;
+  }
+  .ch-title {
+    font-weight: 600; font-size: 15px; letter-spacing: -0.01em;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .ch-title .hash { color: var(--text-dim); font-weight: 400; }
+  .ch-topic {
+    color: var(--text-muted); font-size: 13px;
+    border-left: 1px solid var(--border-default);
+    padding-left: var(--space-4); flex: 1;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .ch-actions { display: flex; gap: 4px; }
+
+  .messages { flex: 1; overflow-y: auto; padding: var(--space-4) var(--space-6); }
+  .msg-group {
+    display: grid; grid-template-columns: 40px 1fr;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+    border-radius: var(--r-md);
+    margin: 0 calc(-1 * var(--space-3));
+    padding-left: var(--space-3); padding-right: var(--space-3);
+    transition: background var(--dur-fast) var(--ease);
+  }
+  .msg-group:hover { background: var(--surface-hover); }
+  .msg-group .meta { display: flex; align-items: baseline; gap: var(--space-2); margin-bottom: 2px; }
+  .msg-group .author { font-weight: 600; font-size: 14px; color: var(--text); }
+  .msg-group .time { font-size: 11px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+  .msg-group .body { font-size: 14px; line-height: 1.5; color: var(--text); word-wrap: break-word; }
+  .msg-group .body p { margin: 0 0 4px; }
+  .msg-group .body p:last-child { margin-bottom: 0; }
+  .reactions { display: flex; flex-wrap: wrap; gap: 4px; margin-top: var(--space-2); }
+  .reaction {
+    background: var(--surface); border: 1px solid var(--border-subtle);
+    padding: 2px 8px; border-radius: var(--r-pill);
+    font-size: 12px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 4px;
+    transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+  }
+  .reaction:hover { background: var(--surface-2); border-color: var(--border-default); }
+  .reaction.mine {
+    background: var(--accent-subtle); border-color: rgba(124,58,237,0.30); color: var(--accent);
+  }
+  .reaction .count { font-variant-numeric: tabular-nums; font-weight: 500; }
+  .msg-day-divider {
+    display: flex; align-items: center; gap: var(--space-4);
+    margin: var(--space-6) 0 var(--space-3);
+    font-size: 11px; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;
+  }
+  .msg-day-divider::before, .msg-day-divider::after {
+    content: ""; flex: 1; height: 1px; background: var(--border-subtle);
+  }
+
+  .composition { padding: var(--space-3) var(--space-6) var(--space-5); flex-shrink: 0; }
+  .composer {
+    background: var(--surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--r-lg);
+    padding: var(--space-3);
+    display: flex; flex-direction: column; gap: var(--space-2);
+    transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+  }
+  .composer:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-subtle);
+  }
+  .composer-input { color: var(--text); font-size: 14px; min-height: 22px; outline: none; }
+  .composer-input[contenteditable=true]:empty::before {
+    content: attr(data-placeholder);
+    color: var(--text-dim);
+  }
+  .composer-toolbar { display: flex; align-items: center; gap: 2px; }
+  .composer-toolbar .spacer { flex: 1; }
+
+  .members {
+    background: var(--surface-2);
+    border-left: 1px solid var(--border-subtle);
+    overflow-y: auto; padding: var(--space-3);
+  }
+  .member-group {
+    font-size: 11px; font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    padding: var(--space-3) var(--space-2) var(--space-2);
+  }
+  .member {
+    display: flex; align-items: center; gap: var(--space-3);
+    padding: var(--space-2); border-radius: var(--r-sm);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease);
+  }
+  .member:hover { background: var(--surface-hover); }
+  .member .avatar { width: 28px; height: 28px; font-size: 12px; }
+  .member .avatar .presence { width: 10px; height: 10px; }
+  .member .name { font-size: 14px; color: var(--text); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .member.offline .name { color: var(--text-dim); }
+  .member.offline .avatar { opacity: 0.45; }
+
+  /* settings */
+  .settings {
+    display: grid; grid-template-columns: 240px 1fr;
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-lg);
+    overflow: hidden; min-height: 560px;
+  }
+  .settings-side {
+    background: var(--bg);
+    border-right: 1px solid var(--border-subtle);
+    padding: var(--space-4) var(--space-3);
+  }
+  .settings-side .group-title {
+    font-size: 11px; font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    padding: var(--space-3) var(--space-2) var(--space-2);
+  }
+  .settings-side .item {
+    padding: 8px 12px; border-radius: var(--r-sm);
+    font-size: 14px; color: var(--text-muted);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+    margin-bottom: 1px;
+  }
+  .settings-side .item:hover { background: var(--surface-hover); color: var(--text); }
+  .settings-side .item.active {
+    background: var(--accent-subtle); color: var(--accent);
+    font-weight: 500;
+  }
+
+  .settings-content { padding: var(--space-8); max-width: 720px; }
+  .settings-content h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 var(--space-2); }
+  .settings-content > p { color: var(--text-muted); margin: 0 0 var(--space-6); font-size: 14px; }
+  .setting-row {
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex; align-items: center; gap: var(--space-6);
+  }
+  .setting-row:last-child { border-bottom: none; }
+  .setting-row .label-area { flex: 1; }
+  .setting-row .label { font-size: 14px; font-weight: 500; color: var(--text); display: block; margin-bottom: 2px; }
+  .setting-row .hint { font-size: 13px; color: var(--text-muted); }
+
+  .toggle {
+    width: 36px; height: 20px;
+    background: var(--surface-3);
+    border-radius: var(--r-pill);
+    position: relative; cursor: pointer;
+    border: 1px solid var(--border-default);
+    transition: background var(--dur-med) var(--ease);
+    flex-shrink: 0;
+  }
+  .toggle::after {
+    content: ""; position: absolute;
+    top: 1px; left: 1px; width: 16px; height: 16px;
+    border-radius: 50%; background: var(--text-muted);
+    transition: transform var(--dur-med) var(--ease), background var(--dur-med) var(--ease);
+  }
+  .toggle.on { background: var(--accent); border-color: var(--accent); }
+  .toggle.on::after { transform: translateX(16px); background: #fff; }
+
+  .select {
+    background: var(--surface); border: 1px solid var(--border-default);
+    border-radius: var(--r-sm);
+    padding: 6px 28px 6px 12px;
+    font-size: 13px; color: var(--text);
+    cursor: pointer; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236E6E73' d='M6 8.5L2 4.5h8z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 8px center;
+  }
+  .select:hover { border-color: var(--border-strong); }
+
+  .input {
+    background: var(--surface); border: 1px solid var(--border-default);
+    border-radius: var(--r-sm);
+    padding: 8px 12px;
+    font-size: 13px; color: var(--text);
+    font-family: inherit; width: 220px;
+    transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+  }
+  .input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-subtle);
+  }
+
+  /* modal */
+  .modal-stage {
+    position: relative; height: 480px; border-radius: var(--r-lg); overflow: hidden;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.08) 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='30%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%237C3AED' stop-opacity='0.15'/%3E%3Cstop offset='100%25' stop-color='%23FAFAFA' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='%23FAFAFA'/%3E%3Ccircle cx='50' cy='30' r='40' fill='url(%23g)'/%3E%3C/svg%3E");
+    background-size: cover;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal {
+    width: 440px;
+    background: var(--surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-4);
+    overflow: hidden;
+    animation: modalIn 220ms var(--ease);
+  }
+  @keyframes modalIn { from { opacity: 0; transform: translateY(8px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  .modal-head { padding: var(--space-5) var(--space-6) var(--space-3); }
+  .modal-head .title { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; margin: 0 0 4px; }
+  .modal-head .subtitle { font-size: 13px; color: var(--text-muted); margin: 0; }
+  .modal-body { padding: var(--space-3) var(--space-6) var(--space-5); }
+  .modal-foot {
+    background: var(--surface-2);
+    padding: var(--space-3) var(--space-6);
+    display: flex; justify-content: flex-end; gap: var(--space-2);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  /* voice */
+  .voice {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-lg);
+    padding: var(--space-6);
+  }
+  .voice-head { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-5); }
+  .voice-head .title { font-weight: 600; font-size: 16px; }
+  .voice-head .pill {
+    background: rgba(16,185,129,0.10); color: var(--online);
+    font-size: 11px; font-weight: 600; padding: 2px 10px;
+    border-radius: var(--r-pill);
+    border: 1px solid rgba(16,185,129,0.20);
+  }
+  .voice-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--space-3); margin-bottom: var(--space-5);
+  }
+  .v-tile {
+    aspect-ratio: 16/10; background: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-md);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: var(--space-2); position: relative; overflow: hidden;
+    transition: border-color var(--dur-med) var(--ease), box-shadow var(--dur-med) var(--ease);
+  }
+  .v-tile.speaking {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-subtle), 0 0 24px var(--accent-glow);
+  }
+  .v-tile .avatar { width: 56px; height: 56px; font-size: 20px; }
+  .v-tile .v-name { font-size: 13px; font-weight: 500; }
+  .v-tile .v-icons { position: absolute; bottom: var(--space-2); left: var(--space-2); display: flex; gap: 4px; }
+  .v-mini-icon {
+    width: 22px; height: 22px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(8px);
+    border-radius: var(--r-xs);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text);
+    border: 1px solid var(--border-subtle);
+  }
+  .v-mini-icon.muted { color: var(--danger); }
+
+  .voice-controls {
+    display: flex; align-items: center; justify-content: center; gap: var(--space-2);
+    padding: var(--space-3); background: var(--surface-2);
+    border-radius: var(--r-pill); width: fit-content; margin: 0 auto;
+    border: 1px solid var(--border-subtle);
+  }
+  .vc-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--border-default);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease), transform 100ms var(--ease);
+  }
+  .vc-btn:hover { background: var(--surface-3); }
+  .vc-btn:active { transform: scale(0.93); }
+  .vc-btn.danger { background: var(--danger); color: #fff; border-color: transparent; }
+  .vc-btn.danger:hover { background: #b91c1c; }
+  .vc-btn.active { background: var(--accent); color: #fff; border-color: transparent; }
+
+  /* toasts */
+  .toast-stack { display: flex; flex-direction: column; gap: var(--space-2); width: 360px; }
+  .toast {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border-default);
+    border-radius: var(--r-md);
+    padding: var(--space-3) var(--space-4);
+    display: flex; align-items: flex-start; gap: var(--space-3);
+    box-shadow: var(--shadow-2);
+  }
+  .toast .ind { width: 6px; align-self: stretch; border-radius: var(--r-pill); margin: -2px 0; flex-shrink: 0; }
+  .toast.success .ind { background: var(--success); }
+  .toast.warning .ind { background: var(--warning); }
+  .toast.danger  .ind { background: var(--danger); }
+  .toast.info    .ind { background: var(--accent); }
+  .toast .body { flex: 1; }
+  .toast .title { font-weight: 500; font-size: 14px; margin: 0 0 2px; }
+  .toast .desc { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  /* empty */
+  .empty {
+    background: var(--surface);
+    border: 1px dashed var(--border-default);
+    border-radius: var(--r-lg);
+    padding: var(--space-12); text-align: center;
+  }
+  .empty .icon-wrap {
+    width: 56px; height: 56px; border-radius: var(--r-lg);
+    background: var(--accent-subtle); border: 1px solid var(--border-subtle);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--accent); margin-bottom: var(--space-4);
+  }
+  .empty h4 { font-size: 16px; font-weight: 600; margin: 0 0 4px; }
+  .empty p { color: var(--text-muted); font-size: 14px; margin: 0 0 var(--space-4); max-width: 360px; margin-left: auto; margin-right: auto; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+
+  .note {
+    margin-top: var(--space-12);
+    padding: var(--space-5);
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--r-md);
+    font-size: 14px; color: var(--text-muted);
+  }
+  .note strong { color: var(--text); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <span class="nav-logo">Quiet&nbsp;Pro · light</span>
+  <a href="#tokens">Цвет</a>
+  <a href="#type">Шрифт</a>
+  <a href="#buttons">Кнопки</a>
+  <a href="#chat">Главный экран</a>
+  <a href="#settings">Настройки</a>
+  <a href="#voice">Голос</a>
+  <a href="#modal">Модалка</a>
+  <a href="#toasts">Уведомления</a>
+  <a href="#empty">Пусто</a>
+</div>
+
+<div class="page">
+
+  <header class="page-header">
+    <h1>Quiet&nbsp;Pro — светлая тема</h1>
+    <p>
+      Та же сетка / типографика / спейсинг что в тёмной, развёрнутая на тёплые
+      нейтрали: #FAFAFA фон, #FFFFFF surface, тёмный текст #1D1D1F.
+      Акцент чуть глубже (#7C3AED) — лучше читается на светлом.
+    </p>
+  </header>
+
+  <section id="tokens">
+    <div class="sec-head"><h2>Палитра</h2><span class="tag">tokens · color</span></div>
+    <p class="sec-desc">
+      Тёплые серые, без сатурированных тонов. Акцент `#7C3AED` остаётся единственным цветным.
+    </p>
+    <div class="swatches">
+      <div class="swatch"><div class="chip" style="background: var(--bg)"></div>      <div class="info"><div class="name">Background</div><code class="code">#FAFAFA</code></div></div>
+      <div class="swatch"><div class="chip" style="background: var(--surface)"></div> <div class="info"><div class="name">Surface</div><code class="code">#FFFFFF</code></div></div>
+      <div class="swatch"><div class="chip" style="background: var(--surface-2)"></div><div class="info"><div class="name">Surface 2</div><code class="code">#F5F5F7</code></div></div>
+      <div class="swatch"><div class="chip" style="background: var(--surface-3)"></div><div class="info"><div class="name">Surface 3</div><code class="code">#ECECEF</code></div></div>
+      <div class="swatch"><div class="chip" style="background: var(--accent)"></div>  <div class="info"><div class="name">Accent</div><code class="code">#7C3AED</code></div></div>
+      <div class="swatch"><div class="chip" style="background: var(--accent-hover)"></div><div class="info"><div class="name">Accent hover</div><code class="code">#6D28D9</code></div></div>
+      <div class="swatch"><div class="chip" style="background: var(--success)"></div> <div class="info"><div class="name">Success</div><code class="code">#10B981</code></div></div>
+      <div class="swatch"><div class="chip" style="background: var(--warning)"></div> <div class="info"><div class="name">Warning</div><code class="code">#D97706</code></div></div>
+      <div class="swatch"><div class="chip" style="background: var(--danger)"></div>  <div class="info"><div class="name">Danger</div><code class="code">#DC2626</code></div></div>
+      <div class="swatch"><div class="chip" style="background: var(--text)"></div>    <div class="info"><div class="name">Text primary</div><code class="code">#1D1D1F</code></div></div>
+      <div class="swatch"><div class="chip" style="background: var(--text-muted)"></div><div class="info"><div class="name">Text muted</div><code class="code">#6E6E73</code></div></div>
+      <div class="swatch"><div class="chip" style="background: var(--text-dim)"></div><div class="info"><div class="name">Text dim</div><code class="code">#98989F</code></div></div>
+    </div>
+  </section>
+
+  <section id="type">
+    <div class="sec-head"><h2>Типографика</h2><span class="tag">type · Inter</span></div>
+    <p class="sec-desc">Inter Variable + ss01/cv02/cv11. Заголовки 600. На светлом фон тоньше воспринимается, поэтому веса не повышаем.</p>
+    <div style="background: var(--surface); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: var(--space-6);">
+      <div class="type-row"><span class="label">Display</span><span class="sample" style="font-size: 48px; font-weight: 600; letter-spacing: -0.035em; line-height: 1.05;">Голос меняет правила игры</span></div>
+      <div class="type-row"><span class="label">H1</span>     <span class="sample" style="font-size: 32px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;">Заголовок страницы</span></div>
+      <div class="type-row"><span class="label">H2</span>     <span class="sample" style="font-size: 24px; font-weight: 600; letter-spacing: -0.025em; line-height: 1.15;">Подзаголовок секции</span></div>
+      <div class="type-row"><span class="label">H3</span>     <span class="sample" style="font-size: 18px; font-weight: 600; letter-spacing: -0.015em;">Заголовок блока</span></div>
+      <div class="type-row"><span class="label">Body</span>   <span class="sample" style="font-size: 14px; line-height: 1.55;">Стандартный текст интерфейса — параграфы, описания, лейблы.</span></div>
+      <div class="type-row"><span class="label">Small</span>  <span class="sample" style="font-size: 13px; color: var(--text-muted);">Вторичный текст и хелперы.</span></div>
+      <div class="type-row"><span class="label">Caption</span><span class="sample" style="font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">МЕТКА · CAPTION</span></div>
+      <div class="type-row"><span class="label">Mono</span>   <span class="sample" style="font-family: var(--font-mono); font-size: 13px; color: var(--text-muted);">const greet = "Привет, мир";</span></div>
+    </div>
+  </section>
+
+  <section id="buttons">
+    <div class="sec-head"><h2>Кнопки</h2><span class="tag">primitive · button</span></div>
+    <p class="sec-desc">Те же 10px радиус, scale 0.97 active. На светлом — мягкая drop-shadow вместо inset-highlight.</p>
+    <div style="background: var(--surface); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-5);">
+      <div>
+        <div style="font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">Variants</div>
+        <div class="btn-row">
+          <button class="btn btn-primary">Создать сервер</button>
+          <button class="btn btn-secondary">Отмена</button>
+          <button class="btn btn-ghost">Подробнее</button>
+          <button class="btn btn-danger">Удалить</button>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">Sizes</div>
+        <div class="btn-row">
+          <button class="btn btn-primary btn-sm">Small</button>
+          <button class="btn btn-primary">Medium</button>
+          <button class="btn btn-primary btn-lg">Large</button>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">With icon</div>
+        <div class="btn-row">
+          <button class="btn btn-primary"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Добавить канал</button>
+          <button class="btn btn-secondary"><svg class="icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>Сообщение</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="chat">
+    <div class="sec-head"><h2>Главный экран</h2><span class="tag">composite · sidebar + chat + members</span></div>
+    <p class="sec-desc">Та же структура что в тёмной: server рейл / каналы / шапка / лента / композер / участники. Active-state — тёплая серая подкладка.</p>
+    <div class="chat">
+      <div class="rail">
+        <div class="server-icon active">PV</div>
+        <div class="server-icon">RU</div>
+        <div class="server-icon">DOTA</div>
+        <div class="server-icon">CS</div>
+        <div class="server-icon" style="border: 1px dashed var(--border-strong); color: var(--text-dim);">+</div>
+      </div>
+      <div class="channels">
+        <div class="channels-head">
+          <div class="title">PLG&nbsp;Voice</div>
+          <div class="icon-btn"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        </div>
+        <div class="channels-list">
+          <div class="category"><svg class="icon" style="width:10px;height:10px" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>Общее</div>
+          <div class="channel active"><span style="color:var(--text-dim)">#</span><span class="ch-name">правила</span></div>
+          <div class="channel unread"><span style="color:var(--text-dim)">#</span><span class="ch-name">общий-чат</span></div>
+          <div class="channel"><span style="color:var(--text-dim)">#</span><span class="ch-name">медиа</span></div>
+          <div class="channel"><span style="color:var(--text-dim)">#</span><span class="ch-name">мемы</span><span class="badge">3</span></div>
+          <div class="category"><svg class="icon" style="width:10px;height:10px" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>Голос</div>
+          <div class="channel"><svg class="icon" style="width:14px;height:14px;color:var(--text-dim)" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/></svg><span class="ch-name">main-stage</span></div>
+          <div class="channel"><svg class="icon" style="width:14px;height:14px;color:var(--text-dim)" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/></svg><span class="ch-name">тренировки</span></div>
+          <div class="category"><svg class="icon" style="width:10px;height:10px" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>Форумы</div>
+          <div class="channel"><svg class="icon" style="width:14px;height:14px;color:var(--text-dim)" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="ch-name">обсуждения</span></div>
+        </div>
+        <div class="user-card">
+          <div class="avatar">L<span class="presence"></span></div>
+          <div class="info"><div class="name">Lenar</div><div class="status">В сети</div></div>
+          <div class="actions">
+            <div class="icon-btn"><svg class="icon" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></div>
+            <div class="icon-btn"><svg class="icon" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4z"/></svg></div>
+            <div class="icon-btn"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/></svg></div>
+          </div>
+        </div>
+      </div>
+      <div class="main">
+        <div class="ch-header">
+          <div class="ch-title"><span class="hash">#</span>общий-чат</div>
+          <div class="ch-topic">Главный канал для общения · соблюдайте правила, флуд → бан</div>
+          <div class="ch-actions">
+            <div class="icon-btn"><svg class="icon" viewBox="0 0 24 24"><path d="M12 17v5M5 17h14M5 12l7-7 7 7-2 2-5-5-5 5z"/></svg></div>
+            <div class="icon-btn"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+            <div class="icon-btn"><svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          </div>
+        </div>
+        <div class="messages">
+          <div class="msg-day-divider">сегодня</div>
+          <div class="msg-group">
+            <div class="avatar" style="background: linear-gradient(135deg, #F472B6, #8B5CF6);">М</div>
+            <div>
+              <div class="meta"><span class="author" style="color: #C026D3">Маша</span><span class="time">12:04</span></div>
+              <div class="body"><p>Ребят, кто сегодня на турнире в 18:00? Нужно собрать пять человек, опытных желательно.</p></div>
+              <div class="reactions"><span class="reaction mine">👍 <span class="count">4</span></span><span class="reaction">🔥 <span class="count">2</span></span></div>
+            </div>
+          </div>
+          <div class="msg-group">
+            <div class="avatar" style="background: linear-gradient(135deg, #38BDF8, #6366F1);">А</div>
+            <div>
+              <div class="meta"><span class="author" style="color: #0284C7">Артём</span><span class="time">12:06</span></div>
+              <div class="body"><p>Я в деле. <code style="background: var(--surface-2); padding: 1px 6px; border-radius: 4px; font-size: 13px; border: 1px solid var(--border-subtle);">!join tournament-A</code></p></div>
+            </div>
+          </div>
+          <div class="msg-group">
+            <div class="avatar" style="background: linear-gradient(135deg, #FBBF24, #F97316);">L</div>
+            <div>
+              <div class="meta">
+                <span class="author" style="color: #B45309">Lenar</span>
+                <span class="time">12:09</span>
+                <span style="font-size: 10px; color: var(--accent); background: var(--accent-subtle); padding: 1px 6px; border-radius: 4px; border: 1px solid var(--border-subtle); font-weight: 500;">админ</span>
+              </div>
+              <div class="body"><p>Отлично. Создам канал для турнира — закрепите там состав и стратегию.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="composition">
+          <div class="composer">
+            <div class="composer-input" contenteditable="true" data-placeholder="Сообщение в #общий-чат"></div>
+            <div class="composer-toolbar">
+              <div class="icon-btn"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/></svg></div>
+              <div class="icon-btn"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/></svg></div>
+              <div class="spacer"></div>
+              <button class="btn btn-primary btn-sm">Отправить <svg class="icon" viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="members">
+        <div class="member-group">Онлайн — 4</div>
+        <div class="member"><div class="avatar" style="background: linear-gradient(135deg, #FBBF24, #F97316);">L<span class="presence"></span></div><div class="name">Lenar</div></div>
+        <div class="member"><div class="avatar" style="background: linear-gradient(135deg, #F472B6, #8B5CF6);">М<span class="presence"></span></div><div class="name">Маша</div></div>
+        <div class="member"><div class="avatar" style="background: linear-gradient(135deg, #38BDF8, #6366F1);">А<span class="presence" style="background: var(--idle)"></span></div><div class="name">Артём</div></div>
+        <div class="member"><div class="avatar" style="background: linear-gradient(135deg, #10B981, #059669);">Д<span class="presence" style="background: var(--busy)"></span></div><div class="name">Денис</div></div>
+        <div class="member-group">Не в сети — 12</div>
+        <div class="member offline"><div class="avatar" style="background: linear-gradient(135deg, #94A3B8, #64748B);">К</div><div class="name">Костя</div></div>
+        <div class="member offline"><div class="avatar" style="background: linear-gradient(135deg, #94A3B8, #64748B);">П</div><div class="name">Паша</div></div>
+        <div class="member offline"><div class="avatar" style="background: linear-gradient(135deg, #94A3B8, #64748B);">С</div><div class="name">Соня</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="settings">
+    <div class="sec-head"><h2>Настройки</h2><span class="tag">composite · settings</span></div>
+    <p class="sec-desc">Active item в сайдбаре в светлой — accent-subtle, текст акцентный, чтобы выделение читалось без избытка контраста.</p>
+    <div class="settings">
+      <div class="settings-side">
+        <div class="group-title">Аккаунт</div>
+        <div class="item">Профиль</div>
+        <div class="item">Конфиденциальность</div>
+        <div class="item">Безопасность</div>
+        <div class="item">Сессии</div>
+        <div class="group-title">Приложение</div>
+        <div class="item active">Внешний вид</div>
+        <div class="item">Уведомления</div>
+        <div class="item">Голос и видео</div>
+        <div class="item">Язык</div>
+        <div class="item">Горячие клавиши</div>
+        <div class="group-title">Подписка</div>
+        <div class="item">Премиум</div>
+      </div>
+      <div class="settings-content">
+        <h3>Внешний вид</h3>
+        <p>Настройте интерфейс под себя — тема, шрифт, плотность, акценты.</p>
+        <div class="setting-row">
+          <div class="label-area"><span class="label">Тема оформления</span><span class="hint">Светлая, тёмная или следовать системе.</span></div>
+          <select class="select"><option>Светлая</option><option>Тёмная</option><option>Системная</option></select>
+        </div>
+        <div class="setting-row">
+          <div class="label-area"><span class="label">Акцентный цвет</span><span class="hint">Влияет на кнопки, ссылки и активные состояния.</span></div>
+          <div style="display: flex; gap: 8px;">
+            <div style="width: 24px; height: 24px; border-radius: 50%; background: #7C3AED; box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px #7C3AED;"></div>
+            <div style="width: 24px; height: 24px; border-radius: 50%; background: #2563EB;"></div>
+            <div style="width: 24px; height: 24px; border-radius: 50%; background: #10B981;"></div>
+            <div style="width: 24px; height: 24px; border-radius: 50%; background: #D97706;"></div>
+            <div style="width: 24px; height: 24px; border-radius: 50%; background: #DC2626;"></div>
+            <div style="width: 24px; height: 24px; border-radius: 50%; background: #6B7280;"></div>
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="label-area"><span class="label">Шрифт интерфейса</span><span class="hint">Inter Variable выбран по умолчанию.</span></div>
+          <select class="select"><option>Inter</option><option>System UI</option></select>
+        </div>
+        <div class="setting-row">
+          <div class="label-area"><span class="label">Плотность сообщений</span><span class="hint">Compact / Comfortable.</span></div>
+          <select class="select"><option>Comfortable</option><option>Compact</option></select>
+        </div>
+        <div class="setting-row">
+          <div class="label-area"><span class="label">Полупрозрачность</span><span class="hint">Размытие фона над оверлеями.</span></div>
+          <div class="toggle on"></div>
+        </div>
+        <div class="setting-row">
+          <div class="label-area"><span class="label">Уменьшенная анимация</span><span class="hint">Учтёт системную настройку.</span></div>
+          <div class="toggle"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="voice">
+    <div class="sec-head"><h2>Голосовой канал</h2><span class="tag">composite · voice</span></div>
+    <p class="sec-desc">Активный говорящий — фиолетовое кольцо. Контролы внизу — pill-док.</p>
+    <div class="voice">
+      <div class="voice-head">
+        <svg class="icon" style="width: 20px; height: 20px; color: var(--text-dim);" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/></svg>
+        <div class="title">main-stage</div>
+        <div class="pill">● Live · 4</div>
+      </div>
+      <div class="voice-grid">
+        <div class="v-tile speaking">
+          <div class="avatar" style="background: linear-gradient(135deg, #FBBF24, #F97316);">L</div>
+          <div class="v-name">Lenar</div>
+          <div class="v-icons"><div class="v-mini-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/></svg></div></div>
+        </div>
+        <div class="v-tile">
+          <div class="avatar" style="background: linear-gradient(135deg, #F472B6, #8B5CF6);">М</div>
+          <div class="v-name">Маша</div>
+          <div class="v-icons"><div class="v-mini-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/></svg></div></div>
+        </div>
+        <div class="v-tile">
+          <div class="avatar" style="background: linear-gradient(135deg, #38BDF8, #6366F1);">А</div>
+          <div class="v-name">Артём</div>
+          <div class="v-icons"><div class="v-mini-icon muted"><svg class="icon" viewBox="0 0 24 24"><path d="M1 1l22 22"/><path d="M9 9v3a3 3 0 0 0 5 2.12"/></svg></div></div>
+        </div>
+        <div class="v-tile">
+          <div class="avatar" style="background: linear-gradient(135deg, #10B981, #059669);">Д</div>
+          <div class="v-name">Денис</div>
+        </div>
+      </div>
+      <div class="voice-controls">
+        <button class="vc-btn active"><svg class="icon" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/></svg></button>
+        <button class="vc-btn"><svg class="icon" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/></svg></button>
+        <button class="vc-btn"><svg class="icon" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></button>
+        <button class="vc-btn"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/></svg></button>
+        <div style="width: 1px; height: 24px; background: var(--border-default);"></div>
+        <button class="vc-btn danger"><svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <section id="modal">
+    <div class="sec-head"><h2>Модальное окно</h2><span class="tag">overlay · dialog</span></div>
+    <p class="sec-desc">Backdrop светлая дымка (4–8% black) вместо чёрной, чтобы не «глушить» лежащую страницу.</p>
+    <div class="modal-stage">
+      <div class="modal">
+        <div class="modal-head">
+          <h4 class="title">Удалить сервер «PLG Voice»?</h4>
+          <p class="subtitle">Действие необратимо. Все каналы, сообщения и файлы будут удалены навсегда.</p>
+        </div>
+        <div class="modal-body">
+          <label class="label" style="font-size: 13px; color: var(--text-muted); margin-bottom: 6px; display: block;">Введите название сервера для подтверждения</label>
+          <input class="input" style="width: 100%;" placeholder="PLG Voice" />
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-ghost">Отмена</button>
+          <button class="btn btn-danger">Удалить</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="toasts">
+    <div class="sec-head"><h2>Уведомления</h2><span class="tag">feedback · toast</span></div>
+    <p class="sec-desc">На белом фоне slice-индикатор слева читается ещё лучше — без glow.</p>
+    <div class="toast-stack">
+      <div class="toast success"><div class="ind"></div><div class="body"><h5 class="title">Сообщение отправлено</h5><p class="desc">Файл «match-vod.mp4» загружен в #общий-чат.</p></div></div>
+      <div class="toast warning"><div class="ind"></div><div class="body"><h5 class="title">Слабое соединение</h5><p class="desc">Качество голоса автоматически снижено.</p></div></div>
+      <div class="toast danger"><div class="ind"></div><div class="body"><h5 class="title">Не удалось войти в канал</h5><p class="desc">Сервер LiveKit временно недоступен.</p></div></div>
+      <div class="toast info"><div class="ind"></div><div class="body"><h5 class="title">Новая версия</h5><p class="desc">Перезагрузите окно, чтобы обновиться до 2.1.0.</p></div></div>
+    </div>
+  </section>
+
+  <section id="empty">
+    <div class="sec-head"><h2>Пустые состояния</h2><span class="tag">empty</span></div>
+    <p class="sec-desc">Минимум иллюстрации, чёткий CTA, dashed border на светлом смотрится мягче.</p>
+    <div class="grid-2">
+      <div class="empty">
+        <div class="icon-wrap"><svg class="icon" style="width: 24px; height: 24px;" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+        <h4>Пока тихо</h4>
+        <p>Это первое сообщение в канале #объявления. Напишите что-нибудь.</p>
+        <button class="btn btn-primary btn-sm">Написать сообщение</button>
+      </div>
+      <div class="empty">
+        <div class="icon-wrap"><svg class="icon" style="width: 24px; height: 24px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <h4>История пуста</h4>
+        <p>Запланированных сообщений нет.</p>
+        <button class="btn btn-secondary btn-sm">Запланировать</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="note">
+    <strong>Сравни с тёмной</strong>: открой <a href="quiet-pro.html">quiet-pro.html</a> — структура и спейсинг
+    идентичны, разница только в палитре.
+  </div>
+
+</div>
+
+</body>
+</html>

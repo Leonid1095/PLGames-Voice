@@ -5,6 +5,7 @@ import { css } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
 import { useClient } from "@revolt/client";
+import { CONFIGURATION } from "@revolt/common";
 import { useNavigate } from "@revolt/routing";
 import { Header, Text } from "@revolt/ui";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
@@ -37,15 +38,31 @@ export function ForumView(props: ChannelPageProps) {
   const [newContent, setNewContent] = createSignal("");
   const [creating, setCreating] = createSignal(false);
 
+  // The /threads endpoint isn't in stoat-api's typed route list, so going
+  // through c.api.{get,post} serialises the request incorrectly (POST body
+  // gets dropped into the query string → server returns 422). Talk to the
+  // API directly via fetch with the user session token.
+  function api(path: string, init: RequestInit = {}): Promise<Response> {
+    const url = (CONFIGURATION.DEFAULT_API_URL || "") + path;
+    const session = (client() as unknown as { sessionToken?: string }).sessionToken;
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      ...(init.headers as Record<string, string> | undefined),
+    };
+    if (session) headers["X-Session-Token"] = session;
+    return fetch(url, { ...init, headers });
+  }
+
   const [threadsFailed, setThreadsFailed] = createSignal(false);
   const [threads, { refetch }] = createResource(
     () => threadsFailed() ? null : props.channel.id,
     async (channelId) => {
       if (!channelId) return [];
-      const c = client();
       try {
-        const res = await c.api.get(`/channels/${channelId}/threads` as any);
-        return (res as ForumThread[]) || [];
+        const r = await api(`/channels/${channelId}/threads`);
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const res = (await r.json()) as ForumThread[];
+        return res || [];
       } catch {
         // API doesn't support /threads endpoint — stop retrying
         setThreadsFailed(true);
@@ -75,19 +92,23 @@ export function ForumView(props: ChannelPageProps) {
 
     setCreating(true);
     try {
-      const c = client();
-      const res = await c.api.post(`/channels/${props.channel.id}/threads` as any, {
-        name: title,
-        content: content,
-      } as any);
+      const r = await api(`/channels/${props.channel.id}/threads`, {
+        method: "POST",
+        body: JSON.stringify({ name: title, content: content }),
+      });
+      if (!r.ok) {
+        const bodyText = await r.text().catch(() => "");
+        throw new Error(`HTTP ${r.status} ${bodyText.slice(0, 200)}`);
+      }
+      const res = (await r.json()) as ForumThread;
 
       setNewTitle("");
       setNewContent("");
       setShowCreateForm(false);
       refetch();
 
-      if ((res as any)?._id) {
-        navigate(`/server/${props.channel.serverId}/channel/${(res as any)._id}`);
+      if (res?._id) {
+        navigate(`/server/${props.channel.serverId}/channel/${res._id}`);
       }
     } catch (err) {
       console.error("[Forum] Failed to create thread:", err);

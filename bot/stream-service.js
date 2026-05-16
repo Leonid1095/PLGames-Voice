@@ -222,9 +222,12 @@ const server = http.createServer(async (req, res) => {
 // Export LiveKit clients for use by bot
 module.exports = { ingressClient, roomService, egressClient, createViewerToken };
 
-// Only start HTTP server when run directly (not when required by bot)
-if (require.main === module) {
-  server.listen(PORT, "127.0.0.1", () => {
+// Always start the HTTP server — the bot requires this module, so the
+// previous `require.main === module` guard meant /stream/* never had a
+// listener and every request returned 502 via nginx. Set STREAM_PORT=0
+// to disable explicitly.
+if (PORT !== "0" && PORT !== 0) {
+  server.listen(PORT, "0.0.0.0", () => {
     console.log(`[STREAM] Stream service running on port ${PORT}`);
   });
 }
