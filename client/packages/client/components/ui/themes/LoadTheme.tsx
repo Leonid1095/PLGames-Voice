@@ -24,7 +24,13 @@ export function LoadTheme() {
     FONTS[state.theme.interfaceFont].load();
     MONOSPACE_FONTS[state.theme.monospaceFont].load();
 
-    document.body.style.background = activeTheme.darkMode ? "#0C0A1A" : "#F5F3FA";
+    // Set bg on both <html> and <body> so the canvas (area outside body)
+    // matches the user's selected theme. MDUI's own :root stylesheet
+    // would otherwise paint light lavender on the canvas in dark mode.
+    const bg = activeTheme.darkMode ? "#0B0A12" : "#F5F3FA";
+    document.documentElement.style.background = bg;
+    document.documentElement.style.colorScheme = activeTheme.darkMode ? "dark" : "light";
+    document.body.style.background = bg;
 
     for (const [key, value] of Object.entries({
       // create unset variables to indicate where colours need replacing
