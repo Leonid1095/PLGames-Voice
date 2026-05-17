@@ -149,15 +149,12 @@ body {
 
 mdui-text-field,
 mdui-select {
-  /* Smaller corner radius matches our 6px input radius */
+  /* Only adjust shape + font here — colour tokens come from
+     LoadTheme's createMduiColourTriplets so they switch with the
+     light/dark mode. Previously hardcoding triplets to dark values
+     broke the light theme (selects stayed dark on a light page). */
   --mdui-shape-corner-extra-small: 6px;
   --mdui-shape-corner-small: 8px;
-  /* Subtle filled-input surface */
-  --mdui-color-surface-container-highest: 26, 24, 39;
-  --mdui-color-surface-container-high: 33, 31, 50;
-  /* Outline tone aligned with our border-default */
-  --mdui-color-outline: 255, 255, 255;
-  --mdui-color-outline-variant: 255, 255, 255;
   font-family: var(--qp-font-sans);
 }
 
