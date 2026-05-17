@@ -1,5 +1,5 @@
 import { For, createMemo } from "solid-js";
-import { AlertCircle, Calendar, Clock, Globe } from "lucide-solid";
+import { AlertCircle, BadgeCheck as MdVerifiedFill, Calendar, Clock, Globe, Languages as MdTranslate } from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 

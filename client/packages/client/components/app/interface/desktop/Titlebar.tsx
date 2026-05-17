@@ -8,11 +8,7 @@ import { useClientLifecycle } from "@revolt/client";
 import { State, TransitionType } from "@revolt/client/Controller";
 import { Button, Ripple, symbolSize, typography } from "@revolt/ui";
 
-import MdBuild from "@material-symbols/svg-400/outlined/build.svg?component-solid";
-import MdClose from "@material-symbols/svg-400/outlined/close.svg?component-solid";
-import MdCollapseContent from "@material-symbols/svg-400/outlined/collapse_content.svg?component-solid";
-import MdExpandContent from "@material-symbols/svg-400/outlined/expand_content.svg?component-solid";
-import MdMinimize from "@material-symbols/svg-400/outlined/minimize.svg?component-solid";
+import { Maximize2 as MdExpandContent, Minimize2 as MdCollapseContent, Minus as MdMinimize, Wrench as MdBuild, X as MdClose } from "lucide-solid";
 
 import Wordmark from "../../../../public/assets/web/wordmark.svg?component-solid";
 import { pendingUpdate } from "../../../../src/serviceWorkerInterface";

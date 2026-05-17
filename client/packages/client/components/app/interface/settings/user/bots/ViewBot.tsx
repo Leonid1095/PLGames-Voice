@@ -36,7 +36,7 @@ export function ViewBot(props: { bot: Bot }) {
           description={
             <Trans>Generate a new token if it gets lost or compromised</Trans>
           }
-          icon={<MdToken {...iconSize(22)} />}
+          icon={<Key {...iconSize(22)} />}
           action="chevron"
           onClick={() => openModal({ type: "reset_bot_token", bot: props.bot })}
         >

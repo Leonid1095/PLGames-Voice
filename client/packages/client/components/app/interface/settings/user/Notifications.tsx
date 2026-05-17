@@ -1,5 +1,5 @@
 import { Trans } from "@lingui-solid/solid/macro";
-import { Bell } from "lucide-solid";
+import { Bell, Volume2 as MdSpeaker } from "lucide-solid";
 
 import {
   CategoryButton,

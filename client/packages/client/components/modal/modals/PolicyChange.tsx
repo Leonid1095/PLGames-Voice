@@ -1,4 +1,5 @@
 import { For, createSignal, onMount } from "solid-js";
+import { FileCheck as MdPolicy } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 
