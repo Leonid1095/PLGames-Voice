@@ -53,6 +53,9 @@ auto_derived_partial!(
         /// User's current status
         #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
         pub status: Option<UserStatus>,
+        /// User's current activity (game/stream/music)
+        #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
+        pub activity: Option<Activity>,
 
         /// Enum of user flags
         ///
@@ -89,6 +92,7 @@ auto_derived!(
         ProfileContent,
         ProfileBackground,
         DisplayName,
+        Activity,
 
         /// Internal field, ignore this.
         Internal,
@@ -148,6 +152,48 @@ auto_derived!(
         /// Current presence option
         #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
         pub presence: Option<Presence>,
+    }
+
+    /// Type of activity the user is engaged in
+    #[derive(Default)]
+    pub enum ActivityKind {
+        /// Playing a game
+        #[default]
+        Playing,
+        /// Streaming on a platform (Twitch, YouTube, etc.)
+        Streaming,
+        /// Listening to music/podcast
+        Listening,
+        /// Watching content
+        Watching,
+        /// Competing in a tournament/match
+        Competing,
+    }
+
+    /// User's current rich activity (e.g., "Playing Dota 2")
+    #[derive(Default)]
+    #[cfg_attr(feature = "validator", derive(Validate))]
+    pub struct Activity {
+        /// Activity type
+        pub kind: ActivityKind,
+        /// Activity name (game/track/etc.)
+        #[validate(length(min = 1, max = 64))]
+        pub name: String,
+        /// Additional details (line 1 in detail card)
+        #[validate(length(min = 0, max = 128))]
+        #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
+        pub details: Option<String>,
+        /// Activity state (line 2 in detail card)
+        #[validate(length(min = 0, max = 128))]
+        #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
+        pub state: Option<String>,
+        /// Unix timestamp (ms) when activity started
+        #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
+        pub started_at: Option<i64>,
+        /// External URL (e.g., Twitch stream URL)
+        #[validate(length(min = 0, max = 256))]
+        #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
+        pub url: Option<String>,
     }
 
     /// User's profile
@@ -232,6 +278,9 @@ auto_derived!(
         /// New user status
         #[cfg_attr(feature = "validator", validate)]
         pub status: Option<UserStatus>,
+        /// New user activity (game/stream/music)
+        #[cfg_attr(feature = "validator", validate)]
+        pub activity: Option<Activity>,
         /// New user profile data
         ///
         /// This is applied as a partial.

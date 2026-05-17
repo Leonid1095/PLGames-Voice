@@ -107,6 +107,10 @@ export type Modals =
       client: Client;
     }
   | {
+      type: "activity";
+      client: Client;
+    }
+  | {
       type: "delete_bot";
       bot: Bot;
     }

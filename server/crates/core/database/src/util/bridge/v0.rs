@@ -1074,6 +1074,11 @@ impl crate::User {
             } else {
                 None
             },
+            activity: if can_see_profile {
+                self.activity.map(|activity| activity.into())
+            } else {
+                None
+            },
             flags: self.flags.unwrap_or_default() as u32,
             privileged: self.privileged,
             bot: self.bot.map(|bot| bot.into()),
@@ -1138,6 +1143,11 @@ impl crate::User {
             } else {
                 None
             },
+            activity: if can_see_profile {
+                self.activity.map(|activity| activity.into())
+            } else {
+                None
+            },
             flags: self.flags.unwrap_or_default() as u32,
             privileged: self.privileged,
             bot: self.bot.map(|bot| bot.into()),
@@ -1166,6 +1176,7 @@ impl crate::User {
                     })
                 ),
             status: self.status.and_then(|status| status.into(true)),
+            activity: self.activity.map(|activity| activity.into()),
             flags: self.flags.unwrap_or_default() as u32,
             privileged: self.privileged,
             bot: self.bot.map(|bot| bot.into()),
@@ -1201,6 +1212,7 @@ impl crate::User {
                     })
                 ),
             status: self.status.and_then(|status| status.into(true)),
+            activity: self.activity.map(|activity| activity.into()),
             flags: self.flags.unwrap_or_default() as u32,
             privileged: self.privileged,
             bot: self.bot.map(|bot| bot.into()),
@@ -1253,6 +1265,7 @@ impl From<crate::PartialUser> for PartialUser {
             }),
             badges: value.badges.map(|badges| badges as u32),
             status: value.status.and_then(|status| status.into(false)),
+            activity: value.activity.map(|activity| activity.into()),
             flags: value.flags.map(|flags| flags as u32),
             privileged: value.privileged,
             bot: value.bot.map(|bot| bot.into()),
@@ -1272,6 +1285,7 @@ impl From<FieldsUser> for crate::FieldsUser {
             FieldsUser::StatusPresence => crate::FieldsUser::StatusPresence,
             FieldsUser::StatusText => crate::FieldsUser::StatusText,
             FieldsUser::DisplayName => crate::FieldsUser::DisplayName,
+            FieldsUser::Activity => crate::FieldsUser::Activity,
 
             FieldsUser::Internal => crate::FieldsUser::None,
         }
@@ -1287,6 +1301,7 @@ impl From<crate::FieldsUser> for FieldsUser {
             crate::FieldsUser::StatusPresence => FieldsUser::StatusPresence,
             crate::FieldsUser::StatusText => FieldsUser::StatusText,
             crate::FieldsUser::DisplayName => FieldsUser::DisplayName,
+            crate::FieldsUser::Activity => FieldsUser::Activity,
 
             crate::FieldsUser::Suspension => FieldsUser::Internal,
             crate::FieldsUser::None => FieldsUser::Internal,
@@ -1367,6 +1382,56 @@ impl From<UserStatus> for crate::UserStatus {
         crate::UserStatus {
             text: value.text,
             presence: value.presence.map(|presence| presence.into()),
+        }
+    }
+}
+
+impl From<crate::ActivityKind> for ActivityKind {
+    fn from(value: crate::ActivityKind) -> Self {
+        match value {
+            crate::ActivityKind::Playing => ActivityKind::Playing,
+            crate::ActivityKind::Streaming => ActivityKind::Streaming,
+            crate::ActivityKind::Listening => ActivityKind::Listening,
+            crate::ActivityKind::Watching => ActivityKind::Watching,
+            crate::ActivityKind::Competing => ActivityKind::Competing,
+        }
+    }
+}
+
+impl From<ActivityKind> for crate::ActivityKind {
+    fn from(value: ActivityKind) -> crate::ActivityKind {
+        match value {
+            ActivityKind::Playing => crate::ActivityKind::Playing,
+            ActivityKind::Streaming => crate::ActivityKind::Streaming,
+            ActivityKind::Listening => crate::ActivityKind::Listening,
+            ActivityKind::Watching => crate::ActivityKind::Watching,
+            ActivityKind::Competing => crate::ActivityKind::Competing,
+        }
+    }
+}
+
+impl From<crate::Activity> for Activity {
+    fn from(value: crate::Activity) -> Self {
+        Activity {
+            kind: value.kind.into(),
+            name: value.name,
+            details: value.details,
+            state: value.state,
+            started_at: value.started_at,
+            url: value.url,
+        }
+    }
+}
+
+impl From<Activity> for crate::Activity {
+    fn from(value: Activity) -> crate::Activity {
+        crate::Activity {
+            kind: value.kind.into(),
+            name: value.name,
+            details: value.details,
+            state: value.state,
+            started_at: value.started_at,
+            url: value.url,
         }
     }
 }

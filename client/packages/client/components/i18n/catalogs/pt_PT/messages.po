@@ -56,10 +56,6 @@ msgstr ""
 msgid "{0, plural, one {# blocked message} other {# blocked messages}}"
 msgstr ""
 
-#: src/interface/navigation/channels/HomeSidebar.tsx
-#~ msgid "{0, plural, one {# Member} other {# Members}}"
-#~ msgstr ""
-
 #. placeholder {0}: items().length
 #: components/ui/components/utils/files/FileDropAnywhereCollector.tsx
 msgid "{0, plural, one {Drop a file} other {Drop # files}}"
@@ -70,10 +66,6 @@ msgstr ""
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
 msgid "{0} and {1} are typing"
 msgstr ""
-
-#: components/ui/components/features/messaging/composition/TypingIndicator.tsx
-#~ msgid "{0} and {1} are typing…"
-#~ msgstr ""
 
 #. placeholder {0}: (message.systemMessage as ChannelEditSystemMessage).by?.username
 #: components/client/NotificationsWorker.tsx
@@ -99,10 +91,6 @@ msgstr ""
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
 msgid "{0} is typing"
 msgstr ""
-
-#: components/ui/components/features/messaging/composition/TypingIndicator.tsx
-#~ msgid "{0} is typing…"
-#~ msgstr ""
 
 #. placeholder {0}: (message.systemMessage as UserSystemMessage).user?.username
 #: components/client/NotificationsWorker.tsx
@@ -320,10 +308,6 @@ msgstr ""
 msgid "Able to speak in voice call"
 msgstr ""
 
-#: components/auth/src/AuthPage.tsx
-#~ msgid "About"
-#~ msgstr "Sobre"
-
 #: src/interface/ThemeSetup.tsx
 msgid "Accent color"
 msgstr ""
@@ -402,10 +386,6 @@ msgstr ""
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Admin Panel"
 msgstr ""
-
-#: components/app/interface/settings/UserSettings.tsx
-#~ msgid "Advanced"
-#~ msgstr "Avançado"
 
 #: components/app/interface/settings/server/roles/ServerRoleOverview.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
@@ -487,10 +467,6 @@ msgstr ""
 #: components/modal/modals/LinkWarning.tsx
 msgid "Are you sure you want to go to "
 msgstr ""
-
-#: components/modal/modals/LinkWarning.tsx
-#~ msgid "Are you sure you want to go to <0>{0}</0>?"
-#~ msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Assign lower-ranked roles to lower-ranking members"
@@ -593,10 +569,6 @@ msgstr ""
 msgid "Banner"
 msgstr ""
 
-#: components/app/interface/settings/ServerSettings.tsx
-#~ msgid "Bans"
-#~ msgstr "Banimentos"
-
 #: components/app/interface/settings/server/Automod.tsx
 msgid "Block duplicate messages"
 msgstr ""
@@ -631,14 +603,6 @@ msgstr ""
 msgid "Browse servers"
 msgstr ""
 
-#: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
-#~ msgid "Browser Echo Cancellation"
-#~ msgstr ""
-
-#: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
-#~ msgid "Browser Noise Supression"
-#~ msgstr ""
-
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Bug Tracker"
 msgstr "Rastreador de bugs"
@@ -653,13 +617,9 @@ msgstr ""
 msgid "By creating this bot, you agree to the <0>Acceptable Use Policy</0>."
 msgstr ""
 
-#: components/modal/modals/CreateServer.tsx
-#~ msgid "By creating this server, you agree to the <0>Acceptable Use Policy</0>."
-#~ msgstr ""
-
 #: src/interface/Friends.tsx
 #: src/interface/channels/text/VoiceRecorder.tsx
-#: src/interface/channels/text/Composition.tsx
+#: src/interface/channels/text/ScheduledMessages.tsx
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/ServerIdentity.tsx
 #: components/modal/modals/ResetBotToken.tsx
@@ -840,10 +800,6 @@ msgstr ""
 msgid "Click to show spoiler"
 msgstr ""
 
-#: components/app/interface/settings/UserSettings.tsx
-#~ msgid "Client Settings"
-#~ msgstr "Definições do cliente"
-
 #: components/app/interface/CommandPalette.tsx
 msgid "close"
 msgstr ""
@@ -934,10 +890,6 @@ msgstr ""
 msgid "Connected"
 msgstr ""
 
-#: components/ui/components/features/voice/callCard/VoiceCallCardStatus.tsx
-#~ msgid "Connecting"
-#~ msgstr ""
-
 #: components/ui/components/features/voice/VoiceBottomBar.tsx
 msgid "Connecting..."
 msgstr ""
@@ -993,10 +945,6 @@ msgstr ""
 #: components/app/menus/ChannelContextMenu.tsx
 msgid "Copy link"
 msgstr "Copiar ligação"
-
-#: components/modal/modals/CreateInvite.tsx
-#~ msgid "Copy Link"
-#~ msgstr ""
 
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Copy message ID"
@@ -1059,10 +1007,6 @@ msgstr ""
 #: components/app/interface/settings/server/Giveaways.tsx
 msgid "Create a giveaway — a message will be posted in the selected channel. Members react with 🎉 to enter."
 msgstr ""
-
-#: src/interface/Home.tsx
-#~ msgid "Create a group"
-#~ msgstr "Criar um grupo"
 
 #: src/interface/Home.tsx
 #: components/modal/modals/CreateGroupOrServer.tsx
@@ -1220,10 +1164,6 @@ msgstr ""
 msgid "Custom window frame"
 msgstr ""
 
-#: components/app/interface/settings/ServerSettings.tsx
-#~ msgid "Customisation"
-#~ msgstr "Personalização"
-
 #: components/app/interface/settings/server/Welcome.tsx
 msgid "Customize the message sent when a new member joins. Use {user}for username, {server} for server name, {count} for member count."
 msgstr ""
@@ -1241,6 +1181,10 @@ msgstr ""
 #: src/interface/channels/ChannelHeader.tsx
 #: src/interface/channels/ChannelHeader.tsx
 msgid "date"
+msgstr ""
+
+#: components/ui/components/features/voice/VoiceBottomBar.tsx
+msgid "Deafen"
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -1329,10 +1273,6 @@ msgstr "Eliminar mensagem"
 msgid "Delete Role"
 msgstr "Apagar cargo"
 
-#: components/app/interface/settings/ServerSettings.tsx
-#~ msgid "Delete Server"
-#~ msgstr ""
-
 #: components/app/interface/settings/server/Forms.tsx
 #: components/app/interface/settings/server/Events.tsx
 msgid "Description (optional)"
@@ -1342,10 +1282,6 @@ msgstr ""
 #: components/modal/modals/AddBot.tsx
 msgid "Description provided by {0}"
 msgstr ""
-
-#: components/app/interface/settings/UserSettings.tsx
-#~ msgid "Desktop"
-#~ msgstr ""
 
 #: src/AppDownload.tsx
 msgid "Desktop app for Windows — voice, text, and servers in one place."
@@ -1376,20 +1312,16 @@ msgid "Disabled"
 msgstr ""
 
 #: components/ui/components/features/voice/VoiceBottomBar.tsx
+msgid "Disconnect"
+msgstr ""
+
+#: components/ui/components/features/voice/VoiceBottomBar.tsx
 msgid "Disconnected"
 msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Discord RPC"
 msgstr ""
-
-#: src/interface/Home.tsx
-#~ msgid "Discover PLG Voice"
-#~ msgstr ""
-
-#: src/interface/Home.tsx
-#~ msgid "Discover Stoat"
-#~ msgstr ""
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Display & Text"
@@ -1408,25 +1340,13 @@ msgstr "Não incomodar"
 msgid "Don't ask me again for "
 msgstr ""
 
-#: components/modal/modals/LinkWarning.tsx
-#~ msgid "Don't ask me again for <0>{0}</0>"
-#~ msgstr ""
-
 #: components/modal/modals/LeaveServer.tsx
 msgid "Don't notify others that you've left"
 msgstr ""
 
-#: components/app/interface/settings/UserSettings.tsx
-#~ msgid "Donate"
-#~ msgstr ""
-
 #: src/interface/Home.tsx
 msgid "Donate to PLG Voice"
 msgstr ""
-
-#: src/interface/Home.tsx
-#~ msgid "Donate to Stoat"
-#~ msgstr ""
 
 #: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
 msgid "Donate via DonatePay"
@@ -1435,10 +1355,6 @@ msgstr ""
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Donated to PLG Voice"
 msgstr ""
-
-#: components/ui/components/features/profiles/ProfileBadges.tsx
-#~ msgid "Donated to Stoat"
-#~ msgstr ""
 
 #: components/modal/modals/MFARecovery.tsx
 #: components/modal/modals/CreateInvite.tsx
@@ -1666,6 +1582,18 @@ msgstr ""
 msgid "Failed to join"
 msgstr ""
 
+#: src/interface/Sidebar.tsx
+msgid "Failed to load channels"
+msgstr ""
+
+#: src/interface/channels/text/TextChannel.tsx
+msgid "Failed to load editor"
+msgstr ""
+
+#: src/interface/channels/text/TextChannel.tsx
+msgid "Failed to load messages"
+msgstr ""
+
 #: components/i18n/errors.ts
 msgid "Failed to process the image you provided."
 msgstr ""
@@ -1700,17 +1628,17 @@ msgstr ""
 msgid "Fields"
 msgstr ""
 
+#: src/interface/channels/text/Composition.tsx
+msgid "File too large"
+msgstr ""
+
 #: src/interface/channels/ChannelHeader.tsx
 msgid "file/link"
 msgstr ""
 
-#: src/interface/Home.tsx
-#~ msgid "Find a community based on your hobbies or interests."
-#~ msgstr "Encontra uma comunidade baseada nos teus hobbies ou interesses."
-
-#: components/auth/src/flows/FlowHome.tsx
-#~ msgid "Find your com<0/>munity,<1/>connect with the world."
-#~ msgstr ""
+#: src/interface/channels/text/Composition.tsx
+msgid "Files too large"
+msgstr ""
 
 #: src/interface/Friends.tsx
 #: src/interface/navigation/servers/UserMenu.tsx
@@ -1787,10 +1715,6 @@ msgid "Generate Recovery Codes"
 msgstr "Gerar códigos de recuperação"
 
 #: components/modal/modals/CreateInvite.tsx
-#~ msgid "Generating invite…"
-#~ msgstr "A criar um convite…"
-
-#: components/modal/modals/CreateInvite.tsx
 msgid "Generating link..."
 msgstr ""
 
@@ -1809,10 +1733,6 @@ msgstr ""
 #: src/interface/Home.tsx
 msgid "Give feedback on PLG Voice"
 msgstr ""
-
-#: src/interface/Home.tsx
-#~ msgid "Give feedback on Stoat"
-#~ msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Give us some detail"
@@ -1841,16 +1761,6 @@ msgstr ""
 #: src/interface/Home.tsx
 msgid "Go to the PLG Voice community"
 msgstr ""
-
-#: src/interface/Home.tsx
-#: components/app/interface/settings/user/Feedback.tsx
-#~ msgid "Go to the Stoat Lounge"
-#~ msgstr ""
-
-#: src/interface/Home.tsx
-#: src/interface/Home.tsx
-#~ msgid "Go to the testers server"
-#~ msgstr "Ir para o servidor de testadores"
 
 #: components/modal/modals/Onboarding.tsx
 msgid "Good"
@@ -1887,10 +1797,6 @@ msgstr ""
 msgid "Hear other people and see their video"
 msgstr ""
 
-#: components/auth/src/flows/FlowCreate.tsx
-#~ msgid "Hello!"
-#~ msgstr "Olá!"
-
 #: components/app/interface/settings/user/Language.tsx
 msgid "Help contribute to an existing or new language"
 msgstr ""
@@ -1898,14 +1804,6 @@ msgstr ""
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Helped translate PLG Voice"
 msgstr ""
-
-#: components/ui/components/features/profiles/ProfileBadges.tsx
-#~ msgid "Helped translate Stoat"
-#~ msgstr ""
-
-#: components/modal/modals/CreateInvite.tsx
-#~ msgid "Here is your new invite code: <0>{0}</0>"
-#~ msgstr ""
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "High Contrast"
@@ -1949,10 +1847,6 @@ msgstr "Ausente"
 msgid "Illegal hacking or cracking"
 msgstr ""
 
-#: components/auth/src/AuthPage.tsx
-#~ msgid "Image by @fakurian"
-#~ msgstr ""
-
 #: components/modal/modals/ReportContent.tsx
 msgid "Impersonation"
 msgstr ""
@@ -1970,13 +1864,13 @@ msgstr ""
 msgid "Instead of closing, PLG Voice will hide in your tray."
 msgstr ""
 
-#: components/app/interface/settings/user/Native.tsx
-#~ msgid "Instead of closing, Stoat will hide in your tray."
-#~ msgstr ""
-
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Interface Font"
+msgstr ""
+
+#: components/markdown/plugins/mentions.tsx
+msgid "Invalid mention"
 msgstr ""
 
 #: src/interface/navigation/servers/UserMenu.tsx
@@ -2011,10 +1905,6 @@ msgstr ""
 msgid "Inviter"
 msgstr "Convidante"
 
-#: components/app/interface/settings/ServerSettings.tsx
-#~ msgid "Invites"
-#~ msgstr "Convites"
-
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "irrelevant joke badge 1"
 msgstr ""
@@ -2043,18 +1933,9 @@ msgstr ""
 msgid "Join by invite"
 msgstr ""
 
-#: src/interface/channels/ChannelHeader.tsx
-#~ msgid "Join call"
-#~ msgstr ""
-
 #: src/interface/Home.tsx
 msgid "Join the PLG Voice community"
 msgstr ""
-
-#: src/interface/Home.tsx
-#: components/app/interface/settings/user/Feedback.tsx
-#~ msgid "Join the Stoat Lounge"
-#~ msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Join the voice channel"
@@ -2121,10 +2002,6 @@ msgstr "Mais recentes"
 msgid "Launch PLG Voice when you log into your computer."
 msgstr ""
 
-#: components/app/interface/settings/user/Native.tsx
-#~ msgid "Launch Stoat when you log into your computer."
-#~ msgstr ""
-
 #: components/app/interface/settings/server/Leveling.tsx
 msgid "Leaderboard"
 msgstr ""
@@ -2132,10 +2009,6 @@ msgstr ""
 #: components/app/interface/settings/user/bots/MyBots.tsx
 msgid "Learn more about how to create bots on PLG Voice."
 msgstr ""
-
-#: components/app/interface/settings/user/bots/MyBots.tsx
-#~ msgid "Learn more about how to create bots on Stoat."
-#~ msgstr ""
 
 #: components/modal/modals/LeaveServer.tsx
 #: components/modal/modals/DeleteChannel.tsx
@@ -2160,10 +2033,6 @@ msgstr "Sair do servidor"
 #: components/app/interface/settings/user/Native.tsx
 msgid "Let PLG Voice use its own custom titlebar."
 msgstr ""
-
-#: components/app/interface/settings/user/Native.tsx
-#~ msgid "Let Stoat use its own custom titlebar."
-#~ msgstr ""
 
 #: src/interface/Home.tsx
 msgid "Let us know how we can improve our app by giving us feedback."
@@ -2208,10 +2077,6 @@ msgstr ""
 #: src/AppDownload.tsx
 msgid "Log in"
 msgstr ""
-
-#: components/auth/src/flows/FlowHome.tsx
-#~ msgid "Log In"
-#~ msgstr ""
 
 #: components/app/interface/settings/user/Sessions.tsx
 msgid "Log Out"
@@ -2434,11 +2299,6 @@ msgstr "Mensagens"
 msgid "Minimise to Tray"
 msgstr ""
 
-#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
-#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
-#~ msgid "Missing permission"
-#~ msgstr ""
-
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Monochrome"
 msgstr ""
@@ -2465,6 +2325,10 @@ msgstr ""
 msgid "Multi-factor authentication is already enabled for this account."
 msgstr ""
 
+#: src/interface/channels/text/Composition.tsx
+msgid "multiple choice"
+msgstr ""
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Mute"
 msgstr ""
@@ -2485,6 +2349,10 @@ msgstr ""
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Mute Members"
 msgstr "Silenciar membros"
+
+#: components/ui/components/features/voice/VoiceBottomBar.tsx
+msgid "Mute microphone"
+msgstr ""
 
 #: components/app/menus/ServerContextMenu.tsx
 msgid "Mute Server"
@@ -2511,10 +2379,6 @@ msgstr "Grupos em comum"
 #: components/app/interface/settings/user/_AccountCard.tsx
 msgid "My Account"
 msgstr "A minha conta"
-
-#: components/app/interface/settings/UserSettings.tsx
-#~ msgid "My Bots"
-#~ msgstr "Os meus robôs"
 
 #: components/ui/components/features/messaging/composition/picker/MyGifPicker.tsx
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
@@ -2567,10 +2431,6 @@ msgstr "Nova palavra-passe"
 #: components/app/interface/channels/text/Message.tsx
 msgid "New to PLG Voice"
 msgstr ""
-
-#: components/app/interface/channels/text/Message.tsx
-#~ msgid "New to Stoat"
-#~ msgstr ""
 
 #: components/app/interface/channels/text/Message.tsx
 msgid "New to the server"
@@ -2643,10 +2503,6 @@ msgstr ""
 #: components/app/interface/settings/server/Leveling.tsx
 msgid "No XP data yet — members earn XP by chatting."
 msgstr ""
-
-#: src/interface/Friends.tsx
-#~ msgid "Nobody here right now!"
-#~ msgstr ""
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Noise Suppression"
@@ -2780,11 +2636,6 @@ msgstr ""
 msgid "Output Volume"
 msgstr ""
 
-#: components/app/interface/settings/ServerSettings.tsx
-#: components/app/interface/settings/ChannelSettings.tsx
-#~ msgid "Overview"
-#~ msgstr "Visão geral"
-
 #: components/app/interface/settings/server/Analytics.tsx
 msgid "Owner"
 msgstr ""
@@ -2811,10 +2662,6 @@ msgstr ""
 #: components/app/interface/settings/server/Automod.tsx
 msgid "per seconds"
 msgstr ""
-
-#: components/app/interface/settings/ChannelSettings.tsx
-#~ msgid "Permissions"
-#~ msgstr "Permissões"
 
 #: components/auth/src/flows/FlowHome.tsx
 msgid "Pick a username that you want people to be able to find you by. This can be changed later in your user settings."
@@ -2880,10 +2727,6 @@ msgstr ""
 msgid "PLG Voice Founder"
 msgstr ""
 
-#: components/auth/src/flows/FlowHome.tsx
-#~ msgid "PLG Voice is one of the best ways to stay connected with your friends and community, anywhere, anytime."
-#~ msgstr ""
-
 #: src/Landing.tsx
 msgid "PLG Voice will appear as a native app on your phone"
 msgstr ""
@@ -2911,10 +2754,6 @@ msgstr ""
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Prevents your speakers from feeding back into your microphone"
 msgstr ""
-
-#: components/auth/src/AuthPage.tsx
-#~ msgid "Privacy Policy"
-#~ msgstr "Política de Privacidade"
 
 #: components/markdown/plugins/anchors.tsx
 msgid "Private Channel"
@@ -3002,10 +2841,6 @@ msgstr "Razão"
 #: components/app/interface/settings/user/Notifications.tsx
 msgid "Receive notifications while the app is open and in the background."
 msgstr ""
-
-#: components/ui/components/features/voice/callCard/VoiceCallCardStatus.tsx
-#~ msgid "Reconnecting"
-#~ msgstr ""
 
 #: components/ui/components/features/voice/VoiceBottomBar.tsx
 msgid "Reconnecting..."
@@ -3097,10 +2932,6 @@ msgstr ""
 msgid "Rep PLG Voice using Discord rich presence."
 msgstr ""
 
-#: components/app/interface/settings/user/Native.tsx
-#~ msgid "Rep Stoat using Discord rich presence."
-#~ msgstr ""
-
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Reply"
 msgstr "Responder"
@@ -3184,10 +3015,6 @@ msgstr ""
 #: src/Landing.tsx
 msgid "Rich messaging"
 msgstr ""
-
-#: components/app/interface/settings/user/Feedback.tsx
-#~ msgid "Roadmap"
-#~ msgstr ""
 
 #: components/app/interface/settings/server/ReactionRoles.tsx
 msgid "Role"
@@ -3273,12 +3100,12 @@ msgstr ""
 msgid "Scams or fraud"
 msgstr ""
 
-#: src/interface/channels/text/Composition.tsx
+#: src/interface/channels/text/ScheduledMessages.tsx
 msgid "Schedule"
 msgstr ""
 
-#: src/interface/channels/text/Composition.tsx
-#: src/interface/channels/text/Composition.tsx
+#: src/interface/channels/text/ScheduledMessages.tsx
+#: src/interface/channels/text/ScheduledMessages.tsx
 msgid "Schedule message"
 msgstr ""
 
@@ -3326,10 +3153,6 @@ msgstr ""
 #: src/interface/channels/ChannelHeader.tsx
 msgid "Search..."
 msgstr ""
-
-#: components/app/interface/settings/user/Feedback.tsx
-#~ msgid "See what we're currently working on."
-#~ msgstr ""
 
 #: components/app/interface/CommandPalette.tsx
 msgid "select"
@@ -3493,10 +3316,6 @@ msgstr ""
 msgid "Server updated"
 msgstr ""
 
-#: components/app/interface/settings/UserSettings.tsx
-#~ msgid "Sessions"
-#~ msgstr "Sessões"
-
 #: components/modal/modals/CreateTempChannel.tsx
 msgid "Set to 0 for unlimited participants"
 msgstr ""
@@ -3523,13 +3342,13 @@ msgstr ""
 msgid "Several people are typing"
 msgstr ""
 
-#: components/ui/components/features/messaging/composition/TypingIndicator.tsx
-#~ msgid "Several people are typing…"
-#~ msgstr "Várias pessoas estão a escrever…"
-
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Share camera or screen in voice call"
+msgstr ""
+
+#: components/ui/components/features/voice/VoiceBottomBar.tsx
+msgid "Share screen"
 msgstr ""
 
 #: components/modal/modals/CreateInvite.tsx
@@ -3556,23 +3375,11 @@ msgstr ""
 msgid "Show send message button"
 msgstr ""
 
-#: components/auth/src/flows/FlowLogin.tsx
-#~ msgid "Sign into PLG Voice"
-#~ msgstr ""
-
-#: components/auth/src/flows/FlowLogin.tsx
-#~ msgid "Sign into Stoat"
-#~ msgstr ""
-
 #: src/Landing.tsx
 #: src/Landing.tsx
 #: src/AppDownload.tsx
 msgid "Sign up"
 msgstr ""
-
-#: components/auth/src/flows/FlowHome.tsx
-#~ msgid "Sign Up"
-#~ msgstr ""
 
 #: components/app/interface/channels/text/Message.tsx
 msgid "Silent"
@@ -3599,17 +3406,9 @@ msgstr ""
 msgid "Something went wrong! {error}"
 msgstr ""
 
-#: components/i18n/errors.ts
-#~ msgid "Something went wrong! Try again later."
-#~ msgstr ""
-
 #: components/app/interface/settings/user/Notifications.tsx
 msgid "Sounds"
 msgstr "Sons"
-
-#: components/app/interface/settings/UserSettings.tsx
-#~ msgid "Source Code"
-#~ msgstr "Código-fonte"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Spam or similar platform abuse"
@@ -3648,25 +3447,9 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: components/app/interface/settings/user/Native.tsx
-#~ msgid "Stoat Desktop"
-#~ msgstr ""
-
-#: components/ui/components/features/profiles/ProfileBadges.tsx
-#~ msgid "Stoat Developer"
-#~ msgstr ""
-
-#: components/app/interface/settings/user/Native.tsx
-#~ msgid "Stoat for Desktop"
-#~ msgstr ""
-
-#: components/ui/components/features/profiles/ProfileBadges.tsx
-#~ msgid "Stoat Founder"
-#~ msgstr ""
-
-#: components/auth/src/flows/FlowHome.tsx
-#~ msgid "Stoat is one of the best ways to stay connected with your friends and community, anywhere, anytime."
-#~ msgstr ""
+#: components/ui/components/features/voice/VoiceBottomBar.tsx
+msgid "Stop screen share"
+msgstr ""
 
 #: components/app/interface/settings/user/Advanced.tsx
 msgid "Streamer mode"
@@ -3688,21 +3471,9 @@ msgstr "Submeter feedback"
 msgid "Submit to Discover"
 msgstr ""
 
-#: components/app/interface/settings/UserSettings.tsx
-#~ msgid "Subscriptions"
-#~ msgstr ""
-
-#: components/app/interface/settings/user/Feedback.tsx
-#~ msgid "Suggest new PLG Voice features on GitHub discussions."
-#~ msgstr ""
-
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Suggest new PLG Voice features."
 msgstr ""
-
-#: components/app/interface/settings/user/Feedback.tsx
-#~ msgid "Suggest new Stoat features on GitHub discussions."
-#~ msgstr ""
 
 #: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
 msgid "Support PLG Voice"
@@ -3780,10 +3551,6 @@ msgstr ""
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Temporarily prevent lower-ranking members from interacting"
 msgstr ""
-
-#: components/auth/src/AuthPage.tsx
-#~ msgid "Terms of Service"
-#~ msgstr "Termos de Serviço"
 
 #: components/app/interface/settings/server/Analytics.tsx
 msgid "Text"
@@ -3937,12 +3704,16 @@ msgstr ""
 msgid "Translate"
 msgstr ""
 
-#: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
-#~ msgid "Trending GIFs"
-#~ msgstr ""
-
 #: components/modal/modals/CreateChannel.tsx
 msgid "Trigger for temporary channels"
+msgstr ""
+
+#: components/ui/components/features/voice/VoiceBottomBar.tsx
+msgid "Turn off camera"
+msgstr ""
+
+#: components/ui/components/features/voice/VoiceBottomBar.tsx
+msgid "Turn on camera"
 msgstr ""
 
 #: src/interface/Friends.tsx
@@ -3958,12 +3729,20 @@ msgstr "Desbloquear utilizador"
 msgid "Uncaught PLG Voice error: {0}"
 msgstr ""
 
-#: components/i18n/errors.ts
-#~ msgid "Uncaught Stoat error: {0}"
-#~ msgstr ""
+#: components/ui/components/features/voice/VoiceBottomBar.tsx
+msgid "Undeafen"
+msgstr ""
+
+#: components/markdown/plugins/mentions.tsx
+msgid "Unknown role"
+msgstr ""
 
 #: components/markdown/plugins/anchors.tsx
 msgid "Unknown Server"
+msgstr ""
+
+#: components/markdown/plugins/mentions.tsx
+msgid "Unknown user"
 msgstr ""
 
 #: components/app/interface/settings/server/invites/ListServerInvites.tsx
@@ -3984,6 +3763,10 @@ msgstr ""
 
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "Unmute Channel"
+msgstr ""
+
+#: components/ui/components/features/voice/VoiceBottomBar.tsx
+msgid "Unmute microphone"
 msgstr ""
 
 #: components/app/menus/ServerContextMenu.tsx
@@ -4071,14 +3854,6 @@ msgstr "Alguém saiu da chamada"
 msgid "User limit"
 msgstr ""
 
-#: components/app/interface/settings/ServerSettings.tsx
-#~ msgid "User Management"
-#~ msgstr "Gestão de utilizadores"
-
-#: components/app/interface/settings/UserSettings.tsx
-#~ msgid "User Settings"
-#~ msgstr "Definições do utilizador"
-
 #: components/modal/modals/ReportContent.tsx
 msgid "User's profile has inappropriate content"
 msgstr ""
@@ -4157,10 +3932,6 @@ msgstr "Verifica aqui os relatórios de bugs ativos."
 msgid "View members"
 msgstr ""
 
-#: components/modal/modals/Changelog.tsx
-#~ msgid "View older updates"
-#~ msgstr "Visualizar atualizações anteriores"
-
 #: src/interface/channels/ChannelHeader.tsx
 msgid "View pinned messages"
 msgstr ""
@@ -4227,10 +3998,6 @@ msgstr ""
 msgid "Webhook Name"
 msgstr ""
 
-#: components/app/interface/settings/ChannelSettings.tsx
-#~ msgid "Webhooks"
-#~ msgstr "Webhooks"
-
 #: components/auth/src/flows/FlowHome.tsx
 msgid "Welcome back!"
 msgstr ""
@@ -4243,18 +4010,9 @@ msgstr ""
 msgid "Welcome Msg"
 msgstr ""
 
-#: src/interface/Home.tsx
-#: components/auth/src/flows/FlowLogin.tsx
-#~ msgid "Welcome to"
-#~ msgstr "Bem-vindo(a) a"
-
 #: components/app/interface/settings/server/Welcome.tsx
 msgid "Welcome to {server}, {user}! You're member #{count}."
 msgstr ""
-
-#: components/auth/src/flows/FlowLogin.tsx
-#~ msgid "Welcome!"
-#~ msgstr "Bem-vindo(a)!"
 
 #: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
 msgid "What you get"
@@ -4336,10 +4094,6 @@ msgstr ""
 #: src/interface/Home.tsx
 msgid "You can also click the gear icon in the bottom left."
 msgstr ""
-
-#: src/interface/Home.tsx
-#~ msgid "You can also right-click the user icon in the top left, or left click it if you're already home."
-#~ msgstr "Podes ainda carregar com o botão direito do rato no ícone de utilizador no canto superior esquerdo, ou carregar com o esquerdo se estiveres na página inicial."
 
 #: src/interface/ThemeSetup.tsx
 msgid "You can always change this in Settings."
@@ -4460,10 +4214,6 @@ msgstr ""
 msgid "You've been signed out of PLG Voice!"
 msgstr ""
 
-#: components/modal/modals/SignedOut.tsx
-#~ msgid "You've been signed out of Stoat!"
-#~ msgstr ""
-
 #: components/i18n/errors.ts
 msgid "You've reached your personal bot limit."
 msgstr ""
@@ -4517,6 +4267,10 @@ msgstr ""
 msgid "Автомодерация"
 msgstr ""
 
+#: components/ui/components/features/profiles/ProfileActivity.tsx
+msgid "Активность"
+msgstr ""
+
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Аналитика"
 msgstr ""
@@ -4537,6 +4291,10 @@ msgstr ""
 msgid "В игре"
 msgstr ""
 
+#: components/app/interface/settings/ChannelSettings.tsx
+msgid "Вебхуки"
+msgstr ""
+
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Внешний вид"
 msgstr ""
@@ -4551,6 +4309,10 @@ msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Голос"
+msgstr ""
+
+#: components/modal/modals/Activity.tsx
+msgid "Детали (например: Ranked Match)"
 msgstr ""
 
 #: src/interface/channels/text/ForumView.tsx
@@ -4569,6 +4331,14 @@ msgstr ""
 msgid "Загрузка..."
 msgstr ""
 
+#: src/interface/channels/text/MemberSidebar.tsx
+msgid "Играет в"
+msgstr ""
+
+#: components/modal/modals/Activity.tsx
+msgid "Играю в"
+msgstr ""
+
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Исходный код"
 msgstr ""
@@ -4585,8 +4355,20 @@ msgstr ""
 msgid "Мои боты"
 msgstr ""
 
+#: src/interface/channels/text/MemberSidebar.tsx
+msgid "На матче в"
+msgstr ""
+
+#: components/ui/components/features/profiles/ProfileActivity.tsx
+msgid "На соревновании"
+msgstr ""
+
 #: src/interface/SavedMessages.tsx
 msgid "Нажмите правой кнопкой на сообщение и выберите \"Сохранить\""
+msgstr ""
+
+#: components/modal/modals/Activity.tsx
+msgid "Название (например: Dota 2)"
 msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
@@ -4610,6 +4392,7 @@ msgid "Новый тред"
 msgstr ""
 
 #: components/app/interface/settings/ServerSettings.tsx
+#: components/app/interface/settings/ChannelSettings.tsx
 msgid "Обзор"
 msgstr ""
 
@@ -4625,12 +4408,25 @@ msgstr ""
 msgid "Ответить"
 msgstr ""
 
+#: components/ui/components/features/profiles/ProfileActivity.tsx
+msgid "Открыть ссылку"
+msgstr ""
+
 #: src/interface/channels/text/ForumView.tsx
+#: components/modal/modals/Activity.tsx
 msgid "Отмена"
 msgstr ""
 
 #: src/interface/channels/text/MemberSidebar.tsx
 msgid "Оффлайн"
+msgstr ""
+
+#: components/modal/modals/Activity.tsx
+msgid "Очистить"
+msgstr ""
+
+#: src/interface/navigation/servers/UserMenu.tsx
+msgid "Очистить активность"
 msgstr ""
 
 #: src/interface/SavedMessages.tsx
@@ -4655,6 +4451,10 @@ msgstr ""
 
 #: src/interface/SavedMessages.tsx
 msgid "Поиск по сохранённым..."
+msgstr ""
+
+#: components/app/interface/settings/ChannelSettings.tsx
+msgid "Права доступа"
 msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
@@ -4705,8 +4505,40 @@ msgstr ""
 msgid "Роли по реакции"
 msgstr ""
 
+#: components/ui/components/features/profiles/ProfileActivity.tsx
+msgid "Сейчас играет"
+msgstr ""
+
+#: components/ui/components/features/profiles/ProfileActivity.tsx
+msgid "Сейчас слушает"
+msgstr ""
+
+#: components/ui/components/features/profiles/ProfileActivity.tsx
+msgid "Сейчас смотрит"
+msgstr ""
+
+#: components/ui/components/features/profiles/ProfileActivity.tsx
+msgid "Сейчас стримит"
+msgstr ""
+
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Сессии"
+msgstr ""
+
+#: src/interface/channels/text/MemberSidebar.tsx
+msgid "Слушает"
+msgstr ""
+
+#: components/modal/modals/Activity.tsx
+msgid "Слушаю"
+msgstr ""
+
+#: src/interface/channels/text/MemberSidebar.tsx
+msgid "Смотрит"
+msgstr ""
+
+#: components/modal/modals/Activity.tsx
+msgid "Смотрю"
 msgstr ""
 
 #: components/app/interface/settings/ServerSettings.tsx
@@ -4721,12 +4553,40 @@ msgstr ""
 msgid "Создать тред"
 msgstr ""
 
+#: components/modal/modals/Activity.tsx
+msgid "Соревнуюсь в"
+msgstr ""
+
+#: components/modal/modals/Activity.tsx
+msgid "Состояние (например: 2/5 в очереди)"
+msgstr ""
+
 #: src/interface/SavedMessages.tsx
 msgid "Сохранённые сообщения"
 msgstr ""
 
+#: components/modal/modals/Activity.tsx
+msgid "Сохранить"
+msgstr ""
+
+#: components/modal/modals/Activity.tsx
+msgid "Ссылка на стрим (Twitch / YouTube)"
+msgstr ""
+
 #: src/interface/channels/text/ForumView.tsx
 msgid "Старые"
+msgstr ""
+
+#: src/interface/channels/text/MemberSidebar.tsx
+msgid "Стримит"
+msgstr ""
+
+#: components/modal/modals/Activity.tsx
+msgid "Стримлю"
+msgstr ""
+
+#: components/modal/modals/Activity.tsx
+msgid "Тип активности"
 msgstr ""
 
 #: src/interface/channels/text/ForumView.tsx
@@ -4748,6 +4608,11 @@ msgstr ""
 
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Управление"
+msgstr ""
+
+#: src/interface/navigation/servers/UserMenu.tsx
+#: components/modal/modals/Activity.tsx
+msgid "Установить активность"
 msgstr ""
 
 #: components/app/interface/settings/ServerSettings.tsx

@@ -67,6 +67,7 @@ export function UserCard(
           <Profile.Roles member={props.member} />
           <Profile.Badges user={props.user} />
           <Profile.Status user={props.user} />
+          <Profile.Activity user={props.user} />
           <Profile.Joined user={props.user} member={props.member} />
         </Sections>
 

@@ -1,4 +1,4 @@
-import { BellOff, Contact, FileEdit, Info, Trash2 } from "lucide-solid";
+import { BellOff, Contact, FileEdit, Gamepad2, Info, Trash2 } from "lucide-solid";
 import { useFloating } from "solid-floating-ui";
 import {
   Accessor,
@@ -235,6 +235,40 @@ export function UserMenu(props: Props) {
                   onClick={() => user()?.edit({ remove: ["StatusText"] })}
                 >
                   <Trans>Clear status</Trans>
+                </ContextMenuButton>
+              </Show>
+
+              <ContextMenuDivider />
+
+              <Show
+                when={user()?.activity}
+                fallback={
+                  <ContextMenuButton
+                    icon={Gamepad2}
+                    onClick={() =>
+                      openModal({ type: "activity", client: client() })
+                    }
+                  >
+                    <Trans>Установить активность</Trans>
+                  </ContextMenuButton>
+                }
+              >
+                <ContextMenuButton
+                  icon={Gamepad2}
+                  onClick={() =>
+                    openModal({ type: "activity", client: client() })
+                  }
+                  _titleCase={false}
+                >
+                  <TruncatedStatusText>
+                    {user()!.activity!.name}
+                  </TruncatedStatusText>
+                </ContextMenuButton>
+                <ContextMenuButton
+                  icon={Trash2}
+                  onClick={() => user()?.setActivity(null)}
+                >
+                  <Trans>Очистить активность</Trans>
                 </ContextMenuButton>
               </Show>
 

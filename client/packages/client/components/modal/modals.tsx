@@ -22,6 +22,7 @@ import { CreateOrJoinServerModal } from "./modals/CreateOrJoinServer";
 import { CreateRoleModal } from "./modals/CreateRole";
 import { CreateServerModal } from "./modals/CreateServer";
 import { CreateWebhookModal } from "./modals/CreateWebhook";
+import { ActivityModal } from "./modals/Activity";
 import { CustomStatusModal } from "./modals/CustomStatus";
 import { DeleteBotModal } from "./modals/DeleteBot";
 import { DeleteCategoryModal } from "./modals/DeleteCategory";
@@ -118,6 +119,8 @@ export function RenderModal(props: ActiveModal & { onClose: () => void }) {
       return <CreateWebhookModal {...modalProps} />;
     case "custom_status":
       return <CustomStatusModal {...modalProps} />;
+    case "activity":
+      return <ActivityModal {...modalProps} />;
     case "delete_bot":
       return <DeleteBotModal {...modalProps} />;
     case "delete_channel":

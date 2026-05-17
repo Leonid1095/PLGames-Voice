@@ -202,7 +202,10 @@ function CommonUser(props: {
       <Ripple />
       <Avatar size={24} src={user().avatar} fallback={user().username} />{" "}
       <PreviewUsername>{user().username}</PreviewUsername>
-      <GameBadge statusText={user().user?.status?.text} />
+      <GameBadge
+        activity={user().user?.activity}
+        statusText={user().user?.status?.text}
+      />
       <Row gap="sm">
         <VoiceStatefulUserIcons {...iconProps} userId={rest.userId} />
         <QualityIndicator quality={rest.connectionQuality} />
@@ -212,21 +215,43 @@ function CommonUser(props: {
 }
 
 /**
- * Show game badge if user status starts with game emoji
+ * Show game/activity badge. Prefers structured `user.activity`,
+ * falls back to legacy "🎮 ..." prefix in status text.
  */
-function GameBadge(props: { statusText?: string | null }) {
-  const gameName = () => {
+function GameBadge(props: {
+  activity?: { kind?: string; name?: string } | null;
+  statusText?: string | null;
+}) {
+  const display = () => {
+    const a = props.activity;
+    if (a && a.name) {
+      const icon =
+        a.kind === "Streaming"
+          ? "🔴"
+          : a.kind === "Listening"
+            ? "🎵"
+            : a.kind === "Watching"
+              ? "📺"
+              : a.kind === "Competing"
+                ? "🏆"
+                : "🎮";
+      return { icon, name: a.name };
+    }
     const text = props.statusText;
-    if (!text || !text.startsWith("🎮 ")) return null;
-    return text.slice(3);
+    if (text && text.startsWith("🎮 ")) {
+      return { icon: "🎮", name: text.slice(3) };
+    }
+    return null;
   };
 
   return (
-    <Show when={gameName()}>
-      <GameBadgeLabel>
-        <GamepadIcon>🎮</GamepadIcon>
-        {gameName()}
-      </GameBadgeLabel>
+    <Show when={display()}>
+      {(d) => (
+        <GameBadgeLabel>
+          <GamepadIcon>{d().icon}</GamepadIcon>
+          {d().name}
+        </GameBadgeLabel>
+      )}
     </Show>
   );
 }

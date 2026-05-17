@@ -49,6 +49,7 @@ pub async fn edit(
     // Exit out early if nothing is changed
     if data.display_name.is_none()
         && data.status.is_none()
+        && data.activity.is_none()
         && data.profile.is_none()
         && data.avatar.is_none()
         && data.badges.is_none()
@@ -102,6 +103,11 @@ pub async fn edit(
         }
 
         partial.status = Some(new_status);
+    }
+
+    // 3b. Apply new activity
+    if let Some(activity) = data.activity {
+        partial.activity = Some(activity.into());
     }
 
     // 4. Apply new profile

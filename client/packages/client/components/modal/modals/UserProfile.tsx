@@ -45,6 +45,7 @@ export function UserProfileModal(
 
         <Profile.Actions user={props.user} width={3} />
         <Profile.Status user={props.user} />
+        <Profile.Activity user={props.user} />
         <Profile.Badges user={props.user} />
         <Profile.Joined user={props.user} />
         <Profile.Mutuals user={props.user} />

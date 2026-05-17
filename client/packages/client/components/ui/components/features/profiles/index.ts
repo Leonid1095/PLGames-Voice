@@ -1,4 +1,5 @@
 import { ProfileActions } from "./ProfileActions";
+import { ProfileActivity } from "./ProfileActivity";
 import { ProfileBadges } from "./ProfileBadges";
 import { ProfileBanner } from "./ProfileBanner";
 import { ProfileBio } from "./ProfileBio";
@@ -10,6 +11,7 @@ import { ProfileStatus } from "./ProfileStatus";
 
 export const Profile = {
   Actions: ProfileActions,
+  Activity: ProfileActivity,
   Badges: ProfileBadges,
   Banner: ProfileBanner,
   Bio: ProfileBio,

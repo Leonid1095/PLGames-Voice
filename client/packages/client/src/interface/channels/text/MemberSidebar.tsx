@@ -132,9 +132,15 @@ export function ServerMemberSidebar(props: Props) {
         continue;
       }
 
-      // Check if user is playing a game (status starts with 🎮)
+      // Check if user has a rich activity (Playing / Streaming / Competing)
+      // Fallback: legacy "🎮 ..." emoji prefix in status text.
+      const activityKind = member.user?.activity?.kind;
       const statusText = member.user?.status?.text;
-      const isInGame = statusText && statusText.startsWith("🎮");
+      const isInGame =
+        activityKind === "Playing" ||
+        activityKind === "Streaming" ||
+        activityKind === "Competing" ||
+        (!!statusText && statusText.startsWith("🎮"));
 
       if (isInGame) {
         byRole["inGame"].push(member);
@@ -381,6 +387,38 @@ function Member(props: { user?: User; member?: ServerMember }) {
               : t`Offline`,
     );
 
+  /**
+   * Active rich activity (game/stream/music). Wins over text status when present.
+   */
+  const activity = () => (props.user ?? props.member?.user)?.activity;
+
+  /**
+   * Localized verb for the activity row (e.g., "Играет в", "Слушает").
+   */
+  const activityVerb = (kind: string | undefined) => {
+    switch (kind) {
+      case "Playing":
+        return t`Играет в`;
+      case "Streaming":
+        return t`Стримит`;
+      case "Listening":
+        return t`Слушает`;
+      case "Watching":
+        return t`Смотрит`;
+      case "Competing":
+        return t`На матче в`;
+      default:
+        return "";
+    }
+  };
+
+  const activityText = () => {
+    const a = activity();
+    if (!a) return undefined;
+    const verb = activityVerb(a.kind);
+    return verb ? `${verb} ${a.name}` : a.name;
+  };
+
   return (
     <div
       use:floating={floatingUserMenus(
@@ -410,14 +448,29 @@ function Member(props: { user?: User; member?: ServerMember }) {
           <OverflowingText>
             <Username username={user().username} colour={user().colour!} />
           </OverflowingText>
-          <Show when={status()}>
+          <Show
+            when={activityText()}
+            fallback={
+              <Show when={status()}>
+                <Tooltip
+                  content={() => <TextWithEmoji content={status()!} />}
+                  placement="top-start"
+                  aria={status()!}
+                >
+                  <OverflowingText class={typography({ class: "_status" })}>
+                    <TextWithEmoji content={status()!} />
+                  </OverflowingText>
+                </Tooltip>
+              </Show>
+            }
+          >
             <Tooltip
-              content={() => <TextWithEmoji content={status()!} />}
+              content={() => <TextWithEmoji content={activityText()!} />}
               placement="top-start"
-              aria={status()!}
+              aria={activityText()!}
             >
               <OverflowingText class={typography({ class: "_status" })}>
-                <TextWithEmoji content={status()!} />
+                <TextWithEmoji content={activityText()!} />
               </OverflowingText>
             </Tooltip>
           </Show>

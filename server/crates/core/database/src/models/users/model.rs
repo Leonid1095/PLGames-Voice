@@ -40,6 +40,9 @@ auto_derived_partial!(
         /// User's current status
         #[serde(skip_serializing_if = "Option::is_none")]
         pub status: Option<UserStatus>,
+        /// User's current activity (game/stream/music)
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub activity: Option<Activity>,
         /// User's profile page
         #[serde(skip_serializing_if = "Option::is_none")]
         pub profile: Option<UserProfile>,
@@ -72,6 +75,7 @@ auto_derived!(
         ProfileContent,
         ProfileBackground,
         DisplayName,
+        Activity,
 
         // internal fields
         Suspension,
@@ -119,6 +123,32 @@ auto_derived!(
         /// Current presence option
         #[serde(skip_serializing_if = "Option::is_none")]
         pub presence: Option<Presence>,
+    }
+
+    /// Type of user activity
+    #[derive(Default)]
+    pub enum ActivityKind {
+        #[default]
+        Playing,
+        Streaming,
+        Listening,
+        Watching,
+        Competing,
+    }
+
+    /// User's current rich activity
+    #[derive(Default)]
+    pub struct Activity {
+        pub kind: ActivityKind,
+        pub name: String,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub details: Option<String>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub state: Option<String>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub started_at: Option<i64>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub url: Option<String>,
     }
 
     /// User's profile
@@ -690,6 +720,7 @@ impl User {
                 }
             }
             FieldsUser::DisplayName => self.display_name = None,
+            FieldsUser::Activity => self.activity = None,
             FieldsUser::Suspension => self.suspended_until = None,
             FieldsUser::None => {}
         }
