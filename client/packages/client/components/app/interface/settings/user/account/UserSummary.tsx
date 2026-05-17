@@ -20,11 +20,14 @@ export function UserSummary(props: {
     props.bannerUrl
       ? {
           "background-image": `linear-gradient(color-mix(in srgb, var(--md-sys-color-surface-container-low) 70%, transparent), color-mix(in srgb, var(--md-sys-color-surface-container-low) 70%, transparent)), url("${props.bannerUrl}")`,
-          color: "black",
+          color: "var(--md-sys-color-on-surface)",
         }
       : {
-          background: `var(--md-sys-color-primary-container)`,
-          color: "var(--md-sys-color-on-primary)",
+          /* Neutral surface — matches Quiet Pro mockup. The previous
+             primary-container fill made the banner read as "selected"
+             and the text underneath was hard to see on light mode. */
+          background: `var(--md-sys-color-surface-container)`,
+          color: "var(--md-sys-color-on-surface)",
         };
 
   return (
@@ -100,18 +103,23 @@ const Username = styled("div", {
     display: "flex",
     flexDirection: "column",
 
-    color: "var(--md-sys-color-on-secondary-container)",
+    /* Inherit from AccountBox bannerStyle so colour follows the chosen
+       banner (image vs neutral surface). Don't pin to a M3 token here
+       — the parent already sets the right on-surface colour. */
+    color: "inherit",
 
     // Display Name
     "& :nth-child(1)": {
       fontSize: "18px",
       fontWeight: 600,
+      letterSpacing: "-0.015em",
     },
 
     // Username#Discrim
     "& :nth-child(2)": {
       fontSize: "14px",
       fontWeight: 400,
+      opacity: 0.7,
     },
   },
 });
