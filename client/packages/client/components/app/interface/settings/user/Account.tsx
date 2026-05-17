@@ -1,5 +1,5 @@
 import { Match, Show, Switch, createMemo, createSignal } from "solid-js";
-import { AtSign, Ban, Lock, Mail, ShieldCheck, Trash2 } from "lucide-solid";
+import { AtSign, Ban, KeyRound, Lock, Mail, ShieldCheck, Trash2 } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 
@@ -96,7 +96,7 @@ function EditAccount() {
             client: client(),
           })
         }
-        icon={<MdPassword {...iconSize(22)} />}
+        icon={<KeyRound {...iconSize(22)} />}
         description={"•••••••••"}
       >
         <Trans>Password</Trans>

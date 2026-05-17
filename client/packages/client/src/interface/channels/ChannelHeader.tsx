@@ -1,5 +1,5 @@
 import { Accessor, Match, Setter, Show, Switch, createMemo, createResource } from "solid-js";
-import { Settings, UserPlus, Users } from "lucide-solid";
+import { Pin, Settings, UserPlus, Users } from "lucide-solid";
 
 import { Trans, t, useLingui } from "@lingui-solid/solid/macro";
 import { Channel } from "stoat.js";
@@ -262,7 +262,7 @@ export function ChannelHeader(props: Props) {
                   })
             }
           >
-            <MdKeep />
+            <Pin />
           </IconButton>
           <Show when={pinCount() && pinCount()! > 0}>
             <PinBadge>{pinCount()}</PinBadge>

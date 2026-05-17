@@ -8,6 +8,8 @@ import {
   useContext,
 } from "solid-js";
 
+import { Star } from "lucide-solid";
+
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
@@ -173,7 +175,7 @@ function GiphySearch() {
                 }}
               >
                 <Show when={isFavourite(gif.url)} fallback={<Symbol size={16}>star_border</Symbol>}>
-                  <MdStarFilled style={{ width: "16px", height: "16px" }} />
+                  <Star style={{ width: "16px", height: "16px", fill: "#fbbf24" }} />
                 </Show>
               </FavBtn>
             </GifThumb>

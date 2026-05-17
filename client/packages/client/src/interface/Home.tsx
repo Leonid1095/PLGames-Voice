@@ -1,5 +1,5 @@
 import { createResource, createSignal, For, Match, Show, Switch } from "solid-js";
-import { CreditCard, Home, MessageSquareDot, PlusCircle, Radio, Settings } from "lucide-solid";
+import { CreditCard, Home, MessageSquareDot, PlusCircle, Radio, Settings, Users } from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { PublicChannelInvite } from "stoat.js";
@@ -357,7 +357,7 @@ export function HomePage() {
                       directly here.
                     </Trans>
                   }
-                  icon={<MdGroups3 />}
+                  icon={<Users />}
                 >
                   <Trans>Go to the PLG Voice community</Trans>
                 </CategoryButton>
@@ -378,7 +378,7 @@ export function HomePage() {
                       directly here.
                     </Trans>
                   }
-                  icon={<MdGroups3 />}
+                  icon={<Users />}
                 >
                   <Trans>Join the PLG Voice community</Trans>
                 </CategoryButton>

@@ -1,5 +1,5 @@
 import { JSX, Match, Show, Switch, splitProps } from "solid-js";
-import { ChevronRight, MessageCircle } from "lucide-solid";
+import { ChevronRight, MessageCircle, Users } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { cva } from "styled-system/css";
@@ -120,7 +120,7 @@ export function RenderAnchor(
           <Switch
             fallback={
               <span class={internalLink()}>
-                <MdPeople {...iconSize("1em")} />
+                <Users {...iconSize("1em")} />
                 <Trans>Unknown Server</Trans>
               </span>
             }
