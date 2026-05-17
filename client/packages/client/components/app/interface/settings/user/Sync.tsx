@@ -1,4 +1,5 @@
 import { Trans } from "@lingui-solid/solid/macro";
+import { Brush, Globe, Palette } from "lucide-solid";
 
 import {
   CategoryButton,
@@ -8,10 +9,6 @@ import {
   Time,
   iconSize,
 } from "@revolt/ui";
-
-import MdBrush from "@material-design-icons/svg/outlined/brush.svg?component-solid";
-import MdLanguage from "@material-design-icons/svg/outlined/language.svg?component-solid";
-import MdPalette from "@material-design-icons/svg/outlined/palette.svg?component-solid";
 
 /**
  * Sync Configuration Page
@@ -23,7 +20,7 @@ export default function Sync() {
         <CategoryButton
           action={<Checkbox checked onChange={(value) => void value} />}
           onClick={() => void 0}
-          icon={<MdPalette {...iconSize(22)} />}
+          icon={<Palette {...iconSize(22)} />}
           description={
             <Trans>
               Sync appearance options, such as chosen emoji pack and message
@@ -36,7 +33,7 @@ export default function Sync() {
         <CategoryButton
           action={<Checkbox checked onChange={(value) => void value} />}
           onClick={() => void 0}
-          icon={<MdBrush {...iconSize(22)} />}
+          icon={<Brush {...iconSize(22)} />}
           description={
             <Trans>Sync your chosen theme, colours, and any custom CSS.</Trans>
           }
@@ -46,7 +43,7 @@ export default function Sync() {
         <CategoryButton
           action={<Checkbox checked onChange={(value) => void value} />}
           onClick={() => void 0}
-          icon={<MdLanguage {...iconSize(22)} />}
+          icon={<Globe {...iconSize(22)} />}
           description={<Trans>Sync your currently chosen language.</Trans>}
         >
           <Trans>Language</Trans>

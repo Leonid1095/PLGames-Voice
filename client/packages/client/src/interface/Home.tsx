@@ -1,4 +1,5 @@
 import { createResource, createSignal, For, Match, Show, Switch } from "solid-js";
+import { CreditCard, Home, MessageSquareDot, PlusCircle, Radio, Settings } from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { PublicChannelInvite } from "stoat.js";
@@ -17,14 +18,6 @@ import {
   iconSize,
   main,
 } from "@revolt/ui";
-
-import MdAddCircle from "@material-design-icons/svg/filled/add_circle.svg?component-solid";
-import MdGroups3 from "@material-design-icons/svg/filled/groups_3.svg?component-solid";
-import MdHome from "@material-design-icons/svg/filled/home.svg?component-solid";
-import MdLive from "@material-design-icons/svg/filled/live_tv.svg?component-solid";
-import MdPayments from "@material-design-icons/svg/filled/payments.svg?component-solid";
-import MdRateReview from "@material-design-icons/svg/filled/rate_review.svg?component-solid";
-import MdSettings from "@material-design-icons/svg/filled/settings.svg?component-solid";
 
 import Wordmark from "../../public/assets/web/wordmark.svg?component-solid";
 
@@ -261,7 +254,7 @@ function ActiveStreams() {
     <Show when={streams() && streams()!.length > 0}>
       <StreamsSection>
         <StreamsTitle>
-          <MdLive {...iconSize(18)} />
+          <Radio {...iconSize(18)} />
           <Trans>Live Streams</Trans>
         </StreamsTitle>
         <StreamsGrid>
@@ -282,7 +275,7 @@ function ActiveStreams() {
                       ? t`viewer`
                       : t`viewers`}
                   </ViewersBadge>
-                  <MdLive
+                  <Radio
                     {...iconSize(48)}
                     style={{ opacity: 0.2 }}
                   />
@@ -320,7 +313,7 @@ export function HomePage() {
     <Base>
       <Header placement="primary">
         <HeaderIcon>
-          <MdHome {...iconSize(22)} />
+          <Home {...iconSize(22)} />
         </HeaderIcon>
         <Trans>Home</Trans>
       </Header>
@@ -350,7 +343,7 @@ export function HomePage() {
                   party.
                 </Trans>
               }
-              icon={<MdAddCircle />}
+              icon={<PlusCircle />}
             >
               <Trans>Create a group or server</Trans>
             </CategoryButton>
@@ -401,7 +394,7 @@ export function HomePage() {
               description={
                 <Trans>Support the project by donating - thank you!</Trans>
               }
-              icon={<MdPayments />}
+              icon={<CreditCard />}
             >
               <Trans>Donate to PLG Voice</Trans>
             </CategoryButton>
@@ -420,7 +413,7 @@ export function HomePage() {
                   Let us know how we can improve our app by giving us feedback.
                 </Trans>
               }
-              icon={<MdRateReview {...iconSize(22)} />}
+              icon={<MessageSquareDot {...iconSize(22)} />}
             >
               <Trans>Give feedback on PLG Voice</Trans>
             </CategoryButton>
@@ -431,7 +424,7 @@ export function HomePage() {
                   You can also click the gear icon in the bottom left.
                 </Trans>
               }
-              icon={<MdSettings />}
+              icon={<Settings />}
             >
               <Trans>Open settings</Trans>
             </CategoryButton>

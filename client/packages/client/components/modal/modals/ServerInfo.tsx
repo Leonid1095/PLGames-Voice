@@ -1,4 +1,5 @@
 import { Show } from "solid-js";
+import { Flag, Settings, Smile, UserPlus } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { css } from "styled-system/css";
@@ -13,11 +14,6 @@ import {
   DialogProps,
   iconSize,
 } from "@revolt/ui";
-
-import MdFace from "@material-design-icons/svg/outlined/face.svg?component-solid";
-import MdPersonAdd from "@material-design-icons/svg/outlined/person_add.svg?component-solid";
-import MdReport from "@material-design-icons/svg/outlined/report.svg?component-solid";
-import MdSettings from "@material-design-icons/svg/outlined/settings.svg?component-solid";
 
 import { useModals } from "..";
 import { Modals } from "../types";
@@ -65,7 +61,7 @@ export function ServerInfoModal(
         <CategoryButtonGroup>
           <Show when={canInvite()}>
             <CategoryButton
-              icon={<MdPersonAdd {...iconSize(22)} />}
+              icon={<UserPlus {...iconSize(22)} />}
               action="chevron"
               onClick={() => {
                 const channel = canInvite()!;
@@ -81,7 +77,7 @@ export function ServerInfoModal(
           </Show>
           <Show when={canOpenSettings()}>
             <CategoryButton
-              icon={<MdSettings {...iconSize(22)} />}
+              icon={<Settings {...iconSize(22)} />}
               action="chevron"
               onClick={() => {
                 props.onClose();
@@ -96,7 +92,7 @@ export function ServerInfoModal(
             </CategoryButton>
           </Show>
           <CategoryButton
-            icon={<MdFace {...iconSize(22)} />}
+            icon={<Smile {...iconSize(22)} />}
             action="chevron"
             onClick={() => {
               props.onClose();
@@ -109,7 +105,7 @@ export function ServerInfoModal(
             <Trans>Edit Identity</Trans>
           </CategoryButton>
           <CategoryButton
-            icon={<MdReport {...iconSize(22)} />}
+            icon={<Flag {...iconSize(22)} />}
             action="chevron"
             onClick={() => {
               props.onClose();

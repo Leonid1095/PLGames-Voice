@@ -1,4 +1,5 @@
 import { Accessor, Match, Setter, Show, Switch, createMemo, createResource } from "solid-js";
+import { Settings, UserPlus, Users } from "lucide-solid";
 
 import { Trans, t, useLingui } from "@lingui-solid/solid/macro";
 import { Channel } from "stoat.js";
@@ -21,10 +22,6 @@ import {
   typography,
 } from "@revolt/ui";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
-
-import MdGroup from "@material-design-icons/svg/outlined/group.svg?component-solid";
-import MdPersonAdd from "@material-design-icons/svg/outlined/person_add.svg?component-solid";
-import MdSettings from "@material-design-icons/svg/outlined/settings.svg?component-solid";
 
 import MdKeep from "../../svg/keep.svg?component-solid";
 import { HeaderIcon } from "../common/CommonHeader";
@@ -220,7 +217,7 @@ export function ChannelHeader(props: Props) {
             },
           }}
         >
-          <MdSettings />
+          <Settings />
         </IconButton>
       </Show>
 
@@ -242,7 +239,7 @@ export function ChannelHeader(props: Props) {
             },
           }}
         >
-          <MdPersonAdd />
+          <UserPlus />
         </Button>
       </Show>
 
@@ -300,7 +297,7 @@ export function ChannelHeader(props: Props) {
             },
           }}
         >
-          <MdGroup />
+          <Users />
         </IconButton>
       </Show>
 

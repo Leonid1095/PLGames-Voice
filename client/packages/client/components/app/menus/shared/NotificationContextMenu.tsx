@@ -1,4 +1,5 @@
 import { For, Match, Show, Switch } from "solid-js";
+import { AtSign, BellOff } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import dayjs from "dayjs";
@@ -6,10 +7,6 @@ import { Channel } from "stoat.js";
 
 import { useState } from "@revolt/state";
 import { Column, Text, Time } from "@revolt/ui";
-
-import MdAlternateEmail from "@material-design-icons/svg/outlined/alternate_email.svg?component-solid";
-import MdNotificationsActive from "@material-design-icons/svg/outlined/notifications_active.svg?component-solid";
-import MdNotificationsOff from "@material-design-icons/svg/outlined/notifications_off.svg?component-solid";
 
 import MdDoNotDisturbOff from "@material-symbols/svg-400/outlined/do_not_disturb_off.svg?component-solid";
 import MdDoNotDisturbOn from "@material-symbols/svg-400/outlined/do_not_disturb_on.svg?component-solid";
@@ -148,7 +145,7 @@ export function NotificationContextMenu(props: { channel: Channel }) {
           <Trans>All Messages</Trans>
         </ContextMenuButton>
         <ContextMenuButton
-          icon={MdAlternateEmail}
+          icon={AtSign}
           onClick={() =>
             state.notifications.setChannel(props.channel, "mention")
           }
@@ -161,7 +158,7 @@ export function NotificationContextMenu(props: { channel: Channel }) {
           <Trans>Mentions Only</Trans>
         </ContextMenuButton>
         <ContextMenuButton
-          icon={MdNotificationsOff}
+          icon={BellOff}
           onClick={() => state.notifications.setChannel(props.channel, "none")}
           actionSymbol={
             state.notifications.getChannel(props.channel) === "none"

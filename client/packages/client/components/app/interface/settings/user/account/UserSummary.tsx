@@ -1,13 +1,11 @@
 import { Show } from "solid-js";
+import { Cake, Pencil } from "lucide-solid";
 
 import { User } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
 import { useTime } from "@revolt/i18n";
 import { Avatar, CategoryButton, IconButton, iconSize } from "@revolt/ui";
-
-import MdCakeFill from "@material-design-icons/svg/filled/cake.svg?component-solid";
-import MdEdit from "@material-design-icons/svg/outlined/edit.svg?component-solid";
 
 export function UserSummary(props: {
   user: User;
@@ -43,7 +41,7 @@ export function UserSummary(props: {
           </Username>
           <Show when={props.onEdit}>
             <IconButton variant="filled" shape="square" onPress={props.onEdit}>
-              <MdEdit />
+              <Pencil />
             </IconButton>
           </Show>
         </ProfileDetails>
@@ -67,7 +65,7 @@ export function UserSummary(props: {
                   },
                 }}
               >
-                <MdCakeFill {...iconSize(14)} />
+                <Cake {...iconSize(14)} />
               </span>
             </ProfileBadges>
           </BottomBar>

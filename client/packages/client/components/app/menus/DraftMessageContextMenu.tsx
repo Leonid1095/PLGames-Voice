@@ -1,4 +1,5 @@
 import { Show } from "solid-js";
+import { RefreshCw, Trash2, X } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { Channel } from "stoat.js";
@@ -6,10 +7,6 @@ import { Channel } from "stoat.js";
 import { useClient } from "@revolt/client";
 import { useState } from "@revolt/state";
 import { UnsentMessage } from "@revolt/state/stores/Draft";
-
-import MdClose from "@material-design-icons/svg/outlined/close.svg?component-solid";
-import MdDelete from "@material-design-icons/svg/outlined/delete.svg?component-solid";
-import MdRefresh from "@material-design-icons/svg/outlined/refresh.svg?component-solid";
 
 import { ContextMenu, ContextMenuButton } from "./ContextMenu";
 
@@ -43,7 +40,7 @@ export function DraftMessageContextMenu(props: Props) {
     <Show when={props.draft.status !== "sending"}>
       <ContextMenu>
         <Show when={false}>
-          <ContextMenuButton icon={MdClose} onClick={deleteMessage} destructive>
+          <ContextMenuButton icon={X} onClick={deleteMessage} destructive>
             <Trans>Cancel message</Trans>
           </ContextMenuButton>
         </Show>
@@ -52,11 +49,11 @@ export function DraftMessageContextMenu(props: Props) {
             props.draft.status === "failed" || props.draft.status === "unsent"
           }
         >
-          <ContextMenuButton icon={MdRefresh} onClick={retrySend}>
+          <ContextMenuButton icon={RefreshCw} onClick={retrySend}>
             <Trans>Retry sending</Trans>
           </ContextMenuButton>
           <ContextMenuButton
-            icon={MdDelete}
+            icon={Trash2}
             onClick={deleteMessage}
             destructive
           >

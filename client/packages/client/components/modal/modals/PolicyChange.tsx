@@ -14,8 +14,6 @@ import {
 } from "@revolt/ui";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
-import MdPolicy from "@material-design-icons/svg/outlined/policy.svg?component-solid";
-
 import { useModals } from "..";
 import { Modals } from "../types";
 

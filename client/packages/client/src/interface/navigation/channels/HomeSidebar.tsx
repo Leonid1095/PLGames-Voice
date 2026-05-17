@@ -1,4 +1,5 @@
 import { Match, Show, Switch, createMemo, splitProps } from "solid-js";
+import { X } from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { VirtualContainer } from "@minht11/solid-virtual-container";
@@ -22,8 +23,6 @@ import {
   typography,
 } from "@revolt/ui";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
-
-import MdClose from "@material-design-icons/svg/outlined/close.svg?component-solid";
 
 import { SidebarBase } from "./common";
 
@@ -361,7 +360,7 @@ function Entry(
               });
             }}
           >
-            <MdClose {...iconSize("18px")} />
+            <X {...iconSize("18px")} />
           </a>
         }
         use:floating={{

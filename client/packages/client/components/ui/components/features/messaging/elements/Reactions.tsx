@@ -1,4 +1,5 @@
 import { For, Show, createMemo } from "solid-js";
+import { Plus } from "lucide-solid";
 
 import { useLingui } from "@lingui-solid/solid/macro";
 import { API } from "stoat.js";
@@ -9,8 +10,6 @@ import { useUsers } from "@revolt/markdown/users";
 import { Ripple, Text } from "@revolt/ui/components/design";
 import { Tooltip } from "@revolt/ui/components/floating";
 import { Row } from "@revolt/ui/components/layout";
-
-import MdAdd from "@material-design-icons/svg/outlined/add.svg?component-solid";
 
 import { startsWithPackPUA } from "@revolt/markdown/emoji/UnicodeEmoji";
 import { CompositionMediaPicker } from "../composition";
@@ -142,7 +141,7 @@ export function Reactions(props: Props) {
             >
               <AddReaction class="add">
                 <Ripple />
-                <MdAdd />
+                <Plus />
               </AddReaction>
             </button>
           )}

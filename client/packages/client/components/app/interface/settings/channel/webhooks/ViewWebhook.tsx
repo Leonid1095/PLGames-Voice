@@ -1,5 +1,6 @@
 import { createFormControl, createFormGroup } from "solid-forms";
 import { Show } from "solid-js";
+import { Copy, Trash2 } from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { useMutation } from "@tanstack/solid-query";
@@ -15,9 +16,6 @@ import {
   Form2,
   Row,
 } from "@revolt/ui";
-
-import MdContentCopy from "@material-design-icons/svg/outlined/content_copy.svg?component-solid";
-import MdDelete from "@material-design-icons/svg/outlined/delete.svg?component-solid";
 
 import { useSettingsNavigation } from "../../Settings";
 
@@ -117,7 +115,7 @@ export function ViewWebhook(props: { webhook: ChannelWebhook }) {
       <Column>
         <CategoryButton
           action="chevron"
-          icon={<MdContentCopy />}
+          icon={<Copy />}
           onClick={() =>
             navigator.clipboard.writeText(
               `${CONFIGURATION.DEFAULT_API_URL}/webhooks/${props.webhook.id}/${props.webhook.token}`,
@@ -128,7 +126,7 @@ export function ViewWebhook(props: { webhook: ChannelWebhook }) {
         </CategoryButton>
         <CategoryButton
           action="chevron"
-          icon={<MdDelete />}
+          icon={<Trash2 />}
           disabled={deleteWebhook.isPending}
           onClick={() => deleteWebhook.mutate()}
         >

@@ -1,19 +1,11 @@
 import { Match, Show, Switch } from "solid-js";
+import { Badge, FolderPlus, LogOut, MessageSquareCheck, Settings, Share2, Trash2, UserPlus } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { Channel } from "stoat.js";
 
 import { useModals } from "@revolt/modal";
 import { useState } from "@revolt/state";
-
-import MdBadge from "@material-design-icons/svg/outlined/badge.svg?component-solid";
-import MdDelete from "@material-design-icons/svg/outlined/delete.svg?component-solid";
-import MdGroupAdd from "@material-design-icons/svg/outlined/group_add.svg?component-solid";
-import MdLibraryAdd from "@material-design-icons/svg/outlined/library_add.svg?component-solid";
-import MdLogout from "@material-design-icons/svg/outlined/logout.svg?component-solid";
-import MdMarkChatRead from "@material-design-icons/svg/outlined/mark_chat_read.svg?component-solid";
-import MdSettings from "@material-design-icons/svg/outlined/settings.svg?component-solid";
-import MdShare from "@material-design-icons/svg/outlined/share.svg?component-solid";
 
 import {
   ContextMenu,
@@ -103,12 +95,12 @@ export function ChannelContextMenu(props: { channel: Channel }) {
         }
       >
         <Show when={props.channel.unread}>
-          <ContextMenuButton icon={MdMarkChatRead} onClick={markAsRead}>
+          <ContextMenuButton icon={MessageSquareCheck} onClick={markAsRead}>
             <Trans>Mark as read</Trans>
           </ContextMenuButton>
         </Show>
         <Show when={props.channel.havePermission("InviteOthers")}>
-          <ContextMenuButton icon={MdGroupAdd} onClick={createInvite}>
+          <ContextMenuButton icon={UserPlus} onClick={createInvite}>
             <Trans>Create invite</Trans>
           </ContextMenuButton>
         </Show>
@@ -120,16 +112,16 @@ export function ChannelContextMenu(props: { channel: Channel }) {
       <ContextMenuDivider />
 
       <Show when={props.channel.server?.havePermission("ManageChannel")}>
-        <ContextMenuButton icon={MdLibraryAdd} onClick={createChannel}>
+        <ContextMenuButton icon={FolderPlus} onClick={createChannel}>
           <Trans>Create channel</Trans>
         </ContextMenuButton>
       </Show>
       <Show when={props.channel.havePermission("ManageChannel")}>
-        <ContextMenuButton icon={MdSettings} onClick={editChannel}>
+        <ContextMenuButton icon={Settings} onClick={editChannel}>
           <Trans>Open channel settings</Trans>
         </ContextMenuButton>
         <ContextMenuButton
-          icon={props.channel.type === "Group" ? MdLogout : MdDelete}
+          icon={props.channel.type === "Group" ? LogOut : Trash2}
           onClick={deleteChannel}
           destructive
         >
@@ -150,11 +142,11 @@ export function ChannelContextMenu(props: { channel: Channel }) {
         <ContextMenuDivider />
       </Show>
 
-      <ContextMenuButton icon={MdShare} onClick={copyLink}>
+      <ContextMenuButton icon={Share2} onClick={copyLink}>
         <Trans>Copy link</Trans>
       </ContextMenuButton>
       <Show when={state.settings.getValue("advanced:copy_id")}>
-        <ContextMenuButton icon={MdBadge} onClick={copyId}>
+        <ContextMenuButton icon={Badge} onClick={copyId}>
           <Trans>Copy channel ID</Trans>
         </ContextMenuButton>
       </Show>

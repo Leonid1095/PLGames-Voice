@@ -1,5 +1,6 @@
 import { BiRegularListUl } from "solid-icons/bi";
 import { Show } from "solid-js";
+import { GripVertical, UserPlus } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { useMutation } from "@tanstack/solid-query";
@@ -9,9 +10,6 @@ import { styled } from "styled-system/jsx";
 import { useModals } from "@revolt/modal";
 import { CategoryButton, Column, Draggable, Text, iconSize } from "@revolt/ui";
 import { createDragHandle } from "@revolt/ui/components/utils/Draggable";
-
-import MdDragIndicator from "@material-design-icons/svg/outlined/drag_indicator.svg?component-solid";
-import MdGroupAdd from "@material-design-icons/svg/outlined/group_add.svg?component-solid";
 
 import { useSettingsNavigation } from "../../Settings";
 
@@ -49,7 +47,7 @@ export function ServerRoleOverview(props: { context: Server }) {
           <Trans>Default Permissions</Trans>
         </CategoryButton>
         <CategoryButton
-          icon={<MdGroupAdd {...iconSize(20)} />}
+          icon={<UserPlus {...iconSize(20)} />}
           action="chevron"
           description={<Trans>Create a new role</Trans>}
           onClick={createRole}
@@ -73,7 +71,7 @@ export function ServerRoleOverview(props: { context: Server }) {
         >
           {(entry) => (
             <ItemContainer>
-              <MdDragIndicator
+              <GripVertical
                 {...createDragHandle(entry.dragDisabled, entry.setDragDisabled)}
               />
 

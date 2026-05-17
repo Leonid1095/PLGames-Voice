@@ -1,3 +1,4 @@
+import { ArrowLeft, Plus, Star, Trash2 } from "lucide-solid";
 import {
   For,
   Match,
@@ -21,12 +22,6 @@ import {
 import { Column, Row } from "@revolt/ui/components/layout";
 
 import { CompositionMediaPickerContext } from "./CompositionMediaPicker";
-
-import MdAdd from "@material-design-icons/svg/outlined/add.svg?component-solid";
-import MdDelete from "@material-design-icons/svg/outlined/delete.svg?component-solid";
-import MdArrowBack from "@material-design-icons/svg/outlined/arrow_back.svg?component-solid";
-import MdStar from "@material-design-icons/svg/outlined/star.svg?component-solid";
-import MdStarFilled from "@material-design-icons/svg/filled/star.svg?component-solid";
 
 type View =
   | { type: "list" }
@@ -83,7 +78,7 @@ function CollectionList(props: {
           <Trans>My GIFs</Trans>
         </Text>
         <IconButton onPress={props.onCreate}>
-          <MdAdd />
+          <Plus />
         </IconButton>
       </Row>
 
@@ -95,7 +90,7 @@ function CollectionList(props: {
         }}
         onClick={props.onFavourites}
       >
-        <MdStar />
+        <Star />
         <span>
           <Trans>Favourites</Trans>
         </span>
@@ -150,7 +145,7 @@ function CreateCollection(props: {
             props.onBack();
           }}
         >
-          <MdArrowBack />
+          <ArrowLeft />
         </IconButton>
         <Text class="title">
           <Trans>New collection</Trans>
@@ -184,7 +179,7 @@ function FavouritesView(props: { onBack: () => void }) {
     <Column gap="sm">
       <Row align gap="sm">
         <IconButton onPress={props.onBack}>
-          <MdArrowBack />
+          <ArrowLeft />
         </IconButton>
         <Text class="title">
           <Trans>Favourites</Trans>
@@ -208,7 +203,7 @@ function FavouritesView(props: { onBack: () => void }) {
                   state.gifCollections.removeFavourite(gif.url);
                 }}
               >
-                <MdDelete />
+                <Trash2 />
               </RemoveBtn>
             </GifThumb>
           )}
@@ -260,13 +255,13 @@ function CollectionView(props: { id: string; onBack: () => void }) {
     <Column gap="sm">
       <Row align gap="sm">
         <IconButton onPress={props.onBack}>
-          <MdArrowBack />
+          <ArrowLeft />
         </IconButton>
         <Text class="title" style={{ "flex-grow": 1 }}>
           {collection()?.name}
         </Text>
         <IconButton onPress={uploadGif}>
-          <MdAdd />
+          <Plus />
         </IconButton>
         <IconButton
           onPress={() => {
@@ -274,7 +269,7 @@ function CollectionView(props: { id: string; onBack: () => void }) {
             props.onBack();
           }}
         >
-          <MdDelete />
+          <Trash2 />
         </IconButton>
       </Row>
 
@@ -302,7 +297,7 @@ function CollectionView(props: { id: string; onBack: () => void }) {
                   state.gifCollections.removeGif(props.id, gif.url);
                 }}
               >
-                <MdDelete />
+                <Trash2 />
               </RemoveBtn>
             </GifThumb>
           )}

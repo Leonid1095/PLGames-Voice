@@ -1,3 +1,4 @@
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-solid";
 import {
   For,
   JSXElement,
@@ -9,11 +10,6 @@ import {
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
-
-import MdChevronLeft from "@material-design-icons/svg/outlined/chevron_left.svg?component-solid";
-import MdChevronRight from "@material-design-icons/svg/outlined/chevron_right.svg?component-solid";
-import MdFirstPage from "@material-design-icons/svg/outlined/first_page.svg?component-solid";
-import MdLastPage from "@material-design-icons/svg/outlined/last_page.svg?component-solid";
 
 import { Row } from "../layout";
 
@@ -101,28 +97,28 @@ export function DataTable(props: Props) {
                       isDisabled={page() === 0}
                       onPress={() => setPage(0)}
                     >
-                      <MdFirstPage />
+                      <ChevronsLeft />
                     </Button>
                     <Button
                       shape="round"
                       isDisabled={page() === 0}
                       onPress={() => setPage((page) => page - 1)}
                     >
-                      <MdChevronLeft />
+                      <ChevronLeft />
                     </Button>
                     <Button
                       shape="round"
                       isDisabled={page() === lastPage()}
                       onPress={() => setPage((page) => page + 1)}
                     >
-                      <MdChevronRight />
+                      <ChevronRight />
                     </Button>
                     <Button
                       shape="round"
                       isDisabled={page() === lastPage()}
                       onPress={() => setPage(lastPage())}
                     >
-                      <MdLastPage />
+                      <ChevronsRight />
                     </Button>
                   </Row>
                 </Pagination>

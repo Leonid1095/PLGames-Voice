@@ -1,4 +1,5 @@
 import { For, Show } from "solid-js";
+import { AtSign, Badge, BellOff, Flag, LogOut, MessageSquareCheck, Settings, Smile, UserPlus } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import dayjs from "dayjs";
@@ -8,17 +9,6 @@ import { useClient } from "@revolt/client";
 import { useModals } from "@revolt/modal";
 import { useState } from "@revolt/state";
 import { Column, Text, Time } from "@revolt/ui";
-
-import MdAlternateEmail from "@material-design-icons/svg/outlined/alternate_email.svg?component-solid";
-import MdBadge from "@material-design-icons/svg/outlined/badge.svg?component-solid";
-import MdFace from "@material-design-icons/svg/outlined/face.svg?component-solid";
-import MdLogout from "@material-design-icons/svg/outlined/logout.svg?component-solid";
-import MdMarkChatRead from "@material-design-icons/svg/outlined/mark_chat_read.svg?component-solid";
-import MdNotificationsActive from "@material-design-icons/svg/outlined/notifications_active.svg?component-solid";
-import MdNotificationsOff from "@material-design-icons/svg/outlined/notifications_off.svg?component-solid";
-import MdPersonAdd from "@material-design-icons/svg/outlined/person_add.svg?component-solid";
-import MdReport from "@material-design-icons/svg/outlined/report.svg?component-solid";
-import MdSettings from "@material-design-icons/svg/outlined/settings.svg?component-solid";
 
 import MdDoNotDisturbOff from "@material-symbols/svg-400/outlined/do_not_disturb_off.svg?component-solid";
 import MdDoNotDisturbOn from "@material-symbols/svg-400/outlined/do_not_disturb_on.svg?component-solid";
@@ -150,7 +140,7 @@ export function ServerContextMenu(props: { server: Server }) {
   return (
     <ContextMenu>
       <Show when={props.server.unread}>
-        <ContextMenuButton icon={MdMarkChatRead} onClick={markAsRead}>
+        <ContextMenuButton icon={MessageSquareCheck} onClick={markAsRead}>
           <Trans>Mark as read</Trans>
         </ContextMenuButton>
         <ContextMenuDivider />
@@ -238,7 +228,7 @@ export function ServerContextMenu(props: { server: Server }) {
           <Trans>All Messages</Trans>
         </ContextMenuButton>
         <ContextMenuButton
-          icon={MdAlternateEmail}
+          icon={AtSign}
           onClick={() => state.notifications.setServer(props.server, "mention")}
           actionSymbol={
             state.notifications.computeForServer(props.server) === "mention"
@@ -249,7 +239,7 @@ export function ServerContextMenu(props: { server: Server }) {
           <Trans>Mentions Only</Trans>
         </ContextMenuButton>
         <ContextMenuButton
-          icon={MdNotificationsOff}
+          icon={BellOff}
           onClick={() => state.notifications.setServer(props.server, "none")}
           actionSymbol={
             state.notifications.computeForServer(props.server) === "none"
@@ -263,17 +253,17 @@ export function ServerContextMenu(props: { server: Server }) {
       <ContextMenuDivider />
 
       <Show when={permissionInviteOthers()}>
-        <ContextMenuButton icon={MdPersonAdd} onClick={createInvite}>
+        <ContextMenuButton icon={UserPlus} onClick={createInvite}>
           <Trans>Create invite</Trans>
         </ContextMenuButton>
       </Show>
       <Show when={permissionEditIdentity()}>
-        <ContextMenuButton icon={MdFace} onClick={editIdentity}>
+        <ContextMenuButton icon={Smile} onClick={editIdentity}>
           <Trans>Edit your identity</Trans>
         </ContextMenuButton>
       </Show>
       <Show when={permissionServerSettings()}>
-        <ContextMenuButton icon={MdSettings} onClick={openSettings}>
+        <ContextMenuButton icon={Settings} onClick={openSettings}>
           <Trans>Open server settings</Trans>
         </ContextMenuButton>
       </Show>
@@ -287,11 +277,11 @@ export function ServerContextMenu(props: { server: Server }) {
         <ContextMenuDivider />
       </Show>
 
-      <ContextMenuButton icon={MdReport} onClick={report} destructive>
+      <ContextMenuButton icon={Flag} onClick={report} destructive>
         <Trans>Report server</Trans>
       </ContextMenuButton>
       <Show when={!props.server.owner?.self}>
-        <ContextMenuButton icon={MdLogout} onClick={leave} destructive>
+        <ContextMenuButton icon={LogOut} onClick={leave} destructive>
           <Trans>Leave server</Trans>
         </ContextMenuButton>
       </Show>
@@ -300,7 +290,7 @@ export function ServerContextMenu(props: { server: Server }) {
         <ContextMenuDivider />
       </Show>
       <Show when={state.settings.getValue("advanced:copy_id")}>
-        <ContextMenuButton icon={MdBadge} onClick={copyId}>
+        <ContextMenuButton icon={Badge} onClick={copyId}>
           <Trans>Copy server ID</Trans>
         </ContextMenuButton>
       </Show>

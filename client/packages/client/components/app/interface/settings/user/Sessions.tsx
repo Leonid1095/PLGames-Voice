@@ -1,3 +1,4 @@
+import { LogOut } from "lucide-solid";
 import {
   BiLogosAndroid,
   BiLogosApple,
@@ -30,8 +31,6 @@ import {
   Time,
   iconSize,
 } from "@revolt/ui";
-
-import MdLogout from "@material-design-icons/svg/outlined/logout.svg?component-solid";
 
 /**
  * Sessions
@@ -115,7 +114,7 @@ function ManageCurrentSession(props: { otherSessions: Accessor<Session[]> }) {
               client: client(),
             })
           }
-          icon={<MdLogout {...iconSize(24)} fill="var(--md-sys-color-error)" />}
+          icon={<LogOut {...iconSize(24)} fill="var(--md-sys-color-error)" />}
           description={
             <Trans>Logs you out of all sessions except this device.</Trans>
           }

@@ -1,4 +1,5 @@
 import { For, Show, createMemo, createSignal } from "solid-js";
+import { Compass, Search, Users } from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
@@ -6,10 +7,6 @@ import { styled } from "styled-system/jsx";
 import { useClient } from "@revolt/client";
 import { useNavigate } from "@revolt/routing";
 import { Avatar, Button, Column, Text } from "@revolt/ui";
-
-import MdExplore from "@material-design-icons/svg/filled/explore.svg?component-solid";
-import MdGroup from "@material-design-icons/svg/filled/group.svg?component-solid";
-import MdSearch from "@material-design-icons/svg/filled/search.svg?component-solid";
 
 const RE_INVITE_URL = /(?:invite)\/([a-z0-9]+)/gi;
 
@@ -62,14 +59,14 @@ export function Discover() {
     <Base>
       <Container>
         <Header>
-          <MdExplore width={32} height={32} />
+          <Compass width={32} height={32} />
           <h2>
             <Trans>Browse servers</Trans>
           </h2>
         </Header>
 
         <SearchBox>
-          <MdSearch width={20} height={20} />
+          <Search width={20} height={20} />
           <input
             type="text"
             placeholder={t`Search servers by name...`}
@@ -104,7 +101,7 @@ export function Discover() {
                     <CardInfo>
                       <CardName>{server.name}</CardName>
                       <CardMeta>
-                        <MdGroup width={14} height={14} />
+                        <Users width={14} height={14} />
                         <Trans>{server.memberCount ?? "?"} members</Trans>
                       </CardMeta>
                     </CardInfo>

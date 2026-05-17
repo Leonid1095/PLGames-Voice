@@ -1,12 +1,11 @@
 import { Accessor, For, Setter, Show, onMount } from "solid-js";
+import { AlertCircle, ArrowUpRight } from "lucide-solid";
 
 import { styled } from "styled-system/jsx";
 
 import { Column, OverflowingText, Ripple } from "@revolt/ui";
 
-// import MdError from "@material-design-icons/svg/filled/error.svg?component-solid";
-// import MdOpenInNew from "@material-design-icons/svg/filled/open_in_new.svg?component-solid";
-import { SettingsList } from "..";
+// // import { SettingsList } from "..";
 import { useSettingsNavigation } from "../Settings";
 
 import {
@@ -69,11 +68,11 @@ export function SettingsSidebar(props: {
                                 </SidebarButtonContent>
                               </SidebarButtonTitle>
                               {/*<SidebarButtonIcon>
-                                <MdOpenInNew
+                                <ArrowUpRight
                                   {...iconSize(20)}
                                   fill={theme!.colour("primary")}
                                 />
-                                <MdError
+                                <AlertCircle
                                   {...iconSize(20)}
                                   fill={theme!.colour("primary")}
                                 />

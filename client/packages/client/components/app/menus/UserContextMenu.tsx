@@ -1,4 +1,5 @@
 import { JSX, Match, Show, Switch } from "solid-js";
+import { AtSign, Badge, BadgeCheck, Ban, Flag, MessageCircle, MicOff, MinusCircle, PlusCircle, Shield, Smile, X } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { useNavigate } from "@solidjs/router";
@@ -9,22 +10,6 @@ import { useModals } from "@revolt/modal";
 import { useSmartParams } from "@revolt/routing";
 import { useState } from "@revolt/state";
 import { Slider, Text } from "@revolt/ui";
-
-import MdAddCircleOutline from "@material-design-icons/svg/outlined/add_circle_outline.svg?component-solid";
-import MdAdminPanelSettings from "@material-design-icons/svg/outlined/admin_panel_settings.svg?component-solid";
-import MdAlternateEmail from "@material-design-icons/svg/outlined/alternate_email.svg?component-solid";
-import MdAssignmentInd from "@material-design-icons/svg/outlined/assignment_ind.svg?component-solid";
-import MdBadge from "@material-design-icons/svg/outlined/badge.svg?component-solid";
-import MdBlock from "@material-design-icons/svg/outlined/block.svg?component-solid";
-import MdCancel from "@material-design-icons/svg/outlined/cancel.svg?component-solid";
-import MdChat from "@material-design-icons/svg/outlined/chat.svg?component-solid";
-import MdClose from "@material-design-icons/svg/outlined/close.svg?component-solid";
-import MdDoNotDisturbOn from "@material-design-icons/svg/outlined/do_not_disturb_on.svg?component-solid";
-import MdFace from "@material-design-icons/svg/outlined/face.svg?component-solid";
-import MdMicOff from "@material-design-icons/svg/outlined/mic_off.svg?component-solid";
-import MdPersonAddAlt from "@material-design-icons/svg/outlined/person_add_alt.svg?component-solid";
-import MdPersonRemove from "@material-design-icons/svg/outlined/person_remove.svg?component-solid";
-import MdReport from "@material-design-icons/svg/outlined/report.svg?component-solid";
 
 import MdChecked from "@material-symbols/svg-400/outlined/check_box.svg?component-solid";
 import MdUnchecked from "@material-symbols/svg-400/outlined/check_box_outline_blank.svg?component-solid";
@@ -214,7 +199,7 @@ export function UserContextMenu(props: {
           />
         </ContextMenuButton>
         <ContextMenuButton
-          icon={MdMicOff}
+          icon={MicOff}
           onClick={() =>
             state.voice.setUserMuted(
               props.user.id,
@@ -232,17 +217,17 @@ export function UserContextMenu(props: {
       </Show>
 
       <Show when={props.channel?.type === "DirectMessage"}>
-        <ContextMenuButton icon={MdClose} onClick={closeDm}>
+        <ContextMenuButton icon={X} onClick={closeDm}>
           <Trans>Close chat</Trans>
         </ContextMenuButton>
       </Show>
       <Show when={props.channel?.type === "TextChannel"}>
-        <ContextMenuButton icon={MdAlternateEmail} onClick={mention}>
+        <ContextMenuButton icon={AtSign} onClick={mention}>
           <Trans>Mention</Trans>
         </ContextMenuButton>
       </Show>
       <Show when={props.user.relationship === "Friend"}>
-        <ContextMenuButton icon={MdChat} onClick={openDm}>
+        <ContextMenuButton icon={MessageCircle} onClick={openDm}>
           <Trans>Message</Trans>
         </ContextMenuButton>
       </Show>
@@ -274,7 +259,7 @@ export function UserContextMenu(props: {
               props.member!.inferiorTo(props.member!.server!.member!))
         }
       >
-        <ContextMenuButton icon={MdFace} onClick={editIdentity}>
+        <ContextMenuButton icon={Smile} onClick={editIdentity}>
           <Switch fallback={<Trans>Edit identity</Trans>}>
             <Match when={props.user.self}>
               <Trans>Edit your identity</Trans>
@@ -291,7 +276,7 @@ export function UserContextMenu(props: {
               props.member.inferiorTo(props.member.server.member!))
           }
         >
-          <ContextMenuButton icon={MdAssignmentInd} onClick={editRoles}>
+          <ContextMenuButton icon={BadgeCheck} onClick={editRoles}>
             <Trans>Edit roles</Trans>
           </ContextMenuButton>
         </Show>
@@ -319,7 +304,7 @@ export function UserContextMenu(props: {
           }
         >
           <ContextMenuButton
-            icon={MdDoNotDisturbOn}
+            icon={MinusCircle}
             onClick={banMember}
             destructive
           >
@@ -337,7 +322,7 @@ export function UserContextMenu(props: {
         }
       >
         <ContextMenuButton
-          icon={MdDoNotDisturbOn}
+          icon={MinusCircle}
           onClick={banUser}
           destructive
         >
@@ -346,7 +331,7 @@ export function UserContextMenu(props: {
       </Show>
 
       <Show when={!props.user.self}>
-        <ContextMenuButton icon={MdReport} onClick={reportUser} destructive>
+        <ContextMenuButton icon={Flag} onClick={reportUser} destructive>
           <Trans>Report user</Trans>
         </ContextMenuButton>
         {/* TODO: #286 show profile / message */}
@@ -366,22 +351,22 @@ export function UserContextMenu(props: {
           </ContextMenuButton>
         </Show>
         <Show when={props.user.relationship === "Incoming"}>
-          <ContextMenuButton icon={MdCancel} onClick={removeFriend}>
+          <ContextMenuButton icon={X} onClick={removeFriend}>
             <Trans>Reject friend request</Trans>
           </ContextMenuButton>
         </Show>
         <Show when={props.user.relationship === "Outgoing"}>
-          <ContextMenuButton icon={MdCancel} onClick={removeFriend}>
+          <ContextMenuButton icon={X} onClick={removeFriend}>
             <Trans>Cancel friend request</Trans>
           </ContextMenuButton>
         </Show>
         <Show when={props.user.relationship !== "Blocked"}>
-          <ContextMenuButton icon={MdBlock} onClick={blockUser}>
+          <ContextMenuButton icon={Ban} onClick={blockUser}>
             <Trans>Block user</Trans>
           </ContextMenuButton>
         </Show>
         <Show when={props.user.relationship === "Blocked"}>
-          <ContextMenuButton icon={MdAddCircleOutline} onClick={unblockUser}>
+          <ContextMenuButton icon={PlusCircle} onClick={unblockUser}>
             <Trans>Unblock user</Trans>
           </ContextMenuButton>
         </Show>
@@ -397,12 +382,12 @@ export function UserContextMenu(props: {
       </Show>
 
       <Show when={state.settings.getValue("advanced:admin_panel")}>
-        <ContextMenuButton icon={MdAdminPanelSettings} onClick={openAdminPanel}>
+        <ContextMenuButton icon={Shield} onClick={openAdminPanel}>
           <Trans>Admin Panel</Trans>
         </ContextMenuButton>
       </Show>
       <Show when={state.settings.getValue("advanced:copy_id")}>
-        <ContextMenuButton icon={MdBadge} onClick={copyId}>
+        <ContextMenuButton icon={Badge} onClick={copyId}>
           <Trans>Copy user ID</Trans>
         </ContextMenuButton>
       </Show>

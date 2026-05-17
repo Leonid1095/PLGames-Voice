@@ -1,4 +1,5 @@
 import { For, createMemo } from "solid-js";
+import { AlertCircle, Calendar, Clock, Globe } from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 
@@ -17,13 +18,6 @@ import {
   Time,
   iconSize,
 } from "@revolt/ui";
-
-import MdErrorFill from "@material-design-icons/svg/filled/error.svg?component-solid";
-import MdVerifiedFill from "@material-design-icons/svg/filled/verified.svg?component-solid";
-import MdCalendarMonth from "@material-design-icons/svg/outlined/calendar_month.svg?component-solid";
-import MdLanguage from "@material-design-icons/svg/outlined/language.svg?component-solid";
-import MdSchedule from "@material-design-icons/svg/outlined/schedule.svg?component-solid";
-import MdTranslate from "@material-design-icons/svg/outlined/translate.svg?component-solid";
 
 /**
  * Language
@@ -87,7 +81,7 @@ function PickLanguage() {
 
   return (
     <CategoryCollapse
-      icon={<MdLanguage {...iconSize(22)} />}
+      icon={<Globe {...iconSize(22)} />}
       title={<Trans>Select your language</Trans>}
       description={currentLanguage().display}
       scrollable
@@ -108,7 +102,7 @@ function PickLanguage() {
                 />
               )}{" "}
               {lang.incomplete && (
-                <MdErrorFill
+                <AlertCircle
                   {...iconSize(18)}
                   fill="var(--md-sys-color-on-surface)"
                 />
@@ -134,7 +128,7 @@ function PickDateFormat() {
 
   return (
     <CategoryCollapse
-      icon={<MdCalendarMonth {...iconSize(22)} />}
+      icon={<Calendar {...iconSize(22)} />}
       title={t`Select date format`}
       description={
         date() === "DD/MM/YYYY"
@@ -184,7 +178,7 @@ function PickTimeFormat() {
 
   return (
     <CategoryCollapse
-      icon={<MdSchedule {...iconSize(22)} />}
+      icon={<Clock {...iconSize(22)} />}
       title={t`Select time format`}
       description={time() === "HH:mm" ? t`24 hours` : t`12 hours`}
     >

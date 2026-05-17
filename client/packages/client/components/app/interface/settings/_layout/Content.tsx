@@ -1,11 +1,10 @@
 import { Accessor, JSX, Show } from "solid-js";
+import { X } from "lucide-solid";
 
 import { css, cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
 import { Breadcrumbs, IconButton, Text } from "@revolt/ui";
-
-import MdClose from "@material-design-icons/svg/outlined/close.svg?component-solid";
 
 import { SettingsList } from "..";
 import { useSettingsNavigation } from "../Settings";
@@ -48,7 +47,7 @@ export function SettingsContent(props: {
       <Show when={props.onClose}>
         <CloseAction>
           <IconButton variant="tonal" onPress={props.onClose}>
-            <MdClose />
+            <X />
           </IconButton>
         </CloseAction>
       </Show>

@@ -1,10 +1,8 @@
 import { Match, Show, Switch, splitProps } from "solid-js";
+import { Camera, X } from "lucide-solid";
 
 import { css } from "styled-system/css";
 import { styled } from "styled-system/jsx";
-
-import MdClose from "@material-design-icons/svg/filled/close.svg?component-solid";
-import MdAddAPhoto from "@material-design-icons/svg/filled/add_a_photo.svg?component-solid";
 
 import { Button, Ripple } from "../../design";
 import { Row } from "../../layout";
@@ -126,7 +124,7 @@ export function FileInput(props: Props) {
               when={local.file}
               fallback={
                 <UploadPlaceholder>
-                  <MdAddAPhoto
+                  <Camera
                     fill="currentColor"
                     width="24"
                     height="24"
@@ -144,7 +142,7 @@ export function FileInput(props: Props) {
               onPress={onClear}
               isDisabled={!props.file}
             >
-              <MdClose />
+              <X />
             </Button>
           </Show>
         </Row>

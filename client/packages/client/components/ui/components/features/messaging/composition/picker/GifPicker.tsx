@@ -14,8 +14,6 @@ import { styled } from "styled-system/jsx";
 import { useState } from "@revolt/state";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
-import MdStarFilled from "@material-design-icons/svg/filled/star.svg?component-solid";
-
 import { CompositionMediaPickerContext } from "./CompositionMediaPicker";
 import { MyGifPicker } from "./MyGifPicker";
 

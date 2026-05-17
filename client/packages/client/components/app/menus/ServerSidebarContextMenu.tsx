@@ -1,11 +1,10 @@
 import { Show } from "solid-js";
+import { FolderPlus } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { Server } from "stoat.js";
 
 import { useModals } from "@revolt/modal";
-
-import MdLibraryAdd from "@material-design-icons/svg/outlined/library_add.svg?component-solid";
 
 import { ContextMenu, ContextMenuButton } from "./ContextMenu";
 
@@ -38,10 +37,10 @@ export function ServerSidebarContextMenu(props: { server: Server }) {
   return (
     <ContextMenu>
       <Show when={props.server?.havePermission("ManageChannel")}>
-        <ContextMenuButton icon={MdLibraryAdd} onClick={createChannel}>
+        <ContextMenuButton icon={FolderPlus} onClick={createChannel}>
           <Trans>Create channel</Trans>
         </ContextMenuButton>
-        <ContextMenuButton icon={MdLibraryAdd} onClick={createCategory}>
+        <ContextMenuButton icon={FolderPlus} onClick={createCategory}>
           <Trans>Create category</Trans>
         </ContextMenuButton>
       </Show>

@@ -1,5 +1,6 @@
 import { createFormControl, createFormGroup } from "solid-forms";
 import { Show, createEffect, createSignal, on } from "solid-js";
+import { Badge } from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { useQuery, useQueryClient } from "@tanstack/solid-query";
@@ -15,8 +16,6 @@ import {
   Row,
   Text,
 } from "@revolt/ui";
-
-import MdBadge from "@material-design-icons/svg/filled/badge.svg?component-solid";
 
 import { useSettingsNavigation } from "../../Settings";
 
@@ -173,7 +172,7 @@ export function UserProfileEditor(props: Props) {
 
         <Show when={!props.user.bot}>
           <CategoryButton
-            icon={<MdBadge />}
+            icon={<Badge />}
             action="chevron"
             description={
               <Trans>Go to account settings to edit your username</Trans>

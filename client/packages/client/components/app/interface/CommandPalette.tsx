@@ -1,3 +1,4 @@
+import { Hash, MessageCircle, Server, Settings, User, Volume2 } from "lucide-solid";
 import {
   For,
   Show,
@@ -14,13 +15,6 @@ import { styled } from "styled-system/jsx";
 
 import { useClient } from "@revolt/client";
 import { useNavigate } from "@revolt/routing";
-
-import MdTag from "@material-design-icons/svg/outlined/tag.svg?component-solid";
-import MdVolumeUp from "@material-design-icons/svg/outlined/volume_up.svg?component-solid";
-import MdPerson from "@material-design-icons/svg/outlined/person.svg?component-solid";
-import MdDns from "@material-design-icons/svg/outlined/dns.svg?component-solid";
-import MdChat from "@material-design-icons/svg/outlined/chat.svg?component-solid";
-import MdSettings from "@material-design-icons/svg/outlined/settings.svg?component-solid";
 
 interface SearchResult {
   id: string;
@@ -199,17 +193,17 @@ export function CommandPalette() {
   const iconFor = (icon?: string) => {
     switch (icon) {
       case "voice":
-        return <MdVolumeUp />;
+        return <Volume2 />;
       case "person":
-        return <MdPerson />;
+        return <User />;
       case "server":
-        return <MdDns />;
+        return <Server />;
       case "dm":
-        return <MdChat />;
+        return <MessageCircle />;
       case "settings":
-        return <MdSettings />;
+        return <Settings />;
       default:
-        return <MdTag />;
+        return <Hash />;
     }
   };
 

@@ -1,5 +1,6 @@
 import { createFormControl, createFormGroup } from "solid-forms";
 import { For, Show, createMemo, createSignal } from "solid-js";
+import { Copy, Trash2 } from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { API, Server, ServerRole } from "stoat.js";
@@ -17,9 +18,7 @@ import {
   Text,
 } from "@revolt/ui";
 
-import MdContentCopy from "@material-design-icons/svg/outlined/content_copy.svg?component-solid";
-import MdDelete from "@material-design-icons/svg/outlined/delete.svg?component-solid";
-import MDPalette from "@material-design-icons/svg/outlined/palette.svg?component-solid";
+import { Palette as MDPalette } from "lucide-solid";
 
 import { useSettingsNavigation } from "../../Settings";
 import { ChannelPermissionsEditor } from "../../channel/permissions/ChannelPermissionsEditor";
@@ -204,14 +203,14 @@ export function ServerRoleEditor(props: { context: Server; roleId: string }) {
       <Column>
         <CategoryButton
           action="chevron"
-          icon={<MdContentCopy />}
+          icon={<Copy />}
           onClick={() => navigator.clipboard.writeText(`${props.roleId}`)}
         >
           <Trans>Copy role ID</Trans>
         </CategoryButton>
         <CategoryButton
           action="chevron"
-          icon={<MdDelete />}
+          icon={<Trash2 />}
           onClick={() =>
             openModal({
               type: "delete_role",

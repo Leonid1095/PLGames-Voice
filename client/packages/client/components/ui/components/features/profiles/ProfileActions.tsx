@@ -1,4 +1,5 @@
 import { Show } from "solid-js";
+import { MoreVertical, Pencil, X } from "lucide-solid";
 
 import { useNavigate } from "@solidjs/router";
 import { ServerMember, User } from "stoat.js";
@@ -6,10 +7,6 @@ import { styled } from "styled-system/jsx";
 
 import { UserContextMenu } from "@revolt/app";
 import { useModals } from "@revolt/modal";
-
-import MdCancel from "@material-design-icons/svg/filled/cancel.svg?component-solid";
-import MdEdit from "@material-design-icons/svg/filled/edit.svg?component-solid";
-import MdMoreVert from "@material-design-icons/svg/filled/more_vert.svg?component-solid";
 
 import { Button, IconButton } from "../../design";
 import { dismissFloatingElements } from "../../floating";
@@ -57,7 +54,7 @@ export function ProfileActions(props: {
           Accept friend request
         </Button>
         <IconButton onPress={() => props.user.removeFriend()}>
-          <MdCancel />
+          <X />
         </IconButton>
       </Show>
       <Show when={props.user.relationship === "Outgoing"}>
@@ -82,7 +79,7 @@ export function ProfileActions(props: {
         }
       >
         <IconButton onPress={openEdit}>
-          <MdEdit {...iconSize(16)} />
+          <Pencil {...iconSize(16)} />
         </IconButton>
       </Show>
 
@@ -94,7 +91,7 @@ export function ProfileActions(props: {
           contextMenuHandler: "click",
         }}
       >
-        <MdMoreVert />
+        <MoreVertical />
       </IconButton>
     </Actions>
   );

@@ -1,4 +1,5 @@
 import { Accessor, Show } from "solid-js";
+import { X } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { css } from "styled-system/css";
@@ -8,8 +9,6 @@ import { decodeTime } from "ulid";
 import { useTime } from "@revolt/i18n";
 import { Ripple } from "@revolt/ui/components/design";
 import { iconSize } from "@revolt/ui/components/utils";
-
-import MdClose from "@material-design-icons/svg/filled/close.svg?component-solid";
 
 import { FloatingIndicator } from "./FloatingIndicator";
 
@@ -59,7 +58,7 @@ export function NewMessages(props: Props) {
           <Trans>Jump to the beginning</Trans>
         </span>
         <CancelIcon onClick={onCancel}>
-          <MdClose {...iconSize(16)} />
+          <X {...iconSize(16)} />
         </CancelIcon>
       </FloatingIndicator>
     </Show>

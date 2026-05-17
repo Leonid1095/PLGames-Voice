@@ -1,3 +1,4 @@
+import { ChevronRight } from "lucide-solid";
 import { useFloating } from "solid-floating-ui";
 import {
   Component,
@@ -14,8 +15,6 @@ import { autoUpdate, offset, shift } from "@floating-ui/dom";
 import { styled } from "styled-system/jsx";
 
 import { Text, iconSize, symbolSize } from "@revolt/ui";
-
-import MdChevronRight from "@material-design-icons/svg/outlined/chevron_right.svg?component-solid";
 
 const Base = styled("div", {
   base: {
@@ -196,7 +195,7 @@ export function ContextMenuSubMenu(
       <ContextMenuButton
         ref={setAnchor}
         selected={isShowing()}
-        actionIcon={MdChevronRight}
+        actionIcon={ChevronRight}
         onMouseDown={(e) => {
           e.stopImmediatePropagation();
         }}

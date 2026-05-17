@@ -1,3 +1,4 @@
+import { ArrowUpRight, ChevronDown, ChevronRight, Copy } from "lucide-solid";
 import {
   ComponentProps,
   For,
@@ -11,11 +12,6 @@ import {
 
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
-
-import MdChevronRight from "@material-design-icons/svg/outlined/chevron_right.svg?component-solid";
-import MdContentCopy from "@material-design-icons/svg/outlined/content_copy.svg?component-solid";
-import MdKeyboardDown from "@material-design-icons/svg/outlined/keyboard_arrow_down.svg?component-solid";
-import MdOpenInNew from "@material-design-icons/svg/outlined/open_in_new.svg?component-solid";
 
 import { OverflowingText, iconSize } from "../utils";
 
@@ -84,22 +80,22 @@ export function CategoryButton(props: Props) {
           <Switch fallback={action}>
             <Match when={action === "chevron"}>
               <Action>
-                <MdChevronRight {...iconSize(18)} />
+                <ChevronRight {...iconSize(18)} />
               </Action>
             </Match>
             <Match when={action === "collapse"}>
               <Action>
-                <MdKeyboardDown {...iconSize(18)} />
+                <ChevronDown {...iconSize(18)} />
               </Action>
             </Match>
             <Match when={action === "external"}>
               <Action>
-                <MdOpenInNew {...iconSize(18)} />
+                <ArrowUpRight {...iconSize(18)} />
               </Action>
             </Match>
             <Match when={action === "copy"}>
               <Action>
-                <MdContentCopy {...iconSize(18)} />
+                <Copy {...iconSize(18)} />
               </Action>
             </Match>
           </Switch>

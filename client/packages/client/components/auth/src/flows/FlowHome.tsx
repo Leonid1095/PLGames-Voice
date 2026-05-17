@@ -1,4 +1,5 @@
 import { Match, Show, Switch } from "solid-js";
+import { ArrowLeft } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
@@ -16,8 +17,6 @@ import {
   Text,
   iconSize,
 } from "@revolt/ui";
-
-import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
 
 import { FlowBase, FlowTitle } from "./Flow";
 import { Fields, Form } from "./Form";
@@ -173,7 +172,7 @@ export default function FlowHome() {
                   })
                 }
               >
-                <MdArrowBack {...iconSize("1.2em")} /> <Trans>Cancel</Trans>
+                <ArrowLeft {...iconSize("1.2em")} /> <Trans>Cancel</Trans>
               </Button>
               <Button type="submit">
                 <Trans>Confirm</Trans>

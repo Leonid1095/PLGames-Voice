@@ -1,4 +1,5 @@
 import { ErrorBoundary, For, Suspense } from "solid-js";
+import { BookOpen, Bot } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 
@@ -13,9 +14,6 @@ import {
   Column,
   iconSize,
 } from "@revolt/ui";
-
-import MdLibraryBooks from "@material-design-icons/svg/outlined/library_books.svg?component-solid";
-import MdSmartToy from "@material-design-icons/svg/outlined/smart_toy.svg?component-solid";
 
 import { useSettingsNavigation } from "../../Settings";
 
@@ -43,7 +41,7 @@ function CreateBot() {
     <CategoryButtonGroup>
       <CategoryButton
         action="chevron"
-        icon={<MdSmartToy {...iconSize(22)} />}
+        icon={<Bot {...iconSize(22)} />}
         onClick={() =>
           openModal({
             type: "create_bot",
@@ -63,7 +61,7 @@ function CreateBot() {
       </CategoryButton>
       <CategoryButton
         action="external"
-        icon={<MdLibraryBooks {...iconSize(22)} />}
+        icon={<BookOpen {...iconSize(22)} />}
         onClick={() => window.open("https://developers.plgames-voice.ru", "_blank")}
         description={
           <Trans>Learn more about how to create bots on PLG Voice.</Trans>

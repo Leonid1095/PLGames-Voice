@@ -1,4 +1,5 @@
 import { Accessor, For, JSX, Show, createMemo, createSignal } from "solid-js";
+import { Compass, Home, Plus, Settings } from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { Channel, Server, User } from "stoat.js";
@@ -11,11 +12,6 @@ import { useModals } from "@revolt/modal";
 import { useNavigate } from "@revolt/routing";
 import { useState } from "@revolt/state";
 import { Avatar, Column, Text, Time, Unreads, UserStatus } from "@revolt/ui";
-
-import MdAdd from "@material-design-icons/svg/filled/add.svg?component-solid";
-import MdExplore from "@material-design-icons/svg/filled/explore.svg?component-solid";
-import MdHome from "@material-design-icons/svg/filled/home.svg?component-solid";
-import MdSettings from "@material-design-icons/svg/filled/settings.svg?component-solid";
 
 import { Tooltip } from "../../../../components/ui/components/floating";
 import { Draggable } from "../../../../components/ui/components/utils/Draggable";
@@ -132,7 +128,7 @@ export const ServerList = (props: Props) => {
         >
           <Avatar
             size={42}
-            fallback={<MdHome />}
+            fallback={<Home />}
             holepunch={homeNotifications() ? "top-right" : undefined}
             overlay={
               <Show when={homeNotifications()}>
@@ -293,12 +289,12 @@ export const ServerList = (props: Props) => {
             class={entryContainer()}
             onClick={() => props.onCreateOrJoinServer()}
           >
-            <Avatar size={42} shape="rounded-square" fallback={<MdAdd />} />
+            <Avatar size={42} shape="rounded-square" fallback={<Plus />} />
           </a>
         </Tooltip>
         <Tooltip placement="right" content={t`Browse servers`}>
           <a class={entryContainer()} href="/discover">
-            <Avatar size={42} fallback={<MdExplore />} interactive />
+            <Avatar size={42} fallback={<Compass />} interactive />
           </a>
         </Tooltip>
       </div>
@@ -310,7 +306,7 @@ export const ServerList = (props: Props) => {
           class={entryContainer()}
           onClick={() => openModal({ type: "settings", config: "user" })}
         >
-          <Avatar size={42} fallback={<MdSettings />} interactive />
+          <Avatar size={42} fallback={<Settings />} interactive />
         </a>
       </Tooltip>
     </ServerListBase>

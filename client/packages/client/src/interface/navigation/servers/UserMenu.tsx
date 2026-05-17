@@ -1,3 +1,4 @@
+import { BellOff, Contact, FileEdit, Info, Trash2 } from "lucide-solid";
 import { useFloating } from "solid-floating-ui";
 import {
   Accessor,
@@ -26,12 +27,6 @@ import { useClient, useUser } from "@revolt/client";
 import { useModals } from "@revolt/modal";
 import { useState } from "@revolt/state";
 import { Avatar, Column, Row, Text, UserStatus, iconSize } from "@revolt/ui";
-
-import MdContactPage from "@material-design-icons/svg/outlined/contact_page.svg?component-solid";
-import MdDelete from "@material-design-icons/svg/outlined/delete.svg?component-solid";
-import MdEditNote from "@material-design-icons/svg/outlined/edit_note.svg?component-solid";
-import MdInfo from "@material-design-icons/svg/outlined/info.svg?component-solid";
-import MdNotificationsOff from "@material-design-icons/svg/outlined/notifications_off.svg?component-solid";
 
 interface Props {
   anchor: Accessor<HTMLDivElement | undefined>;
@@ -172,7 +167,7 @@ export function UserMenu(props: Props) {
                       },
                     }}
                   >
-                    <MdInfo {...iconSize(12)} />
+                    <Info {...iconSize(12)} />
                   </div>
                 </Row>
               </ContextMenuButton>
@@ -194,7 +189,7 @@ export function UserMenu(props: Props) {
                       },
                     }}
                   >
-                    <MdNotificationsOff {...iconSize(12)} />
+                    <BellOff {...iconSize(12)} />
                   </div>
                 </Row>
               </ContextMenuButton>
@@ -215,7 +210,7 @@ export function UserMenu(props: Props) {
                 when={user()?.status?.text}
                 fallback={
                   <ContextMenuButton
-                    icon={MdEditNote}
+                    icon={FileEdit}
                     onClick={() =>
                       openModal({ type: "custom_status", client: client() })
                     }
@@ -225,7 +220,7 @@ export function UserMenu(props: Props) {
                 }
               >
                 <ContextMenuButton
-                  icon={MdEditNote}
+                  icon={FileEdit}
                   onClick={() =>
                     openModal({ type: "custom_status", client: client() })
                   }
@@ -236,7 +231,7 @@ export function UserMenu(props: Props) {
                   </TruncatedStatusText>
                 </ContextMenuButton>
                 <ContextMenuButton
-                  icon={MdDelete}
+                  icon={Trash2}
                   onClick={() => user()?.edit({ remove: ["StatusText"] })}
                 >
                   <Trans>Clear status</Trans>
@@ -244,7 +239,7 @@ export function UserMenu(props: Props) {
               </Show>
 
               <Show when={state.settings.getValue("advanced:copy_id")}>
-                <ContextMenuButton icon={MdContactPage} onClick={copyId}>
+                <ContextMenuButton icon={Contact} onClick={copyId}>
                   <Trans>Copy user ID</Trans>
                 </ContextMenuButton>
               </Show>

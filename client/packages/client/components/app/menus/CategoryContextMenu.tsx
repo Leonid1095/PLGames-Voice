@@ -1,4 +1,5 @@
 import { Show } from "solid-js";
+import { Badge, FolderPlus, MessageSquareCheck, Pencil, Plus, Trash2 } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import type { API } from "stoat.js";
@@ -7,12 +8,6 @@ import { Channel, Server } from "stoat.js";
 import { useModals } from "@revolt/modal";
 import { useState } from "@revolt/state";
 
-import MdBadge from "@material-design-icons/svg/outlined/badge.svg?component-solid";
-import MdDelete from "@material-design-icons/svg/outlined/delete.svg?component-solid";
-import MdAdd from "@material-design-icons/svg/outlined/add.svg?component-solid";
-import MdEdit from "@material-design-icons/svg/outlined/edit.svg?component-solid";
-import MdLibraryAdd from "@material-design-icons/svg/outlined/library_add.svg?component-solid";
-import MdMarkChatRead from "@material-design-icons/svg/outlined/mark_chat_read.svg?component-solid";
 import {
   ContextMenu,
   ContextMenuButton,
@@ -88,7 +83,7 @@ export function CategoryContextMenu(props: {
   return (
     <ContextMenu>
       <Show when={hasUnread()}>
-        <ContextMenuButton icon={MdMarkChatRead} onClick={markAsRead}>
+        <ContextMenuButton icon={MessageSquareCheck} onClick={markAsRead}>
           <Trans>Mark as read</Trans>
         </ContextMenuButton>
         <ContextMenuDivider />
@@ -96,7 +91,7 @@ export function CategoryContextMenu(props: {
 
       <Show when={props.server.havePermission("ManageChannel")}>
         <ContextMenuButton
-          icon={MdAdd}
+          icon={Plus}
           onClick={() =>
             openModal({
               type: "create_channel",
@@ -106,20 +101,20 @@ export function CategoryContextMenu(props: {
         >
           <Trans>Create channel</Trans>
         </ContextMenuButton>
-        <ContextMenuButton icon={MdLibraryAdd} onClick={createCategory}>
+        <ContextMenuButton icon={FolderPlus} onClick={createCategory}>
           <Trans>Create category</Trans>
         </ContextMenuButton>
       </Show>
       <Show when={props.server.havePermission("ManageChannel")}>
         <ContextMenuButton
-          icon={MdEdit}
+          icon={Pencil}
           onClick={editCategoryName}
         >
           <Trans>Rename category</Trans>
         </ContextMenuButton>
       </Show>
       <Show when={props.server.havePermission("ManageChannel")}>
-        <ContextMenuButton icon={MdDelete} onClick={deleteCategory} destructive>
+        <ContextMenuButton icon={Trash2} onClick={deleteCategory} destructive>
           <Trans>Delete category</Trans>
         </ContextMenuButton>
       </Show>
@@ -129,7 +124,7 @@ export function CategoryContextMenu(props: {
       </Show>
 
       <Show when={state.settings.getValue("advanced:copy_id")}>
-        <ContextMenuButton icon={MdBadge} onClick={copyId}>
+        <ContextMenuButton icon={Badge} onClick={copyId}>
           <Trans>Copy category ID</Trans>
         </ContextMenuButton>
       </Show>

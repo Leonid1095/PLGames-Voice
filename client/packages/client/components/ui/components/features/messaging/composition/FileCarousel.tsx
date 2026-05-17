@@ -1,4 +1,5 @@
 import { For, Match, Show, Switch } from "solid-js";
+import { File, Plus, X } from "lucide-solid";
 
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
@@ -7,10 +8,6 @@ import { CONFIGURATION } from "@revolt/common";
 import { ALLOWED_IMAGE_TYPES } from "@revolt/state/stores/Draft";
 import { Ripple, typography } from "@revolt/ui/components/design";
 import { OverflowingText, iconSize } from "@revolt/ui/components/utils";
-
-import MdAdd from "@material-design-icons/svg/outlined/add.svg?component-solid";
-import MdCancel from "@material-design-icons/svg/outlined/cancel.svg?component-solid";
-import MdFile from "@material-design-icons/svg/outlined/description.svg?component-solid";
 
 interface Props {
   /**
@@ -88,7 +85,7 @@ export function FileCarousel(props: Props) {
                       <Switch
                         fallback={
                           <EmptyEntry>
-                            <MdFile {...iconSize(36)} />
+                            <File {...iconSize(36)} />
                           </EmptyEntry>
                         }
                       >
@@ -103,7 +100,7 @@ export function FileCarousel(props: Props) {
                         </Match>
                       </Switch>
                       <Overlay>
-                        <MdCancel {...iconSize(36)} />
+                        <X {...iconSize(36)} />
                       </Overlay>
                     </PreviewBox>
                     <FileName>
@@ -117,7 +114,7 @@ export function FileCarousel(props: Props) {
           </For>
           <EmptyEntry onClick={props.addFile}>
             <Ripple />
-            <MdAdd {...iconSize(48)} />
+            <Plus {...iconSize(48)} />
           </EmptyEntry>
         </div>
       </Container>

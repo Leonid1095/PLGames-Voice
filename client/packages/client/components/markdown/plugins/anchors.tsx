@@ -1,4 +1,5 @@
 import { JSX, Match, Show, Switch, splitProps } from "solid-js";
+import { ChevronRight, MessageCircle } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { cva } from "styled-system/css";
@@ -11,9 +12,6 @@ import { Avatar, iconSize } from "@revolt/ui";
 import { Invite } from "@revolt/ui/components/features/messaging/elements/Invite";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
-import MdChat from "@material-design-icons/svg/outlined/chat.svg?component-solid";
-import MdChevronRight from "@material-design-icons/svg/outlined/chevron_right.svg?component-solid";
-import MdPeople from "@material-design-icons/svg/outlined/people.svg?component-solid";
 // import { determineLink } from "../../../lib/links";
 // import { modalController } from "../../../controllers/modals/ModalController";
 
@@ -105,8 +103,8 @@ export function RenderAnchor(
                 {channel()!.name}
                 {params.exactMessage && (
                   <>
-                    <MdChevronRight {...iconSize("1em")} />
-                    <MdChat {...iconSize("1em")} />
+                    <ChevronRight {...iconSize("1em")} />
+                    <MessageCircle {...iconSize("1em")} />
                   </>
                 )}
               </LinkComponent>

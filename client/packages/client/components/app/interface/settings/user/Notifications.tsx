@@ -1,4 +1,5 @@
 import { Trans } from "@lingui-solid/solid/macro";
+import { Bell } from "lucide-solid";
 
 import {
   CategoryButton,
@@ -7,9 +8,6 @@ import {
   Checkbox,
   iconSize,
 } from "@revolt/ui";
-
-import MdNotifications from "@material-design-icons/svg/outlined/notifications.svg?component-solid";
-import MdSpeaker from "@material-design-icons/svg/outlined/speaker.svg?component-solid";
 
 /**
  * Notifications Page
@@ -20,7 +18,7 @@ export default function Notifications() {
       <CategoryButton
         action={<Checkbox checked onChange={(value) => void value} />}
         onClick={() => void 0}
-        icon={<MdNotifications {...iconSize(22)} />}
+        icon={<Bell {...iconSize(22)} />}
         description={
           <Trans>
             Receive notifications while the app is open and in the background.

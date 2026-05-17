@@ -1,17 +1,10 @@
 import { Trans } from "@lingui-solid/solid/macro";
 import { Bot } from "stoat.js";
+import { Copy, Globe, Key, Link, Trash2, UserPlus } from "lucide-solid";
 
 import { createProfileResource } from "@revolt/client/resources";
 import { useModals } from "@revolt/modal";
 import { CategoryButton, Column, iconSize } from "@revolt/ui";
-
-import MdContentCopy from "@material-design-icons/svg/outlined/content_copy.svg?component-solid";
-import MdDelete from "@material-design-icons/svg/outlined/delete.svg?component-solid";
-import MdKey from "@material-design-icons/svg/outlined/key.svg?component-solid";
-import MdLink from "@material-design-icons/svg/outlined/link.svg?component-solid";
-import MdPersonAdd from "@material-design-icons/svg/outlined/person_add.svg?component-solid";
-import MdPublic from "@material-design-icons/svg/outlined/public.svg?component-solid";
-import MdToken from "@material-design-icons/svg/outlined/token.svg?component-solid";
 
 import { UserSummary } from "../account/index";
 import { UserProfileEditor } from "../profile/UserProfileEditor";
@@ -55,7 +48,7 @@ export function ViewBot(props: { bot: Bot }) {
               Allow others to add your bot to their servers from Discover
             </Trans>
           }
-          icon={<MdPublic {...iconSize(22)} />}
+          icon={<Globe {...iconSize(22)} />}
           action="chevron"
         >
           <Trans>Submit to Discover</Trans>
@@ -64,7 +57,7 @@ export function ViewBot(props: { bot: Bot }) {
 
       <CategoryButton.Group>
         <CategoryButton
-          icon={<MdPersonAdd {...iconSize(22)} />}
+          icon={<UserPlus {...iconSize(22)} />}
           action="chevron"
           onClick={() =>
             openModal({
@@ -76,7 +69,7 @@ export function ViewBot(props: { bot: Bot }) {
           <Trans>Invite Bot</Trans>
         </CategoryButton>
         <CategoryButton
-          icon={<MdLink {...iconSize(22)} />}
+          icon={<Link {...iconSize(22)} />}
           action="copy"
           onClick={() =>
             navigator.clipboard.writeText(
@@ -87,21 +80,21 @@ export function ViewBot(props: { bot: Bot }) {
           <Trans>Copy Invite URL</Trans>
         </CategoryButton>
         <CategoryButton
-          icon={<MdContentCopy {...iconSize(22)} />}
+          icon={<Copy {...iconSize(22)} />}
           action="copy"
           onClick={() => navigator.clipboard.writeText(props.bot.id)}
         >
           <Trans>Copy ID</Trans>
         </CategoryButton>
         <CategoryButton
-          icon={<MdKey {...iconSize(22)} />}
+          icon={<Key {...iconSize(22)} />}
           action="copy"
           onClick={() => navigator.clipboard.writeText(props.bot.token)}
         >
           <Trans>Copy Token</Trans>
         </CategoryButton>
         <CategoryButton
-          icon={<MdDelete {...iconSize(22)} />}
+          icon={<Trash2 {...iconSize(22)} />}
           action="chevron"
           onClick={() => openModal({ type: "delete_bot", bot: props.bot })}
         >

@@ -1,3 +1,4 @@
+import { ChevronRight } from "lucide-solid";
 import { BiRegularCheckCircle, BiSolidCheckCircle } from "solid-icons/bi";
 import {
   Accessor,
@@ -35,8 +36,6 @@ import {
 import { VoiceChannelPreview } from "@revolt/ui/components/features/voice/VoiceChannelPreview";
 import { createDragHandle } from "@revolt/ui/components/utils/Draggable";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
-
-import MdChevronRight from "@material-design-icons/svg/filled/chevron_right.svg?component-solid";
 
 import { getGameActivity } from "@revolt/app/gameActivity";
 
@@ -399,7 +398,7 @@ function Category(
             {...createDragHandle(props.dragDisabled, props.setDragDisabled)}
           >
             {props.category.title}
-            <MdChevronRight {...iconSize(12)} />
+            <ChevronRight {...iconSize(12)} />
           </CategoryBase>
         </div>
       </Show>

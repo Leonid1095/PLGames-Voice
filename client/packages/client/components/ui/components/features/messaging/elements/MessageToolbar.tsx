@@ -1,4 +1,5 @@
 import { Show } from "solid-js";
+import { MoreVertical, Pencil, Reply, Smile, Trash2 } from "lucide-solid";
 
 import { Message } from "stoat.js";
 import { cva } from "styled-system/css";
@@ -11,12 +12,6 @@ import { useModals } from "@revolt/modal";
 import { useState } from "@revolt/state";
 import { Ripple } from "@revolt/ui/components/design";
 import { iconSize } from "@revolt/ui/components/utils";
-
-import MdDelete from "@material-design-icons/svg/outlined/delete.svg?component-solid";
-import MdEdit from "@material-design-icons/svg/outlined/edit.svg?component-solid";
-import MdEmojiEmotions from "@material-design-icons/svg/outlined/emoji_emotions.svg?component-solid";
-import MdMoreVert from "@material-design-icons/svg/outlined/more_vert.svg?component-solid";
-import MdReply from "@material-design-icons/svg/outlined/reply.svg?component-solid";
 
 import { startsWithPackPUA } from "@revolt/markdown/emoji/UnicodeEmoji";
 import { CompositionMediaPicker } from "../composition";
@@ -50,7 +45,7 @@ export function MessageToolbar(props: { message?: Message }) {
           onClick={() => state.draft.addReply(props.message!, user()!.id)}
         >
           <Ripple />
-          <MdReply {...iconSize(20)} />
+          <Reply {...iconSize(20)} />
         </button>
       </Show>
       <Show when={props.message?.channel?.havePermission("React")}>
@@ -79,7 +74,7 @@ export function MessageToolbar(props: { message?: Message }) {
               onClick={triggerProps.onClickEmoji}
             >
               <Ripple />
-              <MdEmojiEmotions {...iconSize(20)} />
+              <Smile {...iconSize(20)} />
             </button>
           )}
         </CompositionMediaPicker>
@@ -91,7 +86,7 @@ export function MessageToolbar(props: { message?: Message }) {
           onClick={() => state.draft.setEditingMessage(props.message)}
         >
           <Ripple />
-          <MdEdit {...iconSize(20)} />
+          <Pencil {...iconSize(20)} />
         </button>
       </Show>
       <Show
@@ -102,7 +97,7 @@ export function MessageToolbar(props: { message?: Message }) {
       >
         <button class={tool()} aria-label={t`Удалить`} onClick={deleteMessage}>
           <Ripple />
-          <MdDelete {...iconSize(20)} />
+          <Trash2 {...iconSize(20)} />
         </button>
       </Show>
       <button
@@ -114,7 +109,7 @@ export function MessageToolbar(props: { message?: Message }) {
         }}
       >
         <Ripple />
-        <MdMoreVert {...iconSize(20)} />
+        <MoreVertical {...iconSize(20)} />
       </button>
     </Base>
   );

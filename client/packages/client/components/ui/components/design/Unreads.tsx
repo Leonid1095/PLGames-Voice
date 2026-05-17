@@ -1,8 +1,7 @@
 import { Match, Switch } from "solid-js";
+import { Plus } from "lucide-solid";
 
 import { styled } from "styled-system/jsx";
-
-import MdAdd from "@material-design-icons/svg/outlined/add.svg?component-solid";
 
 import { iconSize } from "../utils";
 
@@ -38,7 +37,7 @@ function UnreadsGraphic(props: Props) {
         <circle cx="27" cy="5" r="5" fill="var(--md-sys-color-error)" />
         <foreignObject x="22" y="0" width="10" height="10">
           <UnreadCounter>
-            {props.count < 10 ? props.count : <MdAdd {...iconSize(10)} />}
+            {props.count < 10 ? props.count : <Plus {...iconSize(10)} />}
           </UnreadCounter>
         </foreignObject>
       </Match>

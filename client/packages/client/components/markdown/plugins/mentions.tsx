@@ -1,4 +1,5 @@
 import { Match, Switch } from "solid-js";
+import { AtSign } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { Handler } from "mdast-util-to-hast";
@@ -11,8 +12,6 @@ import { UserContextMenu } from "@revolt/app";
 import { useClient } from "@revolt/client";
 import { useSmartParams } from "@revolt/routing";
 import { Avatar, ColouredText, iconSize } from "@revolt/ui";
-
-import MdAt from "@material-design-icons/svg/filled/alternate_email.svg?component-solid";
 
 import { useUser } from "../users";
 
@@ -30,13 +29,13 @@ export function RenderMention(props: {
       </Match>
       <Match when={props.mentions === "everyone"}>
         <span class={mention()}>
-          <MdAt {...iconSize(16)} />
+          <AtSign {...iconSize(16)} />
           everyone
         </span>
       </Match>
       <Match when={props.mentions === "online"}>
         <span class={mention()}>
-          <MdAt {...iconSize(16)} />
+          <AtSign {...iconSize(16)} />
           online
         </span>
       </Match>

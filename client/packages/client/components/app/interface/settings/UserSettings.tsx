@@ -1,4 +1,5 @@
 import { Show } from "solid-js";
+import { Bot, Cpu, Crown, FlaskConical, Globe, LogOut, MessageSquareDot, Mic, Palette, ShieldCheck, User } from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { Server } from "stoat.js";
@@ -9,18 +10,6 @@ import { useUser } from "@revolt/markdown/users";
 import { useModals } from "@revolt/modal";
 import { ColouredText, Column, Text, iconSize } from "@revolt/ui";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
-
-import MdAccountCircle from "@material-design-icons/svg/outlined/account_circle.svg?component-solid";
-import MdLanguage from "@material-design-icons/svg/outlined/language.svg?component-solid";
-import MdLogout from "@material-design-icons/svg/outlined/logout.svg?component-solid";
-import MdMemory from "@material-design-icons/svg/outlined/memory.svg?component-solid";
-import MdMic from "@material-design-icons/svg/outlined/mic.svg?component-solid";
-import MdPalette from "@material-design-icons/svg/outlined/palette.svg?component-solid";
-import MdRateReview from "@material-design-icons/svg/outlined/rate_review.svg?component-solid";
-import MdScience from "@material-design-icons/svg/outlined/science.svg?component-solid";
-import MdSmartToy from "@material-design-icons/svg/outlined/smart_toy.svg?component-solid";
-import MdVerifiedUser from "@material-design-icons/svg/outlined/verified_user.svg?component-solid";
-import MdWorkspacePremium from "@material-design-icons/svg/outlined/workspace_premium.svg?component-solid";
 
 import pkg from "../../../../../../package.json";
 
@@ -158,12 +147,12 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             },
             {
               id: "profile",
-              icon: <MdAccountCircle {...iconSize(20)} />,
+              icon: <User {...iconSize(20)} />,
               title: t`Профиль`,
             },
             {
               id: "sessions",
-              icon: <MdVerifiedUser {...iconSize(20)} />,
+              icon: <ShieldCheck {...iconSize(20)} />,
               title: t`Сессии`,
             },
           ],
@@ -173,12 +162,12 @@ const Config: SettingsConfiguration<{ server: Server }> = {
           entries: [
             {
               id: "bots",
-              icon: <MdSmartToy {...iconSize(20)} />,
+              icon: <Bot {...iconSize(20)} />,
               title: t`Мои боты`,
             },
             {
               id: "feedback",
-              icon: <MdRateReview {...iconSize(20)} />,
+              icon: <MessageSquareDot {...iconSize(20)} />,
               title: t`Обратная связь`,
             },
           ],
@@ -189,7 +178,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
           entries: [
             {
               id: "subscribe",
-              icon: <MdWorkspacePremium {...iconSize(20)} />,
+              icon: <Crown {...iconSize(20)} />,
               title: t`Премиум`,
             },
           ],
@@ -206,12 +195,12 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             // },
             {
               id: "voice",
-              icon: <MdMic {...iconSize(20)} />,
+              icon: <Mic {...iconSize(20)} />,
               title: t`Голос`,
             },
             {
               id: "appearance",
-              icon: <MdPalette {...iconSize(20)} />,
+              icon: <Palette {...iconSize(20)} />,
               title: t`Внешний вид`,
             },
             // {
@@ -237,7 +226,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             // },
             {
               id: "language",
-              icon: <MdLanguage {...iconSize(20)} />,
+              icon: <Globe {...iconSize(20)} />,
               title: t`Язык`,
             },
             // {
@@ -253,7 +242,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             },
             // {
             //   id: "experiments",
-            //   icon: <MdScience {...iconSize(20)} />,
+            //   icon: <FlaskConical {...iconSize(20)} />,
             //   title: <Trans>Experiments</Trans>,
             // },
           ],
@@ -269,18 +258,18 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             {
               id: "advanced",
               hidden: true,
-              icon: <MdMemory {...iconSize(20)} />,
+              icon: <Cpu {...iconSize(20)} />,
               title: t`Исходный код`,
             },
             {
               id: "advanced",
-              icon: <MdScience {...iconSize(20)} />,
+              icon: <FlaskConical {...iconSize(20)} />,
               title: t`Расширенные`,
             },
             {
               id: "logout",
               icon: (
-                <MdLogout {...iconSize(20)} fill="var(--md-sys-color-error)" />
+                <LogOut {...iconSize(20)} fill="var(--md-sys-color-error)" />
               ),
               title: t`Выйти`,
               onClick() {
