@@ -1,4 +1,5 @@
 import { JSX, Show, createMemo, splitProps } from "solid-js";
+import { Dynamic } from "solid-js/web";
 
 import {
   AlertCircle,
@@ -323,10 +324,11 @@ export function Symbol(rawProps: Props & HTMLStyledProps<"span">) {
           {...restProps}
           // @codegen directives props=props include=floating
         >
-          {Icon()({
-            size: local.size ?? "1em",
-            "stroke-width": 1.75,
-          })}
+          <Dynamic
+            component={Icon()}
+            size={local.size ?? "1em"}
+            stroke-width={1.75}
+          />
         </styled.span>
       )}
     </Show>

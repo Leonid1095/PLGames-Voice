@@ -269,10 +269,12 @@ const SearchInput = styled("input", {
 const GifGrid = styled("div", {
   base: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))",
-    gap: "4px",
+    gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+    gridAutoRows: "1fr",
+    alignItems: "stretch",
+    gap: "8px",
     overflow: "auto",
-    padding: "0 var(--gap-sm)",
+    padding: "4px 8px 8px",
     flex: 1,
   },
 });
@@ -280,11 +282,15 @@ const GifGrid = styled("div", {
 const GifThumb = styled("div", {
   base: {
     position: "relative",
-    aspectRatio: "1",
+    aspectRatio: "1 / 1",
+    width: "100%",
+    height: "auto",
+    minHeight: 0,
     cursor: "pointer",
     borderRadius: "8px",
     border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
     overflow: "hidden",
+    background: "var(--md-sys-color-surface-container-low)",
     transition: "border-color 140ms cubic-bezier(0.2,0,0,1)",
     "&:hover": {
       borderColor: "var(--qp-border-default, rgba(255,255,255,0.10))",

@@ -101,7 +101,15 @@ function Picker(
     middleware: [offset(5), flip(), shift()],
   });
 
-  function onMouseDown() {
+  // Close the picker only when the click happens OUTSIDE its root.
+  // Previously any mousedown anywhere on the document closed it, which
+  // also fired when the user clicked the Tab buttons inside the picker
+  // (event.stopPropagation() in those handlers can't help — Solid uses
+  // event delegation on document, so by the time the user handler runs,
+  // we're already on document and this listener fires anyway).
+  function onMouseDown(e: MouseEvent) {
+    const root = floating();
+    if (root && e.target instanceof Node && root.contains(e.target)) return;
     props.setShow();
   }
 
