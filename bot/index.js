@@ -2389,12 +2389,44 @@ async function automodCheck(data) {
       if (content.includes(w) || normalised.includes(normaliseForAutomod(w))) {
         try {
           await api("DELETE", `/channels/${channelId}/messages/${data._id}`);
+
+          // Track warning count per user — used both for escalation and
+          // for showing "N-е предупреждение" in the warning text.
+          if (!am.warnings) am.warnings = {};
+          am.warnings[userId] = (am.warnings[userId] || 0) + 1;
+          const count = am.warnings[userId];
+          saveSettings(settings);
+
+          // Send a visible warning in the same channel. Auto-deletes
+          // after 10s so it doesn't pollute the chat history.
+          const warnText = count === 1
+            ? `⚠️ <@${userId}>, сообщение удалено за нарушение правил (запрещённое слово). Это первое предупреждение.`
+            : count < 3
+              ? `⚠️ <@${userId}>, сообщение удалено. Предупреждение **${count}/3**.`
+              : `🚫 <@${userId}>, превышен лимит предупреждений — мьют на ${am.spamMuteDuration} мин.`;
+          try {
+            const warn = await sendMessage(channelId, warnText);
+            const warnId = warn && warn._id;
+            if (warnId) {
+              setTimeout(() => {
+                api("DELETE", `/channels/${channelId}/messages/${warnId}`).catch(() => {});
+              }, 10_000);
+            }
+          } catch (_) {}
+
           if (am.logChannel) {
-            await sendMessage(am.logChannel, `🚫 Стоп-слово от <@${userId}>: \`${sanitizeText(word, 30)}\` в <#${channelId}>`);
+            await sendMessage(am.logChannel, `🚫 Стоп-слово от <@${userId}>: \`${sanitizeText(word, 30)}\` в <#${channelId}> · предупреждение ${count}`);
           }
-          if (am.bannedWordsAction === "mute" && SERVER_ID) {
+
+          // Escalate to mute on the 3rd warning, or whenever the admin
+          // explicitly configured mute as the action.
+          const shouldMute = am.bannedWordsAction === "mute" || count >= 3;
+          if (shouldMute && SERVER_ID) {
             const timeout = new Date(Date.now() + am.spamMuteDuration * 60000).toISOString();
             await api("PATCH", `/servers/${SERVER_ID}/members/${userId}`, { timeout });
+            // Reset counter once we've muted so they get a clean slate on return.
+            am.warnings[userId] = 0;
+            saveSettings(settings);
           }
         } catch (e) {
           console.error("[AUTOMOD] Banned word action error:", e.message);
