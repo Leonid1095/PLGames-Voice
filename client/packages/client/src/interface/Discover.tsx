@@ -48,8 +48,9 @@ export function Discover() {
         navigate(`/server/${result.server._id}`);
       }
       setInviteCode("");
-    } catch (e: any) {
-      setJoinError(e?.message || t`Failed to join`);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e ?? "");
+      setJoinError(msg || t`Failed to join`);
     } finally {
       setJoining(false);
     }

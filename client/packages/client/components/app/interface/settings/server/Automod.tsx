@@ -12,11 +12,38 @@ import { ServerSettingsProps } from "../ServerSettings";
 /**
  * Auto-moderation settings
  */
+// Stoat.js types don't yet model these server-extension fields; we shape
+// them locally to capture the actual API contract used in saveAutomod /
+// saveStarboard below. Drop the `as ServerWithExtras` casts once
+// stoat-api adds them to the typed schema.
+interface AutomodConfig {
+  blocked_words?: string[];
+  spam_max_messages?: number;
+  spam_interval_seconds?: number;
+  spam_mute_duration?: number;
+  block_duplicates?: boolean;
+}
+interface StarboardConfig {
+  channel?: string;
+  emoji?: string;
+  threshold?: number;
+}
+interface ServerWithExtras {
+  automod?: AutomodConfig;
+  starboard?: StarboardConfig;
+}
+interface ServerEditExtras {
+  automod?: AutomodConfig;
+  starboard?: StarboardConfig;
+  remove?: string[];
+}
+
 export function Automod(props: ServerSettingsProps) {
   const { t } = useLingui();
   const { showError } = useModals();
 
-  const config = () => (props.server as any).automod ?? {};
+  const config = (): AutomodConfig =>
+    (props.server as unknown as ServerWithExtras).automod ?? {};
 
   const [blockedWords, setBlockedWords] = createSignal(
     (config().blocked_words ?? []).join("\n"),
@@ -33,7 +60,8 @@ export function Automod(props: ServerSettingsProps) {
   );
 
   // Starboard
-  const starboard = () => (props.server as any).starboard ?? null;
+  const starboard = (): StarboardConfig | null =>
+    (props.server as unknown as ServerWithExtras).starboard ?? null;
   const [sbChannel, setSbChannel] = createSignal(starboard()?.channel ?? "");
   const [sbEmoji, setSbEmoji] = createSignal(starboard()?.emoji ?? "⭐");
   const [sbThreshold, setSbThreshold] = createSignal(
@@ -52,7 +80,7 @@ export function Automod(props: ServerSettingsProps) {
         .map((w) => w.trim())
         .filter((w) => w.length > 0);
 
-      await props.server.edit({
+      const payload: ServerEditExtras = {
         automod: {
           blocked_words: words,
           spam_max_messages: spamMax(),
@@ -60,7 +88,8 @@ export function Automod(props: ServerSettingsProps) {
           spam_mute_duration: spamMute(),
           block_duplicates: blockDupes(),
         },
-      } as any);
+      };
+      await (props.server.edit as (p: ServerEditExtras) => Promise<void>)(payload);
     } catch (e) {
       showError(e);
     }
@@ -68,20 +97,18 @@ export function Automod(props: ServerSettingsProps) {
 
   async function saveStarboard() {
     try {
+      const edit = props.server.edit as (p: ServerEditExtras) => Promise<void>;
       if (!sbChannel()) {
-        // Disable starboard
-        await props.server.edit({
-          remove: ["Starboard"],
-        } as any);
+        await edit({ remove: ["Starboard"] });
         return;
       }
-      await props.server.edit({
+      await edit({
         starboard: {
           channel: sbChannel(),
           emoji: sbEmoji() || "⭐",
           threshold: sbThreshold(),
         },
-      } as any);
+      });
     } catch (e) {
       showError(e);
     }
