@@ -154,14 +154,12 @@ export type Modals =
        */
       type: "error";
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      error: any;
+      error: unknown;
     }
   | {
       type: "error2";
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      error: any;
+      error: unknown;
     }
   | {
       type: "image_viewer";
@@ -236,8 +234,9 @@ export type Modals =
   | {
       type: "settings";
       config: keyof typeof SettingsConfigurations;
-      // eslint-disable-next-line
-      context?: any;
+      /** Per-settings-section context (server / channel / etc.) — shape
+       *  varies by config and is consumed by each panel directly. */
+      context?: unknown;
     }
   | {
       type: "signed_out";

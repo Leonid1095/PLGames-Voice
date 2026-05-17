@@ -219,8 +219,13 @@ const Interface = (props: { children: JSX.Element }) => {
 /**
  * Mobile-aware sidebar wrapper with backdrop overlay + swipe support
  */
+// Menu generator returns floating-directive payload (contextMenu + userCard).
+// Target is a Server / Channel / User instance — narrowed inside the closure
+// via instanceof — so the signature stays unknown-in / unknown-out.
+type MenuGenerator = (target: unknown) => unknown;
+
 function MobileSidebarWrapper(props: {
-  menuGenerator: (target: any) => any;
+  menuGenerator: MenuGenerator;
 }) {
   const { isMobile, sidebarOpen, openSidebar, closeSidebar } = useMobile();
   const { pathname } = useLocation();
