@@ -99,6 +99,7 @@ const Config: SettingsConfiguration<Channel> = {
    * @returns List
    */
   list(channel) {
+    const { t } = useLingui();
     const { openModal } = useModals();
 
     return {

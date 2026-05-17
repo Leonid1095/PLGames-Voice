@@ -356,7 +356,18 @@ const COMMANDS = {
       "**Wiki:**",
       `\`${PREFIX}wiki show\` / \`set <текст>\` / \`append <текст>\` / \`clear\``,
     ].join("\n");
-    await sendMessage(msg.channel, text);
+    // API rejects messages > 2000 chars (FailedValidation). Split into
+    // chunks at line boundaries.
+    const CHUNK = 1900;
+    let buf = "";
+    for (const line of text.split("\n")) {
+      if (buf.length + line.length + 1 > CHUNK) {
+        await sendMessage(msg.channel, buf);
+        buf = "";
+      }
+      buf += (buf ? "\n" : "") + line;
+    }
+    if (buf) await sendMessage(msg.channel, buf);
   },
 
   async ping(msg) {
