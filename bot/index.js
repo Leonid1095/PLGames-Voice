@@ -7,6 +7,7 @@ const { IngressInput } = require("livekit-server-sdk");
 require("dotenv").config({ path: path.resolve(__dirname, "..", ".env") });
 
 const { ingressClient, roomService, egressClient } = require("./stream-service");
+const { defaultBannedWords, normaliseForAutomod } = require("./banned-words");
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const API_URL = process.env.API_URL;
@@ -879,12 +880,16 @@ const COMMANDS = {
         spamWindow: 5,       // seconds
         spamAction: "mute",  // mute|kick|ban
         spamMuteDuration: 10, // minutes
-        bannedWords: [],
+        bannedWords: [...defaultBannedWords],  // ru/en defaults from banned-words.js
         bannedWordsAction: "delete", // delete|mute|kick
         antiDuplicates: false,
         maxDuplicates: 3,
         logChannel: "",
       };
+      saveSettings(settings);
+    } else if (!settings.automod.bannedWords || settings.automod.bannedWords.length === 0) {
+      // Top up existing installs that initialised with the old empty default
+      settings.automod.bannedWords = [...defaultBannedWords];
       saveSettings(settings);
     }
     const am = settings.automod;
@@ -2366,13 +2371,22 @@ async function automodCheck(data) {
   if (data.author === botUserId) return;
 
   const userId = data.author;
-  const content = (data.content || "").toLowerCase();
+  const rawContent = data.content || "";
+  // Normalised view for stop-word matching: lowercase + homoglyph/leet fold
+  // + repeated-letter collapse. Defeats obvious bypasses like "хууууй",
+  // "ху1", "x y i", "@ssh0le".
+  const normalised = normaliseForAutomod(rawContent);
+  const content = rawContent.toLowerCase();
   const channelId = data.channel;
 
   // --- Banned words check ---
   if (am.bannedWords.length) {
     for (const word of am.bannedWords) {
-      if (content.includes(word)) {
+      const w = word.toLowerCase();
+      // Compare against both raw lowercase (so admins adding a literal
+      // English brand name like "fck" still works) and the leet-folded
+      // form (so "fcuk" matches "fuck").
+      if (content.includes(w) || normalised.includes(normaliseForAutomod(w))) {
         try {
           await api("DELETE", `/channels/${channelId}/messages/${data._id}`);
           if (am.logChannel) {
