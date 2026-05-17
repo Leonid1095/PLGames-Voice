@@ -11,7 +11,10 @@ pub async fn connect() {
         .expect("Failed to connect to the database.");
 
     if DBCONN.set(database).is_err() {
-        panic!("couldn't set database")
+        // Re-init attempt — log and continue instead of taking the whole
+        // service down. OnceCell already has a value, so subsequent
+        // get_db() calls keep working.
+        log::warn!("bonfire database.rs: connect() called twice; keeping the first connection");
     }
 }
 

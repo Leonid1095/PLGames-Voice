@@ -41,12 +41,40 @@ function loadSettings() {
   return {};
 }
 
+// Atomic settings write: serialise pending saves, write via tmp+rename
+// so a crash mid-write cannot leave a truncated/corrupted settings.json.
+let _saveQueued = false;
+let _saveInFlight = null;
 function saveSettings(settings) {
-  try {
-    fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2), "utf8");
-  } catch (e) {
-    console.error("[SETTINGS] Failed to save:", e.message);
+  // Coalesce: if a save is already pending after the current in-flight one,
+  // skip — the queued tail save will see the latest in-memory state anyway.
+  if (_saveQueued) return _saveInFlight;
+  if (_saveInFlight) {
+    _saveQueued = true;
+    return _saveInFlight.then(() => {
+      _saveQueued = false;
+      return _doSave(settings);
+    });
   }
+  _saveInFlight = _doSave(settings).finally(() => {
+    _saveInFlight = null;
+  });
+  return _saveInFlight;
+}
+
+function _doSave(settings) {
+  return new Promise((resolve) => {
+    try {
+      const tmp = SETTINGS_FILE + ".tmp." + process.pid;
+      const data = JSON.stringify(settings, null, 2);
+      fs.writeFileSync(tmp, data, "utf8");
+      fs.renameSync(tmp, SETTINGS_FILE);
+      resolve(true);
+    } catch (e) {
+      console.error("[SETTINGS] Failed to save:", e.message);
+      resolve(false);
+    }
+  });
 }
 
 const settings = loadSettings();
@@ -287,6 +315,8 @@ const COMMANDS = {
       `\`${PREFIX}automod addword <слово>\` / \`removeword\` / \`words\``,
       `\`${PREFIX}automod duplicates <on|off|N>\` — антидубликаты`,
       `\`${PREFIX}automod log <channel_id>\` — канал логов`,
+      `\`${PREFIX}automod warnings [user_id]\` — топ предупреждений / конкретный пользователь`,
+      `\`${PREFIX}automod resetwarnings <user_id|all>\` — сбросить счётчик`,
       `\`${PREFIX}automod on\` / \`off\` — вкл/выкл`,
       "",
       "**Reaction Roles:**",
@@ -961,7 +991,38 @@ const COMMANDS = {
       saveSettings(settings);
       return sendMessage(msg.channel, `Лог-канал: <#${id}>`);
     }
-    return sendMessage(msg.channel, "Подкоманды: `spam`, `spamaction`, `addword`, `removeword`, `words`, `duplicates`, `log`, `on`, `off`");
+    if (sub === "warnings") {
+      // `!automod warnings` → top 10 users by warning count
+      // `!automod warnings <user_id>` → exact count for that user
+      const warnings = am.warnings || {};
+      const target = validateId(args[1]);
+      if (target) {
+        const c = warnings[target] || 0;
+        return sendMessage(msg.channel, `<@${target}>: ${c} ${c === 1 ? "предупреждение" : "предупреждений"}`);
+      }
+      const entries = Object.entries(warnings).filter(([, c]) => c > 0);
+      if (!entries.length) return sendMessage(msg.channel, "Никаких предупреждений сейчас нет.");
+      entries.sort((a, b) => b[1] - a[1]);
+      const top = entries.slice(0, 10).map(([uid, c], i) => `${i + 1}. <@${uid}> — **${c}/3**`).join("\n");
+      return sendMessage(msg.channel, `**Активные предупреждения (топ 10):**\n${top}`);
+    }
+    if (sub === "resetwarnings") {
+      // `!automod resetwarnings <user_id>` → clear that user; `all` → clear everyone
+      const target = args[1];
+      if (target === "all") {
+        am.warnings = {};
+        saveSettings(settings);
+        return sendMessage(msg.channel, "✅ Все предупреждения сброшены.");
+      }
+      const id = validateId(target);
+      if (!id) return sendMessage(msg.channel, "Формат: `!automod resetwarnings <user_id|all>`");
+      if (!am.warnings) am.warnings = {};
+      const had = am.warnings[id] || 0;
+      delete am.warnings[id];
+      saveSettings(settings);
+      return sendMessage(msg.channel, `✅ Предупреждения <@${id}> сброшены (было ${had}).`);
+    }
+    return sendMessage(msg.channel, "Подкоманды: `spam`, `spamaction`, `addword`, `removeword`, `words`, `duplicates`, `log`, `warnings`, `resetwarnings`, `on`, `off`");
   },
 
   // --- Reaction Roles ---

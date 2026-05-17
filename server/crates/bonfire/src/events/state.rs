@@ -203,7 +203,13 @@ impl State {
             SubscriptionStateChange::Change { remove, .. } => {
                 remove.push(subscription.to_string());
             }
-            SubscriptionStateChange::Reset => panic!("Should not remove during a reset!"),
+            SubscriptionStateChange::Reset => {
+                // Logic bug — caller asked us to remove a subscription mid-reset.
+                // Log it but keep the WS connection alive for this user; the
+                // reset will overwrite the subscription map anyway.
+                log::warn!("bonfire events/state.rs: remove() called during Reset for {subscription}; ignoring");
+                return;
+            }
         }
 
         subscribed.remove(subscription);
