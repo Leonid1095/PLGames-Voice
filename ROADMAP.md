@@ -1,6 +1,6 @@
 # PLG Voice — Единая дорожная карта
 
-> **Версия:** 3.0 | **Дата:** 2026-04-07
+> **Версия:** 3.1 | **Дата:** 2026-05-18
 > **Репозиторий:** [Leonid1095/PLGames-Voice](https://github.com/Leonid1095/PLGames-Voice)
 > **Стек:** Solid.js 1.9 + Rust (Rocket) + LiveKit 1.9.6 + Node.js бот + Electron
 > **Домен:** plgames-voice.ru | **IP:** 95.78.126.214
@@ -116,6 +116,19 @@ PLG Voice — gaming-мессенджер, конкурент Discord/Telegram/G
 - [x] 1147 строк, 12 непереведённых (98.9%)
 - [x] 60+ переводов добавлено вручную (server settings, bot features)
 - [x] Lingui extract pipeline настроен
+- [x] **2026-05-18:** 41 строка добавлена (включая Deafen/Disconnect/Share screen + Activity)
+
+### Rich Activity / «Играет в X» (2026-05-18)
+- [x] Backend: тип Activity (Playing/Streaming/Listening/Watching/Competing) + kind/name/details/state/started_at/url
+- [x] Rust models v0 + database crate + bridge конверсии + MongoDB persistence
+- [x] PATCH /users/@me поддерживает поле `activity`
+- [x] WS event UserUpdate бродкастит activity (скрыт для Invisible)
+- [x] SDK stoat.js: тип Activity/ActivityKind, getter `user.activity`, метод `setActivity()`
+- [x] UI: ProfileActivity card в UserCard hover + UserProfile modal
+- [x] UI: GameBadge в Voice Channel preview переключён на structured activity
+- [x] UI: MemberSidebar отображает «Играет в X» под именем + категория «В игре»
+- [x] UI: UserMenu пункты «Установить активность» / «Очистить активность» + новый ActivityModal
+- [x] i18n: переводы для всех новых строк
 
 </details>
 
@@ -308,6 +321,37 @@ PLG Voice — gaming-мессенджер, конкурент Discord/Telegram/G
 - Не менять публичное API компонентов
 - Выделять только логически самостоятельные блоки
 - E2E проверка после каждого разбиения
+
+---
+
+### 5b. Desktop auto-detect игр (Слой 3 Rich Activity)
+
+> **Почему P1:** Manual установка Activity уже работает (см. раздел «Rich Activity» в выполненном). Теперь нужен авто-детект — Electron сканирует процессы и сам выставляет «Играет в X» как Discord.
+
+**Затронутые файлы (десктоп):**
+- `desktop/src/main/` — фоновый таск polling каждые 15 сек
+- `desktop/src/known-games.json` — белый список (можно адаптировать из Arrpc / Discord open data)
+
+| OS | Метод |
+|----|-------|
+| Windows | `tasklist` / WMI + сравнение по имени .exe |
+| Linux | `/proc/*/comm` + Lutris/Steam game DB |
+| macOS | `NSWorkspace.runningApplications` |
+
+**Задачи:**
+- [ ] Известная база ~500 топ-игр (Steam top + локальные)
+- [ ] Process scanner для Windows
+- [ ] Process scanner для Linux
+- [ ] Process scanner для macOS
+- [ ] Настройка «Auto-detect games» в Settings (default ON)
+- [ ] Privacy: per-game блок-лист
+- [ ] Сброс activity при выходе из процесса (TTL 5 мин)
+- [ ] IPC между Electron main и renderer для отправки на сервер через SDK
+
+**Опционально (Слой 4):**
+- [ ] Steam OAuth + Web API → Rich Presence матчей
+- [ ] Twitch connection → «🔴 Stream live»
+- [ ] Spotify connection → «Listening to: track» + listen-along
 
 ---
 
@@ -581,5 +625,5 @@ PLG Voice — gaming-мессенджер, конкурент Discord/Telegram/G
 
 ---
 
-*Последнее обновление: 2026-04-07*
+*Последнее обновление: 2026-05-18 — добавлена Rich Activity (manual set готов, desktop auto-detect в P1)*
 *Все предыдущие roadmap'ы (V2, V4, V5, V6) объединены в этот документ.*
