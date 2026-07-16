@@ -2665,7 +2665,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "39cab71617ae0d63f51a36d69f866391735b51691dbda63cf6f96d042b63efeb"
 dependencies = [
  "libc",
- "windows-sys 0.61.2",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]
@@ -3805,7 +3805,7 @@ dependencies = [
  "libc",
  "percent-encoding",
  "pin-project-lite 0.2.17",
- "socket2 0.6.3",
+ "socket2 0.5.10",
  "system-configuration 0.7.0",
  "tokio 1.52.3",
  "tower-service",
@@ -4145,7 +4145,7 @@ checksum = "3640c1c38b8e4e43584d8df18be5fc6b0aa314ce6ebf51b53313d4306cca8e46"
 dependencies = [
  "hermit-abi 0.5.2",
  "libc",
- "windows-sys 0.61.2",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]
@@ -4866,7 +4866,7 @@ dependencies = [
  "device-info",
  "http 1.4.0",
  "jsonwebtoken",
- "livekit-protocol 0.7.7",
+ "livekit-protocol",
  "log",
  "os_info",
  "parking_lot",
@@ -4880,24 +4880,6 @@ dependencies = [
  "sha2 0.10.9",
  "thiserror 2.0.18",
  "url",
-]
-
-[[package]]
-name = "livekit-protocol"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "45c90494efa508ec40228f870affec648826d23e1a9621a4430f67d187901eb4"
-dependencies = [
- "futures-util",
- "livekit-runtime 0.4.0",
- "parking_lot",
- "pbjson",
- "pbjson-types",
- "prost",
- "prost-types",
- "serde",
- "thiserror 1.0.69",
- "tokio 1.52.3",
 ]
 
 [[package]]
@@ -4917,16 +4899,6 @@ name = "livekit-runtime"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6ae53eb874eb86e96e8ccffc31b5a00926d46174cbcb1c24ce4e57b1fcc5c8f6"
-dependencies = [
- "tokio 1.52.3",
- "tokio-stream",
-]
-
-[[package]]
-name = "livekit-runtime"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "532e84c6cdc5fe774f2b5d9912597b5f3bea561927a48296d03e24549d21c3f6"
 dependencies = [
  "tokio 1.52.3",
  "tokio-stream",
@@ -5484,7 +5456,7 @@ version = "0.50.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7957b9740744892f114936ab4a57b3f487491bbeafaf8083688b16841a4240e5"
 dependencies = [
- "windows-sys 0.61.2",
+ "windows-sys 0.59.0",
 ]
 
 [[package]]
@@ -7285,8 +7257,8 @@ dependencies = [
  "iso8601-timestamp",
  "linkify 0.8.1",
  "livekit-api",
- "livekit-protocol 0.4.0",
- "livekit-runtime 0.3.1",
+ "livekit-protocol",
+ "livekit-runtime",
  "log",
  "lru 0.11.1",
  "mongodb",
@@ -7333,7 +7305,7 @@ dependencies = [
  "lettre",
  "linkify 0.6.0",
  "livekit-api",
- "livekit-protocol 0.4.0",
+ "livekit-protocol",
  "log",
  "lru 0.7.8",
  "nanoid",
@@ -7545,8 +7517,8 @@ dependencies = [
  "chrono",
  "futures",
  "livekit-api",
- "livekit-protocol 0.4.0",
- "livekit-runtime 0.3.1",
+ "livekit-protocol",
+ "livekit-runtime",
  "log",
  "lru 0.7.8",
  "redis-kiss",
@@ -7958,7 +7930,7 @@ dependencies = [
  "errno",
  "libc",
  "linux-raw-sys",
- "windows-sys 0.61.2",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]
@@ -9115,7 +9087,7 @@ dependencies = [
  "getrandom 0.4.2",
  "once_cell",
  "rustix",
- "windows-sys 0.61.2",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]
@@ -10336,7 +10308,7 @@ version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2a7b1c03c876122aa43f3020e6c3c3ee5c05081c9a00739faf7503aeba10d22"
 dependencies = [
- "windows-sys 0.61.2",
+ "windows-sys 0.48.0",
 ]
 
 [[package]]

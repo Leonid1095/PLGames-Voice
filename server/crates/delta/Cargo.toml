@@ -87,7 +87,7 @@ revolt-ratelimits = { path = "../core/ratelimits", features = ["rocket"] }
 
 # voice
 livekit-api = "0.4.4"
-livekit-protocol = "0.4.0"
+livekit-protocol = "0.7"
 
 [build-dependencies]
 vergen = "7.5.0"

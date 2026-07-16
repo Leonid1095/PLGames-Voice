@@ -205,6 +205,7 @@ impl Default for User {
             relations: Default::default(),
             badges: Default::default(),
             status: Default::default(),
+            activity: Default::default(),
             profile: Default::default(),
             flags: Default::default(),
             privileged: Default::default(),

@@ -1240,6 +1240,7 @@ impl From<User> for crate::User {
             relations: None,
             badges: Some(value.badges as i32),
             status: value.status.map(Into::into),
+            activity: value.activity.map(Into::into),
             profile: None,
             flags: Some(value.flags as i32),
             privileged: value.privileged,
