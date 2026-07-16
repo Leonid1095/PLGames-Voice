@@ -40,6 +40,17 @@ function createViewerToken(roomName, identity) {
   return token.toJwt();
 }
 
+// Only rooms fed by an active RTMP/WHIP ingress are public streams. Voice
+// channels share the same LiveKit namespace (room name == channel id) but
+// never have an ingress, so gating on this prevents anonymous viewers from
+// minting a subscribe token for a private voice channel they can't access.
+async function isActiveStreamRoom(roomName) {
+  const ingresses = await ingressClient.listIngress();
+  return ingresses.some(
+    (ing) => ing.roomName === roomName && ing.status && ing.status.startedAt,
+  );
+}
+
 // --- Viewer page ---
 
 const VIEWER_HTML = `<!DOCTYPE html>
@@ -205,6 +216,10 @@ const server = http.createServer(async (req, res) => {
     }
     const viewerId = `viewer-${Math.random().toString(36).slice(2, 8)}`;
     try {
+      if (!(await isActiveStreamRoom(room))) {
+        res.writeHead(404, { "Content-Type": "application/json" });
+        return res.end(JSON.stringify({ error: "no active stream for this room" }));
+      }
       const token = await createViewerToken(room, viewerId);
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ token, wsUrl: PUBLIC_WS_URL }));
