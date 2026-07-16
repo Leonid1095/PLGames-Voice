@@ -207,7 +207,9 @@ pub async fn edit(
     if let Some(new_voice_channel) = new_voice_channel {
         if let Some(channel) = get_user_voice_channel_in_server(&target_user.id, &server.id).await?
         {
-            let old_node = get_channel_node(&channel).await?.unwrap();
+            let old_node = get_channel_node(&channel)
+                .await?
+                .ok_or_else(|| create_error!(UnknownNode))?;
 
             let new_node = match get_channel_node(new_voice_channel.id()).await? {
                 Some(node) => node,
@@ -246,7 +248,9 @@ pub async fn edit(
     } else if can_publish.is_some() || can_receive.is_some() || remove.contains(FieldsMember::CanPublish) || remove.contains(FieldsMember::CanReceive) {
         if let Some(channel) = get_user_voice_channel_in_server(&target_user.id, &server.id).await?
         {
-            let node = get_channel_node(&channel).await?.unwrap();
+            let node = get_channel_node(&channel)
+                .await?
+                .ok_or_else(|| create_error!(UnknownNode))?;
             let channel = Reference::from_unchecked(&channel).as_channel(db).await?;
 
             sync_user_voice_permissions(
@@ -265,7 +269,9 @@ pub async fn edit(
     if remove.contains(&FieldsMember::VoiceChannel) {
         if let Some(channel) = get_user_voice_channel_in_server(&target_user.id, &server.id).await?
         {
-            let node = get_channel_node(&channel).await?.unwrap();
+            let node = get_channel_node(&channel)
+                .await?
+                .ok_or_else(|| create_error!(UnknownNode))?;
 
             voice_client.remove_user(&node, &user.id, &channel).await?;
         };

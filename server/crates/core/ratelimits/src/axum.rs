@@ -37,7 +37,8 @@ async fn to_real_ip(parts: &Parts) -> String {
         parts
             .headers
             .get("CF-Connecting-IP")
-            .map(|x| x.to_str().unwrap().to_string())
+            .and_then(|x| x.to_str().ok())
+            .map(|x| x.to_string())
             .unwrap_or_else(|| to_ip(parts))
     } else {
         to_ip(parts)

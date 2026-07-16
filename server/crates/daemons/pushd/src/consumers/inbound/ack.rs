@@ -64,8 +64,20 @@ impl AsyncConsumer for AckConsumer {
         basic_properties: BasicProperties,
         content: Vec<u8>,
     ) {
-        let content = String::from_utf8(content).unwrap();
-        let payload: AckPayload = serde_json::from_str(content.as_str()).unwrap();
+        let content = match String::from_utf8(content) {
+            Ok(content) => content,
+            Err(err) => {
+                log::warn!("Discarding ack task: payload is not valid UTF-8: {err:?}");
+                return;
+            }
+        };
+        let payload: AckPayload = match serde_json::from_str(content.as_str()) {
+            Ok(payload) => payload,
+            Err(err) => {
+                log::warn!("Discarding ack task: failed to parse payload JSON: {err:?}");
+                return;
+            }
+        };
 
         // Step 1: fetch unreads and don't continue if there's no unreads
         #[allow(clippy::disallowed_methods)]

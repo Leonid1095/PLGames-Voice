@@ -613,7 +613,9 @@ pub async fn delete_voice_channel(
     server_id: Option<&str>,
 ) -> Result<()> {
     if let Some(users) = get_voice_channel_members(channel_id).await? {
-        let node = get_channel_node(channel_id).await?.unwrap();
+        let node = get_channel_node(channel_id)
+            .await?
+            .ok_or_else(|| create_error!(UnknownNode))?;
 
         voice_client.delete_room(&node, channel_id).await?;
 
