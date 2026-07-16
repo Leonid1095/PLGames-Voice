@@ -52,6 +52,11 @@ services:
     restart: always
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD:?Set REDIS_PASSWORD in .env}
+    volumes:
+      # Persist RDB + AOF across container recreation. Without this the
+      # --appendonly/--save persistence has nowhere to write and every restart
+      # wipes redis (cache/pubsub/presence).
+      - ./data/redis:/data
     deploy:
       resources:
         limits:
