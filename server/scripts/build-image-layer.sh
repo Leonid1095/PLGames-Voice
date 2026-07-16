@@ -36,7 +36,6 @@ deps() {
     crates/core/ratelimits/src \
     crates/services/autumn/src \
     crates/services/january/src \
-    crates/services/gifbox/src \
     crates/daemons/crond/src \
     crates/daemons/pushd/src \
     crates/daemons/voice-ingress/src
@@ -45,7 +44,6 @@ deps() {
     tee crates/delta/src/main.rs |
     tee crates/services/autumn/src/main.rs |
     tee crates/services/january/src/main.rs |
-    tee crates/services/gifbox/src/main.rs |
     tee crates/daemons/crond/src/main.rs |
     tee crates/daemons/pushd/src/main.rs |
     tee crates/daemons/voice-ingress/src/main.rs
