@@ -414,6 +414,12 @@ services:
 
   # Web App (build locally: docker build -t plg-voice-web:latest ./client/)
   web:
+    # Without this, `docker compose build web` (the command CLAUDE.md documents)
+    # printed "No services to build" and exited 0 — which is how the deployed
+    # bundle silently stayed on the 2026-05-17 build for two months.
+    build:
+      context: ./client
+      dockerfile: Dockerfile
     image: plg-voice-web:latest
     logging: *default-logging
     restart: always
