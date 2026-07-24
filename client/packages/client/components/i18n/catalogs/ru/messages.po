@@ -907,9 +907,7 @@ msgstr "Скоро"
 msgid "Compact mode"
 msgstr "Компактный режим"
 
-#: src/interface/channels/text/MemberSidebar.tsx
-#: components/ui/components/features/profiles/ProfileActivity.tsx
-#: components/modal/modals/Activity.tsx
+#: components/common/lib/activityLabel.ts
 msgid "Competing in"
 msgstr "Соревнуется в"
 
@@ -2168,9 +2166,7 @@ msgstr "Ограничить частоту отправки сообщений 
 msgid "Listen"
 msgstr "Слушать"
 
-#: src/interface/channels/text/MemberSidebar.tsx
-#: components/ui/components/features/profiles/ProfileActivity.tsx
-#: components/modal/modals/Activity.tsx
+#: components/common/lib/activityLabel.ts
 msgid "Listening to"
 msgstr "Слушает"
 
@@ -2864,9 +2860,7 @@ msgstr "Закреплённые сообщения"
 msgid "Platform Moderator"
 msgstr "Модератор платформы"
 
-#: src/interface/channels/text/MemberSidebar.tsx
-#: components/ui/components/features/profiles/ProfileActivity.tsx
-#: components/modal/modals/Activity.tsx
+#: components/common/lib/activityLabel.ts
 msgid "Playing"
 msgstr "Играет в"
 
@@ -3700,9 +3694,7 @@ msgstr "Ссылка на стрим (Twitch / YouTube)"
 msgid "Streamer mode"
 msgstr "Режим стримера"
 
-#: src/interface/channels/text/MemberSidebar.tsx
-#: components/ui/components/features/profiles/ProfileActivity.tsx
-#: components/modal/modals/Activity.tsx
+#: components/common/lib/activityLabel.ts
 msgid "Streaming"
 msgstr "Стримит"
 
@@ -4233,9 +4225,7 @@ msgstr "Громкость"
 msgid "Want to change username?"
 msgstr "Хотите изменить имя пользователя?"
 
-#: src/interface/channels/text/MemberSidebar.tsx
-#: components/ui/components/features/profiles/ProfileActivity.tsx
-#: components/modal/modals/Activity.tsx
+#: components/common/lib/activityLabel.ts
 msgid "Watching"
 msgstr "Смотрит"
 

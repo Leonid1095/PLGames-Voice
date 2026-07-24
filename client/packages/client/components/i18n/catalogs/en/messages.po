@@ -907,9 +907,7 @@ msgstr "Coming soon"
 msgid "Compact mode"
 msgstr "Compact mode"
 
-#: src/interface/channels/text/MemberSidebar.tsx
-#: components/ui/components/features/profiles/ProfileActivity.tsx
-#: components/modal/modals/Activity.tsx
+#: components/common/lib/activityLabel.ts
 msgid "Competing in"
 msgstr "Competing in"
 
@@ -2168,9 +2166,7 @@ msgstr "Limit how often users can send messages in this channel"
 msgid "Listen"
 msgstr "Listen"
 
-#: src/interface/channels/text/MemberSidebar.tsx
-#: components/ui/components/features/profiles/ProfileActivity.tsx
-#: components/modal/modals/Activity.tsx
+#: components/common/lib/activityLabel.ts
 msgid "Listening to"
 msgstr "Listening to"
 
@@ -2864,9 +2860,7 @@ msgstr "Pinned Messages"
 msgid "Platform Moderator"
 msgstr "Platform Moderator"
 
-#: src/interface/channels/text/MemberSidebar.tsx
-#: components/ui/components/features/profiles/ProfileActivity.tsx
-#: components/modal/modals/Activity.tsx
+#: components/common/lib/activityLabel.ts
 msgid "Playing"
 msgstr "Playing"
 
@@ -3700,9 +3694,7 @@ msgstr "Stream link (Twitch / YouTube)"
 msgid "Streamer mode"
 msgstr "Streamer mode"
 
-#: src/interface/channels/text/MemberSidebar.tsx
-#: components/ui/components/features/profiles/ProfileActivity.tsx
-#: components/modal/modals/Activity.tsx
+#: components/common/lib/activityLabel.ts
 msgid "Streaming"
 msgstr "Streaming"
 
@@ -4233,9 +4225,7 @@ msgstr "Volume"
 msgid "Want to change username?"
 msgstr "Want to change username?"
 
-#: src/interface/channels/text/MemberSidebar.tsx
-#: components/ui/components/features/profiles/ProfileActivity.tsx
-#: components/modal/modals/Activity.tsx
+#: components/common/lib/activityLabel.ts
 msgid "Watching"
 msgstr "Watching"
 

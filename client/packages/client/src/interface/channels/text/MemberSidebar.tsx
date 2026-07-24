@@ -7,6 +7,7 @@ import { styled } from "styled-system/jsx";
 
 import { floatingUserMenus } from "@revolt/app/menus/UserContextMenu";
 import { useClient } from "@revolt/client";
+import { useActivityLabel } from "@revolt/common";
 import { TextWithEmoji } from "@revolt/markdown";
 import { userInformation } from "@revolt/markdown/users";
 import {
@@ -392,25 +393,7 @@ function Member(props: { user?: User; member?: ServerMember }) {
    */
   const activity = () => (props.user ?? props.member?.user)?.activity;
 
-  /**
-   * Localized verb for the activity row (e.g., "Играет в", "Слушает").
-   */
-  const activityVerb = (kind: string | undefined) => {
-    switch (kind) {
-      case "Playing":
-        return t`Playing`;
-      case "Streaming":
-        return t`Streaming`;
-      case "Listening":
-        return t`Listening to`;
-      case "Watching":
-        return t`Watching`;
-      case "Competing":
-        return t`Competing in`;
-      default:
-        return "";
-    }
-  };
+  const activityVerb = useActivityLabel();
 
   const activityText = () => {
     const a = activity();

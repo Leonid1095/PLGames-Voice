@@ -4,6 +4,7 @@ import { createFormControl, createFormGroup } from "solid-forms";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 
+import { useActivityLabel } from "@revolt/common";
 import { Column, Dialog, DialogProps, Form2 } from "@revolt/ui";
 
 import { useModals } from "..";
@@ -78,20 +79,7 @@ export function ActivityModal(
 
   const submit = Form2.useSubmitHandler(group, onSubmit);
 
-  const kindLabel = (k: Kind) => {
-    switch (k) {
-      case "Playing":
-        return t`Playing`;
-      case "Streaming":
-        return t`Streaming`;
-      case "Listening":
-        return t`Listening to`;
-      case "Watching":
-        return t`Watching`;
-      case "Competing":
-        return t`Competing in`;
-    }
-  };
+  const kindLabel = useActivityLabel();
 
   return (
     <Dialog

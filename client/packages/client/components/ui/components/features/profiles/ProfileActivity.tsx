@@ -4,6 +4,8 @@ import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { User } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
+import { useActivityLabel } from "@revolt/common";
+
 import { Text, typography } from "../../design";
 
 import { ProfileCard } from "./ProfileCard";
@@ -17,22 +19,8 @@ export function ProfileActivity(props: { user: User }) {
 
   const activity = () => props.user.activity;
 
-  const heading = () => {
-    switch (activity()?.kind) {
-      case "Playing":
-        return t`Playing`;
-      case "Streaming":
-        return t`Streaming`;
-      case "Listening":
-        return t`Listening to`;
-      case "Watching":
-        return t`Watching`;
-      case "Competing":
-        return t`Competing in`;
-      default:
-        return t`Activity`;
-    }
-  };
+  const activityLabel = useActivityLabel();
+  const heading = () => activityLabel(activity()?.kind, t`Activity`);
 
   return (
     <Show when={activity()}>
