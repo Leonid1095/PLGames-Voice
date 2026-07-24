@@ -88,8 +88,22 @@
 | MinIO | 9000 |
 
 ## Known Gotchas
-- Webhook PATCH/DELETE возвращают 404 — API v0.11.1 не поддерживает (только create/list)
+- Webhook PATCH/DELETE 404 — это баг SDK, а НЕ отсутствие поддержки в API (прод: 0.11.5).
+  Сервер отдаёт `PATCH/DELETE /webhooks/<id>` и `PATCH/DELETE /webhooks/<id>/<token>`
+  (server/crates/delta/src/routes/webhooks/). SDK всегда зовёт вариант с токеном
+  (ChannelWebhook.ts:84,99), но API объявляет `token: Option<String>`, а гидрация
+  делает `webhook.token!` — когда токена нет, получается `/webhooks/<id>/undefined` → 404.
+  Фикс: использовать путь без токена, когда токен отсутствует.
 - Redis требует аутентификацию — все сервисы должны передавать REDIS_PASSWORD
 - LiveKit требует use_external_ip: true для работы за NAT
 - lingui extract: сначала собрать оба lingui плагина, потом extract, потом переводы
 - nginx конфиг в репо (plgvoice.conf) — нужно вручную копировать в /etc/nginx/sites-enabled/
+- `/etc/nginx/sites-enabled/*` подключается по глобу без фильтра расширений — любой
+  файл, положенный туда (например `.bak`), грузится и даёт конфликт server_name
+- Регекс-локейшены в nginx приоритетнее префиксных: локейшену `/stream/` нужен `^~`,
+  иначе блок статики `~* \.(js|css|...)$` перехватывает /stream/*.js
+- Образы autumn/january/pushd/crond/voice-ingress — distroless, в них НЕТ shell:
+  healthcheck через CMD-SHELL там невозможен в принципе
+- Weekly root-cron `docker system prune -af` удаляет локальные теги образов — в
+  compose.yml должны быть только те образы, которые собираются локально (`build:`)
+  или тянутся из реестра, иначе сервис станет невоспроизводимым
