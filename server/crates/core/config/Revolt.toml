@@ -101,8 +101,12 @@ ack_queue = "notifications.process.ack"                  # updates badges for ap
 
 [pushd.vapid]
 queue = "notifications.outbound.vapid"
-private_key = "REDACTED_VAPID_PRIVATE_KEY"
-public_key = "BGcvgR-i2z4IQ5Mw841vJvkLjt8wY-FjmWrw83jOLCY52qcGZS0OF7nfLzuYbjsQISwVO2HXrmf18gLWVX3Kwfw="
+# Deliberately empty — see the note under [files].encryption_key. A working EC
+# private key committed here is one that every reader of the repository holds.
+# Generate a pair with `npx web-push generate-vapid-keys` and set it in your
+# own Revolt.toml. This instance already overrides both with "".
+private_key = ""
+public_key = ""
 
 [pushd.fcm]
 queue = "notifications.outbound.fcm"
@@ -134,7 +138,11 @@ encryption_key = ""
 [files]
 # Encryption key for stored files
 # Generate your own key using `openssl rand -base64 32`
-encryption_key = "REDACTED_FILES_ENCRYPTION_KEY"
+# Deliberately empty: this file is compiled into the binary via include_str!,
+# so a non-empty default here is a key that ships publicly in the repository.
+# A deployment that forgot to mount its own Revolt.toml would then encrypt
+# uploads with a key anyone can read, which is worse than not encrypting them.
+encryption_key = ""
 # Quality used for lossy WebP previews (set to 100 for lossless)
 webp_quality = 80.0
 # Mime types that cannot be uploaded or served
