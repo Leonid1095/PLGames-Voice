@@ -209,7 +209,11 @@ services:
 
   # File server
   autumn:
-    image: plg-voice-autumn:latest
+    # Was plg-voice-autumn:latest — a local re-tag from the 2b974f28 "image
+    # rebrand" with no build behind it. The tag is long gone, so the service
+    # could not be recreated; it survived only because its container predates
+    # the tag's removal. Point at the image it is actually running.
+    image: ghcr.io/stoatchat/file-server:latest
     logging: *default-logging
     depends_on:
       database:
@@ -225,17 +229,17 @@ services:
       resources:
         limits:
           memory: 512M
-    healthcheck:
-      test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/14704' || exit 1"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
+    # No healthcheck: this image is distroless — it has no /bin/sh, no bash and
+    # no wget, so every CMD-SHELL probe fails with "stat /bin/sh: no such file
+    # or directory" and marks a perfectly healthy service unhealthy. The
+    # previous `bash -c '</dev/tcp/...'` check had simply never run, because the
+    # container long predated it. Nothing depends on this service's health
+    # condition; liveness is covered by the reverse proxy.
     restart: always
 
   # Metadata and image proxy
   january:
-    image: plg-voice-january:latest
+    image: ghcr.io/stoatchat/proxy:latest
     logging: *default-logging
     volumes:
       - type: bind
@@ -246,17 +250,12 @@ services:
       resources:
         limits:
           memory: 256M
-    healthcheck:
-      test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/14705' || exit 1"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
+    # No healthcheck — distroless image, same as autumn above.
     restart: always
 
   # Regular task daemon
   crond:
-    image: plg-voice-crond:latest
+    image: ghcr.io/stoatchat/crond:latest
     logging: *default-logging
     depends_on:
       database:
@@ -276,7 +275,7 @@ services:
 
   # Push notification daemon
   pushd:
-    image: plg-voice-pushd:latest
+    image: ghcr.io/stoatchat/pushd:latest
     logging: *default-logging
     restart: always
     depends_on:
@@ -300,7 +299,7 @@ services:
 
   # Voice ingress daemon
   voice-ingress:
-    image: plg-voice-voice-ingress:latest
+    image: ghcr.io/stoatchat/voice-ingress:latest
     logging: *default-logging
     restart: always
     depends_on:
@@ -324,7 +323,7 @@ services:
 
   # Voice server
   livekit:
-    image: plg-voice-livekit:v1.9.6
+    image: ghcr.io/stoatchat/livekit-server:v1.9.6
     logging: *default-logging
     command: --config /etc/livekit.yml
     volumes:
@@ -395,7 +394,10 @@ services:
 
   # Create buckets for minio.
   createbuckets:
-    image: docker.io/minio/mc:RELEASE.2025-09-07T16-13-09Z
+    # NB: mc has its own release cadence. RELEASE.2025-09-07T16-13-09Z was the
+    # minio *server* tag copied across, and never existed for mc — so this
+    # init container could not start, and with it neither could autumn.
+    image: docker.io/minio/mc:RELEASE.2025-08-13T08-35-41Z
     logging: *default-logging
     depends_on:
       - minio
