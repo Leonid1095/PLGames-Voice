@@ -145,9 +145,12 @@ function map(
         return schema.text("no");
       }
     case "customEmoji":
+      // Upstream's CDN does not host this instance's emoji — resolve them
+      // against our own file server, as CustomEmoji.tsx and
+      // codeMirrorWidgets.ts already do.
       return schema.nodes.rfm_custom_emoji.createAndFill({
         id: node.id,
-        src: `https://cdn.revoltusercontent.com/emojis/${node.id}`,
+        src: `${client.configuration?.features.autumn.url}/emojis/${node.id}`,
       })!;
     case "unicodeEmoji":
       return schema.nodes.rfm_unicode_emoji.createAndFill({

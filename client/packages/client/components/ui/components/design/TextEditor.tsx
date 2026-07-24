@@ -434,7 +434,9 @@ export function TextEditor(props: Props) {
                       action.range.from,
                       schema.nodes.rfm_custom_emoji.createAndFill({
                         id: match.id,
-                        src: `https://cdn.revoltusercontent.com/emojis/${match.id}`,
+                        // Our own file server, not upstream's CDN — it does
+                        // not host this instance's custom emoji.
+                        src: `${client().configuration?.features.autumn.url}/emojis/${match.id}`,
                       })!,
                     );
                   }

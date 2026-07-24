@@ -5,6 +5,7 @@ import { Trans } from "@lingui-solid/solid/macro";
 import { File, Message } from "stoat.js";
 
 import { useClient, useUser } from "@revolt/client";
+import { CONFIGURATION } from "@revolt/common";
 import { CustomEmoji, UnicodeEmoji } from "@revolt/markdown/emoji";
 import { useModals } from "@revolt/modal";
 import { useState } from "@revolt/state";
@@ -142,7 +143,7 @@ export function MessageContextMenu(props: { message?: Message; file?: File }) {
    */
   function openAdminPanel() {
     window.open(
-      `https://admin.plgames-voice.ru/panel/inspect/message/${props.message!.id}`,
+      `${CONFIGURATION.DEFAULT_ADMIN_URL}/panel/inspect/message/${props.message!.id}`,
       "_blank",
     );
   }

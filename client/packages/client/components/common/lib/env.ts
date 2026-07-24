@@ -40,6 +40,12 @@ export default {
     (import.meta.env.VITE_PROXY_URL as string) ??
     "https://plgames-voice.ru/january",
   /**
+   * What admin panel the moderation context-menu entries link to.
+   */
+  DEFAULT_ADMIN_URL:
+    (import.meta.env.VITE_ADMIN_URL as string) ??
+    "https://admin.plgames-voice.ru",
+  /**
    * hCaptcha site key to use if enabled
    */
   HCAPTCHA_SITEKEY: import.meta.env.VITE_HCAPTCHA_SITEKEY as string,

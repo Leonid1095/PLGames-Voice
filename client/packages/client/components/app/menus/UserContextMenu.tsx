@@ -6,6 +6,7 @@ import { useNavigate } from "@solidjs/router";
 import { Channel, Message, ServerMember, User } from "stoat.js";
 
 import { useClient } from "@revolt/client";
+import { CONFIGURATION } from "@revolt/common";
 import { useModals } from "@revolt/modal";
 import { useSmartParams } from "@revolt/routing";
 import { useState } from "@revolt/state";
@@ -162,7 +163,7 @@ export function UserContextMenu(props: {
    */
   function openAdminPanel() {
     window.open(
-      `https://admin.plgames-voice.ru/panel/inspect/user/${props.user.id}`,
+      `${CONFIGURATION.DEFAULT_ADMIN_URL}/panel/inspect/user/${props.user.id}`,
       "_blank",
     );
   }
