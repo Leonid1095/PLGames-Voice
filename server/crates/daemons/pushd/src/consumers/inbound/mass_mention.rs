@@ -141,7 +141,7 @@ impl MassMessageConsumer {
             if query.is_none() {
                 query = Some(
                     BulkDatabasePermissionQuery::from_server_id(&query_db, &payload.server_id)
-                        .await
+                        .await?
                         .from_channel_id(push.channel.id().to_string()) // wrong channel model, so fetch the right one
                         .await,
                 );

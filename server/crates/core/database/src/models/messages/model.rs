@@ -515,7 +515,7 @@ impl Message {
                             // if there are still mentions, drill down to a channel-level
                             let member_channel_view_perms =
                                 BulkDatabasePermissionQuery::from_server_id(db, server)
-                                    .await
+                                    .await?
                                     .channel(&channel)
                                     .members(&valid_members)
                                     .members_can_see_channel()

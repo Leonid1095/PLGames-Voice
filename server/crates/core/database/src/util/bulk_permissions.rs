@@ -4,6 +4,7 @@ use revolt_permissions::{
     ChannelPermission, ChannelType, Override, OverrideField, PermissionValue, ALLOW_IN_TIMEOUT,
     DEFAULT_PERMISSION_DIRECT_MESSAGE,
 };
+use revolt_result::Result;
 
 use crate::{Channel, Database, Member, Server, User};
 
@@ -71,20 +72,23 @@ impl<'z> BulkDatabasePermissionQuery<'z> {
         }
     }
 
+    /// Returns `Err` rather than panicking when the server cannot be fetched —
+    /// this runs on the message-send and mass-mention paths, where a transient
+    /// database error used to take the whole process down.
     pub async fn from_server_id<'a>(
         db: &'a Database,
         server: &str,
-    ) -> BulkDatabasePermissionQuery<'a> {
-        BulkDatabasePermissionQuery {
+    ) -> Result<BulkDatabasePermissionQuery<'a>> {
+        Ok(BulkDatabasePermissionQuery {
             database: db,
-            server: db.fetch_server(server).await.unwrap(),
+            server: db.fetch_server(server).await?,
             channel: None,
             users: None,
             members: None,
             cached_members: None,
             cached_users: None,
             cached_member_perms: None,
-        }
+        })
     }
 
     pub fn channel(self, channel: &'z Channel) -> BulkDatabasePermissionQuery<'z> {
