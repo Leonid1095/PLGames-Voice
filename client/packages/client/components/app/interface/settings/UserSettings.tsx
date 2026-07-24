@@ -137,7 +137,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
       ),
       entries: [
         {
-          title: t`Настройки пользователя`,
+          title: t`User settings`,
           entries: [
             {
               id: "account",
@@ -148,12 +148,12 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             {
               id: "profile",
               icon: <User {...iconSize(20)} />,
-              title: t`Профиль`,
+              title: t`Profile`,
             },
             {
               id: "sessions",
               icon: <ShieldCheck {...iconSize(20)} />,
-              title: t`Сессии`,
+              title: t`Sessions`,
             },
           ],
         },
@@ -163,28 +163,28 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             {
               id: "bots",
               icon: <Bot {...iconSize(20)} />,
-              title: t`Мои боты`,
+              title: t`My bots`,
             },
             {
               id: "feedback",
               icon: <MessageSquareDot {...iconSize(20)} />,
-              title: t`Обратная связь`,
+              title: t`Feedback`,
             },
           ],
         },
         {
-          title: t`Подписки`,
+          title: t`Subscriptions`,
           hidden: false,
           entries: [
             {
               id: "subscribe",
               icon: <Crown {...iconSize(20)} />,
-              title: t`Премиум`,
+              title: t`Premium`,
             },
           ],
         },
         {
-          title: t`Настройки клиента`,
+          title: t`Client settings`,
           entries: [
             // {
             //   id: "audio",
@@ -196,12 +196,12 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             {
               id: "voice",
               icon: <Mic {...iconSize(20)} />,
-              title: t`Голос`,
+              title: t`Voice`,
             },
             {
               id: "appearance",
               icon: <Palette {...iconSize(20)} />,
-              title: t`Внешний вид`,
+              title: t`Appearance`,
             },
             // {
             //   id: "accessibility",
@@ -227,7 +227,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             {
               id: "language",
               icon: <Globe {...iconSize(20)} />,
-              title: t`Язык`,
+              title: t`Language`,
             },
             // {
             //   id: "sync",
@@ -238,7 +238,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               id: "native",
               hidden: !window.native,
               icon: <Symbol size={20}>desktop_windows</Symbol>,
-              title: t`Рабочий стол`,
+              title: t`Desktop`,
             },
             // {
             //   id: "experiments",
@@ -259,19 +259,19 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               id: "advanced",
               hidden: true,
               icon: <Cpu {...iconSize(20)} />,
-              title: t`Исходный код`,
+              title: t`Source code`,
             },
             {
               id: "advanced",
               icon: <FlaskConical {...iconSize(20)} />,
-              title: t`Расширенные`,
+              title: t`Advanced`,
             },
             {
               id: "logout",
               icon: (
                 <LogOut {...iconSize(20)} fill="var(--md-sys-color-error)" />
               ),
-              title: t`Выйти`,
+              title: t`Log out`,
               onClick() {
                 pop();
                 logout();

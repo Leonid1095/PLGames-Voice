@@ -81,15 +81,15 @@ export function ActivityModal(
   const kindLabel = (k: Kind) => {
     switch (k) {
       case "Playing":
-        return t`Играю в`;
+        return t`Playing`;
       case "Streaming":
-        return t`Стримлю`;
+        return t`Streaming`;
       case "Listening":
-        return t`Слушаю`;
+        return t`Listening to`;
       case "Watching":
-        return t`Смотрю`;
+        return t`Watching`;
       case "Competing":
-        return t`Соревнуюсь в`;
+        return t`Competing in`;
     }
   };
 
@@ -97,18 +97,18 @@ export function ActivityModal(
     <Dialog
       show={props.show}
       onClose={props.onClose}
-      title={<Trans>Установить активность</Trans>}
+      title={<Trans>Set activity</Trans>}
       actions={[
-        { text: <Trans>Отмена</Trans> },
+        { text: <Trans>Cancel</Trans> },
         {
-          text: <Trans>Очистить</Trans>,
+          text: <Trans>Clear</Trans>,
           onClick: () => {
             onClear();
             return false;
           },
         },
         {
-          text: <Trans>Сохранить</Trans>,
+          text: <Trans>Save</Trans>,
           onClick: () => {
             onSubmit();
             return false;
@@ -121,7 +121,7 @@ export function ActivityModal(
       <form onSubmit={submit}>
         <Column>
           <label>
-            <Trans>Тип активности</Trans>
+            <Trans>Activity type</Trans>
             <select
               value={kind()}
               onChange={(e) => setKind(e.currentTarget.value as Kind)}
@@ -135,23 +135,23 @@ export function ActivityModal(
           <Form2.TextField
             name="name"
             control={group.controls.name}
-            label={t`Название (например: Dota 2)`}
+            label={t`Name (e.g. Dota 2)`}
           />
           <Form2.TextField
             name="details"
             control={group.controls.details}
-            label={t`Детали (например: Ranked Match)`}
+            label={t`Details (e.g. Ranked Match)`}
           />
           <Form2.TextField
             name="state"
             control={group.controls.state}
-            label={t`Состояние (например: 2/5 в очереди)`}
+            label={t`State (e.g. 2/5 in queue)`}
           />
           <Show when={kind() === "Streaming"}>
             <Form2.TextField
               name="url"
               control={group.controls.url}
-              label={t`Ссылка на стрим (Twitch / YouTube)`}
+              label={t`Stream link (Twitch / YouTube)`}
             />
           </Show>
         </Column>

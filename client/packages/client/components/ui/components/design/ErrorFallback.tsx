@@ -15,14 +15,14 @@ export function ErrorFallback(props: {
     <div class={container()} data-testid="error-fallback">
       <span class={icon()}>&#9888;</span>
       <p class={message()}>
-        {props.label ?? <Trans>Произошла ошибка при отображении</Trans>}
+        {props.label ?? <Trans>Something went wrong while rendering</Trans>}
       </p>
       <button
         class={retryButton()}
         onClick={() => props.reset()}
         data-testid="error-retry"
       >
-        <Trans>Перезагрузить</Trans>
+        <Trans>Reload</Trans>
       </button>
     </div>
   );

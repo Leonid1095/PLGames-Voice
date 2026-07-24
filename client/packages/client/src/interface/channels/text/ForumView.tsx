@@ -131,12 +131,12 @@ export function ForumView(props: ChannelPageProps) {
       const date = new Date(ts);
       const diffMs = Date.now() - date.getTime();
       const diffMin = Math.floor(diffMs / 60000);
-      if (diffMin < 1) return t`только что`;
-      if (diffMin < 60) return t`${diffMin} мин`;
+      if (diffMin < 1) return t`just now`;
+      if (diffMin < 60) return t`${diffMin}m`;
       const diffHr = Math.floor(diffMin / 60);
-      if (diffHr < 24) return t`${diffHr} ч`;
+      if (diffHr < 24) return t`${diffHr}h`;
       const diffDay = Math.floor(diffHr / 24);
-      if (diffDay < 30) return t`${diffDay} д`;
+      if (diffDay < 30) return t`${diffDay}d`;
       return date.toLocaleDateString();
     } catch {
       return "";
@@ -167,7 +167,7 @@ export function ForumView(props: ChannelPageProps) {
         <Toolbar>
           <TagBar>
             <TagChip selected={selectedTag() === null} onClick={() => setSelectedTag(null)}>
-              <Trans>Все</Trans>
+              <Trans>All</Trans>
             </TagChip>
             <For each={forumTags()}>
               {(tag) => (
@@ -184,11 +184,11 @@ export function ForumView(props: ChannelPageProps) {
           <ToolbarActions>
             <SortButton onClick={() => setSortOrder(sortOrder() === "latest" ? "oldest" : "latest")}>
               <Symbol size={18}>{sortOrder() === "latest" ? "arrow_downward" : "arrow_upward"}</Symbol>
-              <span>{sortOrder() === "latest" ? <Trans>Новые</Trans> : <Trans>Старые</Trans>}</span>
+              <span>{sortOrder() === "latest" ? <Trans>Newest</Trans> : <Trans>Oldest</Trans>}</span>
             </SortButton>
             <CreateButton onClick={() => setShowCreateForm(!showCreateForm())}>
               <Symbol size={18}>{showCreateForm() ? "close" : "add"}</Symbol>
-              {showCreateForm() ? <Trans>Отмена</Trans> : <Trans>Новый тред</Trans>}
+              {showCreateForm() ? <Trans>Cancel</Trans> : <Trans>New thread</Trans>}
             </CreateButton>
           </ToolbarActions>
         </Toolbar>
@@ -197,14 +197,14 @@ export function ForumView(props: ChannelPageProps) {
           <CreateForm>
             <input
               class={formInput}
-              placeholder={t`Заголовок треда`}
+              placeholder={t`Thread title`}
               value={newTitle()}
               onInput={(e) => setNewTitle(e.currentTarget.value)}
               onKeyDown={(e) => { if (e.key === "Escape") setShowCreateForm(false); }}
             />
             <textarea
               class={formTextarea}
-              placeholder={t`Первое сообщение...`}
+              placeholder={t`First message...`}
               value={newContent()}
               onInput={(e) => setNewContent(e.currentTarget.value)}
               rows={3}
@@ -217,7 +217,7 @@ export function ForumView(props: ChannelPageProps) {
               <Text class="body" size="small" style={{ opacity: 0.6 }}>Ctrl+Enter</Text>
               <SubmitButton onClick={createThread} disabled={creating() || !newTitle().trim() || !newContent().trim()}>
                 <Symbol size={18}>send</Symbol>
-                <Trans>Создать тред</Trans>
+                <Trans>Create thread</Trans>
               </SubmitButton>
             </FormActions>
           </CreateForm>
@@ -225,15 +225,15 @@ export function ForumView(props: ChannelPageProps) {
 
         <Show
           when={!threads.loading}
-          fallback={<div class={css({ textAlign: "center", padding: "40px", color: "var(--md-sys-color-on-surface-variant)" })}><Trans>Загрузка...</Trans></div>}
+          fallback={<div class={css({ textAlign: "center", padding: "40px", color: "var(--md-sys-color-on-surface-variant)" })}><Trans>Loading...</Trans></div>}
         >
           <Show
             when={filteredThreads().length > 0}
             fallback={
               <EmptyState>
                 <Symbol size={48}>forum</Symbol>
-                <Text class="title" size="medium"><Trans>Тредов пока нет</Trans></Text>
-                <Text class="body" size="small"><Trans>Создайте первый тред для обсуждения</Trans></Text>
+                <Text class="title" size="medium"><Trans>No threads yet</Trans></Text>
+                <Text class="body" size="small"><Trans>Start the first thread</Trans></Text>
               </EmptyState>
             }
           >
@@ -263,7 +263,7 @@ export function ForumView(props: ChannelPageProps) {
                     <Show when={thread.last_message_id}>
                       <ThreadActivity>
                         <Symbol size={14}>chat_bubble</Symbol>
-                        <span><Trans>Есть ответы</Trans></span>
+                        <span><Trans>Has replies</Trans></span>
                       </ThreadActivity>
                     </Show>
                   </ThreadCard>

@@ -131,30 +131,30 @@ const Config: SettingsConfiguration<Server> = {
             {
               id: "overview",
               icon: <BiSolidInfoCircle size={20} />,
-              title: t`Обзор`,
+              title: t`Overview`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "welcome",
               icon: <BiSolidEnvelope size={20} />,
-              title: t`Приветствия и роли`,
+              title: t`Greetings and roles`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "leveling",
               icon: <BiSolidFlagAlt size={20} />,
-              title: t`XP и уровни`,
+              title: t`XP and levels`,
             },
           ],
         },
         {
           hidden: !server.havePermission("ManageCustomisation"),
-          title: t`Кастомизация`,
+          title: t`Customisation`,
           entries: [
             {
               id: "emojis",
               icon: <BiSolidHappyBeaming size={20} />,
-              title: t`Эмодзи`,
+              title: t`Emoji`,
             },
           ],
         },
@@ -162,13 +162,13 @@ const Config: SettingsConfiguration<Server> = {
           hidden:
             !server.havePermission("ManageServer") &&
             !server.havePermission("BanMembers"),
-          title: t`Управление`,
+          title: t`Management`,
           entries: [
             {
               hidden: true,
               id: "members",
               icon: <BiSolidGroup size={20} />,
-              title: t`Участники`,
+              title: t`Members`,
             },
             {
               hidden: !(
@@ -177,61 +177,61 @@ const Config: SettingsConfiguration<Server> = {
               ),
               id: "roles",
               icon: <BiSolidFlagAlt size={20} />,
-              title: t`Роли`,
+              title: t`Roles`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "invites",
               icon: <BiSolidEnvelope size={20} />,
-              title: t`Приглашения`,
+              title: t`Invites`,
             },
             {
               hidden: !server.havePermission("BanMembers"),
               id: "bans",
               icon: <BiSolidUserX size={20} />,
-              title: t`Баны`,
+              title: t`Bans`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "events",
               icon: <BiSolidInfoCircle size={20} />,
-              title: t`События`,
+              title: t`Events`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "forms",
               icon: <BiSolidEnvelope size={20} />,
-              title: t`Формы`,
+              title: t`Forms`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "giveaways",
               icon: <BiSolidFlagAlt size={20} />,
-              title: t`Розыгрыши`,
+              title: t`Giveaways`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "reaction-roles",
               icon: <BiSolidHappyBeaming size={20} />,
-              title: t`Роли по реакции`,
+              title: t`Reaction roles`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "automod",
               icon: <BiSolidShield size={20} />,
-              title: t`Автомодерация`,
+              title: t`Automod`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "analytics",
               icon: <BiSolidInfoCircle size={20} />,
-              title: t`Аналитика`,
+              title: t`Analytics`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "audit-log",
               icon: <BiSolidShield size={20} />,
-              title: t`Аудит-лог`,
+              title: t`Audit log`,
             },
           ],
         },
@@ -242,7 +242,7 @@ const Config: SettingsConfiguration<Server> = {
               icon: (
                 <BiSolidTrash size={20} color="var(--md-sys-color-error)" />
               ),
-              title: t`Удалить сервер`,
+              title: t`Delete server`,
               /**
                * Handle server deletion request
                */

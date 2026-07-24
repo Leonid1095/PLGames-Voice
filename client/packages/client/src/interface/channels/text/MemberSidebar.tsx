@@ -169,13 +169,13 @@ export function ServerMemberSidebar(props: Props) {
 
     // Build role groups (sorted + filtered in one pass)
     const roleGroups = [
-      { name: t`В игре`, members: byRole["inGame"] },
+      { name: t`In game`, members: byRole["inGame"] },
       ...hoistedRoles.map((role) => ({
         name: role.name,
         members: byRole[role.id],
       })),
-      { name: t`Онлайн`, members: byRole["default"] },
-      { name: t`Оффлайн`, members: byRole["offline"] },
+      { name: t`Online`, members: byRole["default"] },
+      { name: t`Offline`, members: byRole["offline"] },
     ];
 
     // Flatten into virtual list elements
@@ -398,15 +398,15 @@ function Member(props: { user?: User; member?: ServerMember }) {
   const activityVerb = (kind: string | undefined) => {
     switch (kind) {
       case "Playing":
-        return t`Играет в`;
+        return t`Playing`;
       case "Streaming":
-        return t`Стримит`;
+        return t`Streaming`;
       case "Listening":
-        return t`Слушает`;
+        return t`Listening to`;
       case "Watching":
-        return t`Смотрит`;
+        return t`Watching`;
       case "Competing":
-        return t`На матче в`;
+        return t`Competing in`;
       default:
         return "";
     }

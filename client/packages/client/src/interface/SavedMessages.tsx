@@ -81,7 +81,7 @@ export function SavedMessages() {
         >
           <Symbol size={24}>bookmark</Symbol>
           <Text class="title" size="medium">
-            <Trans>Сохранённые сообщения</Trans>
+            <Trans>Saved messages</Trans>
           </Text>
           <span class={css({ marginLeft: "auto", fontSize: "13px", opacity: 0.6 })}>
             {filtered().length}
@@ -93,14 +93,14 @@ export function SavedMessages() {
         <Toolbar>
           <SearchInput
             type="text"
-            placeholder={t`Поиск по сохранённым...`}
+            placeholder={t`Search saved messages...`}
             value={search()}
             onInput={(e) => setSearch(e.currentTarget.value)}
           />
           <Show when={messages().length > 0}>
             <ClearButton onClick={clearAll}>
               <Symbol size={16}>delete_sweep</Symbol>
-              <Trans>Очистить все</Trans>
+              <Trans>Clear all</Trans>
             </ClearButton>
           </Show>
         </Toolbar>
@@ -111,10 +111,10 @@ export function SavedMessages() {
             <EmptyState>
               <Symbol size={48}>bookmark_border</Symbol>
               <Text class="title" size="medium">
-                <Trans>Нет сохранённых сообщений</Trans>
+                <Trans>No saved messages</Trans>
               </Text>
               <Text class="body" size="small">
-                <Trans>Нажмите правой кнопкой на сообщение и выберите "Сохранить"</Trans>
+                <Trans>Right-click a message and choose "Save"</Trans>
               </Text>
             </EmptyState>
           }
@@ -127,19 +127,19 @@ export function SavedMessages() {
                     <Author>{msg.author}</Author>
                     <Time>{formatDate(msg.timestamp)}</Time>
                   </CardHeader>
-                  <Content>{msg.content || <i><Trans>Без текста</Trans></i>}</Content>
+                  <Content>{msg.content || <i><Trans>No text</Trans></i>}</Content>
                   <CardActions>
                     <ActionButton onClick={() => goToMessage(msg)}>
                       <Symbol size={16}>open_in_new</Symbol>
-                      <Trans>Перейти</Trans>
+                      <Trans>Go to</Trans>
                     </ActionButton>
                     <ActionButton onClick={() => navigator.clipboard.writeText(msg.content)}>
                       <Symbol size={16}>content_copy</Symbol>
-                      <Trans>Копировать</Trans>
+                      <Trans>Copy</Trans>
                     </ActionButton>
                     <ActionButton onClick={() => removeMessage(msg.id)} destructive>
                       <Symbol size={16}>close</Symbol>
-                      <Trans>Удалить</Trans>
+                      <Trans>Delete</Trans>
                     </ActionButton>
                   </CardActions>
                 </MessageCard>

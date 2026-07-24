@@ -111,7 +111,7 @@ const Config: SettingsConfiguration<Channel> = {
             {
               id: "overview",
               icon: <BiSolidInfoCircle size={20} />,
-              title: t`Обзор`,
+              title: t`Overview`,
             },
             {
               hidden:
@@ -119,7 +119,7 @@ const Config: SettingsConfiguration<Channel> = {
                 !channel.havePermission("ManagePermissions"),
               id: "permissions",
               icon: <BiRegularListUl size={20} />,
-              title: t`Права доступа`,
+              title: t`Permissions`,
             },
             {
               hidden:
@@ -127,7 +127,7 @@ const Config: SettingsConfiguration<Channel> = {
                 import.meta.env.DEV,
               id: "webhooks",
               icon: <BiSolidCloud size={20} />,
-              title: t`Вебхуки`,
+              title: t`Webhooks`,
             },
           ],
         },

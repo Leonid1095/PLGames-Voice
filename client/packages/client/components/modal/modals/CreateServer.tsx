@@ -25,15 +25,15 @@ function getTemplates(t: any): ServerTemplate[] {
   {
     id: "empty",
     icon: "add_circle",
-    name: t`Пустой`,
-    description: t`Начать с нуля`,
+    name: t`Blank`,
+    description: t`Start from scratch`,
     categories: [],
   },
   {
     id: "gaming",
     icon: "sports_esports",
-    name: t`Игровой`,
-    description: t`Для игровых сообществ`,
+    name: t`Gaming`,
+    description: t`For gaming communities`,
     categories: [
       {
         title: "💬 Общение",
@@ -64,8 +64,8 @@ function getTemplates(t: any): ServerTemplate[] {
   {
     id: "community",
     icon: "groups",
-    name: t`Сообщество`,
-    description: t`Для сообществ и клубов`,
+    name: t`Community`,
+    description: t`For communities and clubs`,
     categories: [
       {
         title: "📢 Информация",
@@ -94,8 +94,8 @@ function getTemplates(t: any): ServerTemplate[] {
   {
     id: "study",
     icon: "school",
-    name: t`Учёба`,
-    description: t`Для учебных групп`,
+    name: t`Study`,
+    description: t`For study groups`,
     categories: [
       {
         title: "📚 Учёба",
@@ -125,8 +125,8 @@ function getTemplates(t: any): ServerTemplate[] {
   {
     id: "friends",
     icon: "favorite",
-    name: t`Друзья`,
-    description: t`Для компании друзей`,
+    name: t`Friends`,
+    description: t`For a group of friends`,
     categories: [
       {
         title: "💬 Чат",

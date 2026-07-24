@@ -41,7 +41,7 @@ export function MessageToolbar(props: { message?: Message }) {
       <Show when={props.message?.channel?.havePermission("SendMessage")}>
         <button
           class={tool()}
-          aria-label={t`Ответить`}
+          aria-label={t`Reply`}
           onClick={() => state.draft.addReply(props.message!, user()!.id)}
         >
           <Ripple />
@@ -70,7 +70,7 @@ export function MessageToolbar(props: { message?: Message }) {
             <button
               ref={triggerProps.ref}
               class={tool()}
-              aria-label={t`Реакция`}
+              aria-label={t`React`}
               onClick={triggerProps.onClickEmoji}
             >
               <Ripple />
@@ -82,7 +82,7 @@ export function MessageToolbar(props: { message?: Message }) {
       <Show when={props.message?.author?.self}>
         <button
           class={tool()}
-          aria-label={t`Редактировать`}
+          aria-label={t`Edit`}
           onClick={() => state.draft.setEditingMessage(props.message)}
         >
           <Ripple />
@@ -95,14 +95,14 @@ export function MessageToolbar(props: { message?: Message }) {
           props.message?.channel?.havePermission("ManageMessages")
         }
       >
-        <button class={tool()} aria-label={t`Удалить`} onClick={deleteMessage}>
+        <button class={tool()} aria-label={t`Delete`} onClick={deleteMessage}>
           <Ripple />
           <Trash2 {...iconSize(20)} />
         </button>
       </Show>
       <button
         class={tool()}
-        aria-label={t`Ещё`}
+        aria-label={t`More`}
         use:floating={{
           contextMenu: () => <MessageContextMenu message={props.message!} />,
           contextMenuHandler: "click",

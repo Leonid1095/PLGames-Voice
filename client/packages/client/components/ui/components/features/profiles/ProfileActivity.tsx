@@ -20,17 +20,17 @@ export function ProfileActivity(props: { user: User }) {
   const heading = () => {
     switch (activity()?.kind) {
       case "Playing":
-        return t`Сейчас играет`;
+        return t`Playing`;
       case "Streaming":
-        return t`Сейчас стримит`;
+        return t`Streaming`;
       case "Listening":
-        return t`Сейчас слушает`;
+        return t`Listening to`;
       case "Watching":
-        return t`Сейчас смотрит`;
+        return t`Watching`;
       case "Competing":
-        return t`На соревновании`;
+        return t`Competing in`;
       default:
-        return t`Активность`;
+        return t`Activity`;
     }
   };
 
@@ -50,7 +50,7 @@ export function ProfileActivity(props: { user: User }) {
           </Show>
           <Show when={a().url}>
             <ExternalLink href={a().url!} target="_blank" rel="noreferrer">
-              <Trans>Открыть ссылку</Trans>
+              <Trans>Open link</Trans>
             </ExternalLink>
           </Show>
         </ProfileCard>

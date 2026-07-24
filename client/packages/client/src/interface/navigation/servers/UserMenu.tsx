@@ -249,7 +249,7 @@ export function UserMenu(props: Props) {
                       openModal({ type: "activity", client: client() })
                     }
                   >
-                    <Trans>Установить активность</Trans>
+                    <Trans>Set activity</Trans>
                   </ContextMenuButton>
                 }
               >
@@ -268,7 +268,7 @@ export function UserMenu(props: Props) {
                   icon={Trash2}
                   onClick={() => user()?.setActivity(null)}
                 >
-                  <Trans>Очистить активность</Trans>
+                  <Trans>Clear activity</Trans>
                 </ContextMenuButton>
               </Show>
 
