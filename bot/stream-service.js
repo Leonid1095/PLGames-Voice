@@ -40,6 +40,49 @@ function createViewerToken(roomName, identity) {
   return token.toJwt();
 }
 
+// --- Caller authentication ---
+//
+// /stream/active exposes room names (which are channel ids), streamer
+// identities and viewer counts. Served anonymously that let anyone on the
+// internet enumerate who was streaming in which channel, including private
+// ones. Callers must now present a session the API recognises.
+//
+// Validated tokens are cached briefly: the home page polls this endpoint every
+// 30s per open tab, and we do not want a /users/@me round-trip for each poll.
+const API_URL = process.env.API_URL;
+const AUTH_TTL_MS = 60_000;
+const AUTH_CACHE_MAX = 1000;
+const authCache = new Map();
+
+async function isAuthenticated(req) {
+  const botToken = req.headers["x-bot-token"];
+  const sessionToken = req.headers["x-session-token"];
+  const token = botToken || sessionToken;
+  if (!token || typeof token !== "string") return false;
+
+  const expiry = authCache.get(token);
+  if (expiry && expiry > Date.now()) return true;
+  if (expiry) authCache.delete(token);
+
+  if (!API_URL) return false;
+  try {
+    const res = await fetch(`${API_URL}/users/@me`, {
+      headers: { [botToken ? "X-Bot-Token" : "X-Session-Token"]: token },
+    });
+    if (!res.ok) return false;
+  } catch (e) {
+    return false;
+  }
+
+  // Cheap bound on the cache: drop the oldest entry once it grows too large.
+  // Map preserves insertion order, so the first key is the oldest.
+  if (authCache.size >= AUTH_CACHE_MAX) {
+    authCache.delete(authCache.keys().next().value);
+  }
+  authCache.set(token, Date.now() + AUTH_TTL_MS);
+  return true;
+}
+
 // Only rooms fed by an active RTMP/WHIP ingress are public streams. Voice
 // channels share the same LiveKit namespace (room name == channel id) but
 // never have an ingress, so gating on this prevents anonymous viewers from
@@ -53,13 +96,28 @@ async function isActiveStreamRoom(roomName) {
 
 // --- Viewer page ---
 
+// The page used to pull livekit-client from cdn.jsdelivr.net, but the CSP added
+// in 0ea8d12a says `script-src 'self' ...` with no CDN host, so the browser has
+// been blocking it — and the viewer page with it — since 2026-05-17. Serve the
+// bundle ourselves instead of poking a hole in the CSP for a third-party host.
+const LIVEKIT_CLIENT_UMD = (() => {
+  try {
+    // The package's "." export maps the `require` condition straight at
+    // dist/livekit-client.umd.js, which is exactly the browser bundle we serve.
+    return require("fs").readFileSync(require.resolve("livekit-client"), "utf8");
+  } catch (e) {
+    console.error("[STREAM] Could not load livekit-client UMD bundle:", e.message);
+    return null;
+  }
+})();
+
 const VIEWER_HTML = `<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PLGames Stream</title>
-  <script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.js"></script>
+  <script src="/stream/livekit-client.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #1a1a2e; color: #eee; font-family: system-ui, sans-serif; }
@@ -179,7 +237,26 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
     res.end(VIEWER_HTML);
 
+  } else if (url.pathname === "/stream/livekit-client.js") {
+    if (!LIVEKIT_CLIENT_UMD) {
+      res.writeHead(500, { "Content-Type": "text/plain" });
+      return res.end("livekit-client bundle missing");
+    }
+    res.writeHead(200, {
+      "Content-Type": "application/javascript; charset=utf-8",
+      "Cache-Control": "public, max-age=86400",
+    });
+    res.end(LIVEKIT_CLIENT_UMD);
+
   } else if (url.pathname === "/stream/active") {
+    if (isRateLimited(clientIp)) {
+      res.writeHead(429, { "Content-Type": "application/json", "Retry-After": "60" });
+      return res.end(JSON.stringify({ error: "Too many requests" }));
+    }
+    if (!(await isAuthenticated(req))) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ error: "authentication required" }));
+    }
     try {
       const ingresses = await ingressClient.listIngress();
       const active = [];

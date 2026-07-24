@@ -223,9 +223,14 @@ interface StreamData {
   viewUrl: string;
 }
 
-async function fetchActiveStreams(): Promise<StreamData[]> {
+async function fetchActiveStreams(
+  auth: [string, string] | undefined,
+): Promise<StreamData[]> {
+  if (!auth) return [];
   try {
-    const res = await fetch("/stream/active");
+    const [key, value] = auth;
+    const res = await fetch("/stream/active", { headers: { [key]: value } });
+    if (!res.ok) return [];
     const data = await res.json();
     return data.streams || [];
   } catch {
@@ -245,7 +250,11 @@ function formatDuration(startedAt: number): string {
  * Active streams component for home page
  */
 function ActiveStreams() {
-  const [streams, { refetch }] = createResource(fetchActiveStreams);
+  const client = useClient();
+  // /stream/active requires a session the API recognises, so pass ours along.
+  const [streams, { refetch }] = createResource(() =>
+    fetchActiveStreams(client()?.authenticationHeader),
+  );
 
   // Auto-refresh every 30s
   setInterval(() => refetch(), 30000);
