@@ -133,7 +133,7 @@ const LinkInput = styled("div", {
 const LinkText = styled("span", {
   base: {
     fontSize: "13px",
-    fontFamily: "var(--qp-font-mono, monospace)",
+    fontFamily: "var(--pd-font-mono)",
     color: "var(--md-sys-color-on-surface)",
     fontWeight: 500,
     whiteSpace: "nowrap",

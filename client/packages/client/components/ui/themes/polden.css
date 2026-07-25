@@ -18,9 +18,9 @@
  *   - No hardcoded MDUI colour triplets. Those were frozen to the old violet
  *     and would have kept switches and sliders purple after the accent moved.
  *
- * Naming: --pd-* is canonical. --qp-* names are kept as aliases so the 29
- * files still referencing them keep working; they are migrated opportunis-
- * tically as each screen is reworked, not in one sweeping rename.
+ * Naming: --pd-* is the only vocabulary. The --qp-* aliases this file
+ * shipped with are gone -- all 130 references across 29 files were migrated
+ * as their screens were reworked, and nothing reads them any more.
  */
 
 :root {
@@ -172,82 +172,6 @@
   /* ---------- Touch target (a11y) ---------- */
   --pd-touch-target: 44px;
 
-  /* =====================================================================
-     Quiet Pro aliases — deprecated, kept so existing components compile.
-     Prefer --pd-* in new work; these disappear as screens are reworked.
-     ===================================================================== */
-  --qp-space-0: var(--pd-space-0);
-  --qp-space-1: var(--pd-space-1);
-  --qp-space-2: var(--pd-space-2);
-  --qp-space-3: var(--pd-space-3);
-  --qp-space-4: var(--pd-space-4);
-  --qp-space-5: var(--pd-space-5);
-  --qp-space-6: var(--pd-space-6);
-  --qp-space-8: var(--pd-space-8);
-  --qp-space-10: var(--pd-space-10);
-  --qp-space-12: var(--pd-space-12);
-  --qp-space-16: var(--pd-space-16);
-  --qp-space-20: var(--pd-space-20);
-  --qp-space-24: var(--pd-space-24);
-
-  --qp-radius-xs: var(--pd-radius-xs);
-  --qp-radius-sm: var(--pd-radius-sm);
-  --qp-radius-md: var(--pd-radius-md);
-  --qp-radius-lg: var(--pd-radius-lg);
-  --qp-radius-xl: var(--pd-radius-xl);
-  --qp-radius-pill: var(--pd-radius-pill);
-  --qp-radius-circle: var(--pd-radius-circle);
-
-  --qp-font-sans: var(--pd-font-sans);
-  --qp-font-mono: var(--pd-font-mono);
-
-  --qp-text-xs: var(--pd-text-xs);
-  --qp-text-sm: var(--pd-text-sm);
-  --qp-text-base: var(--pd-text-base);
-  --qp-text-md: var(--pd-text-md);
-  --qp-text-lg: var(--pd-text-lg);
-  --qp-text-xl: var(--pd-text-xl);
-  --qp-text-2xl: var(--pd-text-2xl);
-  --qp-text-3xl: var(--pd-text-3xl);
-  --qp-text-4xl: var(--pd-text-4xl);
-  --qp-text-5xl: var(--pd-text-5xl);
-  --qp-text-display: var(--pd-text-display);
-
-  --qp-leading-tight: var(--pd-leading-tight);
-  --qp-leading-snug: var(--pd-leading-snug);
-  --qp-leading-normal: var(--pd-leading-normal);
-  --qp-leading-relaxed: var(--pd-leading-relaxed);
-
-  --qp-tracking-tight: var(--pd-tracking-tight);
-  --qp-tracking-snug: var(--pd-tracking-snug);
-  --qp-tracking-normal: var(--pd-tracking-normal);
-  --qp-tracking-wide: var(--pd-tracking-wide);
-
-  --qp-weight-regular: var(--pd-weight-regular);
-  --qp-weight-medium: var(--pd-weight-medium);
-  --qp-weight-semibold: var(--pd-weight-semibold);
-  --qp-weight-bold: var(--pd-weight-bold);
-
-  /* Four durations collapse onto three; the old 80ms instant and 140ms fast
-     were never distinguishable in use. */
-  --qp-duration-instant: var(--pd-t-fast);
-  --qp-duration-fast: var(--pd-t-fast);
-  --qp-duration-normal: var(--pd-t-base);
-  --qp-duration-slow: var(--pd-t-slow);
-
-  --qp-ease-standard: var(--pd-e-out);
-  --qp-ease-emphasized: var(--pd-e-out);
-  --qp-ease-spring: var(--pd-e-back);
-
-  --qp-focus-ring: var(--pd-focus-ring);
-  --qp-glass-bg: var(--pd-glass-bg);
-  --qp-glass-border: var(--pd-glass-border);
-  --qp-glass-blur: var(--pd-glass-blur);
-  --qp-accent: var(--pd-accent);
-  --qp-border-subtle: var(--pd-border-subtle);
-  --qp-border-default: var(--pd-border-default);
-  --qp-border-strong: var(--pd-border-strong);
-  --qp-touch-target: var(--pd-touch-target);
 }
 
 :root[data-mode="dark"] {

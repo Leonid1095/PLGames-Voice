@@ -425,7 +425,7 @@ const Footer = styled("div", {
     alignItems: "center",
     gap: "6px",
     "& span": {
-      fontFamily: "var(--qp-font-mono, monospace)",
+      fontFamily: "var(--pd-font-mono)",
       padding: "2px 6px",
       borderRadius: "4px",
       background: "var(--md-sys-color-surface-container)",
