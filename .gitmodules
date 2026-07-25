@@ -1,6 +1,17 @@
 [submodule "client/packages/client/assets"]
 	path = client/packages/client/assets
 	url = https://github.com/stoatchat/assets
+	# Deliberately not checked out. scripts/copyAssets.mjs symlinks public/assets
+	# at this directory when it is non-empty and at scripts/assets_fallback when
+	# it is empty — and the fallback is where PLG Voice's actual branding lives.
+	# Upstream's web/ has a different wordmark and no og-preview.png, so checking
+	# this out swaps the logo for Stoat's and 404s the link preview.
+	#
+	# It stayed empty by accident until 08aabf11 restored .gitmodules, because
+	# `git submodule update --init` simply failed. Now that it works, `update =
+	# none` keeps it from being checked out while the other three still are.
+	# Overridable with `git submodule update --checkout` if that is ever wanted.
+	update = none
 [submodule "client/packages/js-lingui-solid"]
 	path = client/packages/js-lingui-solid
 	url = https://github.com/stoatchat/javascript-lingui-solid
