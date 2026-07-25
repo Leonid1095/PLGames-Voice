@@ -135,7 +135,7 @@ const Dropdown = styled("div", {
     background: "var(--md-sys-color-surface-container-high)",
     borderRadius: "12px",
     padding: "12px",
-    boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
+    boxShadow: "var(--pd-shadow-float)",
     zIndex: 100,
     display: "flex",
     flexDirection: "column",

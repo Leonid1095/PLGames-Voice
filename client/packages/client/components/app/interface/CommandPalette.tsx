@@ -291,7 +291,7 @@ const Palette = styled("div", {
     borderRadius: "14px",
     background: "var(--md-sys-color-surface-container-low)",
     border: "1px solid var(--pd-border-default)",
-    boxShadow: "0 24px 64px rgba(0,0,0,0.55), 0 8px 16px rgba(0,0,0,0.30)",
+    boxShadow: "var(--pd-shadow-float)",
     display: "flex",
     flexDirection: "column",
     overflow: "hidden",

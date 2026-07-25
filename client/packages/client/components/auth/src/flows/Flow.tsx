@@ -22,7 +22,7 @@ export const FlowBase = styled("div", {
     padding: "32px",
     borderRadius: "14px",
     border: "1px solid var(--pd-border-default)",
-    boxShadow: "0 24px 64px rgba(0,0,0,0.55), 0 8px 16px rgba(0,0,0,0.30)",
+    boxShadow: "var(--pd-shadow-float)",
 
     animationName: "modalIn",
     animationDuration: "0.22s",

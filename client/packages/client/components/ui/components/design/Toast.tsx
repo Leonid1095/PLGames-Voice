@@ -82,11 +82,11 @@ const ToastItem = styled("div", {
     padding: "12px 16px",
     borderRadius: "10px",
     /* Glass-bg with type-coloured slice on the left (via inset border) */
-    background: "var(--qp-glass-bg, color-mix(in srgb, var(--md-sys-color-surface) 80%, transparent))",
-    backdropFilter: "saturate(180%) blur(20px)",
-    WebkitBackdropFilter: "saturate(180%) blur(20px)",
+    background: "var(--pd-glass-bg)",
+    backdropFilter: "var(--pd-glass-blur)",
+    WebkitBackdropFilter: "var(--pd-glass-blur)",
     border: "1px solid var(--pd-border-default)",
-    boxShadow: "0 12px 32px rgba(0,0,0,0.40)",
+    boxShadow: "var(--pd-shadow-float)",
     cursor: "pointer",
     pointerEvents: "auto",
     animation: "toastSlideIn var(--pd-transition-slow)",
@@ -102,19 +102,19 @@ const ToastItem = styled("div", {
   variants: {
     type: {
       success: {
-        boxShadow: "0 12px 32px rgba(0,0,0,0.40), inset 3px 0 0 var(--brand-presence-online)",
+        boxShadow: "var(--pd-shadow-float), inset 3px 0 0 var(--brand-presence-online)",
         "& svg": { color: "var(--brand-presence-online)" },
       },
       error: {
-        boxShadow: "0 12px 32px rgba(0,0,0,0.40), inset 3px 0 0 var(--brand-presence-busy)",
+        boxShadow: "var(--pd-shadow-float), inset 3px 0 0 var(--brand-presence-busy)",
         "& svg": { color: "var(--brand-presence-busy)" },
       },
       info: {
-        boxShadow: "0 12px 32px rgba(0,0,0,0.40), inset 3px 0 0 var(--md-sys-color-primary)",
+        boxShadow: "var(--pd-shadow-float), inset 3px 0 0 var(--md-sys-color-primary)",
         "& svg": { color: "var(--md-sys-color-primary)" },
       },
       warning: {
-        boxShadow: "0 12px 32px rgba(0,0,0,0.40), inset 3px 0 0 var(--brand-presence-idle)",
+        boxShadow: "var(--pd-shadow-float), inset 3px 0 0 var(--brand-presence-idle)",
         "& svg": { color: "var(--brand-presence-idle)" },
       },
     },

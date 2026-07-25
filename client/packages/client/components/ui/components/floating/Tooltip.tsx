@@ -13,7 +13,7 @@ export const TooltipBase = styled("div", {
     background: "var(--md-sys-color-inverse-surface)",
     padding: "8px 12px",
     borderRadius: "6px",
-    boxShadow: "0 5px 15px rgba(0,0,0,0.2)",
+    boxShadow: "var(--pd-shadow-float)",
     maxWidth: "240px",
 
     ...typography.raw({

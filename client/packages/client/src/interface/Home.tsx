@@ -143,7 +143,7 @@ const StreamCard = styled("a", {
     color: "inherit",
     "&:hover": {
       transform: "translateY(-2px)",
-      boxShadow: "0 4px 16px rgba(0,0,0,0.3)",
+      boxShadow: "var(--pd-shadow-raised)",
     },
   },
 });

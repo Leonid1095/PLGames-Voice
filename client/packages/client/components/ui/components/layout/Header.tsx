@@ -37,9 +37,9 @@ export const Header = styled("div", {
     placement: {
       primary: {
         /* Glass-blur header — sits on top of messages without a hard edge. */
-        backdropFilter: "saturate(180%) blur(20px)",
-        WebkitBackdropFilter: "saturate(180%) blur(20px)",
-        background: "var(--qp-glass-bg, color-mix(in srgb, var(--md-sys-color-surface) 75%, transparent))",
+        backdropFilter: "var(--pd-glass-blur)",
+        WebkitBackdropFilter: "var(--pd-glass-blur)",
+        background: "var(--pd-glass-bg)",
         borderBottom: "1px solid var(--pd-border-subtle)",
       },
       secondary: {
