@@ -14,7 +14,7 @@ import { useModals } from "@revolt/modal";
 import { Navigate, useBeforeLeave, useLocation } from "@revolt/routing";
 import { useState } from "@revolt/state";
 import { LAYOUT_SECTIONS } from "@revolt/state/stores/Layout";
-import { ToastContainer } from "@revolt/ui/components/design";
+import { Meter, ToastContainer } from "@revolt/ui/components/design";
 import { ScheduledMessagesWorker } from "./interface/channels/text/ScheduledMessages";
 import { MobileProvider, useMobile } from "./interface/MobileContext";
 import { Sidebar } from "./interface/Sidebar";
@@ -67,13 +67,7 @@ function AppLoader() {
       {/* The signature meter replaces the old sliding progress bar, so the
           in-app loading state matches the boot splash and every other place
           a live signal is shown. */}
-      <div class="pd-meter pd-meter--accent" aria-hidden="true">
-        <i />
-        <i />
-        <i />
-        <i />
-        <i />
-      </div>
+      <Meter tone="accent" />
     </div>
   );
 }

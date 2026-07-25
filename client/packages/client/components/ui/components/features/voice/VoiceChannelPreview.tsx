@@ -312,9 +312,11 @@ const previewUser = cva({
       true: {
         color: "var(--md-sys-color-on-surface)",
 
+        // Jade, matching the tiles in the call view. The accent is for things
+        // you can press; being on air is its own colour everywhere.
         "& svg": {
           outlineOffset: "1px",
-          outline: "2px solid var(--md-sys-color-primary)",
+          outline: "2px solid var(--pd-live)",
           borderRadius: "var(--borderRadius-circle)",
         },
       },

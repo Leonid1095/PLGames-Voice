@@ -133,8 +133,11 @@ const Bar = styled("div", {
     justifyContent: "space-between",
     gap: "8px",
 
-    background: "var(--md-sys-color-surface-container-low)",
-    borderTop: "1px solid var(--pd-border-subtle)",
+    // The call panel sits on top of the channel list rather than beside it,
+    // so it takes the raised surface and a real border. On the same
+    // container-low as the sidebar it looked like one more list row.
+    background: "var(--pd-surface-raised)",
+    borderTop: "1px solid var(--pd-border-default)",
   },
 });
 
@@ -181,7 +184,10 @@ const StatusDot = styled("div", {
   variants: {
     status: {
       connected: {
-        background: "var(--brand-presence-online)",
+        // Same jade as a speaking tile and the amplitude meter: connected to
+        // voice is the one "on air" state, and it should look like it wherever
+        // it is shown.
+        background: "var(--pd-live)",
       },
       connecting: {
         background: "var(--brand-presence-busy)",
@@ -200,13 +206,18 @@ const StatusDot = styled("div", {
 
 const StatusLabel = styled("span", {
   base: {
-    fontSize: "11px",
-    fontWeight: 500,
+    // Connection state is a readout, not prose — mono label treatment, same
+    // as sidebar categories and the message divider.
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    fontWeight: "var(--pd-weight-regular)",
+    letterSpacing: "var(--pd-tracking-label)",
+    textTransform: "uppercase",
   },
   variants: {
     status: {
       connected: {
-        color: "var(--brand-presence-online)",
+        color: "var(--pd-live-ink)",
       },
       connecting: {
         color: "var(--brand-presence-busy)",

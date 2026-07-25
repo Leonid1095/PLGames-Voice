@@ -153,8 +153,16 @@
      separate from the accent: a voice app must never make "someone is
      talking" and "this is a button" the same colour. */
   --pd-live: #00C48C;
+  /* The same signal as text. #00C48C is bright enough to fail contrast as
+     small type on paper, so on light it darkens; on dark it goes back to the
+     full jade. Flipped by [data-mode] below. */
   --pd-live-ink: #007A56;
   --pd-warn: #B26A00;
+
+  /* Ink stays dark in both modes. It backs surfaces that frame arbitrary
+     visual content — screen shares, video, media viewers — where a light
+     letterbox fights whatever is being shown. */
+  --pd-ink: #100E15;
 
   /* Accent reference — reads from the theme so it follows the user's choice. */
   --pd-accent: var(--md-sys-color-primary);
@@ -244,6 +252,7 @@
 
 :root[data-mode="dark"] {
   --pd-surface-raised: var(--md-sys-color-surface-container-high);
+  --pd-live-ink: var(--pd-live);
 }
 
 /* ---------- Typography defaults ---------- */

@@ -19,7 +19,7 @@ import { styled } from "styled-system/jsx";
 import { UserContextMenu } from "@revolt/app";
 import { useUser } from "@revolt/markdown/users";
 import { InRoom } from "@revolt/rtc";
-import { Avatar } from "@revolt/ui/components/design";
+import { Avatar, Meter } from "@revolt/ui/components/design";
 import { OverflowingText } from "@revolt/ui/components/utils";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
@@ -213,7 +213,7 @@ function UserTile(props: { compact?: boolean }) {
           />
         </OverlayInner>
         <Show when={isSpeaking()}>
-          <SpeakingBar />
+          <Meter size="sm" />
         </Show>
       </Overlay>
     </div>
@@ -228,21 +228,12 @@ const AvatarOnly = styled("div", {
   },
 });
 
-/**
- * Green speaking indicator bar at bottom of tile
+/*
+ * The bar that used to sit here was an accent-coloured strip pulsing on a
+ * 1.5s loop. It has been replaced by <Meter>, the shared amplitude bars: the
+ * same signal shown for a speaking user everywhere else in the product, and
+ * one fewer bespoke infinite animation.
  */
-const SpeakingBar = styled("div", {
-  base: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: "3px",
-    background: "var(--md-sys-color-primary)",
-    borderRadius: "0 0 var(--borderRadius-lg) var(--borderRadius-lg)",
-    animation: "pulse 1.5s ease-in-out infinite",
-  },
-});
 
 /**
  * Shown when the track source is a screenshare
@@ -282,8 +273,9 @@ const tile = cva({
   base: {
     display: "grid",
     aspectRatio: "16/10",
-    transition: "outline-color 220ms cubic-bezier(0.05, 0.7, 0.1, 1), box-shadow 220ms cubic-bezier(0.05, 0.7, 0.1, 1), border-color 220ms cubic-bezier(0.05, 0.7, 0.1, 1)",
-    borderRadius: "10px",
+    transition:
+      "outline-color var(--pd-transition-base), box-shadow var(--pd-transition-base), border-color var(--pd-transition-base)",
+    borderRadius: "var(--pd-radius-md)",
     position: "relative",
 
     color: "var(--md-sys-color-on-surface)",
@@ -299,14 +291,21 @@ const tile = cva({
   variants: {
     speaking: {
       true: {
-        outlineColor: "var(--md-sys-color-primary)",
-        boxShadow: "0 0 0 4px color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent), 0 0 24px color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent)",
+        /*
+         * Jade, not the accent. This is the rule the whole palette is built
+         * around: in a voice app "someone is talking" and "this is a button"
+         * must never be the same colour, or a room full of speakers reads as
+         * a room full of controls. The accent stays for interaction; --pd-live
+         * is reserved for a signal that is genuinely on air.
+         */
+        outlineColor: "var(--pd-live)",
+        boxShadow: "0 0 0 4px color-mix(in srgb, var(--pd-live) 18%, transparent)",
       },
     },
     compact: {
       true: {
         aspectRatio: "4/3",
-        borderRadius: "8px",
+        borderRadius: "var(--pd-radius-sm)",
       },
     },
   },
@@ -319,16 +318,19 @@ const screenTile = cva({
   base: {
     display: "grid",
     aspectRatio: "16/9",
-    transition: ".3s ease all",
-    borderRadius: "var(--borderRadius-lg)",
+    transition: "border-color var(--pd-transition-base)",
+    borderRadius: "var(--pd-radius-lg)",
     position: "relative",
     flexGrow: 1,
 
-    color: "var(--md-sys-color-on-surface)",
-    background: "var(--md-sys-color-surface-container-highest)",
+    // Shared screens letterbox against ink in both modes: the frame has to
+    // stay out of the way of arbitrary content, and a pale surface behind
+    // someone's dark IDE looked like a rendering fault.
+    color: "#F4F1F7",
+    background: "var(--pd-ink)",
 
     overflow: "hidden",
-    border: "2px solid var(--md-sys-color-outline-variant)",
+    border: "1px solid var(--pd-border-default)",
   },
 });
 
