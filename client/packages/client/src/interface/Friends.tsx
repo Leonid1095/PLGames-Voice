@@ -29,6 +29,37 @@ import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { HeaderIcon } from "./common/CommonHeader";
 
 /**
+ * How reachable someone is, lowest number first.
+ *
+ * The list used to be alphabetical, which buried whoever was actually around
+ * behind everyone who was not. Sorting by availability answers the question
+ * people open this screen with — who can I talk to right now — and only falls
+ * back to the name to break ties.
+ *
+ * Busy sorts below Idle deliberately: someone on Do Not Disturb is present but
+ * has asked not to be interrupted, so they should not sit above a friend who
+ * is merely away.
+ */
+const AVAILABILITY = { Online: 0, Idle: 1, Focus: 2, Busy: 3 } as const;
+
+function availabilityRank(user: User): number {
+  if (!user.online) return 5;
+  const presence = user.status?.presence;
+  if (presence && presence in AVAILABILITY) {
+    return AVAILABILITY[presence as keyof typeof AVAILABILITY];
+  }
+  // Online with no declared presence is plain Online.
+  return 0;
+}
+
+function byAvailability(a: User, b: User): number {
+  return (
+    availabilityRank(a) - availabilityRank(b) ||
+    a.displayName.localeCompare(b.displayName)
+  );
+}
+
+/**
  * Friends menu
  */
 export function Friends() {
@@ -44,7 +75,7 @@ export function Friends() {
 
     const friends = list
       .filter((user) => user.relationship === "Friend")
-      .sort((a, b) => a.displayName.localeCompare(b.displayName));
+      .sort(byAvailability);
 
     return {
       friends,

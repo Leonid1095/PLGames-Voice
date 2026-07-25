@@ -4,11 +4,29 @@ import { Compass, Search, Users } from "lucide-solid";
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
+import { Server } from "stoat.js";
+
 import { useClient } from "@revolt/client";
 import { useNavigate } from "@revolt/routing";
-import { Avatar, Button, Column, Text } from "@revolt/ui";
+import { Avatar, Button, Column, Meter, Text } from "@revolt/ui";
 
 const RE_INVITE_URL = /(?:invite)\/([a-z0-9]+)/gi;
+
+/**
+ * How many people are sitting in this server's voice channels right now.
+ *
+ * Reads Channel.voiceParticipants, which is a ReactiveMap kept up to date by
+ * the events service, so the count tracks people joining and leaving without
+ * any polling. Zero means "show nothing" rather than "show 0" — an empty
+ * server should not advertise its emptiness.
+ */
+function voiceCount(server: Server): number {
+  let total = 0;
+  for (const channel of server.channels) {
+    if (channel.isVoice) total += channel.voiceParticipants.size;
+  }
+  return total;
+}
 
 /**
  * Discover page — browse user's servers + join by invite
@@ -104,6 +122,14 @@ export function Discover() {
                       <CardMeta>
                         <Users width={14} height={14} />
                         <Trans>{server.memberCount ?? "?"} members</Trans>
+                        <Show when={voiceCount(server)}>
+                          {(count) => (
+                            <InVoice>
+                              <Meter size="sm" />
+                              <Trans>{count()} in voice</Trans>
+                            </InVoice>
+                          )}
+                        </Show>
                       </CardMeta>
                     </CardInfo>
                   </CardContent>
@@ -300,6 +326,20 @@ const CardMeta = styled("span", {
     letterSpacing: "var(--pd-tracking-wide)",
     color: "var(--md-sys-color-on-surface-variant)",
     fill: "var(--md-sys-color-on-surface-variant)",
+  },
+});
+
+const InVoice = styled("span", {
+  base: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "5px",
+    marginInlineStart: "4px",
+    paddingInlineStart: "10px",
+    borderInlineStart: "1px solid var(--pd-border-default)",
+    color: "var(--pd-live-ink)",
+    // The meter inherits currentColor, so it picks up the jade above.
+    "& .pd-meter": { color: "currentColor" },
   },
 });
 
