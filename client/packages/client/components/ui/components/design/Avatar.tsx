@@ -211,7 +211,9 @@ const Shape = styled("div", {
         borderRadius: "var(--borderRadius-circle)",
       },
       "rounded-square": {
-        borderRadius: "var(--borderRadius-md)",
+        // Squircle, not a rounded rectangle: at the 42px the server rail uses,
+        // --borderRadius-md read as a square with the corners knocked off.
+        borderRadius: "var(--pd-radius-squircle)",
       },
     },
   },

@@ -277,11 +277,18 @@ const infoText = cva({
     prefix: {
       true: {
         width: "calc(7ch * var(--gap-sm))",
-        fontSize: "0.7em",
 
         display: "block",
         textAlign: "right",
         marginTop: "0.15em",
+
+        // Gutter timestamps stack in a column, one per message, so they get
+        // the mono face with fixed-width digits. Proportional digits made
+        // 11:11 visibly narrower than 00:00 and the column looked ragged.
+        fontFamily: "var(--pd-font-mono)",
+        fontSize: "var(--pd-text-xs)",
+        fontVariantNumeric: "tabular-nums",
+        letterSpacing: "0",
       },
     },
     hidden: {

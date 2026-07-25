@@ -98,12 +98,17 @@ const Base = styled("div", {
 
     paddingInlineEnd: "12px",
     paddingBlock: "8px",
-    borderRadius: "14px",
+    borderRadius: "var(--pd-radius-lg)",
 
     display: "flex",
-    background: "var(--md-sys-color-surface-container-low)",
+    // The composer is the one place you type, so it reads as a raised plate
+    // rather than another panel tint. surface-container-low sits within a
+    // couple of percent of the chat background in light mode -- the box
+    // effectively disappeared into the transcript above it.
+    background: "var(--pd-surface-raised)",
     color: "var(--md-sys-color-on-surface)",
-    transition: "box-shadow 180ms cubic-bezier(0.2,0,0,1), border-color 180ms cubic-bezier(0.2,0,0,1)",
+    transition:
+      "box-shadow var(--pd-transition-fast), border-color var(--pd-transition-fast)",
     border: "1px solid var(--pd-border-default)",
     "&:focus-within": {
       borderColor: "var(--md-sys-color-primary)",

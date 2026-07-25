@@ -355,9 +355,10 @@ const entryContainer = cva({
       width: "3px",
       height: "0px",
       left: "0px",
-      borderRadius: "0 3px 3px 0",
+      borderRadius: "0 var(--pd-radius-xs) var(--pd-radius-xs) 0",
       background: "var(--md-sys-color-on-surface)",
-      transition: "height 200ms cubic-bezier(0.2,0,0,1), opacity 200ms cubic-bezier(0.2,0,0,1)",
+      transition:
+        "height var(--pd-transition-base), opacity var(--pd-transition-base), background-color var(--pd-transition-base)",
       opacity: 0,
     },
 
@@ -371,22 +372,32 @@ const entryContainer = cva({
     },
 
     "& > a > svg": {
-      transition: "transform 180ms cubic-bezier(0.2,0,0,1)",
+      transition: "transform var(--pd-transition-fast)",
     },
   },
   variants: {
     indicator: {
       selected: {
-        "&:before": {
-          height: "28px !important",
-          opacity: "1 !important",
+        /*
+         * Where you are is the accent; what wants you is neutral. The rail
+         * used to be the other way round -- neutral for the open server,
+         * accent for unread -- which pointed the one loud colour in the app
+         * at everything except the thing you were looking at.
+         *
+         * Both :before and :hover:before are set so the hover height does not
+         * shrink the rail back down on the server you are already in. That is
+         * what the two !important flags here were compensating for.
+         */
+        "&:before, &:hover:before": {
+          height: "28px",
+          background: "var(--md-sys-color-primary)",
+          opacity: 1,
         },
       },
       alert: {
         "&:before": {
           height: "8px",
-          background: "var(--md-sys-color-primary)",
-          opacity: 1,
+          opacity: 0.85,
         },
       },
     },
@@ -418,8 +429,11 @@ const Shadow = styled("div", {
       height: "12px",
       marginTop: "-12px",
       position: "absolute",
+      // Fades into the rail's own surface. It was fading to
+      // surface-container-highest, a colour the rail does not use, so the
+      // "scroll continues below" hint showed up as a grey smudge instead.
       background:
-        "linear-gradient(to bottom, transparent, var(--md-sys-color-surface-container-highest))",
+        "linear-gradient(to bottom, transparent, var(--md-sys-color-surface))",
     },
   },
 });

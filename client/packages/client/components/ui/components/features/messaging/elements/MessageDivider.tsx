@@ -14,23 +14,29 @@ const Base = styled("div", {
     alignItems: "center",
     margin: "17px 12px 17px 8px",
 
+    // Date sits on the line as a mono label, same treatment as sidebar
+    // categories and every other caption in the app.
     "& time": {
       marginTop: "-2px",
-      fontSize: "0.6875rem",
-      lineHeight: "0.6875rem",
-      fontWeight: 600,
-      paddingInline: "5px 5px",
+      paddingInline: "6px",
 
-      borderRadius: "var(--borderRadius-md)",
+      fontFamily: "var(--pd-font-mono)",
+      fontSize: "var(--pd-text-xs)",
+      lineHeight: "1",
+      letterSpacing: "var(--pd-tracking-label)",
+      textTransform: "uppercase",
 
-      color: "var(--md-sys-color-outline)",
-      background: "var(--md-sys-color-surface-container-lowest)",
+      color: "var(--md-sys-color-on-surface-variant)",
+      background: "var(--md-sys-color-surface)",
     },
   },
   variants: {
     unread: {
       true: {
-        borderTop: "1px solid var(--md-sys-color-error)",
+        // Accent, not error. The brand signal is already red; a second,
+        // slightly different red for "you have not read this" reads as a
+        // fault condition rather than a bookmark.
+        borderTop: "1px solid var(--md-sys-color-primary)",
       },
       false: {
         borderTop: "thin solid var(--md-sys-color-outline-variant)",
@@ -47,16 +53,18 @@ const Base = styled("div", {
  */
 const Unread = styled("div", {
   base: {
-    fontSize: "0.625rem",
-    fontWeight: 700,
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    lineHeight: "1",
+    letterSpacing: "var(--pd-tracking-label)",
     textTransform: "uppercase",
-    letterSpacing: "0.5px",
-    color: "var(--md-sys-color-on-error)",
-    background: "var(--md-sys-color-error)",
 
-    padding: "1px 6px",
+    color: "var(--md-sys-color-on-primary)",
+    background: "var(--md-sys-color-primary)",
+
+    padding: "3px 7px 3px 8px",
     marginTop: "-1px",
-    borderRadius: "60px",
+    borderRadius: "var(--pd-radius-pill)",
   },
 });
 
