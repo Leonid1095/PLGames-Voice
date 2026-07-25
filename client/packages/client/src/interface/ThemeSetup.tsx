@@ -12,12 +12,15 @@ import { useState } from "@revolt/state";
 export function ThemeSetup() {
   const state = useState();
 
+  // The brand accent leads the list and must stay in sync with the default in
+  // stores/Theme.ts — otherwise a first-run user sees no swatch selected.
+  // Violet stays available as a choice; it is just no longer ours.
   const accents = [
-    { color: "#7C3AED", label: "Violet" },
+    { color: "#E00A45", label: "Signal" },
     { color: "#007AFF", label: "Blue" },
     { color: "#34C759", label: "Green" },
     { color: "#FF9500", label: "Orange" },
-    { color: "#FF3B30", label: "Red" },
+    { color: "#7C3AED", label: "Violet" },
     { color: "#AF52DE", label: "Purple" },
   ];
 
@@ -48,7 +51,7 @@ export function ThemeSetup() {
               />
               <defs>
                 <linearGradient id="tsg" x1="4" y1="2" x2="28" y2="30">
-                  <stop offset="0%" stop-color="#7C3AED" />
+                  <stop offset="0%" stop-color="#E00A45" />
                   <stop offset="100%" stop-color="#2563EB" />
                 </linearGradient>
               </defs>

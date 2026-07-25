@@ -59,29 +59,20 @@ function AppLoader() {
         />
         <defs>
           <linearGradient id="lg" x1="4" y1="2" x2="28" y2="30">
-            <stop offset="0%" stop-color="#A78BFA" />
-            <stop offset="100%" stop-color="#8B5CF6" />
+            <stop offset="0%" stop-color="var(--md-sys-color-primary)" />
+            <stop offset="100%" stop-color="var(--md-sys-color-primary)" />
           </linearGradient>
         </defs>
       </svg>
-      <div
-        style={{
-          width: "100px",
-          height: "2px",
-          "border-radius": "1px",
-          background: "rgba(255,255,255,0.08)",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            width: "40%",
-            height: "100%",
-            background: "#8B5CF6",
-            "border-radius": "1px",
-            animation: "splashLoad 1.5s ease-in-out infinite",
-          }}
-        />
+      {/* The signature meter replaces the old sliding progress bar, so the
+          in-app loading state matches the boot splash and every other place
+          a live signal is shown. */}
+      <div class="pd-meter pd-meter--accent" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+        <i />
+        <i />
       </div>
     </div>
   );

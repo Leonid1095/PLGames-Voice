@@ -22,7 +22,7 @@ const AuthButton = styled("button", {
     fontFamily: "inherit",
     cursor: "pointer",
     color: "#fff",
-    background: "#7C3AED",
+    background: "var(--md-sys-color-primary)",
     transition: "background var(--transition-medium), box-shadow var(--transition-medium)",
     _hover: {
       background: "#6D28D9",
@@ -38,7 +38,7 @@ const AuthButton = styled("button", {
 
 const LinkText = styled("a", {
   base: {
-    color: "#A78BFA",
+    color: "var(--md-sys-color-primary)",
     fontSize: "14px",
     textDecoration: "none",
     cursor: "pointer",

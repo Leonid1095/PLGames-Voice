@@ -18,7 +18,7 @@ const Base = styled("div", {
     color: "#F5F5F7",
     /* Same Quiet Pro mesh as Landing — restrained accent + neutral base */
     background: `
-      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(139,92,246,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 50% at 50% -10%, color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent) 0%, transparent 60%),
       radial-gradient(ellipse 50% 40% at 90% 30%, rgba(56,189,248,0.06) 0%, transparent 60%),
       radial-gradient(ellipse 60% 40% at 10% 80%, rgba(244,114,182,0.04) 0%, transparent 60%),
       #0B0A12

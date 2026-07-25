@@ -120,11 +120,13 @@ export function AppearanceMenu() {
             />
             <For
               each={[
-                "#7C3AED",
+                // Brand accent first, matching the default in stores/Theme.ts
+                // and the first-run picker in ThemeSetup.tsx.
+                "#E00A45",
                 "#007AFF",
                 "#34C759",
                 "#FF9500",
-                "#FF3B30",
+                "#7C3AED",
                 "#5856D6",
                 "#AF52DE",
                 "#8E8E93",

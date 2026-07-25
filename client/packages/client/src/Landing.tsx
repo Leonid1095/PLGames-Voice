@@ -12,10 +12,14 @@ import { Navigate } from "@revolt/routing";
 const BG = "#0B0A12";
 const SURFACE = "#181722";
 const SURFACE_ELEVATED = "#1F1D2C";
-const ACCENT = "#8B5CF6";
-const ACCENT_HOVER = "#A78BFA";
-const ACCENT_SUBTLE = "rgba(139,92,246,0.08)";
-const GLOW = "rgba(139,92,246,0.18)";
+// Полдень signal red. Literal rather than var(--md-sys-color-*) because the
+// landing renders before any theme is loaded — there is no logged-in user to
+// have a theme. The full landing rework is a later step; this only takes the
+// old Discord violet off it.
+const ACCENT = "#E00A45";
+const ACCENT_HOVER = "#FF3D6A";
+const ACCENT_SUBTLE = "rgba(224,10,69,0.08)";
+const GLOW = "rgba(224,10,69,0.18)";
 const TEXT = "#F5F5F7";
 const TEXT_SECONDARY = "#9A98A8";
 const TEXT_DIMMED = "#5C5A6E";

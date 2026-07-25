@@ -5,7 +5,7 @@ import { Trans } from "@lingui-solid/solid/macro";
 /* ── Obsidian Amethyst palette ─────────────────────── */
 
 const BG = "#0C0A1A";
-const ACCENT = "#7C3AED";
+const ACCENT = "#E00A45";
 const GLOW = "rgba(124,58,237,0.15)";
 const TEXT = "#F0ECF9";
 const TEXT_SECONDARY = "#A098B8";
@@ -82,7 +82,7 @@ const BtnDownload = styled("a", {
     fontWeight: 700,
     textDecoration: "none",
     color: "#fff",
-    background: "linear-gradient(135deg, #2563EB, #7C3AED)",
+    background: "linear-gradient(135deg, #FF3D6A, #E00A45)",
     transition: "box-shadow 0.2s, transform 0.15s",
     cursor: "pointer",
     _hover: {
@@ -235,7 +235,7 @@ function LogoIcon() {
       />
       <defs>
         <linearGradient id="dlGrad" x1="4" y1="2" x2="28" y2="30">
-          <stop offset="0%" stop-color="#7C3AED" />
+          <stop offset="0%" stop-color="#E00A45" />
           <stop offset="100%" stop-color="#2563EB" />
         </linearGradient>
       </defs>
