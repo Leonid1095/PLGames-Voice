@@ -87,6 +87,11 @@ msgstr "{0} emoji slots remaining"
 msgid "{0} files exceed the maximum size limit of {maxSizeFormatted} and were not uploaded."
 msgstr "{0} files exceed the maximum size limit of {maxSizeFormatted} and were not uploaded."
 
+#. placeholder {0}: count()
+#: src/interface/Discover.tsx
+msgid "{0} in voice"
+msgstr "{0} in voice"
+
 #. placeholder {0}: users()[0]!.username
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
 msgid "{0} is typing"
@@ -294,6 +299,10 @@ msgstr "6 hours"
 #: components/app/interface/settings/server/Giveaways.tsx
 msgid "7 days"
 msgstr "7 days"
+
+#: components/app/interface/desktop/Titlebar.tsx
+msgid "A new version is available"
+msgstr "A new version is available"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Able to access channels on this server"
@@ -886,6 +895,10 @@ msgstr "Close chat"
 #: components/modal/modals/DeleteChannel.tsx
 msgid "Close conversation with {0}?"
 msgstr "Close conversation with {0}?"
+
+#: src/Interface.tsx
+msgid "Close sidebar"
+msgstr "Close sidebar"
 
 #: components/modal/modals/JoinServer.tsx
 msgid "Code"
@@ -2186,6 +2199,10 @@ msgstr "Load file ({0})"
 #: components/app/interface/settings/server/AuditLog.tsx
 msgid "Load More"
 msgstr "Load More"
+
+#: components/ui/components/design/LoadingProgress.tsx
+msgid "Loading"
+msgstr "Loading"
 
 #: src/interface/channels/text/ForumView.tsx
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
@@ -4041,6 +4058,10 @@ msgstr "Unsolicited advertising or spam"
 msgid "Until I turn it back on"
 msgstr "Until I turn it back on"
 
+#: components/app/interface/desktop/Titlebar.tsx
+msgid "Update"
+msgstr "Update"
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Upload Files"
 msgstr "Upload Files"
@@ -4498,6 +4519,11 @@ msgstr "Your account has been verified!"
 #: components/i18n/errors.ts
 msgid "Your discriminator change has been ratelimited, please try again later."
 msgstr "Your discriminator change has been ratelimited, please try again later."
+
+#. placeholder {0}: props.client.user!.discriminator
+#: components/modal/modals/EditUsername.tsx
+msgid "Your discriminator changed to {0}"
+msgstr "Your discriminator changed to {0}"
 
 #: components/i18n/errors.ts
 msgid "Your message is too long, please remove some characters and try again."

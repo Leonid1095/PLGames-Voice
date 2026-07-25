@@ -1,6 +1,7 @@
 import { Match, Show, Switch, createSignal } from "solid-js";
 import { Motion, Presence } from "solid-motionone";
 
+import { Trans } from "@lingui-solid/solid/macro";
 import { css } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
@@ -38,7 +39,14 @@ export function Titlebar() {
       <Show
         when={
           (window.native && window.desktopConfig?.get().customFrame) ||
-          isDisconnected()
+          isDisconnected() ||
+          // Without this the update prompt was unreachable in a browser: the
+          // service worker sets pendingUpdate, but the only UI that offers it
+          // is this bar, which otherwise appears solely for the desktop custom
+          // frame or while disconnected. Browser users stayed on the old bundle
+          // until they happened to reload — which is how a redesign can ship
+          // and nobody sees it.
+          !!pendingUpdate()
         }
       >
         <Motion.div
@@ -104,6 +112,10 @@ export function Titlebar() {
                     <strong> (reconnect now)</strong>
                   </a>
                 </Match>
+                {/* Last, so a connection problem still takes the bar. */}
+                <Match when={pendingUpdate()}>
+                  <Trans>A new version is available</Trans>
+                </Match>
               </Switch>
               <Show when={pendingUpdate()}>
                 {" "}
@@ -113,7 +125,7 @@ export function Titlebar() {
                   }}
                 >
                   <Button size="sm" onPress={pendingUpdate()}>
-                    Update
+                    <Trans>Update</Trans>
                   </Button>
                 </div>
               </Show>

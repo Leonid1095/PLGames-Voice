@@ -87,6 +87,11 @@ msgstr ""
 msgid "{0} files exceed the maximum size limit of {maxSizeFormatted} and were not uploaded."
 msgstr ""
 
+#. placeholder {0}: count()
+#: src/interface/Discover.tsx
+msgid "{0} in voice"
+msgstr ""
+
 #. placeholder {0}: users()[0]!.username
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
 msgid "{0} is typing"
@@ -293,6 +298,10 @@ msgstr ""
 
 #: components/app/interface/settings/server/Giveaways.tsx
 msgid "7 days"
+msgstr ""
+
+#: components/app/interface/desktop/Titlebar.tsx
+msgid "A new version is available"
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -883,6 +892,10 @@ msgstr ""
 #. placeholder {0}: props.channel.recipient?.displayName
 #: components/modal/modals/DeleteChannel.tsx
 msgid "Close conversation with {0}?"
+msgstr ""
+
+#: src/Interface.tsx
+msgid "Close sidebar"
 msgstr ""
 
 #: components/modal/modals/JoinServer.tsx
@@ -2183,6 +2196,10 @@ msgstr ""
 
 #: components/app/interface/settings/server/AuditLog.tsx
 msgid "Load More"
+msgstr ""
+
+#: components/ui/components/design/LoadingProgress.tsx
+msgid "Loading"
 msgstr ""
 
 #: src/interface/channels/text/ForumView.tsx
@@ -4039,6 +4056,10 @@ msgstr ""
 msgid "Until I turn it back on"
 msgstr ""
 
+#: components/app/interface/desktop/Titlebar.tsx
+msgid "Update"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Upload Files"
 msgstr "Téléverser des fichiers"
@@ -4495,6 +4516,11 @@ msgstr "Votre compte a bien été vérifié !"
 
 #: components/i18n/errors.ts
 msgid "Your discriminator change has been ratelimited, please try again later."
+msgstr ""
+
+#. placeholder {0}: props.client.user!.discriminator
+#: components/modal/modals/EditUsername.tsx
+msgid "Your discriminator changed to {0}"
 msgstr ""
 
 #: components/i18n/errors.ts

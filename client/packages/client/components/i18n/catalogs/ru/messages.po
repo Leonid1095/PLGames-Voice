@@ -300,6 +300,10 @@ msgstr "6 часов"
 msgid "7 days"
 msgstr "7 дней"
 
+#: components/app/interface/desktop/Titlebar.tsx
+msgid "A new version is available"
+msgstr "Доступна новая версия"
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Able to access channels on this server"
 msgstr "Доступ к каналам на этом сервере"
@@ -4053,6 +4057,10 @@ msgstr "Навязчивая реклама или спам"
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "Until I turn it back on"
 msgstr "Пока я не включу обратно"
+
+#: components/app/interface/desktop/Titlebar.tsx
+msgid "Update"
+msgstr "Обновить"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Upload Files"
