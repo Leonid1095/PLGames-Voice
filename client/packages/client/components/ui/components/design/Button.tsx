@@ -333,7 +333,7 @@ const button = cva({
       small: {
         height: "40px",
         paddingInline: "16px",
-        borderRadius: "12px",
+        borderRadius: "var(--pd-radius-md)",
 
         ...typography.raw(),
       },

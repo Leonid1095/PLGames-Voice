@@ -274,7 +274,7 @@ const NumberInput = styled("input", {
   base: {
     width: "70px",
     padding: "6px 8px",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     border: "1px solid var(--md-sys-color-outline-variant)",
     background: "var(--md-sys-color-surface-container)",
     color: "var(--md-sys-color-on-surface)",

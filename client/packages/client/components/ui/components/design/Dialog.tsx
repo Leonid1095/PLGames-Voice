@@ -180,7 +180,7 @@ const Container = styled("div", {
     padding: "0",
     minWidth: "320px",
     maxWidth: "440px",
-    borderRadius: "14px",
+    borderRadius: "var(--pd-radius-lg)",
     overflow: "hidden",
 
     display: "flex",

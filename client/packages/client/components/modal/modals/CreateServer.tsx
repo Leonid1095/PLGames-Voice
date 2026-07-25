@@ -285,7 +285,7 @@ const TemplateCard = styled("div", {
     alignItems: "center",
     gap: "6px",
     padding: "14px 10px",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     cursor: "pointer",
     border: "1px solid var(--pd-border-subtle)",
     background: "var(--md-sys-color-surface-container-low)",

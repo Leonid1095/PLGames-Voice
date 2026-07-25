@@ -208,7 +208,7 @@ const StatCard = styled("div", {
     alignItems: "center",
     gap: "4px",
     padding: "16px 8px",
-    borderRadius: "12px",
+    borderRadius: "var(--pd-radius-md)",
     background: "var(--md-sys-color-surface-container)",
   },
 });
@@ -273,7 +273,7 @@ const FeatureGrid = styled("div", {
 const FeatureChip = styled("span", {
   base: {
     padding: "4px 10px",
-    borderRadius: "12px",
+    borderRadius: "var(--pd-radius-md)",
     fontSize: "11px",
     fontWeight: 500,
   },

@@ -112,7 +112,7 @@ export function CreatePollModal(
 const QuestionInput = styled("input", {
   base: {
     padding: "10px 12px",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     border: "1px solid var(--md-sys-color-outline-variant)",
     background: "var(--md-sys-color-surface-container)",
     color: "var(--md-sys-color-on-surface)",
@@ -127,7 +127,7 @@ const OptionInput = styled("input", {
   base: {
     flex: 1,
     padding: "8px 10px",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     border: "1px solid var(--md-sys-color-outline-variant)",
     background: "var(--md-sys-color-surface-container)",
     color: "var(--md-sys-color-on-surface)",
@@ -164,7 +164,7 @@ const AddOptionBtn = styled("button", {
     gap: "6px",
     background: "none",
     border: "1px dashed var(--md-sys-color-outline-variant)",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     padding: "8px 12px",
     color: "var(--md-sys-color-primary)",
     cursor: "pointer",

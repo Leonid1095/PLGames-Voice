@@ -133,7 +133,7 @@ const StreamCard = styled("a", {
   base: {
     display: "flex",
     flexDirection: "column",
-    borderRadius: "10px",
+    borderRadius: "var(--pd-radius-md)",
     overflow: "hidden",
     background: "var(--md-sys-color-surface-container-low)",
     border: "1px solid var(--pd-border-subtle)",
@@ -170,7 +170,7 @@ const LiveBadge = styled("span", {
     fontSize: "11px",
     fontWeight: 700,
     padding: "2px 6px",
-    borderRadius: "4px",
+    borderRadius: "var(--pd-radius-xs)",
     letterSpacing: "0.05em",
   },
 });
@@ -184,7 +184,7 @@ const ViewersBadge = styled("span", {
     color: "white",
     fontSize: "11px",
     padding: "2px 6px",
-    borderRadius: "4px",
+    borderRadius: "var(--pd-radius-xs)",
   },
 });
 

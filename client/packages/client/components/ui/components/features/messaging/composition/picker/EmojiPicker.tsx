@@ -313,7 +313,7 @@ const EmojiOption = styled("div", {
         cursor: "pointer",
         position: "relative",
         padding: "6px",
-        borderRadius: "6px",
+        borderRadius: "var(--pd-radius-sm)",
         transition: "background var(--pd-transition-fast)",
 
         "--emoji-size": "100%",

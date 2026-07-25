@@ -118,7 +118,7 @@ const LeaderboardRow = styled("div", {
     alignItems: "center",
     gap: "12px",
     padding: "8px 12px",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     background: "var(--md-sys-color-surface-container)",
     fontSize: "13px",
   },
@@ -143,7 +143,7 @@ const Username = styled("span", {
 const LevelBadge = styled("span", {
   base: {
     padding: "2px 8px",
-    borderRadius: "10px",
+    borderRadius: "var(--pd-radius-md)",
     fontSize: "11px",
     fontWeight: 600,
     background: "var(--md-sys-color-primary)",

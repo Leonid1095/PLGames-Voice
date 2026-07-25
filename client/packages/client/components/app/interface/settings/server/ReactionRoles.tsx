@@ -190,7 +190,7 @@ const MappingRow = styled("div", {
     alignItems: "center",
     justifyContent: "space-between",
     padding: "8px 12px",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     background: "var(--md-sys-color-surface-container)",
     fontSize: "13px",
   },
@@ -207,7 +207,7 @@ const MappingInfo = styled("div", {
 const SelectField = styled("select", {
   base: {
     padding: "6px 10px",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     border: "1px solid var(--md-sys-color-outline-variant)",
     background: "var(--md-sys-color-surface-container)",
     color: "var(--md-sys-color-on-surface)",
@@ -218,7 +218,7 @@ const SelectField = styled("select", {
 const InputField = styled("input", {
   base: {
     padding: "6px 10px",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     border: "1px solid var(--md-sys-color-outline-variant)",
     background: "var(--md-sys-color-surface-container)",
     color: "var(--md-sys-color-on-surface)",

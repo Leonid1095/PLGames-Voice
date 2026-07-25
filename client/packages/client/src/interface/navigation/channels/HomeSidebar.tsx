@@ -244,7 +244,7 @@ const PendingBadge = styled("div", {
     padding: "1px 7px",
     color: "var(--md-sys-color-on-error)",
     background: "var(--md-sys-color-error)",
-    borderRadius: "9999px",
+    borderRadius: "var(--pd-radius-pill)",
   },
 });
 

@@ -22,7 +22,7 @@ const Base = styled("div", {
     flexDirection: "column",
     padding: "6px 8px",
     overflow: "hidden",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     background: "var(--md-sys-color-surface-container-lowest)",
     color: "var(--md-sys-color-on-surface)",
     fill: "var(--md-sys-color-on-surface)",
@@ -59,9 +59,9 @@ export const ContextMenuItem = styled("a", {
     gap: "var(--gap-md)",
     alignItems: "center",
     padding: "6px 8px",
-    borderRadius: "4px",
+    borderRadius: "var(--pd-radius-xs)",
     margin: "1px 0",
-    transition: "background-color var(--transition-fast), color var(--transition-fast), fill var(--transition-fast)",
+    transition: "background-color var(--pd-transition-fast), color var(--pd-transition-fast), fill var(--pd-transition-fast)",
 
     "&:hover": {
       background: "var(--md-sys-color-primary)",

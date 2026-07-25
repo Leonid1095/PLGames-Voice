@@ -179,7 +179,7 @@ export function Giveaways(props: ServerSettingsProps) {
 const InputField = styled("input", {
   base: {
     padding: "10px 12px",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     border: "1px solid var(--md-sys-color-outline-variant)",
     background: "var(--md-sys-color-surface-container)",
     color: "var(--md-sys-color-on-surface)",
@@ -192,7 +192,7 @@ const InputField = styled("input", {
 const SelectField = styled("select", {
   base: {
     padding: "8px 10px",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     border: "1px solid var(--md-sys-color-outline-variant)",
     background: "var(--md-sys-color-surface-container)",
     color: "var(--md-sys-color-on-surface)",
@@ -204,7 +204,7 @@ const NumberInput = styled("input", {
   base: {
     width: "50px",
     padding: "6px 8px",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     border: "1px solid var(--md-sys-color-outline-variant)",
     background: "var(--md-sys-color-surface-container)",
     color: "var(--md-sys-color-on-surface)",

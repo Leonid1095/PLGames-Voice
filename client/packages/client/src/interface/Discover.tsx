@@ -190,7 +190,7 @@ const SearchBox = styled("div", {
     alignItems: "center",
     gap: "10px",
     padding: "8px 14px",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     background: "var(--pd-tint-subtle)",
     border: "1px solid var(--pd-border-default)",
     fill: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
@@ -332,7 +332,7 @@ const JoinInput = styled("input", {
   base: {
     flex: 1,
     padding: "10px 16px",
-    borderRadius: "12px",
+    borderRadius: "var(--pd-radius-md)",
     border: "1px solid var(--md-sys-color-outline-variant)",
     background: "color-mix(in srgb, var(--md-sys-color-surface-container-high) 80%, transparent)",
     color: "var(--md-sys-color-on-surface)",

@@ -387,7 +387,7 @@ const RemoveBtn = styled("div", {
     padding: "2px",
     cursor: "pointer",
     color: "white",
-    transition: "opacity var(--transition-fast)",
+    transition: "opacity var(--pd-transition-fast)",
     "& svg": {
       width: "16px",
       height: "16px",

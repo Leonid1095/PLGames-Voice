@@ -100,7 +100,7 @@ const NameInput = styled("input", {
     background: "var(--md-sys-color-surface-container)",
     color: "var(--md-sys-color-on-surface)",
     outline: "none",
-    transition: "border-color var(--transition-fast)",
+    transition: "border-color var(--pd-transition-fast)",
 
     "&:focus": {
       borderColor: "var(--md-sys-color-primary)",
@@ -134,7 +134,7 @@ const PresetButton = styled("button", {
     fontSize: "13px",
     fontFamily: "inherit",
     fontWeight: 500,
-    transition: "all var(--transition-fast)",
+    transition: "background-color var(--pd-transition-fast), border-color var(--pd-transition-fast), color var(--pd-transition-fast), box-shadow var(--pd-transition-fast)",
 
     "&:hover": {
       background: "var(--md-sys-color-surface-container-high)",

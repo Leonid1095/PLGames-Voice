@@ -107,7 +107,7 @@ export function Draggable<T>(props: Props<T>) {
         dropTargetStyle: {
           outline:
             "2px solid color-mix(in srgb, 40% var(--md-sys-color-primary), transparent)",
-          borderRadius: "4px",
+          borderRadius: "var(--pd-radius-xs)",
           outlineOffset: "-2px",
           minHeight: "24px",
         },

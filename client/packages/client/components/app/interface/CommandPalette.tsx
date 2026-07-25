@@ -288,7 +288,7 @@ const Palette = styled("div", {
   base: {
     width: "560px",
     maxHeight: "440px",
-    borderRadius: "14px",
+    borderRadius: "var(--pd-radius-lg)",
     background: "var(--md-sys-color-surface-container-low)",
     border: "1px solid var(--pd-border-default)",
     boxShadow: "var(--pd-shadow-float)",
@@ -330,7 +330,7 @@ const ResultItem = styled("div", {
     alignItems: "center",
     gap: "12px",
     padding: "8px 12px",
-    borderRadius: "6px",
+    borderRadius: "var(--pd-radius-sm)",
     cursor: "pointer",
     color: "var(--md-sys-color-on-surface)",
     transition: "background var(--pd-transition-fast)",
@@ -427,7 +427,7 @@ const Footer = styled("div", {
     "& span": {
       fontFamily: "var(--pd-font-mono)",
       padding: "2px 6px",
-      borderRadius: "4px",
+      borderRadius: "var(--pd-radius-xs)",
       background: "var(--md-sys-color-surface-container)",
       border: "1px solid var(--pd-border-subtle)",
       fontSize: "11px",

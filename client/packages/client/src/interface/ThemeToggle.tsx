@@ -74,7 +74,7 @@ const Bar = styled("button", {
     padding: "6px 10px",
 
     border: "1px solid var(--pd-border-default)",
-    borderRadius: "6px",
+    borderRadius: "var(--pd-radius-sm)",
     background: "transparent",
     color: "var(--md-sys-color-on-surface-variant)",
     cursor: "pointer",
@@ -100,7 +100,7 @@ const DownloadBar = styled("a", {
     textDecoration: "none",
 
     border: "1px solid var(--pd-border-default)",
-    borderRadius: "6px",
+    borderRadius: "var(--pd-radius-sm)",
     background: "transparent",
     color: "var(--md-sys-color-on-surface-variant)",
     cursor: "pointer",

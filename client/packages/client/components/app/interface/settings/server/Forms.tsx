@@ -318,7 +318,7 @@ export function Forms(props: ServerSettingsProps) {
 const FormCard = styled("div", {
   base: {
     padding: "12px",
-    borderRadius: "10px",
+    borderRadius: "var(--pd-radius-md)",
     background: "var(--md-sys-color-surface-container)",
   },
 });
@@ -329,7 +329,7 @@ const BuilderCard = styled("div", {
     flexDirection: "column",
     gap: "10px",
     padding: "14px",
-    borderRadius: "12px",
+    borderRadius: "var(--pd-radius-md)",
     border: "1px solid var(--md-sys-color-outline-variant)",
     background: "var(--md-sys-color-surface-container-low)",
   },
@@ -338,7 +338,7 @@ const BuilderCard = styled("div", {
 const InputField = styled("input", {
   base: {
     padding: "8px 10px",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     border: "1px solid var(--md-sys-color-outline-variant)",
     background: "var(--md-sys-color-surface-container)",
     color: "var(--md-sys-color-on-surface)",
@@ -351,7 +351,7 @@ const InputField = styled("input", {
 const SelectField = styled("select", {
   base: {
     padding: "8px 10px",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     border: "1px solid var(--md-sys-color-outline-variant)",
     background: "var(--md-sys-color-surface-container)",
     color: "var(--md-sys-color-on-surface)",
@@ -378,7 +378,7 @@ const AddBtn = styled("button", {
     gap: "4px",
     background: "none",
     border: "1px dashed var(--md-sys-color-outline-variant)",
-    borderRadius: "6px",
+    borderRadius: "var(--pd-radius-sm)",
     padding: "6px 10px",
     color: "var(--md-sys-color-primary)",
     cursor: "pointer",

@@ -245,7 +245,7 @@ const ReactionBase = styled("button", {
     userSelect: "none",
     verticalAlign: "middle",
     padding: "2px 8px",
-    borderRadius: "9999px",
+    borderRadius: "var(--pd-radius-pill)",
     border: "1px solid var(--pd-border-subtle)",
 
     transition: "background var(--pd-transition-fast), border-color var(--pd-transition-fast), color var(--pd-transition-fast)",

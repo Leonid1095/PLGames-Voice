@@ -80,7 +80,7 @@ const ToastItem = styled("div", {
     alignItems: "flex-start",
     gap: "12px",
     padding: "12px 16px",
-    borderRadius: "10px",
+    borderRadius: "var(--pd-radius-md)",
     /* Glass-bg with type-coloured slice on the left (via inset border) */
     background: "var(--pd-glass-bg)",
     backdropFilter: "var(--pd-glass-blur)",

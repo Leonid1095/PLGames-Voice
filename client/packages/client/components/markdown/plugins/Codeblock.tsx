@@ -35,7 +35,7 @@ const copyBtnClass = css({
   top: "6px",
   right: "6px",
   opacity: 0,
-  transition: "opacity var(--transition-fast)",
+  transition: "opacity var(--pd-transition-fast)",
 
   display: "flex",
   alignItems: "center",
@@ -43,7 +43,7 @@ const copyBtnClass = css({
 
   padding: "4px 8px",
   border: "none",
-  borderRadius: "4px",
+  borderRadius: "var(--pd-radius-xs)",
   cursor: "pointer",
 
   fontSize: "12px",

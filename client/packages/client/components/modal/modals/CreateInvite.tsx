@@ -106,7 +106,7 @@ const LinkRow = styled("div", {
   base: {
     display: "flex",
     gap: "0",
-    borderRadius: "10px",
+    borderRadius: "var(--pd-radius-md)",
     overflow: "hidden",
     border: "1px solid var(--pd-border-default)",
   },

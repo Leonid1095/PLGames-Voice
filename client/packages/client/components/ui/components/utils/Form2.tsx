@@ -88,7 +88,7 @@ const EditorBox = styled("div", {
   base: {
     background: "var(--md-sys-color-surface-container-low)",
     color: "var(--md-sys-color-on-surface)",
-    borderRadius: "10px",
+    borderRadius: "var(--pd-radius-md)",
     border: "1px solid var(--pd-border-default)",
     padding: "12px",
   },

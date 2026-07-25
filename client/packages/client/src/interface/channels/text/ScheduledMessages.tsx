@@ -133,7 +133,7 @@ const Dropdown = styled("div", {
     bottom: "40px",
     right: "0",
     background: "var(--md-sys-color-surface-container-high)",
-    borderRadius: "12px",
+    borderRadius: "var(--pd-radius-md)",
     padding: "12px",
     boxShadow: "var(--pd-shadow-float)",
     zIndex: 100,
@@ -156,7 +156,7 @@ const DateInput = styled("input", {
   base: {
     background: "var(--md-sys-color-surface-container)",
     border: "1px solid var(--md-sys-color-outline-variant)",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     padding: "8px",
     color: "var(--md-sys-color-on-surface)",
     fontSize: "13px",
@@ -178,7 +178,7 @@ const CancelBtn = styled("button", {
     color: "var(--md-sys-color-on-surface-variant)",
     cursor: "pointer",
     padding: "6px 12px",
-    borderRadius: "6px",
+    borderRadius: "var(--pd-radius-sm)",
     fontSize: "12px",
   },
 });
@@ -190,7 +190,7 @@ const SubmitBtn = styled("button", {
     color: "var(--md-sys-color-on-primary)",
     cursor: "pointer",
     padding: "6px 12px",
-    borderRadius: "6px",
+    borderRadius: "var(--pd-radius-sm)",
     fontSize: "12px",
     fontWeight: 600,
     "&:disabled": {

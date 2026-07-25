@@ -416,7 +416,7 @@ const Preview = styled("div", {
   base: {
     height: "126px",
     overflow: "hidden",
-    borderRadius: "10px",
+    borderRadius: "var(--pd-radius-md)",
     border: "1px solid var(--pd-border-subtle)",
     background: "var(--md-sys-color-surface-container-low)",
   },

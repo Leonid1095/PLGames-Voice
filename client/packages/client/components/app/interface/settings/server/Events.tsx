@@ -324,7 +324,7 @@ const FormCard = styled("div", {
     flexDirection: "column",
     gap: "8px",
     padding: "12px",
-    borderRadius: "12px",
+    borderRadius: "var(--pd-radius-md)",
     background: "var(--md-sys-color-surface-container)",
     border: "1px solid var(--md-sys-color-outline-variant)",
   },
@@ -336,7 +336,7 @@ const EventCard = styled("div", {
     flexDirection: "column",
     gap: "8px",
     padding: "12px",
-    borderRadius: "12px",
+    borderRadius: "var(--pd-radius-md)",
     background: "var(--md-sys-color-surface-container)",
   },
 });
@@ -351,14 +351,14 @@ const RsvpRow = styled("div", {
 const RsvpButton = styled("button", {
   base: {
     padding: "4px 12px",
-    borderRadius: "16px",
+    borderRadius: "var(--pd-radius-xl)",
     border: "1px solid var(--md-sys-color-outline-variant)",
     background: "transparent",
     color: "var(--md-sys-color-on-surface)",
     cursor: "pointer",
     fontSize: "12px",
     fontWeight: 500,
-    transition: "all var(--transition-fast)",
+    transition: "background-color var(--pd-transition-fast), border-color var(--pd-transition-fast), color var(--pd-transition-fast), box-shadow var(--pd-transition-fast)",
     "&:hover": {
       background: "var(--md-sys-color-surface-container-high)",
     },
@@ -377,7 +377,7 @@ const RsvpButton = styled("button", {
 const InputField = styled("input", {
   base: {
     padding: "8px 12px",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     border: "1px solid var(--md-sys-color-outline-variant)",
     background: "var(--md-sys-color-surface-container-low)",
     color: "var(--md-sys-color-on-surface)",
@@ -390,7 +390,7 @@ const InputField = styled("input", {
 const SelectField = styled("select", {
   base: {
     padding: "8px 10px",
-    borderRadius: "8px",
+    borderRadius: "var(--pd-radius-sm)",
     border: "1px solid var(--md-sys-color-outline-variant)",
     background: "var(--md-sys-color-surface-container-low)",
     color: "var(--md-sys-color-on-surface)",

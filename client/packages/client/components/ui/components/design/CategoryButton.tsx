@@ -115,7 +115,7 @@ const Base = styled("a", {
 
     gap: "14px",
     padding: "14px 16px",
-    borderRadius: "10px",
+    borderRadius: "var(--pd-radius-md)",
     border: "1px solid var(--pd-border-subtle)",
 
     userSelect: "none",
@@ -219,7 +219,7 @@ const IconWrapper = styled("div", {
         borderRadius: "50%",
       },
       false: {
-        borderRadius: "10px",
+        borderRadius: "var(--pd-radius-md)",
       },
     },
   },
@@ -376,7 +376,7 @@ const innerColumn = cva({
     gap: "var(--gap-xs)",
 
     borderRadius: "var(--borderRadius-md)",
-    transition: "var(--transition-slow)",
+    transition: "var(--pd-transition-slow)",
 
     scrollbarWidth: "none",
     "&::-webkit-scrollbar": {
@@ -404,7 +404,7 @@ const Details = styled("div", {
 
     /* add transition to the icon */
     "& summary div:last-child svg": {
-      transition: "var(--transition-slow)",
+      transition: "var(--pd-transition-slow)",
     },
 
     /* rotate chevron when it is open */
@@ -419,7 +419,7 @@ const Details = styled("div", {
 
     /* hide the default details component marker */
     "& summary": {
-      transition: "var(--transition-slow)",
+      transition: "var(--pd-transition-slow)",
       listStyle: "none",
     },
 

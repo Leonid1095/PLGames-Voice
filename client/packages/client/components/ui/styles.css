@@ -14,12 +14,6 @@
 :root {
   --glow-accent: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
   --border-accent: color-mix(in srgb, var(--md-sys-color-primary) 15%, transparent);
-
-  /* Transition tokens — aliases onto the Полдень motion scale so there is
-     one set of numbers in the codebase rather than two that drift apart. */
-  --transition-fast: var(--pd-transition-fast);
-  --transition-medium: var(--pd-transition-base);
-  --transition-slow: var(--pd-transition-slow);
 }
 
 /* Reduced motion */
