@@ -1,48 +1,66 @@
-import { Accessor, JSXElement, Setter } from "solid-js";
+import {
+  Accessor,
+  JSXElement,
+  Setter,
+  createContext,
+  useContext,
+} from "solid-js";
 
-import "mdui/components/navigation-rail-item.js";
-import "mdui/components/navigation-rail.js";
 import { cva } from "styled-system/css";
 
 interface Props {
   children: JSXElement;
-  contained: boolean;
+  contained?: boolean;
   value: Accessor<string>;
   onValue: Setter<string>;
 }
 
 /**
- * Navigation rails let people switch between UI views on mid-sized devices
+ * Shared state for the rail. MDUI's <mdui-navigation-rail> coordinated its
+ * children internally; native buttons need the current value and the setter
+ * handed down.
+ */
+const RailContext = createContext<{
+  value: () => string;
+  select: (value: string) => void;
+}>();
+
+/**
+ * Navigation rails let people switch between UI views on mid-sized devices.
  *
- * @library MDUI
- * @specification https://m3.material.io/components/navigation-rail
+ * Native nav + buttons rather than MDUI web components. `aria-current` marks
+ * the active view, which the custom element never exposed.
  */
 export function NavigationRail(props: Props) {
   return (
-    <mdui-navigation-rail
-      class={rail()}
-      value={props.value()}
-      onChange={(e: Event & { currentTarget: HTMLInputElement }) =>
-        props.onValue(e.currentTarget.value)
-      }
-      contained={props.contained}
+    <RailContext.Provider
+      value={{
+        value: () => props.value(),
+        select: (value) => props.onValue(value as never),
+      }}
     >
-      {props.children}
-    </mdui-navigation-rail>
+      <nav class={rail({ contained: props.contained })}>{props.children}</nav>
+    </RailContext.Provider>
   );
 }
 
 const rail = cva({
   base: {
-    background: "transparent",
-    paddingBlock: "8px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "var(--pd-space-1)",
+    paddingBlock: "var(--pd-space-2)",
     width: "56px",
+    flex: "none",
+    background: "transparent",
   },
-});
-
-const Icon = cva({
-  base: {
-    fill: "var(--md-sys-color-on-surface-variant)",
+  variants: {
+    contained: {
+      true: {
+        background: "var(--md-sys-color-surface-container)",
+      },
+    },
   },
 });
 
@@ -53,17 +71,71 @@ interface ItemProps {
 }
 
 /**
- * An item used in the navigation rail
+ * An item used in the navigation rail.
  */
 function NavigationRailItem(props: ItemProps) {
+  const ctx = useContext(RailContext);
+  const active = () => ctx?.value() === props.value;
+
   return (
-    <mdui-navigation-rail-item value={props.value}>
-      {props.children}{" "}
-      <div slot="icon" class={Icon()}>
-        {props.icon}
-      </div>
-    </mdui-navigation-rail-item>
+    <button
+      type="button"
+      class={item()}
+      aria-current={active() ? "page" : undefined}
+      onClick={() => ctx?.select(props.value)}
+    >
+      <span class={icon({ active: active() })}>{props.icon}</span>
+      <span class={caption()}>{props.children}</span>
+    </button>
   );
 }
 
 NavigationRail.Item = NavigationRailItem;
+
+const item = cva({
+  base: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "2px",
+    width: "100%",
+    padding: "var(--pd-space-1) 0",
+    border: "none",
+    background: "transparent",
+    color: "var(--md-sys-color-on-surface-variant)",
+    font: "inherit",
+    cursor: "pointer",
+    borderRadius: "var(--pd-radius-sm)",
+    transition: "color var(--pd-transition-fast)",
+    "&[aria-current]": { color: "var(--md-sys-color-on-surface)" },
+    "&:hover": { color: "var(--md-sys-color-on-surface)" },
+  },
+});
+
+const icon = cva({
+  base: {
+    display: "grid",
+    placeItems: "center",
+    width: "32px",
+    height: "32px",
+    borderRadius: "var(--pd-radius-pill)",
+    fill: "currentColor",
+    transition: "background var(--pd-transition-fast)",
+  },
+  variants: {
+    active: {
+      true: {
+        background: "var(--md-sys-color-surface-container-highest)",
+        color: "var(--md-sys-color-primary)",
+      },
+    },
+  },
+});
+
+const caption = cva({
+  base: {
+    fontSize: "var(--pd-text-xs)",
+    lineHeight: 1.2,
+    textAlign: "center",
+  },
+});

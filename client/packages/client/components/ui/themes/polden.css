@@ -366,26 +366,5 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-/* ---------------------------------------------------------------------
-   MDUI shims.
-   Temporary: these components are being replaced with native ones. Only
-   shape and typeface are set here — colour comes from LoadTheme's
-   createMduiColourTriplets so it tracks the accent and the light/dark
-   toggle. Quiet Pro hardcoded the violet triplet here, which would have
-   stranded switches and sliders on the old accent.
-   ------------------------------------------------------------------- */
-mdui-text-field,
-mdui-select {
-  --mdui-shape-corner-extra-small: var(--pd-radius-sm);
-  --mdui-shape-corner-small: var(--pd-radius-sm);
-  font-family: var(--pd-font-sans);
-}
-
-mdui-text-field::part(container),
-mdui-text-field::part(input) {
-  font-family: var(--pd-font-sans) !important;
-}
-
-mdui-switch {
-  --mdui-shape-corner-full: var(--pd-radius-pill);
-}
+/* The MDUI shims that used to live here are gone along with the library:
+   every control is now a native element that can simply be styled. */

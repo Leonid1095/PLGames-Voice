@@ -1,8 +1,22 @@
-import type { JSXElement } from "solid-js";
+import {
+  type JSXElement,
+  createContext,
+  createUniqueId,
+  useContext,
+} from "solid-js";
 
-import "mdui/components/segmented-button-group.js";
-import "mdui/components/segmented-button.js";
 import { cva } from "styled-system/css";
+
+/**
+ * Shared state for a segmented group. MDUI's group element coordinated its
+ * children; native radios group by sharing a `name`.
+ */
+const SegmentContext = createContext<{
+  name: string;
+  value: () => string;
+  required: () => boolean | undefined;
+  select: (event: Event & { currentTarget: HTMLInputElement }) => void;
+}>();
 
 /**
  * @deprecated Material Expressive introduced button groups which should be used instead!
@@ -11,10 +25,21 @@ export function SegmentedButton(props: {
   value: string;
   children: JSXElement;
 }) {
+  const ctx = useContext(SegmentContext);
+
   return (
-    <mdui-segmented-button class={styles()} value={props.value}>
-      {props.children}
-    </mdui-segmented-button>
+    <label class={segment()}>
+      <input
+        type="radio"
+        class={input()}
+        name={ctx?.name}
+        value={props.value}
+        checked={ctx?.value() === props.value}
+        required={ctx?.required()}
+        onChange={(e) => ctx?.select(e)}
+      />
+      <span>{props.children}</span>
+    </label>
   );
 }
 
@@ -27,34 +52,75 @@ export function SingleSelectSegmentedButtonGroup(props: {
   value: string;
   required?: boolean;
 }) {
+  const name = createUniqueId();
+
   return (
-    <mdui-segmented-button-group
-      selects="single"
-      value={props.value}
-      // eslint-disable-next-line solid/reactivity
-      onChange={props.onSelect}
-      required={props.required}
+    <SegmentContext.Provider
+      value={{
+        name,
+        value: () => props.value,
+        required: () => props.required,
+        // eslint-disable-next-line solid/reactivity
+        select: props.onSelect,
+      }}
     >
-      {props.children}
-    </mdui-segmented-button-group>
+      <div role="radiogroup" class={group()}>
+        {props.children}
+      </div>
+    </SegmentContext.Provider>
   );
 }
 
-const styles = cva({
+const group = cva({
   base: {
-    border: "1px solid var(--md-sys-color-on-surface)",
+    display: "inline-flex",
+    // One shared border for the strip; segments contribute their own divider
+    // rather than doubling it up at every seam.
+    border: "1px solid var(--md-sys-color-outline-variant)",
+    borderRadius: "var(--pd-radius-md)",
+    overflow: "hidden",
+  },
+});
 
-    "&:nth-child(1)": {
-      borderLeft: "1px solid var(--md-sys-color-on-surface)",
-    },
+const segment = cva({
+  base: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "var(--pd-space-2)",
+    minHeight: "36px",
+    padding: "0 var(--pd-space-4)",
+    color: "var(--md-sys-color-on-surface-variant)",
+    fontSize: "var(--pd-text-sm)",
+    cursor: "pointer",
+    userSelect: "none",
+    transition: "background var(--pd-transition-fast), color var(--pd-transition-fast)",
 
-    "&:not(:nth-child(1))": {
-      borderLeft: "none",
+    "&:not(:first-child)": {
+      borderInlineStart: "1px solid var(--md-sys-color-outline-variant)",
     },
+    "&:hover:not(:has(input:checked))": {
+      background: "var(--md-sys-color-surface-container-high)",
+    },
+    "&:has(input:checked)": {
+      background: "var(--md-sys-color-primary)",
+      color: "var(--md-sys-color-on-primary)",
+      fontWeight: "var(--pd-weight-semibold)",
+    },
+    "&:has(input:focus-visible)": {
+      outline: "2px solid var(--md-sys-color-primary)",
+      outlineOffset: "-2px",
+    },
+  },
+});
 
-    "&[selected]": {
-      color: "rgb(var(--mdui-color-on-secondary-container))",
-      background: "rgb(var(--mdui-color-secondary-container))",
-    },
+/** The radio itself is the state; only the label is visible. */
+const input = cva({
+  base: {
+    position: "absolute",
+    width: "1px",
+    height: "1px",
+    opacity: 0,
+    pointerEvents: "none",
   },
 });

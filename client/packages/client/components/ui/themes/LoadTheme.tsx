@@ -4,7 +4,6 @@ import { useState } from "@revolt/state";
 
 import {
   createMaterialColourVariables,
-  createMduiColourTriplets,
   createPlgVoiceWebVariables,
 } from ".";
 import { Masks } from "./Masks";
@@ -49,8 +48,6 @@ export function LoadTheme() {
       ...createPlgVoiceWebVariables(activeTheme),
       // mount --md-sys-color variables
       ...createMaterialColourVariables(activeTheme, "--md-sys-color-"),
-      // mount --mdui-color triplet variables
-      ...createMduiColourTriplets(activeTheme, "--mdui-color-"),
     })) {
       document.body.style.setProperty(key, value);
     }

@@ -1,52 +1,25 @@
 import type { JSX } from "solid-js";
 
-import { css } from "styled-system/css";
-
 /**
- * Single item that appears in a menu.
+ * A single option inside `TextField.Select`.
  *
- * Native button rather than an MDUI web component, so the row can be styled
- * directly instead of through custom properties reaching into a closed shadow
- * DOM. Keyboard activation and focus order come from the element itself.
+ * Despite the name, this is not a context-menu row: application menus are
+ * built from ContextMenuItem / ContextMenuButton in app/menus/ContextMenu.
+ * Every use of this component in the codebase is a select option, so it
+ * renders <option> and the surrounding <select> gets native keyboard
+ * behaviour, type-ahead and the platform's own picker on mobile.
+ *
+ * The name is kept because it appears at every call site and in the
+ * TextField.Select docblock; renaming it is churn without benefit.
  */
-export function MenuItem(
-  props: JSX.HTMLAttributes<HTMLButtonElement> & {
-    value?: string;
-    disabled?: boolean;
-  },
-) {
+export function MenuItem(props: {
+  value?: string;
+  disabled?: boolean;
+  children?: JSX.Element;
+}) {
   return (
-    <button
-      type="button"
-      role="menuitem"
-      {...props}
-      class={`${item()} ${props.class ?? ""}`}
-    />
+    <option value={props.value} disabled={props.disabled}>
+      {props.children}
+    </option>
   );
 }
-
-const item = () =>
-  css({
-    display: "flex",
-    alignItems: "center",
-    gap: "var(--pd-space-2)",
-    width: "100%",
-    // Touch target floor from the a11y pass; the visual row stays compact.
-    minHeight: "36px",
-    padding: "0 var(--pd-space-3)",
-    border: "none",
-    background: "transparent",
-    color: "var(--md-sys-color-on-surface)",
-    font: "inherit",
-    fontSize: "var(--pd-text-base)",
-    textAlign: "start",
-    borderRadius: "var(--pd-radius-sm)",
-    cursor: "pointer",
-    transition: "background var(--pd-transition-fast)",
-
-    "&:hover:not(:disabled)": {
-      background: "var(--md-sys-color-surface-container-high)",
-    },
-    "&:active:not(:disabled)": { transform: "scale(0.99)" },
-    "&:disabled": { opacity: 0.5, cursor: "default" },
-  });
