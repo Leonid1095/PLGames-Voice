@@ -113,11 +113,13 @@ const StreamsTitle = styled("div", {
     display: "flex",
     alignItems: "center",
     gap: "8px",
-    fontSize: "11px",
-    fontWeight: 600,
+    // The shared mono label, replacing this screen's own 600/0.08em variant.
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    fontWeight: "var(--pd-weight-regular)",
     textTransform: "uppercase",
-    letterSpacing: "0.08em",
-    color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
+    letterSpacing: "var(--pd-tracking-label)",
+    color: "var(--md-sys-color-on-surface-variant)",
   },
 });
 
@@ -135,7 +137,8 @@ const StreamCard = styled("a", {
     flexDirection: "column",
     borderRadius: "var(--pd-radius-md)",
     overflow: "hidden",
-    background: "var(--md-sys-color-surface-container-low)",
+    background: "var(--pd-surface-raised)",
+    boxShadow: "var(--pd-shadow-raised)",
     border: "1px solid var(--pd-border-subtle)",
     cursor: "pointer",
     transition: "transform var(--pd-transition-base), border-color var(--pd-transition-base)",
@@ -143,7 +146,10 @@ const StreamCard = styled("a", {
     color: "inherit",
     "&:hover": {
       transform: "translateY(-2px)",
-      boxShadow: "var(--pd-shadow-raised)",
+      boxShadow: "var(--pd-shadow-float)",
+    },
+    "@media (prefers-reduced-motion: reduce)": {
+      "&:hover": { transform: "none" },
     },
   },
 });
@@ -152,7 +158,7 @@ const StreamPreview = styled("div", {
   base: {
     position: "relative",
     aspectRatio: "16/9",
-    background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+    background: "var(--pd-ink)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -165,13 +171,14 @@ const LiveBadge = styled("span", {
     position: "absolute",
     top: "8px",
     left: "8px",
-    background: "#e94560",
-    color: "white",
-    fontSize: "11px",
-    fontWeight: 700,
-    padding: "2px 6px",
+    background: "var(--md-sys-color-primary)",
+    color: "var(--md-sys-color-on-primary)",
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    padding: "3px 7px",
     borderRadius: "var(--pd-radius-xs)",
-    letterSpacing: "0.05em",
+    textTransform: "uppercase",
+    letterSpacing: "var(--pd-tracking-label)",
   },
 });
 
@@ -182,8 +189,10 @@ const ViewersBadge = styled("span", {
     right: "8px",
     background: "rgba(0,0,0,0.7)",
     color: "white",
-    fontSize: "11px",
-    padding: "2px 6px",
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    fontVariantNumeric: "tabular-nums",
+    padding: "3px 7px",
     borderRadius: "var(--pd-radius-xs)",
   },
 });

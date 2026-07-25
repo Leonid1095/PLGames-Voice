@@ -2,15 +2,30 @@ import { styled } from "styled-system/jsx";
 
 import { Trans } from "@lingui-solid/solid/macro";
 
-/* ── Obsidian Amethyst palette ─────────────────────── */
+/* ── Полдень palette ────────────────────────────────────────────────
+ *
+ * Same literals as Landing.tsx, for the same reason: this page renders with
+ * no logged-in user and therefore no theme to read. The two pages sit one
+ * click apart and have to match.
+ */
 
-const BG = "#0C0A1A";
+const BG = "#FBF9F7";
 const ACCENT = "#E00A45";
-const GLOW = "rgba(124,58,237,0.15)";
-const TEXT = "#F0ECF9";
-const TEXT_SECONDARY = "#A098B8";
-const TEXT_DIMMED = "#6E6889";
-const SURFACE = "#231F33";
+const ACCENT_HOVER = "#C00538";
+const GLOW = "rgba(224,10,69,0.13)";
+const TEXT = "#16131C";
+const TEXT_SECONDARY = "#55505F";
+const TEXT_DIMMED = "#8A8494";
+const SURFACE = "#FFFFFF";
+
+/* Condensed capitals, matching the landing. */
+const DISPLAY = {
+  fontFamily: "var(--pd-font-display)",
+  fontVariationSettings: '"wght" 700, "wdth" var(--pd-display-wdth)',
+  fontWeight: 700,
+  textTransform: "uppercase",
+  lineHeight: 1.05,
+} as const;
 
 const DOWNLOAD_URL =
   "https://github.com/Leonid1095/PLGames-Voice/releases/latest/download/plg-voice-desktop-setup.exe";
@@ -25,9 +40,11 @@ const Page = styled("div", {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    background: `radial-gradient(ellipse at 30% 0%, ${GLOW} 0%, transparent 50%), radial-gradient(ellipse at 70% 100%, rgba(37,99,235,0.10) 0%, transparent 50%), ${BG}`,
+    // One accent wash. The blue radial that sat under it was a colour this
+    // product does not use anywhere.
+    background: `radial-gradient(ellipse 90% 55% at 50% -12%, ${GLOW} 0%, transparent 62%), ${BG}`,
     color: TEXT,
-    fontFamily: "Inter, sans-serif",
+    fontFamily: "var(--pd-font-sans)",
     gap: "32px",
     padding: "40px 16px",
     textAlign: "center",
@@ -40,11 +57,11 @@ const Page = styled("div", {
 
 const Title = styled("h1", {
   base: {
-    fontSize: "clamp(24px, 5vw, 48px)",
-    fontWeight: 700,
-    lineHeight: 1.1,
+    ...DISPLAY,
+    fontSize: "clamp(30px, 6vw, 60px)",
+    letterSpacing: "0.01em",
     margin: 0,
-    background: `linear-gradient(135deg, ${ACCENT}, #2563EB)`,
+    background: `linear-gradient(175deg, ${TEXT} 30%, color-mix(in srgb, ${TEXT} 55%, ${ACCENT}) 100%)`,
     backgroundClip: "text",
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
@@ -63,8 +80,9 @@ const Subtitle = styled("p", {
 
 const SectionTitle = styled("h2", {
   base: {
-    fontSize: "clamp(18px, 3vw, 28px)",
-    fontWeight: 700,
+    ...DISPLAY,
+    fontSize: "clamp(20px, 3.4vw, 32px)",
+    letterSpacing: "0.01em",
     margin: 0,
     color: TEXT,
   },
@@ -82,12 +100,18 @@ const BtnDownload = styled("a", {
     fontWeight: 700,
     textDecoration: "none",
     color: "#fff",
-    background: "linear-gradient(135deg, #FF3D6A, #E00A45)",
-    transition: "box-shadow 0.2s, transform 0.15s",
+    background: ACCENT,
+    boxShadow: "var(--pd-shadow-raised), inset 0 1px 0 rgba(255,255,255,0.14)",
+    transition:
+      "background var(--pd-transition-base), box-shadow var(--pd-transition-base), transform var(--pd-transition-fast)",
     cursor: "pointer",
     _hover: {
-      boxShadow: "0 0 40px rgba(37,99,235,0.35)",
+      background: ACCENT_HOVER,
+      boxShadow: `0 4px 16px ${GLOW}, inset 0 1px 0 rgba(255,255,255,0.18)`,
       transform: "translateY(-2px)",
+    },
+    "@media (prefers-reduced-motion: reduce)": {
+      _hover: { transform: "none" },
     },
     md: {
       padding: "18px 48px",
@@ -142,7 +166,7 @@ const Divider = styled("div", {
     width: "100%",
     maxWidth: "480px",
     height: "1px",
-    background: "rgba(124,58,237,0.15)",
+    background: "rgba(22,19,28,0.10)",
   },
 });
 
@@ -161,8 +185,8 @@ const InstallCards = styled("div", {
 
 const InstallCard = styled("div", {
   base: {
-    background: "rgba(26,23,38,0.6)",
-    border: "1px solid rgba(124,58,237,0.15)",
+    background: SURFACE,
+    border: "1px solid rgba(22,19,28,0.10)",
     borderRadius: "var(--pd-radius-xl)",
     padding: "20px",
     display: "flex",
@@ -200,7 +224,7 @@ const StepNum = styled("span", {
     minWidth: "20px",
     height: "20px",
     borderRadius: "50%",
-    background: "rgba(124,58,237,0.2)",
+    background: "rgba(224,10,69,0.10)",
     color: ACCENT,
     fontSize: "11px",
     fontWeight: 700,
@@ -236,7 +260,7 @@ function LogoIcon() {
       <defs>
         <linearGradient id="dlGrad" x1="4" y1="2" x2="28" y2="30">
           <stop offset="0%" stop-color="#E00A45" />
-          <stop offset="100%" stop-color="#2563EB" />
+          <stop offset="100%" stop-color="#FF3D6A" />
         </linearGradient>
       </defs>
     </svg>

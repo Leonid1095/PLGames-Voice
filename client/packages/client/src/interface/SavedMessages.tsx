@@ -217,11 +217,13 @@ const MessageCard = styled("div", {
     flexDirection: "column",
     gap: "6px",
     padding: "12px 16px",
-    borderRadius: "var(--borderRadius-lg)",
-    background: "var(--md-sys-color-surface-container)",
-    border: "1px solid transparent",
+    borderRadius: "var(--pd-radius-lg)",
+    background: "var(--pd-surface-raised)",
+    boxShadow: "var(--pd-shadow-raised)",
+    border: "1px solid var(--pd-border-subtle)",
+    transition: "border-color var(--pd-transition-fast)",
     "&:hover": {
-      borderColor: "var(--md-sys-color-outline-variant)",
+      borderColor: "var(--pd-border-default)",
     },
   },
 });
@@ -236,15 +238,18 @@ const CardHeader = styled("div", {
 
 const Author = styled("span", {
   base: {
-    fontWeight: 600,
-    fontSize: "14px",
-    color: "var(--md-sys-color-primary)",
+    fontWeight: "var(--pd-weight-semibold)",
+    fontSize: "var(--pd-text-base)",
+    color: "var(--md-sys-color-on-surface)",
   },
 });
 
 const Time = styled("span", {
   base: {
-    fontSize: "12px",
+    // Timestamps stack down the card column, so tabular figures.
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    fontVariantNumeric: "tabular-nums",
     color: "var(--md-sys-color-on-surface-variant)",
   },
 });

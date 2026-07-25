@@ -72,7 +72,7 @@ const AuthButton = styled("button", {
     transition: "background var(--pd-transition-base), box-shadow var(--pd-transition-base)",
     _hover: {
       background: "#6D28D9",
-      boxShadow: "0 0 20px rgba(124,58,237,0.25)",
+      boxShadow: "0 0 20px var(--accent-glow)",
     },
     _active: {
       background: "#5B21B6",

@@ -52,7 +52,7 @@ export function ThemeSetup() {
               <defs>
                 <linearGradient id="tsg" x1="4" y1="2" x2="28" y2="30">
                   <stop offset="0%" stop-color="#E00A45" />
-                  <stop offset="100%" stop-color="#2563EB" />
+                  <stop offset="100%" stop-color="#FF3D6A" />
                 </linearGradient>
               </defs>
             </svg>
