@@ -1,0 +1,1068 @@
+<title>Полдень — движение и упрощение кода</title>
+
+<style>
+/* ============================================================
+   ПОЛДЕНЬ · слой движения
+   Каждая анимация отвечает на вопрос «что изменилось и куда».
+   Декоративной анимации нет.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --bg:#FBF9F7; --bg-2:#F3F0F5; --card:#FFFFFF;
+  --fg:#16131C; --fg-2:#55505F; --fg-3:#8B8494;
+  --line:#E7E2EC; --line-2:#D6CFE0;
+  --accent:#E00A45; --accent-b:#FF3D6A;
+  --live:#00C48C; --live-i:#007A56;
+  --sig-w:#FFE9EF;
+
+  --f-display:"Bahnschrift","DIN Alternate","DIN Condensed","SF Compact Display","Oswald","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
+  --f-mono:"Cascadia Mono","SF Mono","JetBrains Mono","Consolas",ui-monospace,monospace;
+
+  /* --- Токены движения: три длительности, три кривые --- */
+  --t-fast:   120ms;   /* отклик на курсор и нажатие */
+  --t-base:   200ms;   /* появление, смена состояния */
+  --t-slow:   320ms;   /* смена экрана, крупная панель */
+
+  --e-out:    cubic-bezier(.2, 0, 0, 1);      /* основная: резкий старт, мягкая посадка */
+  --e-in-out: cubic-bezier(.4, 0, .2, 1);     /* перемещение между двумя точками */
+  --e-back:   cubic-bezier(.34, 1.4, .64, 1); /* только счётчики и нажатия */
+
+  --step-0: clamp(15px,.95vw,16px);
+  --step-1: clamp(18px,1.3vw,21px);
+  --step-2: clamp(24px,2vw,30px);
+  --step-3: clamp(32px,3.4vw,46px);
+  --step-4: clamp(40px,6vw,84px);
+  --wrap:1180px; --read:66ch;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:#100E15; --bg-2:#171420; --card:#1B1724;
+    --fg:#F4F1F7; --fg-2:#B3ACC0; --fg-3:#7C7489;
+    --line:#2A2536; --line-2:#3A3348;
+    --accent:#FF3D6A; --accent-b:#FF6B8D;
+    --sig-w:#3A1220;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#100E15; --bg-2:#171420; --card:#1B1724;
+  --fg:#F4F1F7; --fg-2:#B3ACC0; --fg-3:#7C7489;
+  --line:#2A2536; --line-2:#3A3348;
+  --accent:#FF3D6A; --accent-b:#FF6B8D; --sig-w:#3A1220;
+  color-scheme: dark;
+}
+:root[data-theme="light"]{
+  --bg:#FBF9F7; --bg-2:#F3F0F5; --card:#FFFFFF;
+  --fg:#16131C; --fg-2:#55505F; --fg-3:#8B8494;
+  --line:#E7E2EC; --line-2:#D6CFE0;
+  --accent:#E00A45; --accent-b:#FF3D6A; --sig-w:#FFE9EF;
+  color-scheme: light;
+}
+
+body {
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:var(--f-body); font-size:var(--step-0); line-height:1.55;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+}
+h1,h2,h3,h4{
+  font-family:var(--f-display); font-variation-settings:"wght" 700,"wdth" 75;
+  font-weight:700; line-height:.98; text-transform:uppercase;
+  text-wrap:balance; margin:0;
+}
+p{margin:0}
+
+:where(a,button,[tabindex]):focus-visible{
+  outline:2px solid var(--accent); outline-offset:3px; border-radius:4px;
+}
+
+.wrap{width:min(100% - 48px, var(--wrap)); margin-inline:auto}
+.eyebrow{
+  font-family:var(--f-mono); font-size:11px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--fg-3);
+  display:flex; align-items:center; gap:10px;
+}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--accent);flex:none}
+.lede{font-size:var(--step-1); line-height:1.45; color:var(--fg-2); max-width:var(--read)}
+.body-text{color:var(--fg-2); max-width:var(--read)}
+.body-text + .body-text{margin-top:14px}
+.body-text strong{color:var(--fg); font-weight:600}
+
+.section{padding-block:clamp(52px,6.5vw,92px); border-top:1px solid var(--line)}
+.section-head{display:flex; flex-direction:column; gap:16px; margin-bottom:36px}
+.section-head h2{font-size:var(--step-3)}
+
+code{
+  font-family:var(--f-mono); font-size:.88em;
+  background:var(--bg-2); padding:1px 5px; border-radius:4px;
+}
+
+/* ---------- Шапка ---------- */
+.topbar{
+  position:sticky; top:0; z-index:80;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.topbar-in{display:flex; align-items:center; gap:20px; height:54px}
+.topbar-mark{
+  font-family:var(--f-display); font-variation-settings:"wght" 700,"wdth" 75;
+  text-transform:uppercase; letter-spacing:.06em; font-size:15px; flex:none;
+}
+.topbar-mark span{color:var(--accent)}
+
+.motion-switch{
+  margin-left:auto; display:flex; align-items:center; gap:10px;
+  font-family:var(--f-mono); font-size:10px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--fg-3);
+  background:none; border:1px solid var(--line-2); border-radius:999px;
+  padding:6px 12px 6px 10px; cursor:pointer; font-weight:400;
+}
+.motion-switch .sw{
+  width:30px; height:17px; border-radius:999px; background:var(--accent);
+  position:relative; flex:none; transition:background var(--t-fast) var(--e-out);
+}
+.motion-switch .sw::after{
+  content:""; position:absolute; top:2px; left:15px;
+  width:13px; height:13px; border-radius:50%; background:#fff;
+  transition:left var(--t-base) var(--e-out);
+}
+:root[data-motion="off"] .motion-switch .sw{background:var(--line-2)}
+:root[data-motion="off"] .motion-switch .sw::after{left:2px}
+
+/* ---------- Герой ---------- */
+.hero{padding-block:clamp(56px,8vw,104px) clamp(40px,5vw,72px)}
+.hero h1{
+  font-size:var(--step-4); font-variation-settings:"wght" 700,"wdth" 62;
+  margin-block:20px 20px;
+}
+.hero h1 em{font-style:normal; color:var(--accent)}
+
+/* ============================================================
+   ГЛОБАЛЬНОЕ ГЛУШЕНИЕ ДВИЖЕНИЯ
+   ============================================================ */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:1ms !important; animation-iteration-count:1 !important;
+    transition-duration:1ms !important;
+  }
+}
+:root[data-motion="off"] *,
+:root[data-motion="off"] *::before,
+:root[data-motion="off"] *::after{
+  animation-duration:1ms !important; animation-iteration-count:1 !important;
+  transition-duration:1ms !important; scroll-behavior:auto !important;
+}
+
+/* ============================================================
+   ТОКЕНЫ ДВИЖЕНИЯ — наглядно
+   ============================================================ */
+.tok-grid{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.tok{
+  border:1px solid var(--line); border-radius:14px; background:var(--card);
+  padding:16px; display:grid; gap:12px;
+}
+.tok-name{font-family:var(--f-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--fg-3)}
+.tok-val{font-family:var(--f-mono); font-size:13px; color:var(--fg)}
+.tok-track{height:6px; border-radius:3px; background:var(--bg-2); position:relative; overflow:hidden}
+.tok-ball{
+  position:absolute; top:-4px; left:0; width:14px; height:14px; border-radius:50%;
+  background:var(--accent);
+}
+.tok.run .tok-ball{animation:slide 1.6s infinite}
+.tok[data-e="out"]    .tok-ball{animation-timing-function:cubic-bezier(.2,0,0,1)}
+.tok[data-e="in-out"] .tok-ball{animation-timing-function:cubic-bezier(.4,0,.2,1)}
+.tok[data-e="back"]   .tok-ball{animation-timing-function:cubic-bezier(.34,1.4,.64,1)}
+@keyframes slide{
+  0%,8%    {transform:translateX(0)}
+  50%,58%  {transform:translateX(calc(100% * 0 + var(--travel, 200px)))}
+  100%     {transform:translateX(0)}
+}
+.tok-note{font-size:12.5px; color:var(--fg-2); line-height:1.45}
+
+/* ============================================================
+   СЕТКА ДЕМО
+   ============================================================ */
+.demos{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(310px,1fr))}
+.demo{
+  border:1px solid var(--line); border-radius:16px; background:var(--card);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+.demo-head{padding:16px 18px 12px; display:grid; gap:6px}
+.demo-head h3{font-size:17px; font-variation-settings:"wght" 700,"wdth" 82}
+.demo-head p{font-size:12.5px; color:var(--fg-2); line-height:1.45}
+.demo-stage{
+  flex:1; min-height:180px; background:var(--bg-2);
+  border-block:1px solid var(--line);
+  display:grid; place-items:center; padding:20px; overflow:hidden; position:relative;
+}
+.demo-foot{
+  padding:10px 14px; display:flex; align-items:center; gap:10px;
+  font-family:var(--f-mono); font-size:10px; letter-spacing:.06em; color:var(--fg-3);
+}
+.replay{
+  margin-left:auto; font-family:var(--f-mono); font-size:10px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--fg); background:var(--bg-2);
+  border:1px solid var(--line-2); border-radius:7px; padding:5px 10px; cursor:pointer;
+  transition:transform var(--t-fast) var(--e-out), background var(--t-fast) var(--e-out);
+}
+.replay:hover{background:var(--card)}
+.replay:active{transform:scale(.96)}
+
+/* --- Общие примитивы демо (светлая палитра продукта) --- */
+.p{
+  --ink:#16131C; --ink-2:#55505F; --ink-3:#8B8494;
+  --surf:#FFFFFF; --sunk:#F3F0F5; --line-p:#E7E2EC; --line-p2:#D6CFE0;
+  --sig:#E00A45; --sig-w:#FFE9EF; --live:#00C48C; --live-i:#007A56;
+  color:var(--ink); font-size:13.5px; width:100%;
+}
+.av{
+  width:34px; height:34px; border-radius:12px; flex:none; display:grid; place-items:center;
+  color:#fff; font-family:var(--f-display); font-variation-settings:"wght" 700,"wdth" 80; font-size:13px;
+}
+.a1{background:#6E56CF}.a2{background:#0B7285}.a3{background:#B54708}
+.a4{background:#175CD3}.a5{background:#027A48}.a6{background:#C11574}
+
+.btn-p{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  height:38px; padding:0 18px; border-radius:10px; border:1px solid transparent;
+  font-family:var(--f-body); font-size:13.5px; font-weight:600; cursor:pointer;
+  background:var(--sig); color:#fff;
+  transition:transform var(--t-fast) var(--e-out), filter var(--t-fast) var(--e-out);
+}
+.btn-p:hover{filter:brightness(1.06)}
+.btn-p:active{transform:scale(.97)}
+.btn-g{
+  background:var(--surf); color:var(--ink); border-color:var(--line-p2);
+}
+
+/* ---------- 1 · Индикатор голоса ---------- */
+.meter{display:flex; align-items:flex-end; gap:3px; height:26px}
+.meter i{display:block; width:3px; border-radius:2px; background:var(--live); height:28%}
+.meter.on i{animation:amp 1.05s ease-in-out infinite}
+.meter i:nth-child(1){animation-delay:-.90s}
+.meter i:nth-child(2){animation-delay:-.50s}
+.meter i:nth-child(3){animation-delay:-.20s}
+.meter i:nth-child(4){animation-delay:-.70s}
+.meter i:nth-child(5){animation-delay:-.35s}
+.meter i:nth-child(6){animation-delay:-1.0s}
+.meter i:nth-child(7){animation-delay:-.15s}
+@keyframes amp{0%,100%{height:22%}50%{height:100%}}
+
+.speak-row{display:flex; align-items:center; gap:12px; background:var(--surf); border-radius:14px; padding:12px 14px; border:1px solid var(--line-p)}
+.speak-av{position:relative; border-radius:12px}
+.speak-av.live{box-shadow:0 0 0 2px var(--live)}
+.speak-av{transition:box-shadow var(--t-base) var(--e-out)}
+.speak-name{font-weight:600}
+.speak-sub{font-family:var(--f-mono); font-size:10px; color:var(--ink-3)}
+
+/* ---------- 2 · Смена канала ---------- */
+.switch-demo{display:grid; grid-template-columns:120px 1fr; gap:12px; width:100%; height:100%}
+.switch-side{background:var(--surf); border:1px solid var(--line-p); border-radius:12px; padding:8px; display:grid; gap:2px; align-content:start}
+.switch-chan{
+  height:28px; border-radius:7px; padding:0 9px; display:flex; align-items:center; gap:6px;
+  font-size:12px; color:var(--ink-2); cursor:pointer;
+  transition:background var(--t-fast) var(--e-out), color var(--t-fast) var(--e-out);
+}
+.switch-chan:hover{background:var(--sunk)}
+.switch-chan.on{background:var(--sunk); color:var(--ink); font-weight:600; box-shadow:0 1px 2px rgba(22,19,28,.06)}
+.switch-chan .h{color:var(--ink-3); font-family:var(--f-mono)}
+.switch-chan.on .h{color:var(--sig)}
+.switch-body{background:var(--surf); border:1px solid var(--line-p); border-radius:12px; padding:14px; overflow:hidden}
+.switch-title{font-family:var(--f-display); font-variation-settings:"wght" 700,"wdth" 80; text-transform:uppercase; font-size:15px; margin-bottom:10px}
+.switch-lines{display:grid; gap:7px}
+.switch-lines b{display:block; height:8px; border-radius:4px; background:var(--sunk)}
+.switch-enter{animation:enterUp var(--t-base) var(--e-out) both}
+@keyframes enterUp{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+
+/* ---------- 3 · Приход сообщения ---------- */
+.msg-list{display:grid; gap:10px; width:100%; align-content:end; height:100%}
+.msg-i{display:grid; grid-template-columns:34px 1fr; gap:10px; align-items:start}
+.msg-b{background:var(--surf); border:1px solid var(--line-p); border-radius:12px; padding:9px 12px}
+.msg-n{font-weight:600; font-size:12.5px; margin-bottom:3px}
+.msg-t{font-size:12.5px; color:var(--ink-2)}
+.msg-new{animation:msgIn 220ms var(--e-out) both}
+@keyframes msgIn{
+  from{opacity:0; transform:translateY(10px) scale(.985)}
+  to  {opacity:1; transform:none}
+}
+
+/* ---------- 4 · Вход в голос ---------- */
+.tiles{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; width:100%}
+.tile{
+  background:var(--surf); border:1px solid var(--line-p); border-radius:12px;
+  min-height:70px; display:grid; place-items:center; gap:6px; padding:10px;
+}
+.tile-n{font-size:11px; font-weight:600}
+.tile-in{animation:tileIn 260ms var(--e-out) both}
+@keyframes tileIn{
+  from{opacity:0; transform:scale(.9)}
+  to  {opacity:1; transform:none}
+}
+.tile-out{animation:tileOut 200ms var(--e-out) both}
+@keyframes tileOut{
+  from{opacity:1; transform:none}
+  to  {opacity:0; transform:scale(.94)}
+}
+
+/* ---------- 5 · Наведение ---------- */
+.hover-list{display:grid; gap:6px; width:100%}
+.hover-row{
+  display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:10px;
+  background:var(--surf); border:1px solid var(--line-p); cursor:pointer;
+  transition:transform var(--t-fast) var(--e-out), border-color var(--t-fast) var(--e-out);
+}
+.hover-row:hover{transform:translateX(3px); border-color:var(--line-p2)}
+.hover-row .act{
+  margin-left:auto; display:flex; gap:5px; opacity:0; transform:translateX(4px);
+  transition:opacity var(--t-fast) var(--e-out), transform var(--t-fast) var(--e-out);
+}
+.hover-row:hover .act{opacity:1; transform:none}
+.hover-row .act span{
+  width:26px; height:26px; border-radius:8px; background:var(--sunk);
+  display:grid; place-items:center; color:var(--ink-2); font-size:12px;
+}
+
+/* ---------- 6 · Модалка ---------- */
+.modal-stage{position:relative; width:100%; height:100%; display:grid; place-items:center}
+.backdrop{
+  position:absolute; inset:0; background:rgba(22,19,28,.32);
+  backdrop-filter:blur(2px); opacity:0; pointer-events:none;
+}
+.backdrop.on{animation:fadeIn 200ms var(--e-out) forwards}
+@keyframes fadeIn{to{opacity:1}}
+.modal-c{
+  position:relative; width:min(100%,260px); background:var(--surf);
+  border:1px solid var(--line-p); border-radius:16px; padding:16px;
+  box-shadow:0 20px 44px -18px rgba(22,19,28,.32); opacity:0;
+}
+.modal-c.on{animation:modalIn 220ms var(--e-out) forwards}
+@keyframes modalIn{
+  from{opacity:0; transform:translateY(8px) scale(.96)}
+  to  {opacity:1; transform:none}
+}
+.modal-c h4{font-size:16px; margin-bottom:6px; font-variation-settings:"wght" 700,"wdth" 82}
+.modal-c p{font-size:12.5px; color:var(--ink-2); margin-bottom:14px}
+.modal-acts{display:flex; gap:8px; justify-content:flex-end}
+
+/* ---------- 7 · Тост ---------- */
+.toast-stage{position:relative; width:100%; height:100%}
+.toast{
+  position:absolute; right:0; bottom:0; display:flex; align-items:center; gap:10px;
+  background:var(--ink); color:#fff; border-radius:12px; padding:11px 14px; font-size:12.5px;
+  box-shadow:0 14px 30px -12px rgba(22,19,28,.45); opacity:0;
+}
+.toast.on{animation:toastIn 260ms var(--e-out) forwards, toastOut 220ms var(--e-out) 2.6s forwards}
+@keyframes toastIn{
+  from{opacity:0; transform:translateY(12px) scale(.97)}
+  to  {opacity:1; transform:none}
+}
+@keyframes toastOut{
+  to{opacity:0; transform:translateY(6px) scale(.98)}
+}
+.toast .ok{width:18px; height:18px; border-radius:50%; background:var(--live); display:grid; place-items:center; color:var(--ink); font-size:11px; flex:none}
+
+/* ---------- 8 · Скелетон → контент ---------- */
+.skel-wrap{display:grid; gap:10px; width:100%}
+.skel-i{display:grid; grid-template-columns:34px 1fr; gap:10px}
+.skel-av{width:34px; height:34px; border-radius:12px; background:var(--sunk)}
+.skel-l{height:8px; border-radius:4px; background:var(--sunk)}
+.skel-l + .skel-l{margin-top:7px}
+.skel-breathe{animation:breathe 1.4s var(--e-in-out) infinite}
+@keyframes breathe{0%,100%{opacity:1}50%{opacity:.5}}
+.content-in{animation:enterUp var(--t-base) var(--e-out) both}
+
+/* ---------- 9 · Печатает ---------- */
+.typing{display:flex; align-items:center; gap:9px; color:var(--ink-3); font-size:12px}
+
+/* ---------- 10 · Счётчик ---------- */
+.badge-row{display:flex; align-items:center; gap:12px; background:var(--surf); border:1px solid var(--line-p); border-radius:12px; padding:11px 14px; width:100%}
+.badge{
+  margin-left:auto; min-width:22px; height:22px; padding:0 7px; border-radius:11px;
+  background:var(--sig); color:#fff; font-family:var(--f-mono); font-size:11px;
+  display:grid; place-items:center; font-variant-numeric:tabular-nums;
+}
+.badge.bump{animation:bump 260ms var(--e-back)}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.22)}100%{transform:scale(1)}}
+
+/* ---------- 11 · Реакция ---------- */
+.react-row{display:flex; gap:7px}
+.react{
+  display:inline-flex; align-items:center; gap:5px; height:27px; padding:0 10px;
+  border-radius:9px; background:var(--surf); border:1px solid var(--line-p);
+  font-family:var(--f-mono); font-size:11px; color:var(--ink-2); cursor:pointer;
+  font-variant-numeric:tabular-nums;
+  transition:transform var(--t-fast) var(--e-out), background var(--t-fast) var(--e-out), border-color var(--t-fast) var(--e-out);
+}
+.react:hover{transform:translateY(-2px)}
+.react.mine{background:var(--sig-w); border-color:var(--sig); color:var(--sig)}
+.react.pop{animation:bump 240ms var(--e-back)}
+
+/* ---------- 12 · Смена экрана ---------- */
+.screen-stage{width:100%; height:100%; position:relative; overflow:hidden; border-radius:12px}
+.screen{
+  position:absolute; inset:0; background:var(--surf); border:1px solid var(--line-p);
+  border-radius:12px; padding:14px; display:grid; gap:8px; align-content:start;
+}
+.screen h5{font-family:var(--f-display); font-variation-settings:"wght" 700,"wdth" 80; text-transform:uppercase; font-size:14px}
+.screen b{display:block; height:8px; border-radius:4px; background:var(--sunk)}
+.screen-in{animation:screenIn var(--t-slow) var(--e-out) both}
+@keyframes screenIn{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+
+/* ============================================================
+   СПИСКИ / ТАБЛИЦЫ
+   ============================================================ */
+.list{display:grid; gap:14px; margin:0; padding:0; list-style:none; max-width:var(--read)}
+.list li{display:grid; grid-template-columns:auto minmax(0,1fr); gap:12px; color:var(--fg-2)}
+.list li::before{content:""; width:7px; height:7px; border-radius:2px; background:var(--accent); margin-top:9px}
+.list b{color:var(--fg); font-weight:600}
+
+.list.no li::before{background:var(--fg-3)}
+
+.two-col{display:grid; gap:32px}
+@media (min-width:900px){.two-col{grid-template-columns:1fr 1fr}}
+
+.tbl{display:grid; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.tr{display:grid; gap:1px; background:var(--line)}
+@media (min-width:760px){.tr{grid-template-columns:210px 1fr 130px}}
+.td{background:var(--bg); padding:13px 15px; font-size:13.5px; color:var(--fg-2)}
+.td.k{font-weight:600; color:var(--fg)}
+.td.n{font-family:var(--f-mono); font-size:11px; color:var(--fg-3); letter-spacing:.04em}
+.tr.head .td{background:var(--bg-2); font-family:var(--f-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--fg-3); font-weight:400}
+
+.note{border-left:3px solid var(--accent); padding:4px 0 4px 18px; color:var(--fg-2); max-width:var(--read)}
+.note.warn{border-color:#B26A00}
+
+.footer{padding-block:52px 76px; border-top:1px solid var(--line); color:var(--fg-3); font-size:13px}
+</style>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <div class="topbar-mark">ПОЛДЕНЬ <span>/</span> ДВИЖЕНИЕ</div>
+    <button class="motion-switch" id="motionToggle" aria-pressed="true">
+      <span class="sw" aria-hidden="true"></span>
+      <span id="motionLabel">Движение вкл</span>
+    </button>
+  </div>
+</header>
+
+<section class="wrap hero">
+  <div class="eyebrow">Слой движения · на согласование</div>
+  <h1>Анимация —<br>это <em>ответ</em></h1>
+  <p class="lede">
+    Каждое движение отвечает на один вопрос: что изменилось и откуда это взялось.
+    Всё, что не отвечает — вырезано. Переключатель в шапке глушит движение целиком:
+    так интерфейс увидит человек с включённым «уменьшить движение» в системе.
+  </p>
+</section>
+
+<section class="wrap section">
+  <div class="section-head">
+    <div class="eyebrow">01 · Токены</div>
+    <h2>Три длительности, три кривые</h2>
+    <p class="body-text">
+      Сейчас в коде четыре длительности и три кривые, а в компонентах вперемешку
+      хардкод <code>0.15s</code>, <code>0.17s</code>, <code>100ms</code>. Сводим к шести
+      значениям — больше не нужно, и именно разнобой создаёт ощущение неаккуратности.
+    </p>
+  </div>
+
+  <div class="tok-grid">
+    <div class="tok run" data-e="out" style="--travel:190px">
+      <div><div class="tok-name">Быстро · 120 мс</div><div class="tok-val">--t-fast</div></div>
+      <div class="tok-track"><span class="tok-ball"></span></div>
+      <p class="tok-note">Отклик на курсор и нажатие. Всё, что человек вызвал прямо сейчас, обязано ответить за один кадр глаза.</p>
+    </div>
+    <div class="tok run" data-e="out" style="--travel:190px">
+      <div><div class="tok-name">База · 200 мс</div><div class="tok-val">--t-base</div></div>
+      <div class="tok-track"><span class="tok-ball"></span></div>
+      <p class="tok-note">Появление элемента, смена состояния, модалка, тост. Основная рабочая длительность.</p>
+    </div>
+    <div class="tok run" data-e="in-out" style="--travel:190px">
+      <div><div class="tok-name">Медленно · 320 мс</div><div class="tok-val">--t-slow</div></div>
+      <div class="tok-track"><span class="tok-ball"></span></div>
+      <p class="tok-note">Смена экрана и крупные панели. Дольше — уже раздражает при повторе сто раз за вечер.</p>
+    </div>
+    <div class="tok run" data-e="out" style="--travel:190px">
+      <div><div class="tok-name">Основная кривая</div><div class="tok-val">cubic-bezier(.2,0,0,1)</div></div>
+      <div class="tok-track"><span class="tok-ball"></span></div>
+      <p class="tok-note">Резкий старт, мягкая посадка. Ощущается как «система откликнулась мгновенно».</p>
+    </div>
+    <div class="tok run" data-e="in-out" style="--travel:190px">
+      <div><div class="tok-name">Перемещение</div><div class="tok-val">cubic-bezier(.4,0,.2,1)</div></div>
+      <div class="tok-track"><span class="tok-ball"></span></div>
+      <p class="tok-note">Когда элемент едет из точки А в Б и обе видны. Симметричная, без рывка.</p>
+    </div>
+    <div class="tok run" data-e="back" style="--travel:190px">
+      <div><div class="tok-name">Отскок</div><div class="tok-val">cubic-bezier(.34,1.4,.64,1)</div></div>
+      <div class="tok-track"><span class="tok-ball"></span></div>
+      <p class="tok-note">Только счётчики и реакции. Два места на всё приложение — иначе интерфейс начинает «пружинить» и выглядит игрушечным.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap section">
+  <div class="section-head">
+    <div class="eyebrow">02 · Демонстрации</div>
+    <h2>Что и как двигается</h2>
+    <p class="body-text">
+      Двенадцать мест, где движение оправдано. Каждое можно проиграть заново
+      и оценить вживую — на скорость, на кривую, на уместность.
+    </p>
+  </div>
+
+  <div class="demos">
+
+    <div class="demo">
+      <div class="demo-head">
+        <h3>Кто говорит</h3>
+        <p>Фирменный элемент. Единственная бесконечная анимация в приложении — потому что она отражает реальный звук, а не украшает.</p>
+      </div>
+      <div class="demo-stage">
+        <div class="p" style="display:grid; gap:8px">
+          <div class="speak-row">
+            <span class="av a1 speak-av live">КР</span>
+            <div><div class="speak-name">Кирилл</div><div class="speak-sub">говорит</div></div>
+            <span class="meter on" style="margin-left:auto" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+          </div>
+          <div class="speak-row">
+            <span class="av a2 speak-av">МА</span>
+            <div><div class="speak-name">Марина</div><div class="speak-sub">микрофон открыт</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-foot">бесконечная · 1050 мс · ease-in-out</div>
+    </div>
+
+    <div class="demo" data-demo="switch">
+      <div class="demo-head">
+        <h3>Смена канала</h3>
+        <p>Содержимое не едет вбок — оно поднимается на 6 px и проявляется. Боковое движение при переключении читается как «я ушёл не туда».</p>
+      </div>
+      <div class="demo-stage">
+        <div class="p switch-demo">
+          <div class="switch-side">
+            <div class="switch-chan on" data-ch="общий"><span class="h">#</span> общий</div>
+            <div class="switch-chan" data-ch="катки"><span class="h">#</span> катки</div>
+            <div class="switch-chan" data-ch="мемы"><span class="h">#</span> мемы</div>
+          </div>
+          <div class="switch-body">
+            <div class="switch-title" data-title>общий</div>
+            <div class="switch-lines" data-lines>
+              <b style="width:82%"></b><b style="width:64%"></b><b style="width:74%"></b><b style="width:46%"></b>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-foot">200 мс · основная <button class="replay" data-act="switch">Нажмите канал</button></div>
+    </div>
+
+    <div class="demo" data-demo="msg">
+      <div class="demo-head">
+        <h3>Новое сообщение</h3>
+        <p>Подъём на 10 px с лёгким масштабом. Ступенчатая задержка — только при первой отрисовке ленты, дальше каждое сообщение приходит само по себе.</p>
+      </div>
+      <div class="demo-stage">
+        <div class="p msg-list" data-msgs>
+          <div class="msg-i"><span class="av a2">МА</span><div class="msg-b"><div class="msg-n">Марина</div><div class="msg-t">Сетка в закрепе, регистрация до пятницы</div></div></div>
+          <div class="msg-i"><span class="av a3">ДА</span><div class="msg-b"><div class="msg-n">Данила</div><div class="msg-t">Я в деле, нужен ещё один</div></div></div>
+        </div>
+      </div>
+      <div class="demo-foot">220 мс · основная <button class="replay" data-act="msg">Прислать</button></div>
+    </div>
+
+    <div class="demo" data-demo="tiles">
+      <div class="demo-head">
+        <h3>Вход и выход из голоса</h3>
+        <p>Плитка появляется масштабом от 0.9 — как будто человек «материализовался» на месте, а не приехал из-за края экрана.</p>
+      </div>
+      <div class="demo-stage">
+        <div class="p tiles" data-tiles>
+          <div class="tile"><span class="av a1">КР</span><span class="tile-n">Кирилл</span></div>
+          <div class="tile"><span class="av a2">МА</span><span class="tile-n">Марина</span></div>
+        </div>
+      </div>
+      <div class="demo-foot">260 / 200 мс <button class="replay" data-act="tiles">Кто-то зашёл</button></div>
+    </div>
+
+    <div class="demo">
+      <div class="demo-head">
+        <h3>Наведение на строку</h3>
+        <p>Сдвиг на 3 px и проявление действий. Никаких теней и увеличения — в списке из сорока строк это создаёт рябь.</p>
+      </div>
+      <div class="demo-stage">
+        <div class="p hover-list">
+          <div class="hover-row"><span class="av a4">ЛЁ</span><div><div class="msg-n">Лёша</div></div><div class="act"><span>✉</span><span>☎</span></div></div>
+          <div class="hover-row"><span class="av a5">СВ</span><div><div class="msg-n">Света</div></div><div class="act"><span>✉</span><span>☎</span></div></div>
+          <div class="hover-row"><span class="av a6">ТИ</span><div><div class="msg-n">Тимур</div></div><div class="act"><span>✉</span><span>☎</span></div></div>
+        </div>
+      </div>
+      <div class="demo-foot">120 мс · наведите курсор</div>
+    </div>
+
+    <div class="demo" data-demo="modal">
+      <div class="demo-head">
+        <h3>Модальное окно</h3>
+        <p>Масштаб от 0.96 плюс подъём. Затемнение проявляется отдельно и чуть раньше — глаз успевает понять, что фон ушёл на второй план.</p>
+      </div>
+      <div class="demo-stage">
+        <div class="p modal-stage">
+          <span class="backdrop" data-backdrop></span>
+          <div class="modal-c" data-modal>
+            <h4>Выйти из канала?</h4>
+            <p>Вас не будет слышно. Вернуться можно в любой момент.</p>
+            <div class="modal-acts">
+              <button class="btn-p btn-g" style="height:32px; font-size:12.5px">Остаться</button>
+              <button class="btn-p" style="height:32px; font-size:12.5px">Выйти</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-foot">220 мс · основная <button class="replay" data-act="modal">Открыть</button></div>
+    </div>
+
+    <div class="demo" data-demo="toast">
+      <div class="demo-head">
+        <h3>Уведомление</h3>
+        <p>Приходит снизу справа, живёт 2,6 секунды, уходит быстрее, чем пришло. Уходящее должно исчезать незаметно.</p>
+      </div>
+      <div class="demo-stage">
+        <div class="p toast-stage">
+          <div class="toast" data-toast>
+            <span class="ok">✓</span>
+            <div><b>Сервер создан</b> · «Катка на двоих»</div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-foot">260 мс вход · 220 выход <button class="replay" data-act="toast">Показать</button></div>
+    </div>
+
+    <div class="demo" data-demo="skel">
+      <div class="demo-head">
+        <h3>Загрузка → контент</h3>
+        <p>Скелетон «дышит» прозрачностью, а не бегущим бликом. Блик тянет перерисовку всей полосы и заметно греет слабые машины.</p>
+      </div>
+      <div class="demo-stage">
+        <div class="p" data-skel style="width:100%"></div>
+      </div>
+      <div class="demo-foot">1400 мс дыхание <button class="replay" data-act="skel">Загрузить</button></div>
+    </div>
+
+    <div class="demo">
+      <div class="demo-head">
+        <h3>Печатает</h3>
+        <p>Тот же индикатор, что и голос, только мельче. Одна метафора «идёт живой сигнал» на всё приложение.</p>
+      </div>
+      <div class="demo-stage">
+        <div class="p typing">
+          <span class="meter on" style="height:11px" aria-hidden="true"><i></i><i></i><i></i></span>
+          Тимур печатает
+        </div>
+      </div>
+      <div class="demo-foot">бесконечная · 1050 мс</div>
+    </div>
+
+    <div class="demo" data-demo="badge">
+      <div class="demo-head">
+        <h3>Счётчик непрочитанного</h3>
+        <p>Одно из двух мест с отскоком. Число меняется — счётчик коротко подпрыгивает, чтобы изменение поймали боковым зрением.</p>
+      </div>
+      <div class="demo-stage">
+        <div class="p badge-row">
+          <span class="av a3">DT</span>
+          <div><div class="msg-n">катки</div></div>
+          <span class="badge" data-badge>3</span>
+        </div>
+      </div>
+      <div class="demo-foot">260 мс · отскок <button class="replay" data-act="badge">+1</button></div>
+    </div>
+
+    <div class="demo" data-demo="react">
+      <div class="demo-head">
+        <h3>Реакция</h3>
+        <p>Второе и последнее место с отскоком. Нажатие сразу меняет цвет и число — без ожидания ответа сервера.</p>
+      </div>
+      <div class="demo-stage">
+        <div class="p react-row">
+          <span class="react" data-react data-n="3">🔥 <span data-n-out>3</span></span>
+          <span class="react" data-react data-n="5">👍 <span data-n-out>5</span></span>
+          <span class="react" data-react data-n="1">😂 <span data-n-out>1</span></span>
+        </div>
+      </div>
+      <div class="demo-foot">240 мс · нажмите реакцию</div>
+    </div>
+
+    <div class="demo" data-demo="screen">
+      <div class="demo-head">
+        <h3>Смена экрана</h3>
+        <p>Самая долгая анимация — 320 мс. Единственное место, где допустима такая длительность, потому что меняется весь контекст.</p>
+      </div>
+      <div class="demo-stage">
+        <div class="p screen-stage" data-screen>
+          <div class="screen">
+            <h5>Друзья</h5>
+            <b style="width:70%"></b><b style="width:52%"></b><b style="width:64%"></b>
+          </div>
+        </div>
+      </div>
+      <div class="demo-foot">320 мс · основная <button class="replay" data-act="screen">Переключить</button></div>
+    </div>
+
+  </div>
+</section>
+
+<section class="wrap section">
+  <div class="section-head">
+    <div class="eyebrow">03 · Дисциплина</div>
+    <h2>Что не анимируется</h2>
+    <p class="body-text">
+      Это половина работы. Ощущение «сгенерировано нейросетью» даёт не отсутствие
+      анимации, а её избыток в местах, где она ничего не сообщает.
+    </p>
+  </div>
+
+  <div class="two-col">
+    <ul class="list no">
+      <li><b>Появление страницы по скроллу.</b> Контент, который проявляется при прокрутке, в рабочем инструменте только мешает: человек листает переписку, а не читает лендинг.</li>
+      <li><b>Параллакс и плавающие фоны.</b> Ни одного. Это шум в интерфейсе, где сидят часами.</li>
+      <li><b>Иконки при наведении.</b> Иконка не крутится, не подпрыгивает и не меняет форму. Меняется только цвет — за 120 мс.</li>
+    </ul>
+    <ul class="list no">
+      <li><b>Тени и размытие в переходах.</b> <code>box-shadow</code> и <code>filter</code> считаются на каждый кадр и роняют список сообщений на слабых машинах.</li>
+      <li><b>Ширина и высота.</b> Анимация размеров перекладывает всю страницу. Сворачивание категорий делается через <code>transform: scaleY</code> или <code>grid-template-rows</code>.</li>
+      <li><b>Ступенчатое появление списков.</b> Только при первой отрисовке. При каждом обновлении лента начинает «сыпаться» и это выматывает.</li>
+    </ul>
+  </div>
+
+  <h2 style="font-size:var(--step-2); margin:52px 0 20px">Правила производительности</h2>
+  <div class="tbl">
+    <div class="tr head">
+      <div class="td">Правило</div><div class="td">Почему</div><div class="td">Проверка</div>
+    </div>
+    <div class="tr">
+      <div class="td k">Только transform и opacity</div>
+      <div class="td">Эти два свойства считает видеокарта, не перекладывая страницу. Остальное вызывает пересчёт раскладки на каждый кадр.</div>
+      <div class="td n">DevTools › Paint flashing</div>
+    </div>
+    <div class="tr">
+      <div class="td k">will-change точечно</div>
+      <div class="td">Ставится перед анимацией и снимается после. Постоянный will-change на списке съедает память слоями.</div>
+      <div class="td n">Layers panel</div>
+    </div>
+    <div class="tr">
+      <div class="td k">Бесконечная анимация — только живая</div>
+      <div class="td">Индикатор голоса, печатает, загрузка. Всё остальное анимируется по событию и останавливается.</div>
+      <div class="td n">грепом по infinite</div>
+    </div>
+    <div class="tr">
+      <div class="td k">Пауза вне экрана</div>
+      <div class="td">Индикаторы в свёрнутом сайдбаре и в фоновой вкладке не должны крутиться вхолостую.</div>
+      <div class="td n">IntersectionObserver</div>
+    </div>
+    <div class="tr">
+      <div class="td k">Уважать «уменьшить движение»</div>
+      <div class="td">Системная настройка глушит всё до 1 мс. Интерфейс остаётся полностью рабочим — переключатель в шапке это показывает.</div>
+      <div class="td n">переключатель вверху</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap section">
+  <div class="section-head">
+    <div class="eyebrow">04 · Код</div>
+    <h2>Что упрощаем по дороге</h2>
+    <p class="body-text">
+      Редизайн — хороший повод разобрать то, что мешает работать. Ниже то, что я нашёл
+      в клиенте, по убыванию пользы. Первый пункт — главный: без него новый дизайн
+      придётся продавливать сквозь чужую библиотеку.
+    </p>
+  </div>
+
+  <div class="tbl">
+    <div class="tr head">
+      <div class="td">Что</div><div class="td">В чём проблема</div><div class="td">Объём</div>
+    </div>
+    <div class="tr">
+      <div class="td k">Убрать MDUI</div>
+      <div class="td">Целая библиотека Material-компонентов на закрытом shadow DOM. Её стили нельзя переопределить снаружи, поэтому в <code>quietPro.css</code> уже живёт блок хаков через CSS-переменные. 14 файлов: поля, селекты, слайдер, чекбоксы, меню, список, бейдж. Заменяем на свои — они и так почти все нарисованы в макетах.</div>
+      <div class="td n">14 файлов<br>−1 зависимость</div>
+    </div>
+    <div class="tr">
+      <div class="td k">Один слой токенов</div>
+      <div class="td">Сейчас четыре параллельные системы: M3 <code>--md-sys-color-*</code> инлайном на body, <code>--qp-*</code>, остатки <code>--colours-*</code> и собственные переменные MDUI. Сводим к одному набору — цвет, тип, форма, движение.</div>
+      <div class="td n">1 файл токенов</div>
+    </div>
+    <div class="tr">
+      <div class="td k">Удалить легаси-тему</div>
+      <div class="td"><code>legacyThemeGeneratorCode.ts</code> — 400+ строк мёртвого кода, помечен на удаление ещё в дорожной карте. Плюс 18 обращений к <code>--colours-*</code> в шести файлах, включая папку <code>features/legacy/</code>.</div>
+      <div class="td n">−400 строк</div>
+    </div>
+    <div class="tr">
+      <div class="td k">Закрыть дыры в типах</div>
+      <div class="td">34 <code>as any</code> в 14 файлах. Из них 24 — обращения к полям, которых нет в SDK: <code>leveling_enabled</code>, <code>auto_roles</code>, <code>starboard</code>, <code>automod</code>, <code>slowmode</code>. Чинится добавлением полей в форк <code>stoat.js</code>.</div>
+      <div class="td n">34 → 0</div>
+    </div>
+    <div class="tr">
+      <div class="td k">Мобильные брейкпоинты</div>
+      <div class="td"><code>MobileContext</code> написан хорошо, но подключён к трём файлам. Переделывая экран под новый дизайн, сразу закрываем и адаптив — вторым заходом это будет вдвое дороже.</div>
+      <div class="td n">+12 экранов</div>
+    </div>
+  </div>
+
+  <div class="note warn" style="margin-top:28px">
+    <strong>Порядок важен.</strong> Сначала вливаем <code>fix/stream-token-auth</code>: там
+    восстановлен <code>.gitmodules</code>, без которого <code>client/packages/stoat.js</code> —
+    пустая папка. Это SDK, и пункт про типы без него не сделать. Плюс там же чинится
+    сборка Rust-воркспейса.
+  </div>
+</section>
+
+<section class="wrap section">
+  <div class="section-head">
+    <div class="eyebrow">05 · Порядок</div>
+    <h2>Как пойдём</h2>
+  </div>
+  <div class="tbl">
+    <div class="tr head"><div class="td">Шаг</div><div class="td">Содержание</div><div class="td">Результат</div></div>
+    <div class="tr">
+      <div class="td k">Развязать руки</div>
+      <div class="td">Влить ветку аудита, поднять сабмодули, удалить легаси-тему.</div>
+      <div class="td n">сборка чинится</div>
+    </div>
+    <div class="tr">
+      <div class="td k">Слой токенов</div>
+      <div class="td">Цвет, типографика, форма, движение — один файл, поверх существующих компонентов.</div>
+      <div class="td n">видно сразу</div>
+    </div>
+    <div class="tr">
+      <div class="td k">Свои примитивы</div>
+      <div class="td">Кнопка, поле, селект, чекбокс, слайдер, меню — взамен MDUI.</div>
+      <div class="td n">−1 зависимость</div>
+    </div>
+    <div class="tr">
+      <div class="td k">Экраны</div>
+      <div class="td">Сайдбар и рейка → чат → голос → каталог и друзья → настройки. Адаптив в том же проходе.</div>
+      <div class="td n">коммит на экран</div>
+    </div>
+    <div class="tr">
+      <div class="td k">Лендинг</div>
+      <div class="td">Отдельно и последним — он не зависит от внутренних экранов.</div>
+      <div class="td n">публичное лицо</div>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap footer">
+  Полдень · слой движения и план упрощения · июль 2026
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- Глобальный переключатель движения ---------- */
+  var root = document.documentElement;
+  var toggle = document.getElementById("motionToggle");
+  var label = document.getElementById("motionLabel");
+
+  toggle.addEventListener("click", function () {
+    var off = root.getAttribute("data-motion") === "off";
+    root.setAttribute("data-motion", off ? "on" : "off");
+    toggle.setAttribute("aria-pressed", off ? "true" : "false");
+    label.textContent = off ? "Движение вкл" : "Движение выкл";
+  });
+
+  /* ---------- Перезапуск анимации ---------- */
+  function replay(el, cls) {
+    el.classList.remove(cls);
+    void el.offsetWidth;
+    el.classList.add(cls);
+  }
+
+  function on(sel, ev, fn) {
+    document.querySelectorAll(sel).forEach(function (el) {
+      el.addEventListener(ev, fn);
+    });
+  }
+
+  function act(name) {
+    return document.querySelector('.replay[data-act="' + name + '"]');
+  }
+
+  /* ---------- 2 · Смена канала ---------- */
+  var switchDemo = document.querySelector('[data-demo="switch"]');
+  if (switchDemo) {
+    var title = switchDemo.querySelector("[data-title]");
+    var lines = switchDemo.querySelector("[data-lines]");
+    var widths = {
+      "общий": ["82%", "64%", "74%", "46%"],
+      "катки": ["58%", "78%", "44%", "70%"],
+      "мемы":  ["70%", "48%", "86%", "56%"]
+    };
+    switchDemo.querySelectorAll(".switch-chan").forEach(function (chan) {
+      chan.addEventListener("click", function () {
+        switchDemo.querySelectorAll(".switch-chan").forEach(function (c) {
+          c.classList.remove("on");
+        });
+        chan.classList.add("on");
+        var name = chan.getAttribute("data-ch");
+        title.textContent = name;
+        lines.innerHTML = widths[name].map(function (w) {
+          return '<b style="width:' + w + '"></b>';
+        }).join("");
+        replay(title, "switch-enter");
+        replay(lines, "switch-enter");
+      });
+    });
+  }
+
+  /* ---------- 3 · Новое сообщение ---------- */
+  var msgs = document.querySelector("[data-msgs]");
+  var msgPool = [
+    { av: "a5", n: "Света", t: "Четвёртой пойду, кидайте инвайт" },
+    { av: "a1", n: "Кирилл", t: "Запись вчерашней катки в закрепе" },
+    { av: "a6", n: "Тимур", t: "Дайте пять минут, догоню" },
+    { av: "a4", n: "Лёша", t: "Я на месте, захожу в «Общий»" }
+  ];
+  var msgIdx = 0;
+  if (msgs && act("msg")) {
+    act("msg").addEventListener("click", function () {
+      var m = msgPool[msgIdx % msgPool.length];
+      msgIdx++;
+      var row = document.createElement("div");
+      row.className = "msg-i msg-new";
+      row.innerHTML =
+        '<span class="av ' + m.av + '">' + m.n.slice(0, 2).toUpperCase() + "</span>" +
+        '<div class="msg-b"><div class="msg-n">' + m.n + '</div>' +
+        '<div class="msg-t">' + m.t + "</div></div>";
+      msgs.appendChild(row);
+      while (msgs.children.length > 4) msgs.removeChild(msgs.firstElementChild);
+    });
+  }
+
+  /* ---------- 4 · Вход и выход из голоса ---------- */
+  var tiles = document.querySelector("[data-tiles]");
+  var tilePool = [
+    { av: "a3", n: "Данила" },
+    { av: "a5", n: "Света" },
+    { av: "a6", n: "Тимур" }
+  ];
+  var tileIdx = 0;
+  if (tiles && act("tiles")) {
+    act("tiles").addEventListener("click", function () {
+      if (tiles.children.length >= 5) {
+        var last = tiles.lastElementChild;
+        last.classList.add("tile-out");
+        setTimeout(function () {
+          if (last.parentNode) last.parentNode.removeChild(last);
+        }, 200);
+        return;
+      }
+      var t = tilePool[tileIdx % tilePool.length];
+      tileIdx++;
+      var el = document.createElement("div");
+      el.className = "tile tile-in";
+      el.innerHTML =
+        '<span class="av ' + t.av + '">' + t.n.slice(0, 2).toUpperCase() + "</span>" +
+        '<span class="tile-n">' + t.n + "</span>";
+      tiles.appendChild(el);
+    });
+  }
+
+  /* ---------- 6 · Модалка ---------- */
+  var modal = document.querySelector("[data-modal]");
+  var backdrop = document.querySelector("[data-backdrop]");
+  if (modal && act("modal")) {
+    act("modal").addEventListener("click", function () {
+      replay(backdrop, "on");
+      replay(modal, "on");
+    });
+  }
+
+  /* ---------- 7 · Тост ---------- */
+  var toast = document.querySelector("[data-toast]");
+  if (toast && act("toast")) {
+    act("toast").addEventListener("click", function () {
+      replay(toast, "on");
+    });
+  }
+
+  /* ---------- 8 · Скелетон → контент ---------- */
+  var skel = document.querySelector("[data-skel]");
+  function skelMarkup() {
+    return (
+      '<div class="skel-wrap skel-breathe">' +
+      '<div class="skel-i"><div class="skel-av"></div><div style="padding-top:3px">' +
+      '<div class="skel-l" style="width:30%"></div><div class="skel-l" style="width:76%"></div></div></div>' +
+      '<div class="skel-i"><div class="skel-av"></div><div style="padding-top:3px">' +
+      '<div class="skel-l" style="width:24%"></div><div class="skel-l" style="width:58%"></div></div></div>' +
+      "</div>"
+    );
+  }
+  function contentMarkup() {
+    return (
+      '<div class="msg-list content-in" style="height:auto">' +
+      '<div class="msg-i"><span class="av a2">МА</span><div class="msg-b">' +
+      '<div class="msg-n">Марина</div><div class="msg-t">Сетка в закрепе, регистрация до пятницы</div></div></div>' +
+      '<div class="msg-i"><span class="av a3">ДА</span><div class="msg-b">' +
+      '<div class="msg-n">Данила</div><div class="msg-t">Я в деле, нужен ещё один</div></div></div>' +
+      "</div>"
+    );
+  }
+  if (skel) {
+    skel.innerHTML = skelMarkup();
+    if (act("skel")) {
+      act("skel").addEventListener("click", function () {
+        skel.innerHTML = skelMarkup();
+        setTimeout(function () {
+          skel.innerHTML = contentMarkup();
+        }, 1100);
+      });
+    }
+  }
+
+  /* ---------- 10 · Счётчик ---------- */
+  var badge = document.querySelector("[data-badge]");
+  if (badge && act("badge")) {
+    act("badge").addEventListener("click", function () {
+      badge.textContent = String(parseInt(badge.textContent, 10) + 1);
+      replay(badge, "bump");
+    });
+  }
+
+  /* ---------- 11 · Реакции ---------- */
+  on("[data-react]", "click", function (e) {
+    var el = e.currentTarget;
+    var out = el.querySelector("[data-n-out]");
+    var n = parseInt(el.getAttribute("data-n"), 10);
+    var mine = el.classList.toggle("mine");
+    n = mine ? n + 1 : n - 1;
+    el.setAttribute("data-n", String(n));
+    out.textContent = String(n);
+    replay(el, "pop");
+  });
+
+  /* ---------- 12 · Смена экрана ---------- */
+  var screenStage = document.querySelector("[data-screen]");
+  var screens = [
+    { t: "Друзья", w: ["70%", "52%", "64%"] },
+    { t: "Каталог", w: ["58%", "80%", "46%"] },
+    { t: "Настройки", w: ["76%", "44%", "68%"] }
+  ];
+  var screenIdx = 0;
+  if (screenStage && act("screen")) {
+    act("screen").addEventListener("click", function () {
+      screenIdx = (screenIdx + 1) % screens.length;
+      var s = screens[screenIdx];
+      screenStage.innerHTML =
+        '<div class="screen screen-in"><h5>' + s.t + "</h5>" +
+        s.w.map(function (w) { return '<b style="width:' + w + '"></b>'; }).join("") +
+        "</div>";
+    });
+  }
+})();
+</script>
