@@ -454,24 +454,30 @@ const CategoryBase = styled("div", {
 
     cursor: "pointer",
     userSelect: "none",
-    transition: "color 140ms cubic-bezier(0.2,0,0,1)",
+    transition: "color var(--pd-transition-fast)",
 
-    "--color": "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
+    "--color": "var(--md-sys-color-on-surface-variant)",
     color: "var(--color)",
     fill: "var(--color)",
 
     ...typography.raw({ class: "label", size: "small" }),
-    fontSize: "11px",
-    fontWeight: 600,
+    // Полдень label treatment: mono, uppercase, wide tracking — the same
+    // styling every category and meta caption uses, so the sidebar reads as
+    // one system with the member list and settings. Weight drops to regular:
+    // the mono face and the tracking already separate it from channel names,
+    // and 600 on top made the headers compete with the rows beneath them.
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    fontWeight: "var(--pd-weight-regular)",
     textTransform: "uppercase",
-    letterSpacing: "0.08em",
+    letterSpacing: "var(--pd-tracking-label)",
 
     "&:hover": {
       "--color": "var(--md-sys-color-on-surface)",
     },
 
     "& svg": {
-      transition: "transform 140ms cubic-bezier(0.2,0,0,1)",
+      transition: "transform var(--pd-transition-fast)",
     },
   },
   variants: {
