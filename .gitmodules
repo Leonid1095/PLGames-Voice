@@ -6,7 +6,11 @@
 	url = https://github.com/stoatchat/javascript-lingui-solid
 [submodule "client/packages/solid-livekit-components"]
 	path = client/packages/solid-livekit-components
-	url = https://github.com/stoatchat/javascript-solid-livekit-components
+	# Our fork, same arrangement as stoat.js below: the pinned commit carries
+	# the PLG Voice rebrand, which upstream has no reason to take. Kept on a
+	# plg-voice branch so the fork's main stays a clean mirror of upstream.
+	url = https://github.com/Leonid1095/javascript-solid-livekit-components
+	branch = plg-voice
 [submodule "client/packages/stoat.js"]
 	path = client/packages/stoat.js
 	# Our fork: the pinned commit carries 12 changes that are not upstream
