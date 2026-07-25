@@ -210,7 +210,7 @@ const Tab = styled("button", {
     letterSpacing: "-0.005em",
     color: "var(--md-sys-color-on-surface-variant)",
     borderBottom: "2px solid transparent",
-    transition: "color 140ms cubic-bezier(0.2,0,0,1), border-color 140ms cubic-bezier(0.2,0,0,1)",
+    transition: "color var(--pd-transition-fast), border-color var(--pd-transition-fast)",
     "&:hover": {
       color: "var(--md-sys-color-on-surface)",
     },
@@ -255,7 +255,7 @@ const SearchInput = styled("input", {
     letterSpacing: "-0.005em",
     outline: "none",
     margin: "0 8px",
-    transition: "border-color 140ms cubic-bezier(0.2,0,0,1), box-shadow 140ms cubic-bezier(0.2,0,0,1)",
+    transition: "border-color var(--pd-transition-fast), box-shadow var(--pd-transition-fast)",
     "&:focus": {
       borderColor: "var(--md-sys-color-primary)",
       boxShadow: "0 0 0 3px color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent)",
@@ -291,7 +291,7 @@ const GifThumb = styled("div", {
     border: "1px solid var(--pd-border-subtle)",
     overflow: "hidden",
     background: "var(--md-sys-color-surface-container-low)",
-    transition: "border-color 140ms cubic-bezier(0.2,0,0,1)",
+    transition: "border-color var(--pd-transition-fast)",
     "&:hover": {
       borderColor: "var(--pd-border-default)",
     },

@@ -248,7 +248,7 @@ const ReactionBase = styled("button", {
     borderRadius: "9999px",
     border: "1px solid var(--pd-border-subtle)",
 
-    transition: "background 140ms cubic-bezier(0.2,0,0,1), border-color 140ms cubic-bezier(0.2,0,0,1), color 140ms cubic-bezier(0.2,0,0,1)",
+    transition: "background var(--pd-transition-fast), border-color var(--pd-transition-fast), color var(--pd-transition-fast)",
     fontSize: "12px",
     fontWeight: 500,
     fontFeatureSettings: "'tnum' 1",

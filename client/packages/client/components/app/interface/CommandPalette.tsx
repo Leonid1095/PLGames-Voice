@@ -295,7 +295,7 @@ const Palette = styled("div", {
     display: "flex",
     flexDirection: "column",
     overflow: "hidden",
-    animation: "modalIn 220ms cubic-bezier(0.05, 0.7, 0.1, 1)",
+    animation: "modalIn var(--pd-transition-base)",
   },
 });
 
@@ -333,7 +333,7 @@ const ResultItem = styled("div", {
     borderRadius: "6px",
     cursor: "pointer",
     color: "var(--md-sys-color-on-surface)",
-    transition: "background 100ms cubic-bezier(0.2,0,0,1)",
+    transition: "background var(--pd-transition-fast)",
 
     "&:hover": {
       background: "var(--pd-tint-subtle)",

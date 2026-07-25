@@ -81,7 +81,7 @@ const Bar = styled("button", {
     fontFamily: "inherit",
     fontSize: "12px",
     letterSpacing: "-0.005em",
-    transition: "background 140ms cubic-bezier(0.2,0,0,1), color 140ms cubic-bezier(0.2,0,0,1), border-color 140ms cubic-bezier(0.2,0,0,1)",
+    transition: "background var(--pd-transition-fast), color var(--pd-transition-fast), border-color var(--pd-transition-fast)",
 
     _hover: {
       background: "var(--pd-tint-subtle)",
@@ -108,7 +108,7 @@ const DownloadBar = styled("a", {
     fontSize: "12px",
     fontWeight: 500,
     letterSpacing: "-0.005em",
-    transition: "background 140ms cubic-bezier(0.2,0,0,1), color 140ms cubic-bezier(0.2,0,0,1), border-color 140ms cubic-bezier(0.2,0,0,1)",
+    transition: "background var(--pd-transition-fast), color var(--pd-transition-fast), border-color var(--pd-transition-fast)",
 
     _hover: {
       background: "var(--pd-tint-subtle)",

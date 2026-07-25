@@ -122,7 +122,7 @@ const LinkInput = styled("div", {
     cursor: "pointer",
     minWidth: 0,
     overflow: "hidden",
-    transition: "background 140ms cubic-bezier(0.2,0,0,1)",
+    transition: "background var(--pd-transition-fast)",
 
     "&:hover": {
       background: "var(--md-sys-color-surface-container)",
@@ -165,7 +165,7 @@ const CopyButton = styled("button", {
     letterSpacing: "-0.005em",
     fontFamily: "inherit",
     whiteSpace: "nowrap",
-    transition: "background 140ms cubic-bezier(0.2,0,0,1)",
+    transition: "background var(--pd-transition-fast)",
     flexShrink: 0,
     background: "var(--md-sys-color-primary)",
     color: "var(--md-sys-color-on-primary)",

@@ -158,7 +158,7 @@ const Card = styled("div", {
     background: "var(--md-sys-color-surface-container-low)",
     border: "1px solid var(--pd-border-default)",
     boxShadow: "0 24px 64px rgba(0,0,0,0.55), 0 8px 16px rgba(0,0,0,0.30)",
-    animation: "modalIn 0.22s cubic-bezier(0.05, 0.7, 0.1, 1) both",
+    animation: "modalIn var(--pd-transition-base) both",
   },
 });
 
@@ -226,7 +226,7 @@ const ModeButton = styled("button", {
     fontSize: "13px",
     fontWeight: 500,
     letterSpacing: "-0.005em",
-    transition: "background 180ms cubic-bezier(0.2,0,0,1), border-color 180ms cubic-bezier(0.2,0,0,1), color 180ms cubic-bezier(0.2,0,0,1)",
+    transition: "background var(--pd-transition-base), border-color var(--pd-transition-base), color var(--pd-transition-base)",
     _hover: {
       background: "var(--pd-tint-subtle)",
       color: "var(--md-sys-color-on-surface)",
@@ -290,7 +290,7 @@ const DoneButton = styled("button", {
     color: "var(--md-sys-color-on-primary)",
     background: "var(--md-sys-color-primary)",
     boxShadow: "var(--pd-shadow-raised), inset 0 1px 0 rgba(255,255,255,0.12)",
-    transition: "background 180ms cubic-bezier(0.2,0,0,1), box-shadow 180ms cubic-bezier(0.2,0,0,1), transform 100ms cubic-bezier(0.2,0,0,1)",
+    transition: "background var(--pd-transition-base), box-shadow var(--pd-transition-base), transform var(--pd-transition-fast)",
     _active: { transform: "scale(0.98)" },
     _hover: {
       boxShadow: "0 4px 16px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.18)",

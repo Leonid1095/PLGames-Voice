@@ -138,7 +138,7 @@ const StreamCard = styled("a", {
     background: "var(--md-sys-color-surface-container-low)",
     border: "1px solid var(--pd-border-subtle)",
     cursor: "pointer",
-    transition: "transform 180ms cubic-bezier(0.2,0,0,1), border-color 180ms cubic-bezier(0.2,0,0,1)",
+    transition: "transform var(--pd-transition-base), border-color var(--pd-transition-base)",
     textDecoration: "none",
     color: "inherit",
     "&:hover": {

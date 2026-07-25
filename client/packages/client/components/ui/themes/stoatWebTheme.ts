@@ -25,10 +25,13 @@ export function createPlgVoiceWebVariables(theme: SelectedTheme) {
     "--effects-invert-black": theme.darkMode ? "invert(100%)" : "invert(0%)",
     "--effects-invert-light": theme.darkMode ? "invert(0%)" : "invert(1000%)",
 
-    // transitions
-    "--transitions-fast": ".15s cubic-bezier(0.2, 0, 0, 1)",
-    "--transitions-medium": ".3s cubic-bezier(0.2, 0, 0, 1)",
-    "--transitions-slow": ".5s cubic-bezier(0.2, 0, 0, 1)",
+    // transitions — the legacy names, now pointing at the Полдень scale so
+    // components using either vocabulary move at the same speed. Everything
+    // here was slower than the redesign calls for; .5s in particular is long
+    // enough that the UI feels like it is catching up with the pointer.
+    "--transitions-fast": "var(--pd-transition-fast)",
+    "--transitions-medium": "var(--pd-transition-base)",
+    "--transitions-slow": "var(--pd-transition-slow)",
 
     // elevation
     "--elevation-0": "none",

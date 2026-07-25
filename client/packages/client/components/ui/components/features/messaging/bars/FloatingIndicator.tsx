@@ -29,7 +29,9 @@ export const FloatingIndicator = styled("div", {
     backgroundColor:
       "color-mix(in srgb, var(--md-sys-color-primary) 55%, transparent)",
 
-    animation: "slideIn 340ms cubic-bezier(0.2, 0.9, 0.5, 1.16) forwards",
+    // The one place an overshoot is wanted — this bar drops in over the
+    // transcript. --pd-e-back is the shared curve for it.
+    animation: "slideIn var(--pd-t-slow) var(--pd-e-back) forwards",
   },
   variants: {
     position: {

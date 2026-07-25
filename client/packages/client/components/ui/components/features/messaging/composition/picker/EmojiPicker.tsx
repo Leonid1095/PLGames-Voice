@@ -314,7 +314,7 @@ const EmojiOption = styled("div", {
         position: "relative",
         padding: "6px",
         borderRadius: "6px",
-        transition: "background 100ms cubic-bezier(0.2,0,0,1)",
+        transition: "background var(--pd-transition-fast)",
 
         "--emoji-size": "100%",
 

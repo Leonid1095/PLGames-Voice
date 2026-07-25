@@ -19,7 +19,7 @@ export const SidebarButton = styled("a", {
     marginInlineEnd: "8px",
     fontSize: "14px",
     userSelect: "none",
-    transition: "background-color 140ms cubic-bezier(0.2,0,0,1), color 140ms cubic-bezier(0.2,0,0,1)",
+    transition: "background-color var(--pd-transition-fast), color var(--pd-transition-fast)",
     color: "var(--md-sys-color-on-surface-variant)",
     fill: "var(--md-sys-color-on-surface-variant)",
     background: "transparent",

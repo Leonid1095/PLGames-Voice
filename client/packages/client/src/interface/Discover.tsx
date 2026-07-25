@@ -168,10 +168,17 @@ const Header = styled("div", {
     alignItems: "center",
     gap: "12px",
     fill: "var(--md-sys-color-primary)",
+    // Page title gets the full display treatment — condensed capitals. This
+    // is chrome, not user content, so uppercase is safe here.
     "& h2": {
       margin: 0,
-      fontSize: "1.5rem",
-      fontWeight: 600,
+      fontSize: "var(--pd-text-3xl)",
+      fontFamily: "var(--pd-font-display)",
+      fontVariationSettings: '"wght" 700, "wdth" var(--pd-display-wdth)',
+      fontWeight: "var(--pd-weight-bold)",
+      lineHeight: "var(--pd-leading-tight)",
+      textTransform: "uppercase",
+      letterSpacing: "0.01em",
       color: "var(--md-sys-color-on-surface)",
     },
   },
@@ -187,7 +194,7 @@ const SearchBox = styled("div", {
     background: "var(--pd-tint-subtle)",
     border: "1px solid var(--pd-border-default)",
     fill: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
-    transition: "border-color 140ms cubic-bezier(0.2,0,0,1), box-shadow 140ms cubic-bezier(0.2,0,0,1)",
+    transition: "border-color var(--pd-transition-fast), box-shadow var(--pd-transition-fast)",
     _focusWithin: {
       borderColor: "var(--md-sys-color-primary)",
       boxShadow: "0 0 0 3px color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent)",
@@ -210,11 +217,14 @@ const SearchBox = styled("div", {
 const SectionTitle = styled("h3", {
   base: {
     margin: 0,
-    fontSize: "11px",
-    fontWeight: 600,
+    // Mono label, same as sidebar categories and status readouts, rather than
+    // the body face at 600 with its own one-off tracking value.
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    fontWeight: "var(--pd-weight-regular)",
     textTransform: "uppercase",
-    letterSpacing: "0.08em",
-    color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
+    letterSpacing: "var(--pd-tracking-label)",
+    color: "var(--md-sys-color-on-surface-variant)",
   },
 });
 
@@ -229,15 +239,23 @@ const Grid = styled("div", {
 const Card = styled("div", {
   base: {
     padding: "16px",
-    borderRadius: "10px",
+    borderRadius: "var(--pd-radius-lg)",
     cursor: "pointer",
-    background: "var(--md-sys-color-surface-container-low)",
+    background: "var(--pd-surface-raised)",
     border: "1px solid var(--pd-border-subtle)",
-    transition: "border-color 220ms cubic-bezier(0.2,0,0,1), transform 220ms cubic-bezier(0.2,0,0,1), box-shadow 220ms cubic-bezier(0.2,0,0,1)",
+    boxShadow: "var(--pd-shadow-raised)",
+    transition:
+      "border-color var(--pd-transition-base), transform var(--pd-transition-base), box-shadow var(--pd-transition-base)",
+    // A 32% black drop shadow was tuned for a near-black page. On paper it
+    // read as a bruise under every card; --pd-shadow-float is the same idea
+    // scaled to a light surface.
     "&:hover": {
       borderColor: "var(--pd-border-default)",
-      boxShadow: "0 12px 32px rgba(0,0,0,0.32)",
+      boxShadow: "var(--pd-shadow-float)",
       transform: "translateY(-2px)",
+    },
+    "@media (prefers-reduced-motion: reduce)": {
+      "&:hover": { transform: "none" },
     },
   },
 });
@@ -273,8 +291,13 @@ const CardMeta = styled("span", {
   base: {
     display: "flex",
     alignItems: "center",
-    gap: "4px",
-    fontSize: "0.8rem",
+    gap: "5px",
+    // Member counts line up down the grid column, so they get fixed-width
+    // digits — otherwise every card's number sat at a slightly different width.
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    fontVariantNumeric: "tabular-nums",
+    letterSpacing: "var(--pd-tracking-wide)",
     color: "var(--md-sys-color-on-surface-variant)",
     fill: "var(--md-sys-color-on-surface-variant)",
   },

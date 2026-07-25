@@ -278,7 +278,7 @@ const FeatureCard = styled("div", {
     display: "flex",
     flexDirection: "column",
     gap: "14px",
-    transition: "border-color 220ms cubic-bezier(0.2,0,0,1), transform 220ms cubic-bezier(0.2,0,0,1), box-shadow 220ms cubic-bezier(0.2,0,0,1)",
+    transition: "border-color var(--pd-transition-base), transform var(--pd-transition-base), box-shadow var(--pd-transition-base)",
     _hover: {
       borderColor: BORDER_DEFAULT,
       transform: "translateY(-2px)",
@@ -496,7 +496,7 @@ const BtnPrimary = styled("a", {
     background: ACCENT,
     border: "1px solid color-mix(in srgb, white 12%, transparent)",
     boxShadow: "0 1px 2px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.10)",
-    transition: "background 180ms cubic-bezier(0.2,0,0,1), transform 140ms cubic-bezier(0.2,0,0,1), box-shadow 180ms cubic-bezier(0.2,0,0,1)",
+    transition: "background var(--pd-transition-base), transform var(--pd-transition-fast), box-shadow var(--pd-transition-base)",
     cursor: "pointer",
     _hover: {
       background: ACCENT_HOVER,
@@ -526,7 +526,7 @@ const BtnSecondary = styled("a", {
     color: TEXT,
     background: "rgba(255,255,255,0.04)",
     border: `1px solid ${BORDER_DEFAULT}`,
-    transition: "background 180ms cubic-bezier(0.2,0,0,1), border-color 180ms cubic-bezier(0.2,0,0,1), transform 140ms cubic-bezier(0.2,0,0,1)",
+    transition: "background var(--pd-transition-base), border-color var(--pd-transition-base), transform var(--pd-transition-fast)",
     cursor: "pointer",
     _hover: {
       background: "rgba(255,255,255,0.07)",
@@ -557,7 +557,7 @@ const BtnDownload = styled("a", {
     color: TEXT_SECONDARY,
     background: "transparent",
     border: `1px solid ${BORDER_DEFAULT}`,
-    transition: "background 180ms cubic-bezier(0.2,0,0,1), border-color 180ms cubic-bezier(0.2,0,0,1), color 180ms cubic-bezier(0.2,0,0,1)",
+    transition: "background var(--pd-transition-base), border-color var(--pd-transition-base), color var(--pd-transition-base)",
     cursor: "pointer",
     _hover: {
       background: "rgba(255,255,255,0.04)",

@@ -120,7 +120,7 @@ const Base = styled("a", {
 
     userSelect: "none",
     cursor: "pointer",
-    transition: "background-color 180ms cubic-bezier(0.2,0,0,1), border-color 180ms cubic-bezier(0.2,0,0,1), transform 100ms cubic-bezier(0.2,0,0,1)",
+    transition: "background-color var(--pd-transition-base), border-color var(--pd-transition-base), transform var(--pd-transition-fast)",
 
     display: "flex",
     alignItems: "center",

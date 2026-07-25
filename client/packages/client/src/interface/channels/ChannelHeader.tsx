@@ -449,7 +449,7 @@ const searchInput = css({
   outline: "none",
   fontSize: "13px",
   letterSpacing: "-0.005em",
-  transition: "border-color 140ms cubic-bezier(0.2,0,0,1), box-shadow 140ms cubic-bezier(0.2,0,0,1)",
+  transition: "border-color var(--pd-transition-fast), box-shadow var(--pd-transition-fast)",
   "&::placeholder": {
     fontSize: "13px",
     color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",

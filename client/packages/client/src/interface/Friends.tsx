@@ -399,7 +399,7 @@ const Tab = styled("button", {
     fontWeight: 500,
     letterSpacing: "-0.005em",
     fontFamily: "inherit",
-    transition: "background 140ms cubic-bezier(0.2,0,0,1), color 140ms cubic-bezier(0.2,0,0,1), border-color 140ms cubic-bezier(0.2,0,0,1)",
+    transition: "background var(--pd-transition-fast), color var(--pd-transition-fast), border-color var(--pd-transition-fast)",
     color: "var(--md-sys-color-on-surface-variant)",
     background: "transparent",
     whiteSpace: "nowrap",
@@ -412,12 +412,16 @@ const Tab = styled("button", {
   variants: {
     active: {
       true: {
+        // Same raised plate as the active sidebar row, so "the thing you are
+        // looking at" has one appearance across the whole app.
         color: "var(--md-sys-color-on-surface)",
-        background: "var(--pd-tint-hover)",
-        borderColor: "var(--pd-border-subtle)",
+        background: "var(--pd-surface-raised)",
+        borderColor: "var(--pd-border-default)",
+        boxShadow: "var(--pd-shadow-raised)",
+        fontWeight: "var(--pd-weight-semibold)",
 
         "&:hover": {
-          background: "var(--pd-tint-active)",
+          background: "var(--pd-surface-raised)",
         },
       },
     },
@@ -426,13 +430,18 @@ const Tab = styled("button", {
 
 const TabBadge = styled("span", {
   base: {
-    fontSize: "11px",
-    fontWeight: 600,
+    // Counts get fixed-width digits: the badge changes value in place, and
+    // proportional figures made it twitch every time it did.
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    fontVariantNumeric: "tabular-nums",
     lineHeight: 1,
-    padding: "2px 5px",
-    borderRadius: "var(--borderRadius-full)",
-    background: "var(--md-sys-color-error)",
-    color: "var(--md-sys-color-on-error)",
+    padding: "3px 5px",
+    borderRadius: "var(--pd-radius-pill)",
+    // Accent, not error: an incoming friend request is an invitation, not a
+    // failure. Error red is kept for things that actually went wrong.
+    background: "var(--md-sys-color-primary)",
+    color: "var(--md-sys-color-on-primary)",
     minWidth: "16px",
     textAlign: "center",
   },
@@ -455,7 +464,7 @@ const AddFriendButton = styled("button", {
     color: "var(--md-sys-color-on-primary)",
     background: "var(--md-sys-color-primary)",
     boxShadow: "var(--pd-shadow-raised), inset 0 1px 0 rgba(255,255,255,0.12)",
-    transition: "background 180ms cubic-bezier(0.2,0,0,1), box-shadow 180ms cubic-bezier(0.2,0,0,1), transform 100ms cubic-bezier(0.2,0,0,1)",
+    transition: "background var(--pd-transition-base), box-shadow var(--pd-transition-base), transform var(--pd-transition-fast)",
     whiteSpace: "nowrap",
 
     "&:hover": {
@@ -483,18 +492,21 @@ const SectionHeader = styled("div", {
     alignItems: "center",
     gap: "8px",
     padding: "16px 8px 6px",
-    fontSize: "11px",
-    fontWeight: 600,
+    // The shared mono label, replacing this screen's own 600/0.08em variant.
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    fontWeight: "var(--pd-weight-regular)",
     textTransform: "uppercase",
-    letterSpacing: "0.08em",
-    color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
+    letterSpacing: "var(--pd-tracking-label)",
+    color: "var(--md-sys-color-on-surface-variant)",
   },
 });
 
 const SectionCount = styled("span", {
   base: {
-    fontSize: "11px",
-    fontWeight: 500,
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    fontVariantNumeric: "tabular-nums",
     color: "var(--md-sys-color-outline)",
   },
 });
@@ -527,7 +539,7 @@ const FriendRow = styled("div", {
     padding: "8px 10px",
     borderRadius: "8px",
     cursor: "pointer",
-    transition: "background 140ms cubic-bezier(0.2,0,0,1)",
+    transition: "background var(--pd-transition-fast)",
     userSelect: "none",
 
     "&:hover": {
