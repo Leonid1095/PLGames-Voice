@@ -5,7 +5,9 @@ import { styled } from "styled-system/jsx";
 import { Column, Text } from "@revolt/ui";
 
 /**
- * Container for authentication page flows — Obsidian Amethyst card
+ * Container for authentication page flows — the card on the auth page
+ *
+ * Literal light values for the same reason as AuthPage: no user, no theme.
  */
 export const FlowBase = styled("div", {
   base: {
@@ -14,19 +16,19 @@ export const FlowBase = styled("div", {
     gap: "20px",
     flexGrow: 0,
 
-    background: "#181722",
-    color: "#F5F5F7",
+    background: "#FFFFFF",
+    color: "#16131C",
 
     width: "440px",
     maxWidth: "calc(100vw - 40px)",
     padding: "32px",
-    borderRadius: "14px",
-    border: "1px solid var(--pd-border-default)",
+    borderRadius: "var(--pd-radius-xl)",
+    border: "1px solid rgba(22,19,28,0.12)",
     boxShadow: "var(--pd-shadow-float)",
 
     animationName: "modalIn",
-    animationDuration: "0.22s",
-    animationTimingFunction: "cubic-bezier(0.05, 0.7, 0.1, 1)",
+    animationDuration: "var(--pd-t-base)",
+    animationTimingFunction: "var(--pd-e-out)",
     animationFillMode: "both",
   },
 });

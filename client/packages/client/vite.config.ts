@@ -42,8 +42,10 @@ export default defineConfig({
         orientation: "portrait",
         display_override: ["window-controls-overlay"],
         display: "standalone",
-        background_color: "#000000",
-        theme_color: "#000000",
+        // The PWA splash the OS paints before the app loads. Black meant an
+        // installed client flashed to ink and back on every cold start.
+        background_color: "#FBF9F7",
+        theme_color: "#FBF9F7",
         icons: [
           {
             src: `${base}assets/web/android-chrome-192x192.png`,

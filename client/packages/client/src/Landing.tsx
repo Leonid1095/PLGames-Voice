@@ -7,24 +7,37 @@ import { Titlebar } from "@revolt/app/interface/desktop/Titlebar";
 import { useClientLifecycle } from "@revolt/client";
 import { Navigate } from "@revolt/routing";
 
-/* ── Quiet Pro palette — refined neutrals + restrained accent ─────── */
+/* ── Полдень palette ────────────────────────────────────────────────
+ *
+ * Literals rather than var(--md-sys-color-*): the landing renders before any
+ * theme is loaded, because there is no logged-in user to have one. These
+ * track the light ramps pinned in themes/materialTheme.ts — the page a
+ * visitor sees first has to be the same product they land inside.
+ */
 
-const BG = "#0B0A12";
-const SURFACE = "#181722";
-const SURFACE_ELEVATED = "#1F1D2C";
-// Полдень signal red. Literal rather than var(--md-sys-color-*) because the
-// landing renders before any theme is loaded — there is no logged-in user to
-// have a theme. The full landing rework is a later step; this only takes the
-// old Discord violet off it.
+const BG = "#FBF9F7";
+const SURFACE = "#F3F0F5";
+const SURFACE_ELEVATED = "#FFFFFF";
 const ACCENT = "#E00A45";
-const ACCENT_HOVER = "#FF3D6A";
-const ACCENT_SUBTLE = "rgba(224,10,69,0.08)";
-const GLOW = "rgba(224,10,69,0.18)";
-const TEXT = "#F5F5F7";
-const TEXT_SECONDARY = "#9A98A8";
-const TEXT_DIMMED = "#5C5A6E";
-const BORDER_SUBTLE = "rgba(255,255,255,0.06)";
-const BORDER_DEFAULT = "rgba(255,255,255,0.10)";
+const ACCENT_HOVER = "#C00538";
+const ACCENT_SUBTLE = "rgba(224,10,69,0.07)";
+const GLOW = "rgba(224,10,69,0.13)";
+const TEXT = "#16131C";
+const TEXT_SECONDARY = "#55505F";
+const TEXT_DIMMED = "#8A8494";
+const BORDER_SUBTLE = "rgba(22,19,28,0.07)";
+const BORDER_DEFAULT = "rgba(22,19,28,0.12)";
+const BORDER_STRONG = "rgba(22,19,28,0.20)";
+
+/* Shared display treatment for the landing's headings — condensed capitals,
+   the language of tournament overlays and sports graphics. */
+const DISPLAY = {
+  fontFamily: "var(--pd-font-display)",
+  fontVariationSettings: '"wght" 700, "wdth" var(--pd-display-wdth)',
+  fontWeight: 700,
+  textTransform: "uppercase",
+  lineHeight: 1.05,
+} as const;
 
 /* ── Logo ──────────────────────────────────────────── */
 
@@ -99,17 +112,18 @@ const Page = styled("div", {
     height: "100%",
     overflowY: "auto",
     overflowX: "hidden",
-    /* Subtle mesh gradient — Apple/Linear style, low saturation */
+    /* One wash of the accent behind the hero, and nothing else. The mesh here
+       used to layer a blue and a pink radial on top of it — three colours the
+       product does not otherwise use, which is exactly the kind of decoration
+       the direction cuts. */
     background: `
-      radial-gradient(ellipse 80% 50% at 50% -10%, ${GLOW} 0%, transparent 60%),
-      radial-gradient(ellipse 50% 40% at 90% 30%, rgba(56,189,248,0.06) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 10% 80%, rgba(244,114,182,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 90% 55% at 50% -12%, ${GLOW} 0%, transparent 62%),
       ${BG}
     `,
     color: TEXT,
-    fontFamily: "var(--qp-font-sans)",
+    fontFamily: "var(--pd-font-sans)",
     fontFeatureSettings: '"ss01","cv02","cv11"',
-    letterSpacing: "var(--qp-tracking-snug)",
+    letterSpacing: "var(--pd-tracking-snug)",
   },
 });
 
@@ -122,9 +136,9 @@ const Nav = styled("nav", {
     alignItems: "center",
     justifyContent: "space-between",
     padding: "14px 20px",
-    backdropFilter: "saturate(180%) blur(20px)",
-    WebkitBackdropFilter: "saturate(180%) blur(20px)",
-    background: "rgba(11,10,18,0.72)",
+    backdropFilter: "var(--pd-glass-blur)",
+    WebkitBackdropFilter: "var(--pd-glass-blur)",
+    background: "rgba(251,249,247,0.72)",
     borderBottom: `1px solid ${BORDER_SUBTLE}`,
     md: {
       padding: "18px 40px",
@@ -168,9 +182,9 @@ const MobileMenu = styled("div", {
     flexDirection: "column",
     gap: "8px",
     padding: "14px 20px 18px",
-    background: "rgba(11,10,18,0.92)",
-    backdropFilter: "saturate(180%) blur(20px)",
-    WebkitBackdropFilter: "saturate(180%) blur(20px)",
+    background: "rgba(251,249,247,0.94)",
+    backdropFilter: "var(--pd-glass-blur)",
+    WebkitBackdropFilter: "var(--pd-glass-blur)",
     borderBottom: `1px solid ${BORDER_SUBTLE}`,
     md: {
       display: "none",
@@ -201,15 +215,17 @@ const Hero = styled("section", {
 
 const HeroTitle = styled("h1", {
   base: {
-    fontSize: "clamp(36px, 6vw, 56px)",
-    fontWeight: 600,
-    lineHeight: 1.05,
-    letterSpacing: "-0.035em",
+    ...DISPLAY,
+    /* Hero runs the width axis tighter than the rest of the page. */
+    fontVariationSettings: '"wght" 700, "wdth" var(--pd-display-wdth-tight)',
+    fontSize: "clamp(40px, 7vw, 76px)",
+    letterSpacing: "-0.005em",
     margin: 0,
-    maxWidth: "820px",
+    maxWidth: "900px",
     color: TEXT,
-    /* Single hint of color via subtle vertical gradient — Apple style */
-    background: `linear-gradient(180deg, ${TEXT} 0%, color-mix(in srgb, ${TEXT} 78%, ${ACCENT}) 100%)`,
+    /* Ink at the top settling into the signal red at the baseline — the one
+       place on the page the accent is allowed to be decorative. */
+    background: `linear-gradient(175deg, ${TEXT} 30%, color-mix(in srgb, ${TEXT} 55%, ${ACCENT}) 100%)`,
     backgroundClip: "text",
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
@@ -270,10 +286,9 @@ const Features = styled("section", {
 const FeatureCard = styled("div", {
   base: {
     background: SURFACE_ELEVATED,
-    backdropFilter: "saturate(140%) blur(12px)",
-    WebkitBackdropFilter: "saturate(140%) blur(12px)",
     border: `1px solid ${BORDER_SUBTLE}`,
-    borderRadius: "14px",
+    borderRadius: "var(--pd-radius-lg)",
+    boxShadow: "var(--pd-shadow-raised)",
     padding: "28px",
     display: "flex",
     flexDirection: "column",
@@ -282,7 +297,10 @@ const FeatureCard = styled("div", {
     _hover: {
       borderColor: BORDER_DEFAULT,
       transform: "translateY(-2px)",
-      boxShadow: `0 12px 32px rgba(0,0,0,0.32), 0 0 0 1px ${BORDER_DEFAULT} inset`,
+      boxShadow: "var(--pd-shadow-float)",
+    },
+    "@media (prefers-reduced-motion: reduce)": {
+      _hover: { transform: "none" },
     },
     md: {
       padding: "32px",
@@ -306,14 +324,13 @@ const FeatureIcon = styled("div", {
 
 const FeatureTitle = styled("h3", {
   base: {
-    fontSize: "17px",
-    fontWeight: 600,
-    letterSpacing: "-0.015em",
-    lineHeight: 1.3,
+    ...DISPLAY,
+    fontSize: "20px",
+    letterSpacing: "0.01em",
     margin: 0,
     color: TEXT,
     md: {
-      fontSize: "18px",
+      fontSize: "22px",
     },
   },
 });
@@ -357,10 +374,9 @@ const InstallSection = styled("section", {
 
 const InstallTitle = styled("h2", {
   base: {
-    fontSize: "clamp(24px, 4vw, 36px)",
-    fontWeight: 600,
-    letterSpacing: "-0.025em",
-    lineHeight: 1.1,
+    ...DISPLAY,
+    fontSize: "clamp(28px, 4.5vw, 46px)",
+    letterSpacing: "0.01em",
     margin: 0,
     color: TEXT,
   },
@@ -382,7 +398,8 @@ const InstallCard = styled("div", {
   base: {
     background: SURFACE_ELEVATED,
     border: `1px solid ${BORDER_SUBTLE}`,
-    borderRadius: "14px",
+    boxShadow: "var(--pd-shadow-raised)",
+    borderRadius: "var(--pd-radius-lg)",
     padding: "28px",
     display: "flex",
     flexDirection: "column",
@@ -393,8 +410,9 @@ const InstallCard = styled("div", {
 
 const InstallCardTitle = styled("h3", {
   base: {
-    fontSize: "18px",
-    fontWeight: 600,
+    ...DISPLAY,
+    fontSize: "20px",
+    letterSpacing: "0.01em",
     margin: 0,
     color: TEXT,
     display: "flex",
@@ -425,8 +443,8 @@ const StepNumber = styled("span", {
     background: ACCENT_SUBTLE,
     border: `1px solid ${BORDER_SUBTLE}`,
     color: ACCENT_HOVER,
+    fontFamily: "var(--pd-font-mono)",
     fontSize: "11px",
-    fontWeight: 600,
     fontVariantNumeric: "tabular-nums",
     flexShrink: 0,
     marginTop: "2px",
@@ -456,10 +474,9 @@ const CTASection = styled("section", {
 
 const CTATitle = styled("h2", {
   base: {
-    fontSize: "clamp(26px, 4.5vw, 42px)",
-    fontWeight: 600,
-    letterSpacing: "-0.03em",
-    lineHeight: 1.1,
+    ...DISPLAY,
+    fontSize: "clamp(30px, 5vw, 52px)",
+    letterSpacing: "0.01em",
     margin: 0,
   },
 });
@@ -495,7 +512,7 @@ const BtnPrimary = styled("a", {
     color: "#fff",
     background: ACCENT,
     border: "1px solid color-mix(in srgb, white 12%, transparent)",
-    boxShadow: "0 1px 2px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.10)",
+    boxShadow: "var(--pd-shadow-raised), inset 0 1px 0 rgba(255,255,255,0.14)",
     transition: "background var(--pd-transition-base), transform var(--pd-transition-fast), box-shadow var(--pd-transition-base)",
     cursor: "pointer",
     _hover: {
@@ -524,13 +541,13 @@ const BtnSecondary = styled("a", {
     letterSpacing: "-0.005em",
     textDecoration: "none",
     color: TEXT,
-    background: "rgba(255,255,255,0.04)",
+    background: ACCENT_SUBTLE,
     border: `1px solid ${BORDER_DEFAULT}`,
     transition: "background var(--pd-transition-base), border-color var(--pd-transition-base), transform var(--pd-transition-fast)",
     cursor: "pointer",
     _hover: {
-      background: "rgba(255,255,255,0.07)",
-      borderColor: "rgba(255,255,255,0.16)",
+      background: "rgba(224,10,69,0.12)",
+      borderColor: BORDER_STRONG,
     },
     _active: {
       transform: "scale(0.98)",
@@ -560,8 +577,8 @@ const BtnDownload = styled("a", {
     transition: "background var(--pd-transition-base), border-color var(--pd-transition-base), color var(--pd-transition-base)",
     cursor: "pointer",
     _hover: {
-      background: "rgba(255,255,255,0.04)",
-      borderColor: "rgba(255,255,255,0.18)",
+      background: ACCENT_SUBTLE,
+      borderColor: BORDER_STRONG,
       color: TEXT,
     },
     _active: {

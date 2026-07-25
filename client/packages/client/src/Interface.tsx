@@ -33,7 +33,9 @@ function AppLoader() {
         "justify-content": "center",
         gap: "20px",
         flex: "1",
-        background: "#0B0A12",
+        // Matches the boot splash in index.html, so handing over from the
+        // static splash to this screen is not a flash from paper to ink.
+        background: "#FBF9F7",
       }}
     >
       <svg

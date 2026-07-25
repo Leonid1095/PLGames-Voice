@@ -5,7 +5,11 @@ import { styled } from "styled-system/jsx";
 import { Titlebar } from "@revolt/app/interface/desktop/Titlebar";
 
 /**
- * Authentication page layout — Obsidian Amethyst
+ * Authentication page layout
+ *
+ * Literal light values rather than --md-sys-color-*: nobody is logged in yet,
+ * so there is no theme to read. These match the landing, which is the screen
+ * the visitor just came from.
  */
 const Base = styled("div", {
   base: {
@@ -15,16 +19,15 @@ const Base = styled("div", {
     userSelect: "none",
     overflowY: "auto",
 
-    color: "#F5F5F7",
-    /* Same Quiet Pro mesh as Landing — restrained accent + neutral base */
+    color: "#16131C",
+    /* One accent wash, same as the landing. The blue and pink radials that
+       used to sit on top of it were colours the product does not use. */
     background: `
-      radial-gradient(ellipse 80% 50% at 50% -10%, color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 40% at 90% 30%, rgba(56,189,248,0.06) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 10% 80%, rgba(244,114,182,0.04) 0%, transparent 60%),
-      #0B0A12
+      radial-gradient(ellipse 90% 55% at 50% -12%, rgba(224,10,69,0.13) 0%, transparent 62%),
+      #FBF9F7
     `,
-    fontFamily: "var(--qp-font-sans)",
-    letterSpacing: "var(--qp-tracking-snug)",
+    fontFamily: "var(--pd-font-sans)",
+    letterSpacing: "var(--pd-tracking-snug)",
 
     display: "flex",
     alignItems: "center",
