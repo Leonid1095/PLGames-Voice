@@ -9,4 +9,10 @@
 	url = https://github.com/stoatchat/javascript-solid-livekit-components
 [submodule "client/packages/stoat.js"]
 	path = client/packages/stoat.js
-	url = https://github.com/stoatchat/javascript-client-sdk
+	# Our fork: the pinned commit carries 12 changes that are not upstream
+	# (rich activity, forum channels, EventClient timeouts, uploadFile error
+	# handling, the PLG Voice rebrand). They live on the plg-voice branch;
+	# the fork's main stays a clean mirror of upstream so it can still be
+	# merged from. Upstream remains available as the `upstream` remote.
+	url = https://github.com/Leonid1095/javascript-client-sdk
+	branch = plg-voice
