@@ -1,3 +1,5 @@
+import { useLingui } from "@lingui-solid/solid/macro";
+
 import { Meter } from "./Meter";
 
 /**
@@ -11,5 +13,6 @@ import { Meter } from "./Meter";
  * longer circular, and no longer an MDUI web component.
  */
 export function CircularProgress() {
-  return <Meter tone="accent" label="Loading" />;
+  const { t } = useLingui();
+  return <Meter tone="accent" label={t`Loading`} />;
 }

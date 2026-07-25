@@ -3,7 +3,7 @@ import { AlertCircle, BadgeCheck as MdVerifiedFill, Calendar, Clock, Globe, Lang
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 
-import { Language, Languages, browserPreferredLanguage } from "@revolt/i18n";
+import { Language, Languages } from "@revolt/i18n";
 import type { LanguageEntry } from "@revolt/i18n/Languages";
 import { timeLocale } from "@revolt/i18n/dayjs";
 import { UnicodeEmoji } from "@revolt/markdown/emoji";
@@ -53,31 +53,20 @@ function PickLanguage() {
   const currentLanguage = () =>
     Languages[i18n().locale as never] as LanguageEntry;
 
-  // Generate languages array.
-  const languages = createMemo(() => {
-    const languages = Object.keys(Languages).map(
+  /*
+   * Languages in declaration order, which puts Russian first and English
+   * second — see the note on the Language enum.
+   *
+   * This used to hoist the browser's system language to the top instead. That
+   * fought the ordering the product wants: a visitor with a German browser saw
+   * a four-fifths-translated German above the two languages that are actually
+   * complete.
+   */
+  const languages = createMemo(() =>
+    Object.keys(Languages).map(
       (x) => [x, Languages[x as keyof typeof Languages]] as const,
-    );
-
-    const preferredLanguage = browserPreferredLanguage();
-
-    if (preferredLanguage) {
-      // This moves the user's system language to the top of the language list
-      const prefLangKey = languages.find(
-        (lang) => lang[0].replace(/_/g, "-") == preferredLanguage,
-      );
-
-      if (prefLangKey) {
-        languages.splice(
-          0,
-          0,
-          languages.splice(languages.indexOf(prefLangKey), 1)[0],
-        );
-      }
-    }
-
-    return languages;
-  });
+    ),
+  );
 
   return (
     <CategoryCollapse

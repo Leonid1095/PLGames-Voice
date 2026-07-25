@@ -1,9 +1,14 @@
 export enum Language {
-  // English
+  // Primary languages. Order matters: the settings picker renders this list
+  // in declaration order, so whatever sits at the top is what people see
+  // first. Russian leads because it is the product's default and its
+  // audience; English follows as the fallback everything else is written
+  // against.
+  RUSSIAN = "ru",
   ENGLISH = "en",
   ENGLISH_STUPEFIED = "en_US",
 
-  // Foreign Languages
+  // Everything else, alphabetical by code.
   ARABIC = "ar",
   ASSAMESE = "as",
   AZERBAIJANI = "az",
@@ -45,7 +50,6 @@ export enum Language {
   PORTUGUESE_BRAZIL = "pt_BR",
   PORTUGUESE_PORTUGAL = "pt_PT",
   ROMANIAN = "ro",
-  RUSSIAN = "ru",
   SLOVAK = "sk",
   SLOVENIAN = "sl",
   ALBANIAN = "sq",
@@ -145,7 +149,9 @@ export interface LanguageEntry {
 }
 
 export const Languages: { [key in Language]: LanguageEntry } = {
-  // English and "English"
+  // Primary languages — see the note on the enum above; this object's key
+  // order is what Object.keys() hands the picker.
+  ru: { display: "Русский", emoji: "🇷🇺", i18n: "ru", verified: true },
   en: {
     display: "English (Traditional)",
     emoji: "🇬🇧",
@@ -237,7 +243,6 @@ export const Languages: { [key in Language]: LanguageEntry } = {
     dayjs: "pt",
   },
   ro: { display: "Română", emoji: "🇷🇴", i18n: "ro" },
-  ru: { display: "Русский", emoji: "🇷🇺", i18n: "ru", verified: true },
   sk: { display: "Slovensky", emoji: "🇸🇰", i18n: "sk" },
   sl: { display: "Slovenščina", emoji: "🇸🇮", i18n: "sl" },
   sq: { display: "Shqip", emoji: "🇦🇱", i18n: "sq" },

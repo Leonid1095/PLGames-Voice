@@ -1,7 +1,6 @@
 import {
   Language,
   Languages,
-  browserPreferredLanguage,
   loadAndSwitchLocale,
 } from "@revolt/i18n";
 import type { LocaleOptions } from "@revolt/i18n/Languages";
@@ -48,7 +47,18 @@ export class Locale extends AbstractStore<"locale", TypeLocale> {
    */
   default(): TypeLocale {
     return {
-      lang: (browserPreferredLanguage() as Language) || Language.RUSSIAN,
+      /*
+       * Russian, unconditionally.
+       *
+       * This used to read the browser's preferred language, which sounds
+       * helpful and was not: only ru and en are complete here. Every other
+       * catalog sits around 80%, so a visitor with a German or Turkish
+       * browser landed in a UI that was four-fifths translated and one-fifth
+       * English — worse than either language on its own. Russian is the
+       * product's language and its audience; anyone who wants something else
+       * picks it in settings, where ru and en now lead the list.
+       */
+      lang: Language.RUSSIAN,
       options: {},
     };
   }

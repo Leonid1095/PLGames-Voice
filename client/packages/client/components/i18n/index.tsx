@@ -38,29 +38,6 @@ export async function loadAndSwitchLocale(
 }
 
 /**
- * Preferred language as reported by the browser
- * @returns Preferred language
- */
-export function browserPreferredLanguage() {
-  const languages = Object.keys(Languages).map(
-    (x) => [x, Languages[x as keyof typeof Languages]] as const,
-  );
-
-  // Get the user's system language. Check for exact
-  // matches first, otherwise check for partial matches
-  return (
-    navigator.languages
-      .map((lang) => languages.find((l) => l[0].replace(/_/g, "-") == lang))
-      .filter((lang) => lang)[0]?.[0] ??
-    navigator.languages
-      .map((x) => x.split("-")[0])
-      .map((lang) => languages.find((l) => l[0] == lang))
-      .filter((lang) => lang)[0]?.[0] ??
-    Language.RUSSIAN
-  );
-}
-
-/**
  * Initialise i18n engine
  */
 export function initI18n() {

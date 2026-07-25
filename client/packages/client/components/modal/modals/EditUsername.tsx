@@ -40,7 +40,7 @@ export function EditUsernameModal(
         // or just open a modal anyways with new uname?
         alert(
           // temporary solution
-          `Your discriminator changed to ${props.client.user!.discriminator}`,
+          t`Your discriminator changed to ${props.client.user!.discriminator}`,
         );
       }
     } catch (err) {

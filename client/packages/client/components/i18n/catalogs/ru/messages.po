@@ -892,6 +892,10 @@ msgstr "Закрыть чат"
 msgid "Close conversation with {0}?"
 msgstr "Закрыть беседу с {0}?"
 
+#: src/Interface.tsx
+msgid "Close sidebar"
+msgstr "Закрыть боковую панель"
+
 #: components/modal/modals/JoinServer.tsx
 msgid "Code"
 msgstr "Код"
@@ -2191,6 +2195,10 @@ msgstr "Загрузить файл ({0})"
 #: components/app/interface/settings/server/AuditLog.tsx
 msgid "Load More"
 msgstr "Загрузить ещё"
+
+#: components/ui/components/design/LoadingProgress.tsx
+msgid "Loading"
+msgstr "Загрузка"
 
 #: src/interface/channels/text/ForumView.tsx
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
@@ -4503,6 +4511,11 @@ msgstr "Ваш аккаунт проверен!"
 #: components/i18n/errors.ts
 msgid "Your discriminator change has been ratelimited, please try again later."
 msgstr "Изменение дискриминатора ограничено, попробуйте позже."
+
+#. placeholder {0}: props.client.user!.discriminator
+#: components/modal/modals/EditUsername.tsx
+msgid "Your discriminator changed to {0}"
+msgstr "Ваш дискриминатор изменился на {0}"
 
 #: components/i18n/errors.ts
 msgid "Your message is too long, please remove some characters and try again."

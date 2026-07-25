@@ -1,5 +1,7 @@
 import { JSX, Match, Switch, createEffect, onCleanup, onMount } from "solid-js";
 
+import { useLingui } from "@lingui-solid/solid/macro";
+
 import { Server } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
@@ -215,6 +217,7 @@ function MobileSidebarWrapper(props: {
   menuGenerator: MenuGenerator;
 }) {
   const { isMobile, sidebarOpen, openSidebar, closeSidebar } = useMobile();
+  const { t } = useLingui();
   const { pathname } = useLocation();
 
   // Auto-close sidebar on navigation (user tapped a channel)
@@ -269,7 +272,7 @@ function MobileSidebarWrapper(props: {
       <div
         data-sidebar-backdrop
         role="button"
-        aria-label="Close sidebar"
+        aria-label={t`Close sidebar`}
         tabIndex={-1}
         classList={{ "sidebar-open": sidebarOpen() }}
         onClick={closeSidebar}
