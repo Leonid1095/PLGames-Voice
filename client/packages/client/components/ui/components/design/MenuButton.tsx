@@ -108,11 +108,12 @@ const base = cva({
     alignItems: "center",
     margin: "0 8px",
     padding: "0 10px",
-    borderRadius: "6px",
+    borderRadius: "var(--pd-radius-sm)",
 
     color: "var(--color)",
     fill: "var(--color)",
-    transition: "background-color 140ms cubic-bezier(0.2,0,0,1), color 140ms cubic-bezier(0.2,0,0,1)",
+    transition:
+      "background-color var(--pd-transition-fast), color var(--pd-transition-fast), box-shadow var(--pd-transition-fast)",
 
     "& > svg": {
       alignSelf: "center",
@@ -138,11 +139,17 @@ const base = cva({
       },
     },
     attention: {
+      /*
+       * Overlays are mixed from --md-sys-color-on-surface, never a literal
+       * white. These used to be rgba(255,255,255,…), which was invisible on
+       * the light surface that is now the default — hover and the active row
+       * both read as "nothing happened".
+       */
       normal: {
         "--color": "var(--md-sys-color-on-surface-variant)",
         background: "transparent",
         "&:hover": {
-          background: "rgba(255,255,255,0.04)",
+          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 5%, transparent)",
           "--color": "var(--md-sys-color-on-surface)",
         },
       },
@@ -154,24 +161,42 @@ const base = cva({
           opacity: "0.4",
         },
         "&:hover": {
-          background: "rgba(255,255,255,0.03)",
+          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 4%, transparent)",
         },
       },
       active: {
-        /* Channel has unread — slightly emphasized text, still no background */
+        /* Unread — carried by weight and ink, no background. The row only
+           gets a surface when it is the one you are actually looking at. */
         "--color": "var(--md-sys-color-on-surface)",
         background: "transparent",
-        fontWeight: "500",
+        fontWeight: "var(--pd-weight-semibold)",
         "&:hover": {
-          background: "rgba(255,255,255,0.04)",
+          background: "color-mix(in srgb, var(--md-sys-color-on-surface) 5%, transparent)",
         },
       },
       selected: {
-        /* Active route — subtle neutral surface, not bright accent. */
+        /*
+         * The current route lifts off the sidebar as a plate — lightest
+         * surface plus one hairline shadow — with a short accent rail on the
+         * leading edge. Deliberately not an accent fill: with a signal red
+         * this saturated, a filled row would out-shout the message area it is
+         * pointing at, and it would collide with every mention badge.
+         */
         "--color": "var(--md-sys-color-on-surface)",
-        background: "rgba(255,255,255,0.07)",
-        "&:hover": {
-          background: "rgba(255,255,255,0.10)",
+        background: "var(--pd-surface-raised)",
+        boxShadow: "var(--pd-shadow-raised)",
+        fontWeight: "var(--pd-weight-semibold)",
+
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          insetInlineStart: "0",
+          top: "50%",
+          width: "3px",
+          height: "16px",
+          translate: "0 -50%",
+          borderRadius: "0 var(--pd-radius-xs) var(--pd-radius-xs) 0",
+          background: "var(--md-sys-color-primary)",
         },
       },
     },

@@ -290,7 +290,7 @@ const Palette = styled("div", {
     maxHeight: "440px",
     borderRadius: "14px",
     background: "var(--md-sys-color-surface-container-low)",
-    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+    border: "1px solid var(--pd-border-default)",
     boxShadow: "0 24px 64px rgba(0,0,0,0.55), 0 8px 16px rgba(0,0,0,0.30)",
     display: "flex",
     flexDirection: "column",
@@ -309,7 +309,7 @@ const SearchInput = styled("input", {
     outline: "none",
     background: "transparent",
     color: "var(--md-sys-color-on-surface)",
-    borderBottom: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    borderBottom: "1px solid var(--pd-border-subtle)",
     "&::placeholder": {
       color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
     },
@@ -336,13 +336,13 @@ const ResultItem = styled("div", {
     transition: "background 100ms cubic-bezier(0.2,0,0,1)",
 
     "&:hover": {
-      background: "rgba(255,255,255,0.04)",
+      background: "var(--pd-tint-subtle)",
     },
   },
   variants: {
     selected: {
       true: {
-        background: "rgba(255,255,255,0.07) !important",
+        background: "var(--pd-tint-hover) !important",
         color: "var(--md-sys-color-on-surface)",
         fill: "var(--md-sys-color-on-surface)",
       },
@@ -420,7 +420,7 @@ const Footer = styled("div", {
     fontSize: "12px",
     letterSpacing: "-0.005em",
     color: "var(--md-sys-color-on-surface-variant)",
-    borderTop: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    borderTop: "1px solid var(--pd-border-subtle)",
     display: "flex",
     alignItems: "center",
     gap: "6px",
@@ -429,7 +429,7 @@ const Footer = styled("div", {
       padding: "2px 6px",
       borderRadius: "4px",
       background: "var(--md-sys-color-surface-container)",
-      border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+      border: "1px solid var(--pd-border-subtle)",
       fontSize: "11px",
     },
   },

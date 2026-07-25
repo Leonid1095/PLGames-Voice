@@ -108,7 +108,7 @@ const LinkRow = styled("div", {
     gap: "0",
     borderRadius: "10px",
     overflow: "hidden",
-    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+    border: "1px solid var(--pd-border-default)",
   },
 });
 

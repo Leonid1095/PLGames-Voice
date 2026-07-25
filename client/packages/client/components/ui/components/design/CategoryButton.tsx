@@ -116,7 +116,7 @@ const Base = styled("a", {
     gap: "14px",
     padding: "14px 16px",
     borderRadius: "10px",
-    border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    border: "1px solid var(--pd-border-subtle)",
 
     userSelect: "none",
     cursor: "pointer",
@@ -130,7 +130,7 @@ const Base = styled("a", {
     fill: "var(--color)",
 
     _hover: {
-      borderColor: "var(--qp-border-default, rgba(255,255,255,0.10))",
+      borderColor: "var(--pd-border-default)",
     },
     _active: {
       transform: "scale(0.995)",
@@ -142,7 +142,7 @@ const Base = styled("a", {
         background: "var(--md-sys-color-primary)",
         "--color": "var(--md-sys-color-on-primary)",
         borderColor: "color-mix(in srgb, white 12%, transparent)",
-        boxShadow: "0 1px 2px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12)",
+        boxShadow: "var(--pd-shadow-raised), inset 0 1px 0 rgba(255,255,255,0.12)",
       },
       tonal: {
         background: "var(--md-sys-color-surface-container-low)",
@@ -204,7 +204,7 @@ const IconWrapper = styled("div", {
   base: {
     fill: "var(--md-sys-color-on-surface)",
     background: "color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent)",
-    border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    border: "1px solid var(--pd-border-subtle)",
 
     width: "40px",
     height: "40px",

@@ -33,6 +33,13 @@ export function LoadTheme() {
     document.documentElement.style.colorScheme = activeTheme.darkMode ? "dark" : "light";
     document.body.style.background = bg;
 
+    // Lets stylesheets branch on the mode the user actually picked rather than
+    // on prefers-color-scheme, which ignores the in-app toggle. Read by the
+    // direction-dependent tokens in polden.css, e.g. --pd-surface-raised.
+    document.documentElement.dataset.mode = activeTheme.darkMode
+      ? "dark"
+      : "light";
+
     for (const [key, value] of Object.entries({
       // create unset variables to indicate where colours need replacing
       ...Object.keys(legacyThemeUnsetShim().colours).reduce(

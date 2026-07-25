@@ -21,7 +21,7 @@ export const FlowBase = styled("div", {
     maxWidth: "calc(100vw - 40px)",
     padding: "32px",
     borderRadius: "14px",
-    border: "1px solid rgba(255,255,255,0.10)",
+    border: "1px solid var(--pd-border-default)",
     boxShadow: "0 24px 64px rgba(0,0,0,0.55), 0 8px 16px rgba(0,0,0,0.30)",
 
     animationName: "modalIn",

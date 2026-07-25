@@ -324,7 +324,7 @@ const ServerListBase = styled("div", {
     fill: "var(--md-sys-color-on-surface)",
     /* Flat dark rail — same surface as the rest, no gradient. */
     background: "var(--md-sys-color-surface)",
-    borderRight: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    borderRight: "1px solid var(--pd-border-subtle)",
   },
 });
 
@@ -401,7 +401,7 @@ const LineDivider = styled("div", {
     height: "1px",
     flexShrink: 0,
     margin: "8px 14px",
-    background: "var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    background: "var(--pd-border-subtle)",
   },
 });
 

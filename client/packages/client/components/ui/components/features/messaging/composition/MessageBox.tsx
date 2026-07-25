@@ -104,7 +104,7 @@ const Base = styled("div", {
     background: "var(--md-sys-color-surface-container-low)",
     color: "var(--md-sys-color-on-surface)",
     transition: "box-shadow 180ms cubic-bezier(0.2,0,0,1), border-color 180ms cubic-bezier(0.2,0,0,1)",
-    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+    border: "1px solid var(--pd-border-default)",
     "&:focus-within": {
       borderColor: "var(--md-sys-color-primary)",
       boxShadow: "0 0 0 4px color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent)",

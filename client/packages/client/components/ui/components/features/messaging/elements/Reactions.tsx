@@ -246,7 +246,7 @@ const ReactionBase = styled("button", {
     verticalAlign: "middle",
     padding: "2px 8px",
     borderRadius: "9999px",
-    border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    border: "1px solid var(--pd-border-subtle)",
 
     transition: "background 140ms cubic-bezier(0.2,0,0,1), border-color 140ms cubic-bezier(0.2,0,0,1), color 140ms cubic-bezier(0.2,0,0,1)",
     fontSize: "12px",
@@ -274,7 +274,7 @@ const ReactionBase = styled("button", {
         background: "var(--md-sys-color-surface-container-low)",
         "&:hover": {
           background: "var(--md-sys-color-surface-container-high)",
-          borderColor: "var(--qp-border-default, rgba(255,255,255,0.10))",
+          borderColor: "var(--pd-border-default)",
         },
       },
     },

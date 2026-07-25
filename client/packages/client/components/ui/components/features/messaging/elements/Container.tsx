@@ -186,7 +186,7 @@ const base = cva({
 
         "&:hover": {
           /* Subtle hover — Notion/Linear style, no shadow */
-          background: "rgba(255,255,255,0.025)",
+          background: "var(--pd-tint-subtle)",
         },
       },
       hide: {},

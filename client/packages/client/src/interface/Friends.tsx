@@ -405,7 +405,7 @@ const Tab = styled("button", {
     whiteSpace: "nowrap",
 
     "&:hover": {
-      background: "rgba(255,255,255,0.04)",
+      background: "var(--pd-tint-subtle)",
       color: "var(--md-sys-color-on-surface)",
     },
   },
@@ -413,11 +413,11 @@ const Tab = styled("button", {
     active: {
       true: {
         color: "var(--md-sys-color-on-surface)",
-        background: "rgba(255,255,255,0.07)",
-        borderColor: "var(--qp-border-subtle, rgba(255,255,255,0.06))",
+        background: "var(--pd-tint-hover)",
+        borderColor: "var(--pd-border-subtle)",
 
         "&:hover": {
-          background: "rgba(255,255,255,0.10)",
+          background: "var(--pd-tint-active)",
         },
       },
     },
@@ -454,13 +454,13 @@ const AddFriendButton = styled("button", {
     fontFamily: "inherit",
     color: "var(--md-sys-color-on-primary)",
     background: "var(--md-sys-color-primary)",
-    boxShadow: "0 1px 2px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12)",
+    boxShadow: "var(--pd-shadow-raised), inset 0 1px 0 rgba(255,255,255,0.12)",
     transition: "background 180ms cubic-bezier(0.2,0,0,1), box-shadow 180ms cubic-bezier(0.2,0,0,1), transform 100ms cubic-bezier(0.2,0,0,1)",
     whiteSpace: "nowrap",
 
     "&:hover": {
       background: "color-mix(in srgb, var(--md-sys-color-primary) 92%, white)",
-      boxShadow: "0 4px 16px var(--accent-glow, rgba(139,92,246,0.22)), inset 0 1px 0 rgba(255,255,255,0.18)",
+      boxShadow: "0 4px 16px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.18)",
     },
     "&:active": {
       transform: "scale(0.97)",
@@ -531,11 +531,11 @@ const FriendRow = styled("div", {
     userSelect: "none",
 
     "&:hover": {
-      background: "rgba(255,255,255,0.04)",
+      background: "var(--pd-tint-subtle)",
     },
 
     "&:active": {
-      background: "rgba(255,255,255,0.07)",
+      background: "var(--pd-tint-hover)",
     },
 
     "&:hover [data-actions]": {

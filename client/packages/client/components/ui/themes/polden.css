@@ -117,6 +117,13 @@
   --pd-shadow-raised: 0 1px 2px color-mix(in srgb, var(--md-sys-color-shadow, #000) 6%, transparent);
   --pd-shadow-float: 0 20px 44px -18px color-mix(in srgb, var(--md-sys-color-shadow, #000) 32%, transparent);
 
+  /* The surface of something sitting on top of a panel — an active row, a
+     selected card. Light and dark lift in opposite directions: on paper a
+     raised thing is whiter, in the dark it catches more light than the panel
+     under it. One token so components stop having to know which mode they
+     are in. Flipped by [data-mode], which LoadTheme stamps on <html>. */
+  --pd-surface-raised: var(--md-sys-color-surface-container-lowest);
+
   /* ---------- Focus ring ---------- */
   --pd-focus-ring:
     0 0 0 2px var(--md-sys-color-surface),
@@ -131,6 +138,15 @@
   --pd-border-subtle: color-mix(in srgb, var(--md-sys-color-on-surface) 6%, transparent);
   --pd-border-default: var(--md-sys-color-outline-variant);
   --pd-border-strong: var(--md-sys-color-outline);
+
+  /* ---------- Interaction tints ----------
+     Hover and press fills, mixed from the ink colour so they darken paper and
+     lighten dark surfaces. The app was full of literal rgba(255,255,255,…)
+     from when it was dark-only; white over a light surface is white, so every
+     one of those states was invisible the moment light became the default. */
+  --pd-tint-subtle: color-mix(in srgb, var(--md-sys-color-on-surface) 4%, transparent);
+  --pd-tint-hover: color-mix(in srgb, var(--md-sys-color-on-surface) 7%, transparent);
+  --pd-tint-active: color-mix(in srgb, var(--md-sys-color-on-surface) 11%, transparent);
 
   /* ---------- Semantic state ----------
      "Live" is the open-mic / speaking / online colour. It is deliberately
@@ -224,6 +240,10 @@
   --qp-border-default: var(--pd-border-default);
   --qp-border-strong: var(--pd-border-strong);
   --qp-touch-target: var(--pd-touch-target);
+}
+
+:root[data-mode="dark"] {
+  --pd-surface-raised: var(--md-sys-color-surface-container-high);
 }
 
 /* ---------- Typography defaults ---------- */

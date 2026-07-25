@@ -184,8 +184,8 @@ const SearchBox = styled("div", {
     gap: "10px",
     padding: "8px 14px",
     borderRadius: "8px",
-    background: "rgba(255,255,255,0.04)",
-    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+    background: "var(--pd-tint-subtle)",
+    border: "1px solid var(--pd-border-default)",
     fill: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
     transition: "border-color 140ms cubic-bezier(0.2,0,0,1), box-shadow 140ms cubic-bezier(0.2,0,0,1)",
     _focusWithin: {
@@ -232,10 +232,10 @@ const Card = styled("div", {
     borderRadius: "10px",
     cursor: "pointer",
     background: "var(--md-sys-color-surface-container-low)",
-    border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    border: "1px solid var(--pd-border-subtle)",
     transition: "border-color 220ms cubic-bezier(0.2,0,0,1), transform 220ms cubic-bezier(0.2,0,0,1), box-shadow 220ms cubic-bezier(0.2,0,0,1)",
     "&:hover": {
-      borderColor: "var(--qp-border-default, rgba(255,255,255,0.10))",
+      borderColor: "var(--pd-border-default)",
       boxShadow: "0 12px 32px rgba(0,0,0,0.32)",
       transform: "translateY(-2px)",
     },
@@ -292,7 +292,7 @@ const EmptyState = styled("div", {
 const Divider = styled("div", {
   base: {
     height: "1px",
-    background: "var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    background: "var(--pd-border-subtle)",
     margin: "8px 0",
   },
 });

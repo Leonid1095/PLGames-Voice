@@ -417,7 +417,7 @@ const Preview = styled("div", {
     height: "126px",
     overflow: "hidden",
     borderRadius: "10px",
-    border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    border: "1px solid var(--pd-border-subtle)",
     background: "var(--md-sys-color-surface-container-low)",
   },
 });

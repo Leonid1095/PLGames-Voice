@@ -25,7 +25,7 @@ export const SidebarButton = styled("a", {
     background: "transparent",
 
     "&:hover": {
-      background: "rgba(255,255,255,0.04)",
+      background: "var(--pd-tint-subtle)",
       color: "var(--md-sys-color-on-surface)",
       fill: "var(--md-sys-color-on-surface)",
     },
@@ -37,11 +37,11 @@ export const SidebarButton = styled("a", {
   variants: {
     "aria-selected": {
       true: {
-        background: "rgba(255,255,255,0.07)",
+        background: "var(--pd-tint-hover)",
         color: "var(--md-sys-color-on-surface)",
         fill: "var(--md-sys-color-on-surface)",
         "&:hover": {
-          background: "rgba(255,255,255,0.10)",
+          background: "var(--pd-tint-active)",
         },
       },
     },

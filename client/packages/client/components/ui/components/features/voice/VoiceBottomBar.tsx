@@ -134,7 +134,7 @@ const Bar = styled("div", {
     gap: "8px",
 
     background: "var(--md-sys-color-surface-container-low)",
-    borderTop: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    borderTop: "1px solid var(--pd-border-subtle)",
   },
 });
 

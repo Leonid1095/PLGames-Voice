@@ -287,12 +287,12 @@ const TemplateCard = styled("div", {
     padding: "14px 10px",
     borderRadius: "8px",
     cursor: "pointer",
-    border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    border: "1px solid var(--pd-border-subtle)",
     background: "var(--md-sys-color-surface-container-low)",
     transition: "background 140ms cubic-bezier(0.2,0,0,1), border-color 140ms cubic-bezier(0.2,0,0,1)",
     "&:hover": {
       background: "var(--md-sys-color-surface-container)",
-      borderColor: "var(--qp-border-default, rgba(255,255,255,0.10))",
+      borderColor: "var(--pd-border-default)",
     },
   },
   variants: {

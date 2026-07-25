@@ -73,7 +73,7 @@ const Bar = styled("button", {
     gap: "6px",
     padding: "6px 10px",
 
-    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+    border: "1px solid var(--pd-border-default)",
     borderRadius: "6px",
     background: "transparent",
     color: "var(--md-sys-color-on-surface-variant)",
@@ -84,9 +84,9 @@ const Bar = styled("button", {
     transition: "background 140ms cubic-bezier(0.2,0,0,1), color 140ms cubic-bezier(0.2,0,0,1), border-color 140ms cubic-bezier(0.2,0,0,1)",
 
     _hover: {
-      background: "rgba(255,255,255,0.04)",
+      background: "var(--pd-tint-subtle)",
       color: "var(--md-sys-color-on-surface)",
-      borderColor: "var(--qp-border-strong, rgba(255,255,255,0.16))",
+      borderColor: "var(--pd-border-strong)",
     },
   },
 });
@@ -99,7 +99,7 @@ const DownloadBar = styled("a", {
     padding: "6px 10px",
     textDecoration: "none",
 
-    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+    border: "1px solid var(--pd-border-default)",
     borderRadius: "6px",
     background: "transparent",
     color: "var(--md-sys-color-on-surface-variant)",
@@ -111,9 +111,9 @@ const DownloadBar = styled("a", {
     transition: "background 140ms cubic-bezier(0.2,0,0,1), color 140ms cubic-bezier(0.2,0,0,1), border-color 140ms cubic-bezier(0.2,0,0,1)",
 
     _hover: {
-      background: "rgba(255,255,255,0.04)",
+      background: "var(--pd-tint-subtle)",
       color: "var(--md-sys-color-on-surface)",
-      borderColor: "var(--qp-border-strong, rgba(255,255,255,0.16))",
+      borderColor: "var(--pd-border-strong)",
     },
   },
 });

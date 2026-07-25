@@ -193,7 +193,7 @@ const TabBar = styled("div", {
   base: {
     display: "flex",
     gap: "2px",
-    borderBottom: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    borderBottom: "1px solid var(--pd-border-subtle)",
     marginBottom: "8px",
   },
 });
@@ -247,9 +247,9 @@ const SearchContainer = styled("div", {
 const SearchInput = styled("input", {
   base: {
     padding: "8px 12px",
-    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+    border: "1px solid var(--pd-border-default)",
     borderRadius: "6px",
-    background: "rgba(255,255,255,0.04)",
+    background: "var(--pd-tint-subtle)",
     color: "var(--md-sys-color-on-surface)",
     fontSize: "13px",
     letterSpacing: "-0.005em",
@@ -288,12 +288,12 @@ const GifThumb = styled("div", {
     minHeight: 0,
     cursor: "pointer",
     borderRadius: "8px",
-    border: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    border: "1px solid var(--pd-border-subtle)",
     overflow: "hidden",
     background: "var(--md-sys-color-surface-container-low)",
     transition: "border-color 140ms cubic-bezier(0.2,0,0,1)",
     "&:hover": {
-      borderColor: "var(--qp-border-default, rgba(255,255,255,0.10))",
+      borderColor: "var(--pd-border-default)",
     },
     "&:hover > div": {
       opacity: 1,

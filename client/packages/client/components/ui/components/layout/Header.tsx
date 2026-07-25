@@ -40,11 +40,11 @@ export const Header = styled("div", {
         backdropFilter: "saturate(180%) blur(20px)",
         WebkitBackdropFilter: "saturate(180%) blur(20px)",
         background: "var(--qp-glass-bg, color-mix(in srgb, var(--md-sys-color-surface) 75%, transparent))",
-        borderBottom: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+        borderBottom: "1px solid var(--pd-border-subtle)",
       },
       secondary: {
         backgroundColor: "var(--md-sys-color-surface-container-low)",
-        borderBottom: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+        borderBottom: "1px solid var(--pd-border-subtle)",
       },
     },
     image: {

@@ -188,18 +188,18 @@ const button = cva({
         background: "var(--md-sys-color-primary)",
         "--color": "var(--md-sys-color-on-primary)",
         borderColor: "color-mix(in srgb, white 12%, transparent)",
-        boxShadow: "0 1px 2px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12)",
+        boxShadow: "var(--pd-shadow-raised), inset 0 1px 0 rgba(255,255,255,0.12)",
         _hover: {
-          boxShadow: "0 4px 16px var(--accent-glow, rgba(139,92,246,0.22)), inset 0 1px 0 rgba(255,255,255,0.18)",
+          boxShadow: "0 4px 16px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.18)",
         },
       },
       tonal: {
-        background: "rgba(255,255,255,0.04)",
-        borderColor: "var(--qp-border-default, rgba(255,255,255,0.10))",
+        background: "var(--pd-tint-subtle)",
+        borderColor: "var(--pd-border-default)",
         "--color": "var(--md-sys-color-on-surface)",
         _hover: {
-          background: "rgba(255,255,255,0.07)",
-          borderColor: "var(--qp-border-strong, rgba(255,255,255,0.16))",
+          background: "var(--pd-tint-hover)",
+          borderColor: "var(--pd-border-strong)",
         },
       },
       outlined: {
@@ -212,7 +212,7 @@ const button = cva({
       text: {
         "--color": "var(--md-sys-color-on-surface-variant)",
         _hover: {
-          background: "rgba(255,255,255,0.04)",
+          background: "var(--pd-tint-subtle)",
           "--color": "var(--md-sys-color-on-surface)",
         },
       },

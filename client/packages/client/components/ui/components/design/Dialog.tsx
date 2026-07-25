@@ -188,7 +188,7 @@ const Container = styled("div", {
 
     color: "var(--md-sys-color-on-surface)",
     background: "var(--md-sys-color-surface-container-low)",
-    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+    border: "1px solid var(--pd-border-default)",
     boxShadow: "0 24px 64px rgba(0,0,0,0.55), 0 8px 16px rgba(0,0,0,0.30)",
     animation: "modalIn 220ms cubic-bezier(0.05, 0.7, 0.1, 1)",
   },
@@ -234,6 +234,6 @@ const Actions = styled("div", {
     justifyContent: "end",
     padding: "12px 24px",
     background: "var(--md-sys-color-surface-container)",
-    borderTop: "1px solid var(--qp-border-subtle, rgba(255,255,255,0.06))",
+    borderTop: "1px solid var(--pd-border-subtle)",
   },
 });

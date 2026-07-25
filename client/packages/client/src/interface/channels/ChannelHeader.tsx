@@ -366,7 +366,7 @@ const Divider = styled("div", {
     width: "1px",
     height: "16px",
     margin: "0 8px",
-    backgroundColor: "var(--qp-border-default, rgba(255,255,255,0.10))",
+    backgroundColor: "var(--pd-border-default)",
   },
 });
 
@@ -443,8 +443,8 @@ const searchInput = css({
   width: "240px",
   paddingInline: "12px",
   borderRadius: "6px",
-  background: "rgba(255,255,255,0.04)",
-  border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+  background: "var(--pd-tint-subtle)",
+  border: "1px solid var(--pd-border-default)",
   color: "var(--md-sys-color-on-surface)",
   outline: "none",
   fontSize: "13px",

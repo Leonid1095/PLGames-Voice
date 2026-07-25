@@ -85,7 +85,7 @@ const ToastItem = styled("div", {
     background: "var(--qp-glass-bg, color-mix(in srgb, var(--md-sys-color-surface) 80%, transparent))",
     backdropFilter: "saturate(180%) blur(20px)",
     WebkitBackdropFilter: "saturate(180%) blur(20px)",
-    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+    border: "1px solid var(--pd-border-default)",
     boxShadow: "0 12px 32px rgba(0,0,0,0.40)",
     cursor: "pointer",
     pointerEvents: "auto",

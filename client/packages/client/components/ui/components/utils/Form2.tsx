@@ -89,7 +89,7 @@ const EditorBox = styled("div", {
     background: "var(--md-sys-color-surface-container-low)",
     color: "var(--md-sys-color-on-surface)",
     borderRadius: "10px",
-    border: "1px solid var(--qp-border-default, rgba(255,255,255,0.10))",
+    border: "1px solid var(--pd-border-default)",
     padding: "12px",
   },
 });
