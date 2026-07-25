@@ -5,7 +5,7 @@
 @import "@fontsource/inter/700";
 @import "@fontsource/inter/800";
 @import "@fontsource/jetbrains-mono";
-@import "./themes/quietPro.css";
+@import "./themes/polden.css";
 
 * {
   box-sizing: border-box;
@@ -15,10 +15,11 @@
   --glow-accent: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
   --border-accent: color-mix(in srgb, var(--md-sys-color-primary) 15%, transparent);
 
-  /* Standardized transition tokens */
-  --transition-fast: 100ms cubic-bezier(0.2, 0, 0, 1);
-  --transition-medium: 200ms cubic-bezier(0.2, 0, 0, 1);
-  --transition-slow: 350ms cubic-bezier(0.2, 0, 0, 1);
+  /* Transition tokens — aliases onto the Полдень motion scale so there is
+     one set of numbers in the codebase rather than two that drift apart. */
+  --transition-fast: var(--pd-transition-fast);
+  --transition-medium: var(--pd-transition-base);
+  --transition-slow: var(--pd-transition-slow);
 }
 
 /* Reduced motion */
@@ -31,12 +32,12 @@
 
 body {
   margin: 0;
-  /* Hardcoded dark base — must not depend on --md-sys-color-surface because
-     MDUI ships with light-theme defaults for that token, which would flash a
-     pale lavender background before SolidJS hydrates the user theme. */
-  background: #0B0A12;
-  color: #F5F5F7;
-  font-family: var(--qp-font-sans);
+  /* Literal values, not --md-sys-color-*: MDUI ships light-theme defaults for
+     those tokens and would flash pale lavender before SolidJS hydrates the
+     user's theme. Now paper rather than ink, because light is the default. */
+  background: #FBF9F7;
+  color: #16131C;
+  font-family: var(--pd-font-sans);
 }
 
 /* Тонкий тематический скроллбар */
@@ -188,9 +189,9 @@ body {
 /* ===== Focus Visible (keyboard navigation) — soft double-ring ===== */
 :focus-visible {
   outline: none;
-  box-shadow: var(--qp-focus-ring);
-  border-radius: var(--qp-radius-sm);
-  transition: box-shadow var(--qp-duration-fast) var(--qp-ease-standard);
+  box-shadow: var(--pd-focus-ring);
+  border-radius: var(--pd-radius-sm);
+  transition: box-shadow var(--pd-transition-fast);
 }
 
 :focus:not(:focus-visible) {

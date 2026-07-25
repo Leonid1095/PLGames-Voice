@@ -1,0 +1,391 @@
+/*
+ * Полдень — design tokens.
+ *
+ * Replaces Quiet Pro. Same additive strategy: Material 3 stays authoritative
+ * for colour (--md-sys-color-*, pinned in materialTheme.ts), and this file
+ * adds the layout / type / motion layer on top.
+ *
+ * What changed from Quiet Pro:
+ *   - A display face. Headings are a condensed grotesque, not the body font
+ *     at a heavier weight — the language of sports graphics and tournament
+ *     overlays, which is the world this product lives in.
+ *   - Motion cut to three durations and three easings. Quiet Pro had four
+ *     durations plus hardcoded 0.15s / 0.17s / 100ms scattered through
+ *     components; that inconsistency is what reads as unpolished.
+ *   - No !important accent override. Quiet Pro pinned the accent here to
+ *     fight LoadTheme's inline styles. The accent is now correct at source,
+ *     so the override is gone and the light/dark toggle works unimpeded.
+ *   - No hardcoded MDUI colour triplets. Those were frozen to the old violet
+ *     and would have kept switches and sliders purple after the accent moved.
+ *
+ * Naming: --pd-* is canonical. --qp-* names are kept as aliases so the 29
+ * files still referencing them keep working; they are migrated opportunis-
+ * tically as each screen is reworked, not in one sweeping rename.
+ */
+
+:root {
+  /* ---------- Spacing scale (4px base) ---------- */
+  --pd-space-0: 0;
+  --pd-space-1: 4px;
+  --pd-space-2: 8px;
+  --pd-space-3: 12px;
+  --pd-space-4: 16px;
+  --pd-space-5: 20px;
+  --pd-space-6: 24px;
+  --pd-space-8: 32px;
+  --pd-space-10: 40px;
+  --pd-space-12: 48px;
+  --pd-space-16: 64px;
+  --pd-space-20: 80px;
+  --pd-space-24: 96px;
+
+  /* ---------- Radius scale ---------- */
+  --pd-radius-xs: 4px;    /* chips, tags */
+  --pd-radius-sm: 8px;    /* inputs, small buttons */
+  --pd-radius-md: 10px;   /* buttons, rows */
+  --pd-radius-lg: 14px;   /* cards, panels */
+  --pd-radius-xl: 16px;   /* modals, surfaces */
+  --pd-radius-squircle: 15px; /* server icons, avatars */
+  --pd-radius-pill: 9999px;
+  --pd-radius-circle: 50%;
+
+  /* ---------- Typefaces ----------
+     Display is brand and deliberately not user-configurable: it carries the
+     identity. Body and mono follow the user's choice from settings.
+
+     The condensed stack resolves per platform — Bahnschrift on Windows, DIN
+     Condensed / SF Compact on Apple. Linux has no reliable condensed system
+     face and falls through to the body font; shipping one webfont to make
+     this consistent everywhere is a follow-up that needs a dependency. */
+  --pd-font-display:
+    "Bahnschrift", "DIN Alternate", "DIN Condensed", "SF Compact Display",
+    "Oswald", "Archivo Narrow", "Arial Narrow", var(--pd-font-sans);
+  --pd-font-sans: var(--fonts-primary, "Inter", system-ui, -apple-system, sans-serif);
+  --pd-font-mono: var(--fonts-monospace, "JetBrains Mono", "Cascadia Mono", ui-monospace, monospace);
+
+  /* Width axis for variable condensed faces. Ignored by faces without it. */
+  --pd-display-wdth: 75;
+  --pd-display-wdth-tight: 62;  /* hero and page titles only */
+
+  /* ---------- Type scale ---------- */
+  --pd-text-xs: 11px;
+  --pd-text-sm: 13px;
+  --pd-text-base: 14px;
+  --pd-text-md: 15px;
+  --pd-text-lg: 16px;
+  --pd-text-xl: 20px;
+  --pd-text-2xl: 24px;
+  --pd-text-3xl: 30px;
+  --pd-text-4xl: 38px;
+  --pd-text-5xl: 48px;
+  --pd-text-display: clamp(40px, 6vw, 64px);
+
+  --pd-leading-tight: 1.2;
+  --pd-leading-snug: 1.35;
+  --pd-leading-normal: 1.5;
+  --pd-leading-relaxed: 1.65;
+
+  --pd-tracking-tight: -0.02em;
+  --pd-tracking-snug: -0.01em;
+  --pd-tracking-normal: 0;
+  --pd-tracking-wide: 0.02em;
+  --pd-tracking-label: 0.14em;  /* mono uppercase labels */
+
+  --pd-weight-regular: 400;
+  --pd-weight-medium: 500;
+  --pd-weight-semibold: 600;
+  --pd-weight-bold: 700;
+
+  /* ---------- Motion ----------
+     Three durations, three curves. Anything not covered by these is either
+     decoration (cut) or a bug. */
+  --pd-t-fast: 120ms;   /* pointer response, press feedback */
+  --pd-t-base: 200ms;   /* entrance, state change, modal, toast */
+  --pd-t-slow: 320ms;   /* screen change, large panel */
+
+  --pd-e-out: cubic-bezier(0.2, 0, 0, 1);       /* default: sharp out, soft landing */
+  --pd-e-in-out: cubic-bezier(0.4, 0, 0.2, 1);  /* A-to-B moves with both ends visible */
+  --pd-e-back: cubic-bezier(0.34, 1.4, 0.64, 1);/* counters and reactions only */
+
+  /* Ready-made pairs so components stop inventing their own numbers. */
+  --pd-transition-fast: var(--pd-t-fast) var(--pd-e-out);
+  --pd-transition-base: var(--pd-t-base) var(--pd-e-out);
+  --pd-transition-slow: var(--pd-t-slow) var(--pd-e-out);
+
+  /* ---------- Elevation ----------
+     Two shadows, not five. Everything else is a border. */
+  --pd-shadow-raised: 0 1px 2px color-mix(in srgb, var(--md-sys-color-shadow, #000) 6%, transparent);
+  --pd-shadow-float: 0 20px 44px -18px color-mix(in srgb, var(--md-sys-color-shadow, #000) 32%, transparent);
+
+  /* ---------- Focus ring ---------- */
+  --pd-focus-ring:
+    0 0 0 2px var(--md-sys-color-surface),
+    0 0 0 4px var(--md-sys-color-primary);
+
+  /* ---------- Glass / material surfaces ---------- */
+  --pd-glass-bg: color-mix(in srgb, var(--md-sys-color-surface) 78%, transparent);
+  --pd-glass-border: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+  --pd-glass-blur: saturate(180%) blur(20px);
+
+  /* ---------- Borders ---------- */
+  --pd-border-subtle: color-mix(in srgb, var(--md-sys-color-on-surface) 6%, transparent);
+  --pd-border-default: var(--md-sys-color-outline-variant);
+  --pd-border-strong: var(--md-sys-color-outline);
+
+  /* ---------- Semantic state ----------
+     "Live" is the open-mic / speaking / online colour. It is deliberately
+     separate from the accent: a voice app must never make "someone is
+     talking" and "this is a button" the same colour. */
+  --pd-live: #00C48C;
+  --pd-live-ink: #007A56;
+  --pd-warn: #B26A00;
+
+  /* Accent reference — reads from the theme so it follows the user's choice. */
+  --pd-accent: var(--md-sys-color-primary);
+  --pd-accent-wash: color-mix(in srgb, var(--md-sys-color-primary) 12%, var(--md-sys-color-surface));
+  --accent-glow: color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent);
+
+  /* ---------- Touch target (a11y) ---------- */
+  --pd-touch-target: 44px;
+
+  /* =====================================================================
+     Quiet Pro aliases — deprecated, kept so existing components compile.
+     Prefer --pd-* in new work; these disappear as screens are reworked.
+     ===================================================================== */
+  --qp-space-0: var(--pd-space-0);
+  --qp-space-1: var(--pd-space-1);
+  --qp-space-2: var(--pd-space-2);
+  --qp-space-3: var(--pd-space-3);
+  --qp-space-4: var(--pd-space-4);
+  --qp-space-5: var(--pd-space-5);
+  --qp-space-6: var(--pd-space-6);
+  --qp-space-8: var(--pd-space-8);
+  --qp-space-10: var(--pd-space-10);
+  --qp-space-12: var(--pd-space-12);
+  --qp-space-16: var(--pd-space-16);
+  --qp-space-20: var(--pd-space-20);
+  --qp-space-24: var(--pd-space-24);
+
+  --qp-radius-xs: var(--pd-radius-xs);
+  --qp-radius-sm: var(--pd-radius-sm);
+  --qp-radius-md: var(--pd-radius-md);
+  --qp-radius-lg: var(--pd-radius-lg);
+  --qp-radius-xl: var(--pd-radius-xl);
+  --qp-radius-pill: var(--pd-radius-pill);
+  --qp-radius-circle: var(--pd-radius-circle);
+
+  --qp-font-sans: var(--pd-font-sans);
+  --qp-font-mono: var(--pd-font-mono);
+
+  --qp-text-xs: var(--pd-text-xs);
+  --qp-text-sm: var(--pd-text-sm);
+  --qp-text-base: var(--pd-text-base);
+  --qp-text-md: var(--pd-text-md);
+  --qp-text-lg: var(--pd-text-lg);
+  --qp-text-xl: var(--pd-text-xl);
+  --qp-text-2xl: var(--pd-text-2xl);
+  --qp-text-3xl: var(--pd-text-3xl);
+  --qp-text-4xl: var(--pd-text-4xl);
+  --qp-text-5xl: var(--pd-text-5xl);
+  --qp-text-display: var(--pd-text-display);
+
+  --qp-leading-tight: var(--pd-leading-tight);
+  --qp-leading-snug: var(--pd-leading-snug);
+  --qp-leading-normal: var(--pd-leading-normal);
+  --qp-leading-relaxed: var(--pd-leading-relaxed);
+
+  --qp-tracking-tight: var(--pd-tracking-tight);
+  --qp-tracking-snug: var(--pd-tracking-snug);
+  --qp-tracking-normal: var(--pd-tracking-normal);
+  --qp-tracking-wide: var(--pd-tracking-wide);
+
+  --qp-weight-regular: var(--pd-weight-regular);
+  --qp-weight-medium: var(--pd-weight-medium);
+  --qp-weight-semibold: var(--pd-weight-semibold);
+  --qp-weight-bold: var(--pd-weight-bold);
+
+  /* Four durations collapse onto three; the old 80ms instant and 140ms fast
+     were never distinguishable in use. */
+  --qp-duration-instant: var(--pd-t-fast);
+  --qp-duration-fast: var(--pd-t-fast);
+  --qp-duration-normal: var(--pd-t-base);
+  --qp-duration-slow: var(--pd-t-slow);
+
+  --qp-ease-standard: var(--pd-e-out);
+  --qp-ease-emphasized: var(--pd-e-out);
+  --qp-ease-spring: var(--pd-e-back);
+
+  --qp-focus-ring: var(--pd-focus-ring);
+  --qp-glass-bg: var(--pd-glass-bg);
+  --qp-glass-border: var(--pd-glass-border);
+  --qp-glass-blur: var(--pd-glass-blur);
+  --qp-accent: var(--pd-accent);
+  --qp-border-subtle: var(--pd-border-subtle);
+  --qp-border-default: var(--pd-border-default);
+  --qp-border-strong: var(--pd-border-strong);
+  --qp-touch-target: var(--pd-touch-target);
+}
+
+/* ---------- Typography defaults ---------- */
+body {
+  font-family: var(--pd-font-sans);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  letter-spacing: var(--pd-tracking-snug);
+  line-height: var(--pd-leading-normal);
+}
+
+/*
+ * Pre-hydration canvas. LoadTheme sets the real background from the user's
+ * theme as soon as SolidJS runs; this only covers the frames before that.
+ * Light, because light is now the default — a dark flash on the way into a
+ * light client is more jarring than the reverse.
+ *
+ * No !important: a user on dark must be able to win here via body.style.
+ */
+html,
+:root {
+  background-color: #FBF9F7;
+}
+
+/*
+ * Headings carry the display face.
+ *
+ * Deliberately NO text-transform here. Uppercase is part of the direction,
+ * but applying it to every h1–h6 in the app would also shout user content:
+ * markdown headings inside messages are real <h1> elements, and a server
+ * called "PLG Сообщество" would render as "PLG СООБЩЕСТВО" wherever its name
+ * sits in a heading. Capitals are opted into via .pd-title, not inherited.
+ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--pd-font-display);
+  font-variation-settings: "wght" 700, "wdth" var(--pd-display-wdth);
+  font-weight: var(--pd-weight-bold);
+  letter-spacing: var(--pd-tracking-normal);
+  line-height: var(--pd-leading-tight);
+  text-wrap: balance;
+}
+
+/* Chrome titles: the full treatment — condensed capitals. Applied by hand to
+   page and section titles as each screen is reworked. */
+.pd-title {
+  font-family: var(--pd-font-display);
+  font-variation-settings: "wght" 700, "wdth" var(--pd-display-wdth);
+  font-weight: var(--pd-weight-bold);
+  line-height: var(--pd-leading-tight);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+/* Hero scale — tighter width axis, used sparingly. */
+.pd-title-hero {
+  font-variation-settings: "wght" 700, "wdth" var(--pd-display-wdth-tight);
+  letter-spacing: -0.005em;
+}
+
+/*
+ * The signature element: amplitude bars.
+ *
+ * One idea carried through the whole product — a speaking user, the typing
+ * indicator, and every loading state are the same live signal at different
+ * sizes. Colour is inherited via currentColor so the same markup reads as
+ * "live" (jade) next to a speaker and as accent while loading.
+ *
+ * This is the only infinite animation in the app. It is allowed to be
+ * infinite because it reflects something that is genuinely ongoing.
+ */
+.pd-meter {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 26px;
+  color: var(--pd-live);
+}
+.pd-meter > i {
+  display: block;
+  width: 3px;
+  height: 28%;
+  border-radius: 2px;
+  background: currentColor;
+  animation: pd-amp 1.05s var(--pd-e-in-out) infinite;
+}
+.pd-meter > i:nth-child(1) { animation-delay: -0.90s; }
+.pd-meter > i:nth-child(2) { animation-delay: -0.50s; }
+.pd-meter > i:nth-child(3) { animation-delay: -0.20s; }
+.pd-meter > i:nth-child(4) { animation-delay: -0.70s; }
+.pd-meter > i:nth-child(5) { animation-delay: -0.35s; }
+.pd-meter > i:nth-child(6) { animation-delay: -1.00s; }
+.pd-meter > i:nth-child(7) { animation-delay: -0.15s; }
+
+.pd-meter--sm { height: 11px; gap: 2px; }
+.pd-meter--sm > i { width: 2px; }
+.pd-meter--lg { height: 40px; gap: 5px; }
+.pd-meter--lg > i { width: 5px; }
+.pd-meter--accent { color: var(--md-sys-color-primary); }
+
+/* Paused when it cannot be seen — a sidebar full of idle indicators should
+   not keep the compositor busy. Toggled by IntersectionObserver. */
+.pd-meter[data-paused="true"] > i { animation-play-state: paused; }
+
+@keyframes pd-amp {
+  0%, 100% { height: 22%; }
+  50%      { height: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pd-meter > i { animation: none; height: 62%; }
+}
+
+/* Mono uppercase label — categories, meta, eyebrows. */
+.pd-label {
+  font-family: var(--pd-font-mono);
+  font-size: var(--pd-text-xs);
+  letter-spacing: var(--pd-tracking-label);
+  text-transform: uppercase;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+code, kbd, pre, samp {
+  font-family: var(--pd-font-mono);
+  font-feature-settings: "calt", "liga";
+}
+
+/* Anything that lines up in a column gets even digits. */
+[data-numeric], .tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 26%, transparent);
+  color: var(--md-sys-color-on-surface);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ---------------------------------------------------------------------
+   MDUI shims.
+   Temporary: these components are being replaced with native ones. Only
+   shape and typeface are set here — colour comes from LoadTheme's
+   createMduiColourTriplets so it tracks the accent and the light/dark
+   toggle. Quiet Pro hardcoded the violet triplet here, which would have
+   stranded switches and sliders on the old accent.
+   ------------------------------------------------------------------- */
+mdui-text-field,
+mdui-select {
+  --mdui-shape-corner-extra-small: var(--pd-radius-sm);
+  --mdui-shape-corner-small: var(--pd-radius-sm);
+  font-family: var(--pd-font-sans);
+}
+
+mdui-text-field::part(container),
+mdui-text-field::part(input) {
+  font-family: var(--pd-font-sans) !important;
+}
+
+mdui-switch {
+  --mdui-shape-corner-full: var(--pd-radius-pill);
+}

@@ -9,7 +9,7 @@ import { AbstractStore } from ".";
 /**
  * Bump this when theme defaults change — triggers migration for existing users
  */
-const THEME_VERSION = 4;
+const THEME_VERSION = 5;
 
 export type TypeTheme = {
   /**
@@ -137,13 +137,25 @@ export class Theme extends AbstractStore {
       _version: THEME_VERSION,
       _setupDone: false,
       preset: "you",
-      mode: "dark",
+      mode: "light",
 
-      // Quiet Pro defaults — restrained accent, desaturated surfaces (Apple/Notion vibe).
-      // Users can switch to vibrant variants in settings.
-      m3Accent: "#8B5CF6",
+      // Полдень defaults. Light is the default on purpose: every competing
+      // voice app (Discord, Guilded, TeamSpeak) is dark, so a confident light
+      // client is the position nobody occupies. Dark ships as an equal, not
+      // as an afterthought — see the pinned ramps in materialTheme.ts.
+      //
+      // The accent moved off #8B5CF6, which was Discord's violet down to the
+      // shade. Signal red is ours, and it clears 4.9:1 on paper so it can
+      // carry label text, not just fills.
+      m3Accent: "#E00A45",
       m3Contrast: 0.0,
-      m3Variant: "neutral",
+      // "content" keeps the generated primary faithful to the accent. The old
+      // "neutral" variant desaturated it so hard that Quiet Pro had to force
+      // the colour back with an !important override in CSS — a red would have
+      // come out a muted grey-pink the same way. The quiet part of the palette
+      // no longer depends on the variant: the neutral ramp is pinned by hand
+      // in materialTheme.ts, so the scheme only has to get the accent right.
+      m3Variant: "content",
 
       interfaceFont: "Inter",
       monospaceFont: "JetBrains Mono",
@@ -165,8 +177,8 @@ export class Theme extends AbstractStore {
     const needsMigration = !input._version || input._version < THEME_VERSION;
 
     if (needsMigration) {
-      // Migrate the user silently to the new defaults (Quiet Pro palette,
-      // Inter+JetBrains Mono fonts, neutral M3 variant). Force
+      // Migrate the user silently to the new defaults (Полдень palette,
+      // light mode, neutral M3 variant). Force
       // _setupDone=true for any returning user — v3 shipped a bug that
       // reset this flag and trapped people on the onboarding wizard.
       // Only brand-new stores (no _version at all AND no recorded mode)

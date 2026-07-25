@@ -27,7 +27,9 @@ export function LoadTheme() {
     // Set bg on both <html> and <body> so the canvas (area outside body)
     // matches the user's selected theme. MDUI's own :root stylesheet
     // would otherwise paint light lavender on the canvas in dark mode.
-    const bg = activeTheme.darkMode ? "#0B0A12" : "#F5F3FA";
+    // Must match the surface ramps pinned in materialTheme.ts, or the canvas
+    // outside <body> shows a different shade than the app itself.
+    const bg = activeTheme.darkMode ? "#100E15" : "#FBF9F7";
     document.documentElement.style.background = bg;
     document.documentElement.style.colorScheme = activeTheme.darkMode ? "dark" : "light";
     document.body.style.background = bg;

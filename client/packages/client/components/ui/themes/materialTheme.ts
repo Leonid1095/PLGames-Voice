@@ -229,29 +229,45 @@ function generateMaterialYouScheme(
     shadow: hexFromArgb(scheme.shadow),
   };
 
-  // Custom surface overrides for premium look
+  // Полдень — neutral ramp pinned by hand.
+  //
+  // Material You derives neutrals from the accent's chroma, which with a
+  // saturated signal red tints every surface pink. We pin them instead: a
+  // plum-biased grey that is related to the accent without carrying its
+  // saturation. Pure grey reads as unconsidered; this reads as chosen.
+  //
+  // Text colours are pinned for the same reason — the derived on-surface
+  // drifts warm against a red accent and loses contrast against paper.
   if (darkMode) {
-    // Obsidian-dark — deep purple-tinted backgrounds
-    colors["surface-dim"] = "#0C0A1A";
-    colors.surface = "#0F0D1F";
-    colors["surface-bright"] = "#1E1A2E";
-    colors["surface-container-lowest"] = "#080618";
-    colors["surface-container-low"] = "#12101F";
-    colors["surface-container"] = "#1A1726";
-    colors["surface-container-high"] = "#1F1C2E";
-    colors["surface-container-highest"] = "#2A2640";
-    colors["outline-variant"] = "#3D3654";
+    // Ночь — ink with a plum bias, not the violet obsidian it replaced.
+    colors["surface-dim"] = "#0B090F";
+    colors.surface = "#100E15";
+    colors["surface-bright"] = "#221E2C";
+    colors["surface-container-lowest"] = "#0B090F";
+    colors["surface-container-low"] = "#15121B";
+    colors["surface-container"] = "#1B1724";
+    colors["surface-container-high"] = "#221E2C";
+    colors["surface-container-highest"] = "#2A2536";
+
+    colors["on-surface"] = "#F4F1F7";
+    colors["on-surface-variant"] = "#B3ACC0";
+    colors.outline = "#4A4356";
+    colors["outline-variant"] = "#2A2536";
   } else {
-    // Premium light — warm off-white with subtle violet tint
-    colors["surface-dim"] = "#E8E4F0";
-    colors.surface = "#F5F3FA";
+    // Полдень — warm paper, deliberately not the cream that reads as vintage.
+    colors["surface-dim"] = "#EFEBF3";
+    colors.surface = "#FBF9F7";
     colors["surface-bright"] = "#FFFFFF";
     colors["surface-container-lowest"] = "#FFFFFF";
-    colors["surface-container-low"] = "#F0EDF7";
-    colors["surface-container"] = "#EAE7F2";
-    colors["surface-container-high"] = "#E4E1ED";
-    colors["surface-container-highest"] = "#DDD9E8";
-    colors["outline-variant"] = "#C9C3D8";
+    colors["surface-container-low"] = "#F7F4F9";
+    colors["surface-container"] = "#F3F0F5";
+    colors["surface-container-high"] = "#EFEBF3";
+    colors["surface-container-highest"] = "#E9E4EE";
+
+    colors["on-surface"] = "#16131C";
+    colors["on-surface-variant"] = "#55505F";
+    colors.outline = "#C9C2D2";
+    colors["outline-variant"] = "#E7E2EC";
   }
 
   return colors;

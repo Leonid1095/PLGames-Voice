@@ -48,46 +48,44 @@ export const strikethrough = styled("del", {
   },
 });
 
+/**
+ * Markdown headings are content, not chrome.
+ *
+ * polden.css puts the condensed display face on every h1–h6 so that page and
+ * section titles are branded without each screen opting in. Message bodies
+ * must not inherit that: someone starting a line with "#" is writing text,
+ * not naming a page. This resets the six of them back to the reading face.
+ */
+const contentHeading = {
+  fontFamily: "var(--pd-font-sans)",
+  fontVariationSettings: "normal",
+  fontWeight: 600,
+  letterSpacing: "var(--pd-tracking-tight)",
+  lineHeight: "var(--pd-leading-snug)",
+} as const;
+
 export const heading1 = styled("h1", {
-  base: {
-    fontSize: "2em",
-    fontWeight: 600,
-  },
+  base: { ...contentHeading, fontSize: "2em" },
 });
 
 export const heading2 = styled("h2", {
-  base: {
-    fontSize: "1.6em",
-    fontWeight: 600,
-  },
+  base: { ...contentHeading, fontSize: "1.6em" },
 });
 
 export const heading3 = styled("h3", {
-  base: {
-    fontSize: "1.4em",
-    fontWeight: 600,
-  },
+  base: { ...contentHeading, fontSize: "1.4em" },
 });
 
 export const heading4 = styled("h4", {
-  base: {
-    fontSize: "1.2em",
-    fontWeight: 600,
-  },
+  base: { ...contentHeading, fontSize: "1.2em" },
 });
 
 export const heading5 = styled("h5", {
-  base: {
-    fontSize: "1em",
-    fontWeight: 600,
-  },
+  base: { ...contentHeading, fontSize: "1em" },
 });
 
 export const heading6 = styled("h6", {
-  base: {
-    fontSize: "0.8em",
-    fontWeight: 600,
-  },
+  base: { ...contentHeading, fontSize: "0.8em" },
 });
 
 export const listItem = styled("li", {
