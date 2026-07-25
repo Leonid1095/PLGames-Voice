@@ -242,7 +242,7 @@ body {
     bottom: 0;
     z-index: 1000;
     transform: translateX(-100%);
-    transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+    transition: transform var(--pd-transition-slow);
     width: calc(56px + 248px);
     max-width: 85vw;
   }
@@ -309,8 +309,21 @@ body {
     min-height: 44px;
   }
 
-  /* Disable hover effects on touch */
-  *:hover {
+  /*
+   * Kill the fade-in on hover states for touch. A finger produces a hover
+   * event on tap that then sticks until you touch elsewhere, so animating
+   * into it just adds lag before the tap registers visually.
+   *
+   * Scoped to interactive elements: as `*:hover` this also flattened
+   * transitions on containers that merely happened to be under the finger,
+   * including the message list and the sidebar itself.
+   */
+  a:hover,
+  button:hover,
+  [role="button"]:hover,
+  input:hover,
+  select:hover,
+  textarea:hover {
     transition-duration: 0ms !important;
   }
 }
