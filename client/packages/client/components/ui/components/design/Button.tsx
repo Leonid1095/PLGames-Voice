@@ -159,9 +159,14 @@ const button = cva({
     alignItems: "center",
     justifyContent: "center",
 
-    fontWeight: 500,
-    fontFamily: "inherit",
-    letterSpacing: "-0.005em",
+    /* Condensed capitals. The stock Material label -- body face, weight 500,
+       negative tracking -- is what made every button read as a generic pill;
+       this is the same treatment the landing uses so the two match. */
+    fontFamily: "var(--pd-font-display)",
+    fontVariationSettings: '"wght" 700, "wdth" var(--pd-display-wdth)',
+    fontWeight: 700,
+    textTransform: "uppercase",
+    letterSpacing: "0.04em",
 
     cursor: "pointer",
     border: "1px solid transparent",
@@ -171,7 +176,7 @@ const button = cva({
     fill: "var(--color)",
 
     _active: {
-      transform: "scale(0.97)",
+      transform: "translateY(1px)",
     },
   },
   variants: {
@@ -185,12 +190,15 @@ const button = cva({
         "--color": "var(--md-sys-color-primary)",
       },
       filled: {
+        /* Flat. The inset white gloss and the accent glow on hover were
+           skeuomorphic leftovers -- on a saturated red at button size they
+           read as a plastic bubble. Hover deepens the fill instead. */
         background: "var(--md-sys-color-primary)",
         "--color": "var(--md-sys-color-on-primary)",
-        borderColor: "color-mix(in srgb, white 12%, transparent)",
-        boxShadow: "var(--pd-shadow-raised), inset 0 1px 0 rgba(255,255,255,0.12)",
+        borderColor: "var(--md-sys-color-primary)",
         _hover: {
-          boxShadow: "0 4px 16px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.18)",
+          background: "color-mix(in srgb, var(--md-sys-color-primary) 86%, #000)",
+          borderColor: "color-mix(in srgb, var(--md-sys-color-primary) 86%, #000)",
         },
       },
       tonal: {
@@ -279,7 +287,9 @@ const button = cva({
       round: {
         borderRadius: "var(--borderRadius-full)",
       },
-      square: {},
+      square: {
+        borderRadius: "var(--pd-radius-md)",
+      },
     },
     /**
      * Expressive button groups
@@ -387,11 +397,17 @@ const button = cva({
   },
   defaultVariants: {
     size: "sm",
-    shape: "round",
+    shape: "square",
     variant: "filled",
     disabled: false,
   },
   compoundVariants: [
+    // An icon-only button is a circle regardless of the squircle default:
+    // there is no text baseline to align a corner radius to.
+    {
+      size: "icon",
+      css: { borderRadius: "var(--borderRadius-full)" },
+    },
     // disabled styles
     {
       variant: ["elevated", "filled", "tonal", "outlined"],
