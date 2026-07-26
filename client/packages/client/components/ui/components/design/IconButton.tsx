@@ -79,7 +79,8 @@ const iconButton2 = cva({
 
     cursor: "pointer",
     border: "none",
-    transition: "var(--transitions-fast) all",
+    transition:
+      "background-color var(--pd-transition-fast), color var(--pd-transition-fast), border-color var(--pd-transition-fast)",
 
     color: "var(--colour)",
     fill: "var(--colour)",
@@ -93,6 +94,9 @@ const iconButton2 = cva({
       tonal: {
         background: "var(--md-sys-color-secondary-container)",
         "--colour": "var(--md-sys-color-on-secondary-container)",
+        _hover: {
+          background: "color-mix(in srgb, var(--md-sys-color-secondary-container) 92%, var(--md-sys-color-on-surface))",
+        },
       },
       outlined: {
         border: "1px solid var(--md-sys-color-outline-variant)",
@@ -100,10 +104,17 @@ const iconButton2 = cva({
       },
       standard: {
         "--colour": "var(--md-sys-color-on-surface-variant)",
+        _hover: {
+          background: "var(--pd-tint-subtle)",
+          "--colour": "var(--md-sys-color-on-surface)",
+        },
       },
 
       _header: {
         "--colour": "var(--md-sys-color-on-surface)",
+        _hover: {
+          background: "var(--pd-tint-subtle)",
+        },
       },
     },
     size: {
@@ -127,7 +138,9 @@ const iconButton2 = cva({
       round: {
         borderRadius: "var(--borderRadius-full)",
       },
-      square: {},
+      square: {
+        borderRadius: "var(--pd-radius-md)",
+      },
     },
     width: {
       narrow: {},
@@ -148,7 +161,7 @@ const iconButton2 = cva({
         width: "48px",
         aspectRatio: "unset",
         height: "100% !important",
-        borderEndRadius: "var(--borderRadius-xl)",
+        borderEndRadius: "var(--pd-radius-lg)",
       },
     },
   },

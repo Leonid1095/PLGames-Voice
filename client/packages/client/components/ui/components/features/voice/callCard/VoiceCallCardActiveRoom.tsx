@@ -273,6 +273,7 @@ const tile = cva({
   base: {
     display: "grid",
     aspectRatio: "16/10",
+    animation: "popIn var(--pd-t-base) var(--pd-e-out) both",
     transition:
       "outline-color var(--pd-transition-base), box-shadow var(--pd-transition-base), border-color var(--pd-transition-base)",
     borderRadius: "var(--pd-radius-md)",
@@ -340,28 +341,23 @@ const Overlay = styled("div", {
     gridArea: "1/1",
     position: "relative",
 
-    padding: "var(--gap-md) var(--gap-lg)",
+    padding: "var(--gap-md)",
 
     opacity: 1,
     display: "flex",
-    alignItems: "end",
+    alignItems: "flex-start",
     flexDirection: "column",
     justifyContent: "end",
+    gap: "var(--gap-sm)",
 
-    transition: "var(--transitions-fast) all",
-    transitionTimingFunction: "ease",
-
-    background: "linear-gradient(transparent 50%, rgba(0,0,0,0.5) 100%)",
+    transition: "opacity var(--pd-transition-fast)",
   },
   variants: {
     showOnHover: {
       true: {
         opacity: 0,
-        background: "transparent",
-
         _groupHover: {
           opacity: 1,
-          background: "linear-gradient(transparent 50%, rgba(0,0,0,0.5) 100%)",
         },
       },
       false: {
@@ -377,19 +373,22 @@ const Overlay = styled("div", {
 const OverlayInner = styled("div", {
   base: {
     minWidth: 0,
-    width: "100%",
+    maxWidth: "100%",
+    width: "fit-content",
 
     display: "flex",
     alignItems: "center",
     flexDirection: "row",
-    justifyContent: "space-between",
     gap: "var(--gap-sm)",
 
-    color: "white",
-    textShadow: "0 1px 3px rgba(0,0,0,0.5)",
+    padding: "4px 10px",
+    borderRadius: "var(--pd-radius-pill)",
+    background: "rgba(10,9,8,0.55)",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
 
-    _first: {
-      flexGrow: 1,
-    },
+    color: "#FFFFFF",
+    fill: "#FFFFFF",
+    fontSize: "13px",
   },
 });
