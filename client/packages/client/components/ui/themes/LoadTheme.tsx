@@ -56,7 +56,17 @@ export function LoadTheme() {
       // mount --md-sys-color variables
       ...createMaterialColourVariables(activeTheme, "--md-sys-color-"),
     })) {
-      document.body.style.setProperty(key, value);
+      // On <html>, not <body>. polden.css derives thirteen --pd-* tokens from
+      // these (--pd-surface-raised, the borders, the interaction tints, the
+      // focus ring, the accent washes) and declares them in :root. A custom
+      // property is substituted at the element that declares it, then the
+      // *resolved* value is what inherits — so a :root token referring to a
+      // variable that only exists on <body> is guaranteed-invalid at :root and
+      // inherits as invalid all the way down. Every one of those tokens read
+      // as empty everywhere, which is why raised surfaces, borders and hover
+      // states were missing while the literal tokens (fonts, radii, --pd-live)
+      // worked: the redesign's colour landed and its structure did not.
+      document.documentElement.style.setProperty(key, value);
     }
   });
 
