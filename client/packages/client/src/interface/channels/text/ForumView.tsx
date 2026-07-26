@@ -57,19 +57,37 @@ export function ForumView(props: ChannelPageProps) {
     return fetch(url, { ...init, headers });
   }
 
-  const [threadsFailed, setThreadsFailed] = createSignal(false);
+  /*
+   * The reason, not a boolean.
+   *
+   * This used to swallow every failure into `threadsFailed` and return an
+   * empty list, so a forum that could not load rendered as "No threads yet"
+   * -- indistinguishable from an empty one, with nothing on screen to act on
+   * or report. GET /channels/:id/threads exists server-side, so a failure
+   * here is a permission, network or server fault worth naming.
+   */
+  const [loadError, setLoadError] = createSignal<string | null>(null);
+  const [createError, setCreateError] = createSignal<string | null>(null);
+
   const [threads, { refetch }] = createResource(
-    () => threadsFailed() ? null : props.channel.id,
+    () => (loadError() ? null : props.channel.id),
     async (channelId) => {
       if (!channelId) return [];
       try {
         const r = await api(`/channels/${channelId}/threads`);
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        if (!r.ok) {
+          throw new Error(
+            r.status === 403
+              ? t`You do not have permission to view this forum.`
+              : t`The server returned ${r.status}.`,
+          );
+        }
         const res = (await r.json()) as ForumThread[];
         return res || [];
-      } catch {
-        // API doesn't support /threads endpoint — stop retrying
-        setThreadsFailed(true);
+      } catch (err) {
+        setLoadError(
+          err instanceof Error ? err.message : t`Could not reach the server.`,
+        );
         return [] as ForumThread[];
       }
     },
@@ -95,6 +113,7 @@ export function ForumView(props: ChannelPageProps) {
     if (!title || !content) return;
 
     setCreating(true);
+    setCreateError(null);
     try {
       const r = await api(`/channels/${props.channel.id}/threads`, {
         method: "POST",
@@ -116,6 +135,9 @@ export function ForumView(props: ChannelPageProps) {
       }
     } catch (err) {
       console.error("[Forum] Failed to create thread:", err);
+      setCreateError(
+        err instanceof Error ? err.message : t`Could not create the thread.`,
+      );
     } finally {
       setCreating(false);
     }
@@ -213,6 +235,15 @@ export function ForumView(props: ChannelPageProps) {
                 if (e.key === "Escape") setShowCreateForm(false);
               }}
             />
+            <Show when={createError()}>
+              <Text
+                class="body"
+                size="small"
+                style={{ color: "var(--md-sys-color-error)" }}
+              >
+                {createError()}
+              </Text>
+            </Show>
             <FormActions>
               <Text class="body" size="small" style={{ opacity: 0.6 }}>Ctrl+Enter</Text>
               <SubmitButton onClick={createThread} disabled={creating() || !newTitle().trim() || !newContent().trim()}>
@@ -227,6 +258,26 @@ export function ForumView(props: ChannelPageProps) {
           when={!threads.loading}
           fallback={<div class={css({ textAlign: "center", padding: "40px", color: "var(--md-sys-color-on-surface-variant)" })}><Trans>Loading...</Trans></div>}
         >
+          <Show
+            when={!loadError()}
+            fallback={
+              <EmptyState>
+                <Symbol size={48}>warning</Symbol>
+                <Text class="title" size="medium">
+                  <Trans>Could not load threads</Trans>
+                </Text>
+                <Text class="body" size="small">{loadError()}</Text>
+                <SortButton
+                  onClick={() => {
+                    setLoadError(null);
+                    refetch();
+                  }}
+                >
+                  <Trans>Try again</Trans>
+                </SortButton>
+              </EmptyState>
+            }
+          >
           <Show
             when={filteredThreads().length > 0}
             fallback={
@@ -270,6 +321,7 @@ export function ForumView(props: ChannelPageProps) {
                 )}
               </For>
             </ThreadGrid>
+          </Show>
           </Show>
         </Show>
       </div>

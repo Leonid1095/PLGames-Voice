@@ -1048,9 +1048,21 @@ msgstr "Скопировать ID пользователя"
 msgid "Copy webhook URL"
 msgstr "Скопировать URL вебхука"
 
+#: src/interface/channels/text/ForumView.tsx
+msgid "Could not create the thread."
+msgstr "Не удалось создать тему."
+
 #: components/i18n/errors.ts
 msgid "Could not find what you requested."
 msgstr "Не удалось найти запрашиваемое."
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Could not load threads"
+msgstr "Не удалось загрузить темы"
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Could not reach the server."
+msgstr "Сервер не отвечает."
 
 #. placeholder {0}: props.embed.type
 #. placeholder {0}: props.file.metadata.type
@@ -3900,6 +3912,11 @@ msgstr "Файл \"{0}\" ({fileSize}) превышает максимальны�
 msgid "The password is too short."
 msgstr "Пароль слишком короткий."
 
+#. placeholder {0}: r.status
+#: src/interface/channels/text/ForumView.tsx
+msgid "The server returned {0}."
+msgstr "Сервер вернул {0}."
+
 #: src/interface/ThemeSetup.tsx
 #: components/app/interface/settings/user/Sync.tsx
 msgid "Theme"
@@ -4034,6 +4051,10 @@ msgstr "Перевести"
 #: components/modal/modals/CreateChannel.tsx
 msgid "Trigger for temporary channels"
 msgstr "Триггер для временных каналов"
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Try again"
+msgstr "Повторить"
 
 #: components/ui/components/features/voice/VoiceBottomBar.tsx
 msgid "Turn off camera"
@@ -4507,6 +4528,10 @@ msgstr "Вы нажали на \"{0}\""
 #: components/i18n/errors.ts
 msgid "You do not have permission to do this."
 msgstr "У вас нет прав для этого действия."
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "You do not have permission to view this forum."
+msgstr "У вас нет прав на просмотр этого форума."
 
 #: components/ui/components/features/messaging/composition/MessageBox.tsx
 msgid "You don't have permission to send messages in this channel."
