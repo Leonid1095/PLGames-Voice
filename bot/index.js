@@ -2440,6 +2440,12 @@ async function automodCheck(data) {
   // "ху1", "x y i", "@ssh0le".
   const normalised = normaliseForAutomod(rawContent);
   const content = rawContent.toLowerCase();
+  // The duplicate rule compares whole messages and must see the original.
+  // Stripping exists only to protect stop-word matching: it turns every
+  // link into a single space, so three different GIFs all become " " and
+  // the third one gets deleted as a repeat. Two different links are two
+  // different messages.
+  const duplicateKey = (data.content || "").toLowerCase();
   const channelId = data.channel;
 
   // --- Banned words check ---
@@ -2531,8 +2537,8 @@ async function automodCheck(data) {
   }
 
   // --- Duplicate check ---
-  if (am.antiDuplicates && content) {
-    if (content === tracker.lastContent) {
+  if (am.antiDuplicates && duplicateKey) {
+    if (duplicateKey === tracker.lastContent) {
       tracker.duplicateCount++;
       if (tracker.duplicateCount >= am.maxDuplicates) {
         try {
@@ -2546,7 +2552,7 @@ async function automodCheck(data) {
         return;
       }
     } else {
-      tracker.lastContent = content;
+      tracker.lastContent = duplicateKey;
       tracker.duplicateCount = 1;
     }
   }
