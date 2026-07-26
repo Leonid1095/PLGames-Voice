@@ -1,5 +1,5 @@
 import { createFormControl, createFormGroup } from "solid-forms";
-import { BiRegularArchive, BiSolidKey, BiSolidKeyboard } from "solid-icons/bi";
+import { Archive, KeyRound, Keyboard } from "lucide-solid";
 import {
   For,
   Match,
@@ -235,13 +235,13 @@ export function MFAFlowModal(
                     icon={
                       <Switch>
                         <Match when={method === "Password"}>
-                          <BiSolidKeyboard size={24} />
+                          <Keyboard size={24} />
                         </Match>
                         <Match when={method === "Totp"}>
-                          <BiSolidKey size={24} />
+                          <KeyRound size={24} />
                         </Match>
                         <Match when={method === "Recovery"}>
-                          <BiRegularArchive size={24} />
+                          <Archive size={24} />
                         </Match>
                       </Switch>
                     }

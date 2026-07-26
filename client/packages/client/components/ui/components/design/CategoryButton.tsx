@@ -13,7 +13,7 @@ import {
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
-import { OverflowingText, iconSize } from "../utils";
+import { iconSize } from "../utils";
 
 import { Ripple } from "./Ripple";
 import { typography } from "./Text";
@@ -69,7 +69,7 @@ export function CategoryButton(props: Props) {
 
       <Content>
         <Show when={props.children}>
-          <OverflowingText>{props.children}</OverflowingText>
+          <Title>{props.children}</Title>
         </Show>
         <Show when={props.description}>
           <Description>{props.description}</Description>
@@ -186,6 +186,19 @@ const Base = styled("a", {
 });
 
 /**
+ * Row title. Clamped at two lines rather than truncated at one: single-line
+ * ellipsis is what cut every card title on the home screen mid-word.
+ */
+const Title = styled("span", {
+  base: {
+    display: "-webkit-box",
+    WebkitBoxOrient: "vertical",
+    WebkitLineClamp: 2,
+    overflow: "hidden",
+  },
+});
+
+/**
  * Title and description styles
  */
 const Content = styled("div", {
@@ -197,9 +210,7 @@ const Content = styled("div", {
     fontWeight: "var(--pd-weight-semibold)",
     fontSize: "14px",
     gap: "2px",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
+    minWidth: 0,
   },
 });
 
@@ -217,20 +228,23 @@ const IconWrapper = styled("div", {
     fill: "var(--md-sys-color-on-surface-variant)",
     background: "transparent",
 
-    width: "40px",
-    height: "40px",
+    width: "36px",
+    height: "36px",
     display: "flex",
     flexShrink: 0,
     alignItems: "center",
     justifyContent: "center",
+    overflow: "hidden",
   },
   variants: {
+    // The radius only matters when the icon is an image (an avatar); for
+    // outline glyphs the wrapper is an invisible alignment slot.
     rounded: {
       true: {
         borderRadius: "50%",
       },
       false: {
-        borderRadius: "var(--pd-radius-md)",
+        borderRadius: "var(--pd-radius-sm)",
       },
     },
   },

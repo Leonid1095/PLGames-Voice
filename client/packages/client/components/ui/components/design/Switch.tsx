@@ -1,6 +1,6 @@
-import { BiRegularCheck, BiRegularX } from "solid-icons/bi";
 
 import { styled } from "styled-system/jsx";
+import { Check, X } from "lucide-solid";
 
 import { Ripple } from "./Ripple";
 
@@ -33,7 +33,7 @@ function OverrideSwitch(props: Props) {
         role="radio"
       >
         <Ripple />
-        <BiRegularCheck size={24} />
+        <Check size={24} />
       </Override>
       <Override
         type="neutral"
@@ -58,7 +58,7 @@ function OverrideSwitch(props: Props) {
         role="radio"
       >
         <Ripple />
-        <BiRegularX size={24} />
+        <X size={24} />
       </Override>
     </SwitchContainer>
   );

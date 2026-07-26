@@ -1,5 +1,4 @@
-import { ChevronRight } from "lucide-solid";
-import { BiRegularCheckCircle, BiSolidCheckCircle } from "solid-icons/bi";
+import { CheckCircle2, ChevronRight } from "lucide-solid";
 import {
   Accessor,
   JSX,
@@ -348,9 +347,9 @@ function ServerBadge(props: { flags: ServerFlags }) {
         placement="top"
       >
         {props.flags === 1 ? (
-          <BiSolidCheckCircle size={12} />
+          <CheckCircle2 size={12} />
         ) : (
-          <BiRegularCheckCircle size={12} />
+          <CheckCircle2 size={12} />
         )}
       </Tooltip>
     </Show>

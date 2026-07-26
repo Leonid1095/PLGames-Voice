@@ -1,5 +1,5 @@
 import { createFormControl, createFormGroup } from "solid-forms";
-import { BiSolidPalette, BiSolidSpeaker } from "solid-icons/bi";
+import { Palette, Volume2 } from "lucide-solid";
 import { For } from "solid-js";
 
 import { PublicBot, PublicChannelInvite } from "stoat.js";
@@ -230,14 +230,14 @@ export function DevelopmentPage() {
       <div style={{ padding: "1em", width: "400px" }}>
         <Column>
           <CategoryButton
-            icon={<BiSolidPalette size={24} />}
+            icon={<Palette size={24} />}
             description="description!"
             onClick={() => void 0}
           >
             I am a button
           </CategoryButton>
           <CategoryCollapse
-            icon={<BiSolidSpeaker size={24} />}
+            icon={<Volume2 size={24} />}
             description="description!"
             title="Choose output device"
           >

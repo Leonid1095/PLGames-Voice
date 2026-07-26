@@ -1,5 +1,5 @@
-import { BiSolidShield } from "solid-icons/bi";
 import { Show } from "solid-js";
+import { Shield } from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { User, UserBadges } from "stoat.js";
@@ -106,7 +106,7 @@ export function ProfileBadges(props: { user: User }) {
                 },
               }}
             >
-              <BiSolidShield />
+              <Shield />
             </span>
           </Show>
           <Show

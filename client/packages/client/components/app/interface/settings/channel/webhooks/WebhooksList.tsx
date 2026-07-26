@@ -1,5 +1,5 @@
-import { BiSolidCloud } from "solid-icons/bi";
 import { For, Match, Show, Switch, createMemo, onMount } from "solid-js";
+import { Cloud } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 
@@ -34,7 +34,7 @@ export function WebhooksList(props: ChannelSettingsProps) {
     <Column gap="lg">
       <CategoryButton
         action="chevron"
-        icon={<BiSolidCloud size={24} />}
+        icon={<Cloud size={24} />}
         onClick={() =>
           openModal({
             type: "create_webhook",

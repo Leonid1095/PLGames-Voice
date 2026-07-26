@@ -1,9 +1,4 @@
-import {
-  BiSolidFile,
-  BiSolidFileImage,
-  BiSolidFileTxt,
-  BiSolidVideoRecording,
-} from "solid-icons/bi";
+import { Clapperboard, File, FileImage, FileText } from "lucide-solid";
 import {
   Match,
   Show,
@@ -196,15 +191,15 @@ export function FileDropAnywhereCollector(props: Props) {
             }
           >
             {(item) => (
-              <Switch fallback={<BiSolidFile size={64} />}>
+              <Switch fallback={<File size={64} />}>
                 <Match when={item.type.startsWith("text/")}>
-                  <BiSolidFileTxt size={64} />
+                  <FileText size={64} />
                 </Match>
                 <Match when={item.type.startsWith("image/")}>
-                  <BiSolidFileImage size={64} />
+                  <FileImage size={64} />
                 </Match>
                 <Match when={item.type.startsWith("video/")}>
-                  <BiSolidVideoRecording size={64} />
+                  <Clapperboard size={64} />
                 </Match>
               </Switch>
             )}

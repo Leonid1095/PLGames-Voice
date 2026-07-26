@@ -1,5 +1,5 @@
-import { BiRegularBlock } from "solid-icons/bi";
 import { Accessor, JSX, Match, Show, Switch, onMount } from "solid-js";
+import { Ban } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
@@ -197,7 +197,7 @@ export function MessageBox(props: Props) {
           <Match when={!props.sendingAllowed}>
             <InlineIcon size="wide">
               <Blocked>
-                <BiRegularBlock size={24} />
+                <Ban size={24} />
               </Blocked>
             </InlineIcon>
           </Match>

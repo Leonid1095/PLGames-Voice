@@ -1,20 +1,5 @@
-import {
-  BiRegularAlignLeft,
-  BiRegularLeftArrowAlt,
-  BiRegularMinus,
-  BiRegularPhone,
-  BiRegularPin,
-  BiRegularPlus,
-  BiRegularRightArrowAlt,
-  BiRegularX,
-  BiSolidImage,
-  BiSolidInfoCircle,
-  BiSolidKey,
-  BiSolidPurchaseTag,
-  BiSolidShieldX,
-  BiSolidXCircle,
-} from "solid-icons/bi";
 import { Match, Switch } from "solid-js";
+import { AlignLeft, ArrowLeft, ArrowRight, Image, Info, KeyRound, Minus, Phone, Pin, Plus, ShieldX, Tag, X, XCircle } from "lucide-solid";
 
 import { SystemMessage } from "stoat.js";
 import { styled } from "styled-system/jsx";
@@ -45,47 +30,47 @@ export function SystemMessageIcon(props: {
         }
         placement="top"
       >
-        <Switch fallback={<BiSolidInfoCircle size={16} />}>
+        <Switch fallback={<Info size={16} />}>
           <Match when={props.systemMessage.type === "user_added"}>
-            <BiRegularPlus size={16} />
+            <Plus size={16} />
           </Match>
           <Match
             when={props.systemMessage.type === "user_left" && !props.isServer}
           >
-            <BiRegularMinus size={16} />
+            <Minus size={16} />
           </Match>
           <Match when={props.systemMessage.type === "user_remove"}>
-            <BiRegularX size={16} />
+            <X size={16} />
           </Match>
           <Match when={props.systemMessage.type === "user_kicked"}>
-            <BiSolidXCircle size={16} />
+            <XCircle size={16} />
           </Match>
           <Match when={props.systemMessage.type === "user_banned"}>
-            <BiSolidShieldX size={16} />
+            <ShieldX size={16} />
           </Match>
           <Match when={props.systemMessage.type === "user_joined"}>
-            <BiRegularRightArrowAlt size={16} />
+            <ArrowRight size={16} />
           </Match>
           <Match
             when={props.systemMessage.type === "user_left" && props.isServer}
           >
-            <BiRegularLeftArrowAlt size={16} />
+            <ArrowLeft size={16} />
           </Match>
           <Match when={props.systemMessage.type === "channel_renamed"}>
-            <BiSolidPurchaseTag size={16} />
+            <Tag size={16} />
           </Match>
           <Match
             when={props.systemMessage.type === "channel_description_changed"}
           >
-            <BiRegularAlignLeft size={16} />
+            <AlignLeft size={16} />
           </Match>
           <Match when={props.systemMessage.type === "channel_icon_changed"}>
-            <BiSolidImage size={16} />
+            <Image size={16} />
           </Match>
           <Match
             when={props.systemMessage.type === "channel_ownership_changed"}
           >
-            <BiSolidKey size={16} />
+            <KeyRound size={16} />
           </Match>
           <Match
             when={
@@ -93,10 +78,10 @@ export function SystemMessageIcon(props: {
               props.systemMessage.type === "message_unpinned"
             }
           >
-            <BiRegularPin size={16} />
+            <Pin size={16} />
           </Match>
           <Match when={props.systemMessage.type === "call_started"}>
-            <BiRegularPhone size={16} />
+            <Phone size={16} />
           </Match>
         </Switch>
       </Tooltip>

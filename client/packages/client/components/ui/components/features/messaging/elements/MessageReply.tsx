@@ -1,5 +1,5 @@
-import { BiSolidFile } from "solid-icons/bi";
 import { Match, Show, Switch } from "solid-js";
+import { File } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { type Message } from "stoat.js";
@@ -136,7 +136,7 @@ export function MessageReply(props: Props) {
           <Link href={props.message!.path}>
             <Show when={props.message!.attachments}>
               <Attachments>
-                <BiSolidFile size={16} />
+                <File size={16} />
                 <Switch fallback={<Trans>Sent an attachment</Trans>}>
                   <Match when={props.message!.attachments!.length > 1}>
                     <Trans>Sent multiple attachments</Trans>

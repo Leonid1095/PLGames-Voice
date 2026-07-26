@@ -1,5 +1,5 @@
-import { BiRegularCheck } from "solid-icons/bi";
 import { JSX, Show, createSignal, splitProps } from "solid-js";
+import { Check } from "lucide-solid";
 
 import { styled } from "styled-system/jsx";
 
@@ -159,7 +159,7 @@ export function LegacyCheckbox(props: Props) {
         }
       />
       <Checkmark value={checked()} class="checkmark">
-        <BiRegularCheck size={20} class="check" />
+        <Check size={20} class="check" />
       </Checkmark>
     </Base>
   );

@@ -1,13 +1,28 @@
+/*
+ * Lucide, matching the rest of the app. This sidebar was the last surface on
+ * filled Boxicons, and it reused them lazily -- Roles, XP and Giveaways all
+ * wore the same flag, three sections shared one envelope. Each entry now has
+ * an icon that says what the section is.
+ */
 import {
-  BiSolidEnvelope,
-  BiSolidFlagAlt,
-  BiSolidGroup,
-  BiSolidHappyBeaming,
-  BiSolidInfoCircle,
-  BiSolidShield,
-  BiSolidTrash,
-  BiSolidUserX,
-} from "solid-icons/bi";
+  BarChart3,
+  Bot,
+  CalendarDays,
+  ClipboardList,
+  Gift,
+  Info,
+  LayoutDashboard,
+  Mail,
+  ScrollText,
+  Shield,
+  Smile,
+  SmilePlus,
+  Sparkles,
+  Trash2,
+  TrendingUp,
+  UserX,
+  Users,
+} from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { Server } from "stoat.js";
@@ -130,19 +145,19 @@ const Config: SettingsConfiguration<Server> = {
           entries: [
             {
               id: "overview",
-              icon: <BiSolidInfoCircle size={20} />,
+              icon: <LayoutDashboard size={20} stroke-width={1.75} />,
               title: t`Overview`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "welcome",
-              icon: <BiSolidEnvelope size={20} />,
+              icon: <Sparkles size={20} stroke-width={1.75} />,
               title: t`Greetings and roles`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "leveling",
-              icon: <BiSolidFlagAlt size={20} />,
+              icon: <TrendingUp size={20} stroke-width={1.75} />,
               title: t`XP and levels`,
             },
           ],
@@ -153,7 +168,7 @@ const Config: SettingsConfiguration<Server> = {
           entries: [
             {
               id: "emojis",
-              icon: <BiSolidHappyBeaming size={20} />,
+              icon: <Smile size={20} stroke-width={1.75} />,
               title: t`Emoji`,
             },
           ],
@@ -167,7 +182,7 @@ const Config: SettingsConfiguration<Server> = {
             {
               hidden: true,
               id: "members",
-              icon: <BiSolidGroup size={20} />,
+              icon: <Users size={20} stroke-width={1.75} />,
               title: t`Members`,
             },
             {
@@ -176,61 +191,61 @@ const Config: SettingsConfiguration<Server> = {
                 server.havePermission("ManagePermissions")
               ),
               id: "roles",
-              icon: <BiSolidFlagAlt size={20} />,
+              icon: <Shield size={20} stroke-width={1.75} />,
               title: t`Roles`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "invites",
-              icon: <BiSolidEnvelope size={20} />,
+              icon: <Mail size={20} stroke-width={1.75} />,
               title: t`Invites`,
             },
             {
               hidden: !server.havePermission("BanMembers"),
               id: "bans",
-              icon: <BiSolidUserX size={20} />,
+              icon: <UserX size={20} stroke-width={1.75} />,
               title: t`Bans`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "events",
-              icon: <BiSolidInfoCircle size={20} />,
+              icon: <CalendarDays size={20} stroke-width={1.75} />,
               title: t`Events`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "forms",
-              icon: <BiSolidEnvelope size={20} />,
+              icon: <ClipboardList size={20} stroke-width={1.75} />,
               title: t`Forms`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "giveaways",
-              icon: <BiSolidFlagAlt size={20} />,
+              icon: <Gift size={20} stroke-width={1.75} />,
               title: t`Giveaways`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "reaction-roles",
-              icon: <BiSolidHappyBeaming size={20} />,
+              icon: <SmilePlus size={20} stroke-width={1.75} />,
               title: t`Reaction roles`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "automod",
-              icon: <BiSolidShield size={20} />,
+              icon: <Bot size={20} stroke-width={1.75} />,
               title: t`Automod`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "analytics",
-              icon: <BiSolidInfoCircle size={20} />,
+              icon: <BarChart3 size={20} stroke-width={1.75} />,
               title: t`Analytics`,
             },
             {
               hidden: !server.havePermission("ManageServer"),
               id: "audit-log",
-              icon: <BiSolidShield size={20} />,
+              icon: <ScrollText size={20} stroke-width={1.75} />,
               title: t`Audit log`,
             },
           ],
@@ -240,7 +255,7 @@ const Config: SettingsConfiguration<Server> = {
           entries: [
             {
               icon: (
-                <BiSolidTrash size={20} color="var(--md-sys-color-error)" />
+                <Trash2 size={20} stroke-width={1.75} color="var(--md-sys-color-error)" />
               ),
               title: t`Delete server`,
               /**

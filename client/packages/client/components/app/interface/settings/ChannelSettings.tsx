@@ -1,11 +1,6 @@
-import {
-  BiRegularListUl,
-  BiSolidCloud,
-  BiSolidInfoCircle,
-  BiSolidTrash,
-} from "solid-icons/bi";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
+import { Cloud, Info, List, Trash2 } from "lucide-solid";
 import { Channel } from "stoat.js";
 
 import { useClient } from "@revolt/client";
@@ -110,7 +105,7 @@ const Config: SettingsConfiguration<Channel> = {
           entries: [
             {
               id: "overview",
-              icon: <BiSolidInfoCircle size={20} />,
+              icon: <Info size={20} />,
               title: t`Overview`,
             },
             {
@@ -118,7 +113,7 @@ const Config: SettingsConfiguration<Channel> = {
                 channel.type === "SavedMessages" ||
                 !channel.havePermission("ManagePermissions"),
               id: "permissions",
-              icon: <BiRegularListUl size={20} />,
+              icon: <List size={20} />,
               title: t`Permissions`,
             },
             {
@@ -126,7 +121,7 @@ const Config: SettingsConfiguration<Channel> = {
                 !channel.havePermission("ManageWebhooks") &&
                 import.meta.env.DEV,
               id: "webhooks",
-              icon: <BiSolidCloud size={20} />,
+              icon: <Cloud size={20} />,
               title: t`Webhooks`,
             },
           ],
@@ -138,7 +133,7 @@ const Config: SettingsConfiguration<Channel> = {
           entries: [
             {
               icon: (
-                <BiSolidTrash size={20} color="var(--md-sys-color-error)" />
+                <Trash2 size={20} color="var(--md-sys-color-error)" />
               ),
               title: (
                 <ColouredText colour="var(--md-sys-color-error)">

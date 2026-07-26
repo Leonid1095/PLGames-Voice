@@ -1,5 +1,5 @@
-import { BiSolidChevronRight } from "solid-icons/bi";
 import { For, JSX, Match, Show, Switch } from "solid-js";
+import { ChevronRight } from "lucide-solid";
 
 import { styled } from "styled-system/jsx";
 
@@ -34,7 +34,7 @@ export function Breadcrumbs(props: Props) {
           return (
             <>
               <Show when={index() !== 0}>
-                <BiSolidChevronRight size="0.6em" />
+                <ChevronRight size="0.6em" />
               </Show>
               <Switch
                 fallback={

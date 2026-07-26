@@ -1,6 +1,5 @@
-import { BiRegularListUl } from "solid-icons/bi";
 import { Show } from "solid-js";
-import { GripVertical, UserPlus } from "lucide-solid";
+import { GripVertical, List, UserPlus } from "lucide-solid";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { useMutation } from "@tanstack/solid-query";
@@ -39,7 +38,7 @@ export function ServerRoleOverview(props: { context: Server }) {
     <Column gap="lg">
       <Column gap="sm">
         <CategoryButton
-          icon={<BiRegularListUl size={20} />}
+          icon={<List size={20} />}
           action="chevron"
           description={<Trans>Affects all roles and users</Trans>}
           onClick={() => navigate("roles/default")}

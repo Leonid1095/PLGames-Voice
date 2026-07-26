@@ -178,7 +178,20 @@ const textarea = () =>
 const select = () =>
   css({
     cursor: "pointer",
-    // Room for the platform's own arrow; padding-inline-end alone is ignored
-    // by some engines on <select>, so pad the box instead.
-    paddingInlineEnd: "var(--pd-space-2)",
+
+    /*
+     * Replace the platform chrome. The default select arrow is the one
+     * control the browser draws itself, and next to the styled inputs it
+     * reads as unfinished. appearance:none removes it; the chevron comes
+     * back as an inline SVG background so it needs no extra markup. The
+     * stroke is a fixed mid-grey (#8A8479) that holds on both paper and ink,
+     * because a background-image cannot read currentColor.
+     */
+    appearance: "none",
+    WebkitAppearance: "none",
+    backgroundImage:
+      "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238A8479' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "right var(--pd-space-3) center",
+    paddingInlineEnd: "var(--pd-space-10)",
   });

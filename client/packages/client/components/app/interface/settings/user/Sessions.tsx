@@ -1,10 +1,4 @@
-import { LogOut } from "lucide-solid";
-import {
-  BiLogosAndroid,
-  BiLogosApple,
-  BiLogosWindows,
-  BiRegularQuestionMark,
-} from "solid-icons/bi";
+import { HelpCircle, LogOut } from "lucide-solid";
 import { FaBrandsLinux } from "solid-icons/fa";
 import {
   Accessor,
@@ -189,7 +183,7 @@ const Capitalise = styled("div", {
  */
 function SessionIcon(props: { session?: Session }) {
   return (
-    <Switch fallback={<BiRegularQuestionMark size={22} />}>
+    <Switch fallback={<HelpCircle size={22} />}>
       <Match when={/linux/i.test(props.session?.name ?? "")}>
         <FaBrandsLinux size={22} />
       </Match>

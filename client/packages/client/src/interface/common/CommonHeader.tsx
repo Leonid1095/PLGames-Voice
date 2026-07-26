@@ -1,5 +1,5 @@
-import { BiRegularChevronLeft, BiRegularChevronRight } from "solid-icons/bi";
 import { JSX, Match, Show, Switch } from "solid-js";
+import { ChevronLeft, ChevronRight } from "lucide-solid";
 
 import { useLingui } from "@lingui-solid/solid/macro";
 import { css } from "styled-system/css";
@@ -40,14 +40,14 @@ export function HeaderIcon(props: { children: JSX.Element }) {
         when={!isMobile()}
         fallback={<Symbol size={22}>menu</Symbol>}
       >
-        <Switch fallback={<BiRegularChevronRight size={20} />}>
+        <Switch fallback={<ChevronRight size={20} />}>
           <Match
             when={state.layout.getSectionState(
               LAYOUT_SECTIONS.PRIMARY_SIDEBAR,
               true,
             )}
           >
-            <BiRegularChevronLeft size={20} />
+            <ChevronLeft size={20} />
           </Match>
         </Switch>
       </Show>

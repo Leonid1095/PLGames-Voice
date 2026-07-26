@@ -1,11 +1,5 @@
-import {
-  BiRegularHeadphone,
-  BiSolidFile,
-  BiSolidFileTxt,
-  BiSolidImage,
-  BiSolidVideo,
-} from "solid-icons/bi";
 import { Match, Show, Switch } from "solid-js";
+import { File as FileIcon, FileText, Headphones, Image, Video } from "lucide-solid";
 
 import { File, MessageEmbed } from "stoat.js";
 import { styled } from "styled-system/jsx";
@@ -40,14 +34,14 @@ interface Props {
 export function FileInfo(props: Props) {
   return (
     <Base align>
-      <Switch fallback={<BiSolidFile size={24} />}>
+      <Switch fallback={<FileIcon size={24} />}>
         <Match
           when={
             props.file?.metadata.type === "Image" ||
             props.embed?.type === "Image"
           }
         >
-          <BiSolidImage size={24} />
+          <Image size={24} />
         </Match>
         <Match
           when={
@@ -55,13 +49,13 @@ export function FileInfo(props: Props) {
             props.embed?.type === "Video"
           }
         >
-          <BiSolidVideo size={24} />
+          <Video size={24} />
         </Match>
         <Match when={props.file?.metadata.type === "Audio"}>
-          <BiRegularHeadphone size={24} />
+          <Headphones size={24} />
         </Match>
         <Match when={props.file?.metadata.type === "Text"}>
-          <BiSolidFileTxt size={24} />
+          <FileText size={24} />
         </Match>
       </Switch>
       <Column grow>

@@ -83,7 +83,7 @@ const SeparatedColumn = styled(Column, {
   base: {
     justifyContent: "stretch",
     marginInline: "0.25em",
-    width: "260px",
+    width: "300px",
     "& > *": {
       flexGrow: 1,
     },
