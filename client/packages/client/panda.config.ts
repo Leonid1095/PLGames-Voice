@@ -94,6 +94,13 @@ export default defineConfig({
             transform: "scale(1)",
           },
         },
+        // Landing ticker. Translates exactly -50%, which is why the strip
+        // renders its content twice — the second copy is what the first one
+        // scrolls off to reveal, so the loop has no visible seam.
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
         fadeSlideUp: {
           "0%": {
             opacity: "0",

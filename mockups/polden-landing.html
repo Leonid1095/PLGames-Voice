@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PLG Voice — лендинг «Полдень»</title>
+<style>
+  :root{
+    --paper:#FBF9F7; --paper2:#F1EDE8; --ink:#121110; --ink2:#1E1C1A;
+    --signal:#E00A45; --signal-deep:#C00538; --live:#00C48C;
+    --text:#1A1815; --text2:#57534C; --text3:#8A8479;
+    --line:rgba(26,24,21,0.10); --line-ink:rgba(251,249,247,0.14);
+    --display:"Bahnschrift","DIN Condensed","Oswald","Archivo Narrow","Arial Narrow",Inter,sans-serif;
+    --sans:Inter,system-ui,-apple-system,sans-serif;
+    --mono:"JetBrains Mono","Cascadia Mono",ui-monospace,monospace;
+    --fast:120ms cubic-bezier(.2,0,0,1); --base:200ms cubic-bezier(.2,0,0,1);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--text);font-family:var(--sans);letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+  .display{font-family:var(--display);font-variation-settings:"wght" 700,"wdth" 75;font-weight:700;text-transform:uppercase;line-height:.92;letter-spacing:.005em}
+  .label{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.16em;font-weight:400}
+
+  /* meter */
+  .pd-meter{display:inline-flex;align-items:flex-end;gap:3px;height:26px;color:var(--live)}
+  .pd-meter>i{display:block;width:3px;height:28%;border-radius:2px;background:currentColor;animation:amp 1.05s cubic-bezier(.4,0,.2,1) infinite}
+  .pd-meter>i:nth-child(1){animation-delay:-.90s}.pd-meter>i:nth-child(2){animation-delay:-.50s}
+  .pd-meter>i:nth-child(3){animation-delay:-.20s}.pd-meter>i:nth-child(4){animation-delay:-.70s}
+  .pd-meter>i:nth-child(5){animation-delay:-.35s}.pd-meter>i:nth-child(6){animation-delay:-1s}
+  .pd-meter>i:nth-child(7){animation-delay:-.15s}
+  .pd-meter--sm{height:11px;gap:2px}.pd-meter--sm>i{width:2px}
+  .pd-meter--lg{height:40px;gap:5px}.pd-meter--lg>i{width:5px}
+  @keyframes amp{0%,100%{height:22%}50%{height:100%}}
+
+  nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:16px;
+      padding:16px 20px;background:rgba(251,249,247,.85);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
+  @media(min-width:768px){nav{padding:18px 40px}}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+  .logoword{font-family:var(--display);font-variation-settings:"wght" 700,"wdth" 75;font-weight:700;text-transform:uppercase;font-size:22px;letter-spacing:.02em;color:var(--text3)}
+  .logoword b{color:var(--text)}
+  .navbtns{display:none;align-items:center;gap:8px}
+  @media(min-width:768px){.navbtns{display:flex}}
+  .navlink{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--text2);
+           text-decoration:none;padding:10px 12px;border-radius:10px;transition:color var(--fast),background var(--fast)}
+  .navlink:hover{color:var(--text);background:var(--paper2)}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:12px;
+       text-decoration:none;cursor:pointer;white-space:nowrap;font-family:var(--display);
+       font-variation-settings:"wght" 700,"wdth" 75;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.04em;
+       transition:background var(--fast),color var(--fast),border-color var(--fast),transform var(--fast)}
+  .btn:active{transform:translateY(1px)}
+  .btn.lg{padding:18px 34px;font-size:19px}
+  .btn.primary{color:#fff;background:var(--signal);border:1px solid var(--signal)}
+  .btn.primary:hover{background:var(--signal-deep);border-color:var(--signal-deep)}
+  .btn.invert{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+  .btn.invert:hover{background:#fff;border-color:#fff}
+  .btn.outline{color:var(--text);background:transparent;border:1px solid var(--text)}
+  .btn.outline:hover{background:var(--text);color:var(--paper)}
+  .btn.ghost{font-size:14px;padding:12px 18px;color:var(--text);background:transparent;border:1px solid transparent}
+  .btn.ghost:hover{background:var(--paper2)}
+
+  .hero{display:grid;grid-template-columns:1fr;gap:48px;align-items:center;max-width:1240px;margin:0 auto;padding:56px 20px 64px}
+  @media(min-width:1024px){.hero{grid-template-columns:1.15fr .85fr;gap:64px;padding:96px 40px 104px}}
+  .heroleft{display:flex;flex-direction:column;align-items:flex-start;gap:22px}
+  .eyebrow{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--signal);display:inline-flex;align-items:center;gap:10px}
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--signal)}
+  h1{font-family:var(--display);font-variation-settings:"wght" 700,"wdth" 62;font-weight:700;text-transform:uppercase;
+     line-height:.92;letter-spacing:.005em;font-size:clamp(52px,11vw,128px);margin:0;text-wrap:balance}
+  h1 em{font-style:normal;color:var(--signal)}
+  .sub{font-size:clamp(16px,1.6vw,19px);line-height:1.55;color:var(--text2);max-width:34ch;margin:0}
+  .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+  .heroright{display:flex;justify-content:center}
+  @media(min-width:1024px){.heroright{justify-content:flex-end}}
+
+  .room{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;width:100%;max-width:420px;
+        box-shadow:0 40px 80px -32px rgba(26,24,21,.35);display:flex;flex-direction:column;gap:4px}
+  @media(min-width:1024px){.room{transform:rotate(-1.6deg)}}
+  .roomhead{display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+  .roomlive{color:var(--live);display:flex;align-items:center;gap:7px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--live)}
+  .row{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:11px}
+  .row.on{background:var(--paper2)}
+  .av{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:#DED8CF;color:var(--text2);font-size:13px;font-weight:600}
+  .av.on{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--live)}
+  .nm{flex-grow:1;min-width:0;font-size:14px;font-weight:600}
+  .ping{font-family:var(--mono);font-size:11px;font-variant-numeric:tabular-nums;color:var(--text3)}
+  .roomfoot{display:flex;gap:16px;padding-top:12px;margin-top:6px;border-top:1px solid var(--line);color:var(--text3)}
+
+  .ticker{border-block:1px solid var(--line);background:var(--paper2);overflow:hidden;padding:13px 0}
+  .track{display:flex;width:max-content;animation:marquee 34s linear infinite}
+  @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){.track{animation:none}}
+  .run{display:flex;align-items:center;gap:18px;padding-inline-end:18px;color:var(--text2);
+       font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.16em}
+  .run b{color:var(--text)}
+  .run s{width:5px;height:5px;border-radius:50%;background:var(--signal);text-decoration:none}
+
+  .band{background:var(--ink);color:var(--paper);padding:72px 20px}
+  @media(min-width:768px){.band{padding:112px 40px}}
+  .bandhead{max-width:1160px;margin:0 auto 44px;display:flex;flex-direction:column;gap:14px}
+  .bandhead .label{color:var(--live)}
+  .band h2{font-family:var(--display);font-variation-settings:"wght" 700,"wdth" 75;font-weight:700;text-transform:uppercase;
+           line-height:.92;font-size:clamp(32px,5.2vw,66px);margin:0;max-width:18ch}
+  .bandgrid{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:1px;background:var(--line-ink);
+            border:1px solid var(--line-ink);border-radius:18px;overflow:hidden}
+  @media(min-width:768px){.bandgrid{grid-template-columns:repeat(2,1fr)}}
+  .item{background:var(--ink);padding:30px 26px;display:flex;flex-direction:column;gap:12px;transition:background var(--base)}
+  .item:hover{background:var(--ink2)}
+  @media(min-width:768px){.item{padding:40px 34px}}
+  .item h3{font-family:var(--display);font-variation-settings:"wght" 700,"wdth" 75;font-weight:700;text-transform:uppercase;
+           line-height:.92;font-size:clamp(20px,2.3vw,28px);margin:0}
+  .item p{font-size:15px;line-height:1.6;color:rgba(251,249,247,.66);margin:0;max-width:44ch}
+
+  .install{max-width:1160px;margin:0 auto;padding:72px 20px;display:flex;flex-direction:column;gap:14px}
+  @media(min-width:768px){.install{padding:112px 40px}}
+  .install .label{color:var(--signal)}
+  .install h2{font-family:var(--display);font-variation-settings:"wght" 700,"wdth" 75;font-weight:700;text-transform:uppercase;
+              line-height:.92;font-size:clamp(32px,5.2vw,66px);margin:0 0 28px}
+  .cards{display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:640px){.cards{grid-template-columns:1fr 1fr}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:13px}
+  .card h3{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.16em;font-weight:400;color:var(--signal);margin:0 0 4px}
+  .step{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.55;color:var(--text2)}
+  .num{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:7px;background:var(--paper2);
+       color:var(--text);font-family:var(--mono);font-size:11px;font-variant-numeric:tabular-nums;margin-top:1px}
+
+  .close{background:var(--signal);color:#fff;padding:80px 20px;display:flex;flex-direction:column;align-items:center;gap:28px;text-align:center}
+  @media(min-width:768px){.close{padding:120px 40px}}
+  .close h2{font-family:var(--display);font-variation-settings:"wght" 700,"wdth" 62;font-weight:700;text-transform:uppercase;
+            line-height:.92;font-size:clamp(40px,8vw,104px);margin:0}
+  footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:28px 20px;color:var(--text3);border-top:1px solid var(--line)}
+  @media(min-width:768px){footer{padding:32px 40px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="#">
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+      <rect width="26" height="26" rx="7" fill="#E00A45"/>
+      <g fill="#FBF9F7">
+        <rect x="6" y="11" width="2.5" height="4" rx="1.25"/><rect x="10" y="8" width="2.5" height="10" rx="1.25"/>
+        <rect x="14" y="6" width="2.5" height="14" rx="1.25"/><rect x="18" y="10" width="2.5" height="6" rx="1.25"/>
+      </g>
+    </svg>
+    <span class="logoword">PLG<b>VOICE</b></span>
+  </a>
+  <div class="navbtns">
+    <a class="navlink" href="#">Windows</a>
+    <a class="navlink" href="#">Linux</a>
+    <a class="btn ghost" href="#">Войти</a>
+    <a class="btn primary" href="#">Регистрация</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="heroleft">
+    <span class="eyebrow">Голос, текст и серверы</span>
+    <h1>Твоя команда.<br><em>Одна комната.</em></h1>
+    <p class="sub">Собери весь рейд в одном месте и слышь каждый колл. Бесплатно, без ограничений на число людей.</p>
+    <div class="cta">
+      <a class="btn primary lg" href="#">Создать сервер</a>
+      <a class="btn outline" href="#">У меня уже есть аккаунт</a>
+    </div>
+  </div>
+  <div class="heroright">
+    <div class="room">
+      <div class="roomhead">
+        <span class="label" style="color:var(--text2)"># РЕЙД</span>
+        <span class="label roomlive"><i class="dot"></i>В ЭФИРЕ</span>
+      </div>
+      <div class="row on"><span class="av on">К</span><span class="nm">Колдун</span>
+        <span class="pd-meter pd-meter--sm"><i></i><i></i><i></i><i></i></span><span class="ping">11 ms</span></div>
+      <div class="row"><span class="av">Н</span><span class="nm">Нерзул</span><span class="ping">14 ms</span></div>
+      <div class="row on"><span class="av on">Г</span><span class="nm">Гром</span>
+        <span class="pd-meter pd-meter--sm"><i></i><i></i><i></i><i></i></span><span class="ping">9 ms</span></div>
+      <div class="row"><span class="av">Л</span><span class="nm">Лия</span><span class="ping">23 ms</span></div>
+      <div class="roomfoot"><span class="label">4 В ГОЛОСЕ</span><span class="label">KRISP ВКЛ</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker">
+  <div class="track">
+    <div class="run"><b>KRISP</b> шумодав<s></s><b>1080p60</b> стримы<s></s><b>40</b> человек в голосе<s></s><b>СВОИ</b> роли и права<s></s><b>БЕЗ</b> платных стен<s></s><b>ОТКРЫТЫЙ</b> исходный код<s></s></div>
+    <div class="run"><b>KRISP</b> шумодав<s></s><b>1080p60</b> стримы<s></s><b>40</b> человек в голосе<s></s><b>СВОИ</b> роли и права<s></s><b>БЕЗ</b> платных стен<s></s><b>ОТКРЫТЫЙ</b> исходный код<s></s></div>
+  </div>
+</div>
+
+<section class="band">
+  <div class="bandhead">
+    <span class="label">Сделано под то, как вы реально играете</span>
+    <h2>Между вами и коллом — ничего</h2>
+  </div>
+  <div class="bandgrid">
+    <div class="item">
+      <h3>Голос, который держит</h3>
+      <p>Каналы с низкой задержкой и встроенным шумодавом. Клавиатура и кулеры пропадают, связь стоит — даже когда падает босс.</p>
+      <span class="pd-meter pd-meter--lg" style="margin-top:8px"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    </div>
+    <div class="item">
+      <h3>Видно, кто во что играет</h3>
+      <p>Клиент подхватывает запущенную игру и показывает её рядом с ником — люди понимают, куда заходят.</p>
+    </div>
+    <div class="item">
+      <h3>Модерация в комплекте</h3>
+      <p>Роли, права, автомод и аудит-лог идут вместе с сервером. Ничего не докупать, ничего не прикручивать.</p>
+    </div>
+    <div class="item">
+      <h3>Стрим прямо в комнату</h3>
+      <p>Демонстрация экрана в 1080p60 или полноценная трансляция в канал. Записи остаются на вашем сервере.</p>
+    </div>
+  </div>
+</section>
+
+<section class="install">
+  <span class="label">На телефоне</span>
+  <h2>Установка в четыре касания</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>Android — Chrome</h3>
+      <div class="step"><span class="num">1</span>Откройте plgames-voice.ru в Chrome</div>
+      <div class="step"><span class="num">2</span>Нажмите меню (три точки) справа вверху</div>
+      <div class="step"><span class="num">3</span>Выберите «Установить приложение»</div>
+      <div class="step"><span class="num">4</span>PLG Voice появится как обычное приложение</div>
+    </div>
+    <div class="card">
+      <h3>iPhone — Safari</h3>
+      <div class="step"><span class="num">1</span>Откройте plgames-voice.ru в Safari</div>
+      <div class="step"><span class="num">2</span>Нажмите «Поделиться» (квадрат со стрелкой)</div>
+      <div class="step"><span class="num">3</span>Прокрутите и выберите «На экран Домой»</div>
+      <div class="step"><span class="num">4</span>PLG Voice откроется во весь экран</div>
+    </div>
+  </div>
+</section>
+
+<section class="close">
+  <h2>Забирай своих</h2>
+  <a class="btn primary lg invert" href="#">Создать сервер</a>
+</section>
+
+<footer><span class="label">PLG Voice</span><span class="label">plgames-voice.ru</span></footer>
+
+</body>
+</html>

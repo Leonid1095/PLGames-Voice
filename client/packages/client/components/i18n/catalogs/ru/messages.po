@@ -636,6 +636,10 @@ msgstr "Бот"
 msgid "Bots are not verified by PLG Voice."
 msgstr "Боты не верифицированы PLG Voice."
 
+#: src/Landing.tsx
+msgid "Bring the whole raid into one place and hear every call. Free, with no cap on how many people you bring."
+msgstr "Собери весь рейд в одном месте и слышь каждый колл. Бесплатно, без ограничений на число людей."
+
 #: src/interface/Discover.tsx
 #: src/interface/navigation/servers/ServerList.tsx
 msgid "Browse servers"
@@ -644,6 +648,10 @@ msgstr "Обзор серверов"
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Bug Tracker"
 msgstr "Баг трекер"
+
+#: src/Landing.tsx
+msgid "Built for the way you actually play"
+msgstr "Сделано под то, как вы реально играете"
 
 #: src/interface/navigation/channels/HomeSidebar.tsx
 #: src/interface/channels/text/MemberSidebar.tsx
@@ -1095,11 +1103,15 @@ msgstr "Создать новую группу"
 msgid "Create a new role"
 msgstr "Создать новую роль"
 
+#: src/Landing.tsx
+#: src/Landing.tsx
+msgid "Create a server"
+msgstr "Создать сервер"
+
 #: components/modal/modals/CreateWebhook.tsx
 msgid "Create a webhook"
 msgstr "Создать вебхук"
 
-#: src/Landing.tsx
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Create an account"
 msgstr "Создать аккаунт"
@@ -1180,8 +1192,8 @@ msgid "Create server emoji"
 msgstr "Создавать серверные эмодзи"
 
 #: src/Landing.tsx
-msgid "Create servers with channels, roles, and permissions. Build the community you want."
-msgstr "Создавайте серверы с каналами, ролями и правами. Стройте сообщество, которое вам нужно."
+#~ msgid "Create servers with channels, roles, and permissions. Build the community you want."
+#~ msgstr "Создавайте серверы с каналами, ролями и правами. Стройте сообщество, которое вам нужно."
 
 #: components/modal/modals/CreateTempChannel.tsx
 msgid "Create temporary channel"
@@ -1208,8 +1220,8 @@ msgid "Created <0/>"
 msgstr "Создана <0/>"
 
 #: src/Landing.tsx
-msgid "Crystal-clear voice"
-msgstr "Кристально чистый голос"
+#~ msgid "Crystal-clear voice"
+#~ msgstr "Кристально чистый голос"
 
 #: components/modal/modals/EditUsername.tsx
 #: components/modal/modals/EditPassword.tsx
@@ -1829,8 +1841,12 @@ msgid "Get active recovery codes"
 msgstr "Получить действующие коды восстановления"
 
 #: src/Landing.tsx
-msgid "Get started"
-msgstr "Начать"
+#~ msgid "Get started"
+#~ msgstr "Начать"
+
+#: src/Landing.tsx
+msgid "Get the crew in"
+msgstr "Забирай своих"
 
 #: src/interface/Home.tsx
 msgid "Give feedback on PLG Voice"
@@ -1975,6 +1991,9 @@ msgid "Incoming"
 msgstr "Входящие"
 
 #: src/Landing.tsx
+msgid "Install it in four taps"
+msgstr "Установка в четыре касания"
+
 #: src/AppDownload.tsx
 msgid "Install on your phone"
 msgstr "Установить на телефон"
@@ -2244,8 +2263,12 @@ msgid "Long"
 msgstr "Длинное"
 
 #: src/Landing.tsx
-msgid "Low-latency voice channels with noise suppression. Talk freely — it just works."
-msgstr "Голосовые каналы с низкой задержкой и шумоподавлением. Говорите свободно — всё просто работает."
+msgid "Low-latency channels with noise suppression built in. Keyboard clatter and fan noise drop out; the call stays up when the boss does."
+msgstr "Каналы с низкой задержкой и встроенным шумодавом. Клавиатура и кулеры пропадают, связь стоит — даже когда падает босс."
+
+#: src/Landing.tsx
+#~ msgid "Low-latency voice channels with noise suppression. Talk freely — it just works."
+#~ msgstr "Голосовые каналы с низкой задержкой и шумоподавлением. Говорите свободно — всё просто работает."
 
 #: components/app/interface/settings/server/Leveling.tsx
 msgid "Lv."
@@ -2315,8 +2338,8 @@ msgid "Mark this channel as mature?"
 msgstr "Пометить этот канал как 18+?"
 
 #: src/Landing.tsx
-msgid "Markdown, embeds, reactions, and threads. Everything you need for great conversations."
-msgstr "Markdown, вложения, реакции и треды. Всё, что нужно для отличного общения."
+#~ msgid "Markdown, embeds, reactions, and threads. Everything you need for great conversations."
+#~ msgstr "Markdown, вложения, реакции и треды. Всё, что нужно для отличного общения."
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Masquerade"
@@ -2444,6 +2467,10 @@ msgstr "Переписка"
 #: components/app/interface/settings/user/Native.tsx
 msgid "Minimise to Tray"
 msgstr "Свернуть в трей"
+
+#: src/Landing.tsx
+msgid "Moderation included"
+msgstr "Модерация в комплекте"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Monochrome"
@@ -2700,6 +2727,10 @@ msgstr "Обычная"
 msgid "Not of minimum age to use the platform"
 msgstr "Не достигнут минимальный возраст для использования платформы"
 
+#: src/Landing.tsx
+msgid "Nothing between you and the call"
+msgstr "Между вами и коллом — ничего"
+
 #: components/app/menus/ServerContextMenu.tsx
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "Notifications"
@@ -2739,6 +2770,10 @@ msgstr "Старые"
 msgid "On"
 msgstr "Вкл"
 
+#: src/Landing.tsx
+msgid "On your phone"
+msgstr "На телефоне"
+
 #: components/modal/modals/DeleteServer.tsx
 #: components/modal/modals/DeleteRole.tsx
 #: components/modal/modals/DeleteChannel.tsx
@@ -2750,6 +2785,10 @@ msgstr "После удаления, пути назад не будет."
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "One of the first 1000 users!"
 msgstr "Один из первых 1000 пользователей!"
+
+#: src/Landing.tsx
+msgid "One room."
+msgstr "Одна комната."
 
 #: src/interface/Friends.tsx
 #: src/interface/Friends.tsx
@@ -3037,8 +3076,8 @@ msgid "Read past messages sent in channels"
 msgstr "Читать прошлые сообщения в каналах"
 
 #: src/Landing.tsx
-msgid "Ready to start?"
-msgstr "Готовы начать?"
+#~ msgid "Ready to start?"
+#~ msgstr "Готовы начать?"
 
 #: components/modal/modals/BanNonMember.tsx
 #: components/modal/modals/BanMember.tsx
@@ -3226,8 +3265,8 @@ msgid "Review policy changes"
 msgstr "Просмотреть изменения политики"
 
 #: src/Landing.tsx
-msgid "Rich messaging"
-msgstr "Полноценный чат"
+#~ msgid "Rich messaging"
+#~ msgstr "Полноценный чат"
 
 #: src/interface/SavedMessages.tsx
 msgid "Right-click a message and choose \"Save\""
@@ -3263,6 +3302,10 @@ msgstr "Роли"
 #: components/app/interface/settings/server/Welcome.tsx
 msgid "Roles automatically assigned to new members when they join."
 msgstr "Роли, автоматически назначаемые новым участникам при входе."
+
+#: src/Landing.tsx
+msgid "Roles, permissions, automod and an audit log ship with the server. Nothing to buy, nothing to bolt on."
+msgstr "Роли, права, автомод и аудит-лог идут вместе с сервером. Ничего не докупать, ничего не прикручивать."
 
 #: components/modal/modals/ServerIdentity.tsx
 #: components/modal/modals/CustomStatus.tsx
@@ -3380,6 +3423,10 @@ msgstr "Поиск серверов по названию..."
 #: src/interface/channels/ChannelHeader.tsx
 msgid "Search..."
 msgstr "Поиск..."
+
+#: src/Landing.tsx
+msgid "See who is on what"
+msgstr "Видно, кто во что играет"
 
 #: components/app/interface/CommandPalette.tsx
 msgid "select"
@@ -3578,6 +3625,10 @@ msgstr "Настроить коды восстановления"
 msgid "Several people are typing"
 msgstr "Несколько людей печатают"
 
+#: src/Landing.tsx
+msgid "Share a screen at 1080p60 or run a full broadcast into the channel. Recordings stay on your own server."
+msgstr "Демонстрация экрана в 1080p60 или полноценная трансляция в канал. Записи остаются на вашем сервере."
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Share camera or screen in voice call"
@@ -3707,6 +3758,10 @@ msgstr "Прекратить демонстрацию"
 msgid "Stream link (Twitch / YouTube)"
 msgstr "Ссылка на стрим (Twitch / YouTube)"
 
+#: src/Landing.tsx
+msgid "Stream to the room"
+msgstr "Стрим прямо в комнату"
+
 #: components/app/interface/settings/user/Advanced.tsx
 msgid "Streamer mode"
 msgstr "Режим стримера"
@@ -3831,6 +3886,10 @@ msgstr "Это действие не имело эффекта."
 #: components/modal/modals/AddBot.tsx
 msgid "The bot will not be granted any permissions."
 msgstr "Боту не будут предоставлены никакие разрешения."
+
+#: src/Landing.tsx
+msgid "The client picks up the game you launched and shows it next to your name, so people know what they are joining."
+msgstr "Клиент подхватывает запущенную игру и показывает её рядом с ником — люди понимают, куда заходят."
 
 #. placeholder {0}: file.name
 #: src/interface/channels/text/Composition.tsx
@@ -4235,8 +4294,16 @@ msgid "Voice Processing"
 msgstr "Обработка голоса"
 
 #: src/Landing.tsx
-msgid "Voice, text, and servers — all in one place. Free, open, and built for your community."
-msgstr "Голос, текст и серверы — всё в одном месте. Бесплатно, открыто и создано для вашего сообщества."
+msgid "Voice that holds"
+msgstr "Голос, который держит"
+
+#: src/Landing.tsx
+msgid "Voice, text and servers"
+msgstr "Голос, текст и серверы"
+
+#: src/Landing.tsx
+#~ msgid "Voice, text, and servers — all in one place. Free, open, and built for your community."
+#~ msgstr "Голос, текст и серверы — всё в одном месте. Бесплатно, открыто и создано для вашего сообщества."
 
 #: components/app/menus/UserContextMenu.tsx
 msgid "Volume"
@@ -4516,6 +4583,10 @@ msgstr "Ваш аккаунт и все данные (включая сообщ�
 msgid "Your account has been verified!"
 msgstr "Ваш аккаунт проверен!"
 
+#: src/Landing.tsx
+msgid "Your crew."
+msgstr "Твоя команда."
+
 #: components/i18n/errors.ts
 msgid "Your discriminator change has been ratelimited, please try again later."
 msgstr "Изменение дискриминатора ограничено, попробуйте позже."
@@ -4530,8 +4601,8 @@ msgid "Your message is too long, please remove some characters and try again."
 msgstr "Ваше сообщение слишком длинное, уберите часть символов и попробуйте снова."
 
 #: src/Landing.tsx
-msgid "Your own servers"
-msgstr "Свои серверы"
+#~ msgid "Your own servers"
+#~ msgstr "Свои серверы"
 
 #: components/modal/modals/MFARecovery.tsx
 msgid "Your recovery codes"
@@ -4546,8 +4617,8 @@ msgid "Your servers"
 msgstr "Ваши серверы"
 
 #: src/Landing.tsx
-msgid "Your space. Your voice."
-msgstr "Твоё пространство. Твой голос."
+#~ msgid "Your space. Your voice."
+#~ msgstr "Твоё пространство. Твой голос."
 
 #: components/i18n/errors.ts
 msgid "Your user has already been created? Try logging in again or refreshing the app."
