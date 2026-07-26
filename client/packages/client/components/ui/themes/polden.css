@@ -162,7 +162,7 @@
   /* Ink stays dark in both modes. It backs surfaces that frame arbitrary
      visual content — screen shares, video, media viewers — where a light
      letterbox fights whatever is being shown. */
-  --pd-ink: #100E15;
+  --pd-ink: #121110;
 
   /* Accent reference — reads from the theme so it follows the user's choice. */
   --pd-accent: var(--md-sys-color-primary);

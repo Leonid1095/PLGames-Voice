@@ -28,7 +28,7 @@ export function LoadTheme() {
     // would otherwise paint light lavender on the canvas in dark mode.
     // Must match the surface ramps pinned in materialTheme.ts, or the canvas
     // outside <body> shows a different shade than the app itself.
-    const bg = activeTheme.darkMode ? "#100E15" : "#FBF9F7";
+    const bg = activeTheme.darkMode ? "#121110" : "#FBF9F7";
     document.documentElement.style.background = bg;
     document.documentElement.style.colorScheme = activeTheme.darkMode ? "dark" : "light";
     document.body.style.background = bg;

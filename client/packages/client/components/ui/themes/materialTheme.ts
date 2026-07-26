@@ -229,45 +229,63 @@ function generateMaterialYouScheme(
     shadow: hexFromArgb(scheme.shadow),
   };
 
-  // Полдень — neutral ramp pinned by hand.
-  //
-  // Material You derives neutrals from the accent's chroma, which with a
-  // saturated signal red tints every surface pink. We pin them instead: a
-  // plum-biased grey that is related to the accent without carrying its
-  // saturation. Pure grey reads as unconsidered; this reads as chosen.
-  //
-  // Text colours are pinned for the same reason — the derived on-surface
-  // drifts warm against a red accent and loses contrast against paper.
+  /*
+   * Полдень — neutral ramp pinned by hand.
+   *
+   * Material You derives every "neutral" from the accent's chroma. With a
+   * saturated red seed that tints the whole shell pink, so the ramp is pinned
+   * instead of generated.
+   *
+   * These neutrals are WARM: R >= G >= B, on the same axis as the #FBF9F7
+   * paper the design is built on. The previous values were carried over from
+   * the violet theme this replaced and were cool — #E9E4EE is 233/228/238,
+   * lavender by any measure. One warm base surrounded by cool containers is
+   * what made the whole client read as pink: a red accent next to lavender
+   * chrome looks pink, while the same red next to warm grey just looks red.
+   * If these are ever edited, keep blue the smallest channel.
+   *
+   * The secondary and tertiary containers are pinned too. They back chips,
+   * tags and avatar fallbacks, and left generated they were the other half of
+   * the pink -- small pink pills scattered over every screen.
+   */
   if (darkMode) {
-    // Ночь — ink with a plum bias, not the violet obsidian it replaced.
-    colors["surface-dim"] = "#0B090F";
-    colors.surface = "#100E15";
-    colors["surface-bright"] = "#221E2C";
-    colors["surface-container-lowest"] = "#0B090F";
-    colors["surface-container-low"] = "#15121B";
-    colors["surface-container"] = "#1B1724";
-    colors["surface-container-high"] = "#221E2C";
-    colors["surface-container-highest"] = "#2A2536";
+    colors["surface-dim"] = "#0D0C0B";
+    colors.surface = "#121110";
+    colors["surface-bright"] = "#38352F";
+    colors["surface-container-lowest"] = "#0A0908";
+    colors["surface-container-low"] = "#1A1917";
+    colors["surface-container"] = "#1E1C1A";
+    colors["surface-container-high"] = "#292724";
+    colors["surface-container-highest"] = "#34312D";
 
-    colors["on-surface"] = "#F4F1F7";
-    colors["on-surface-variant"] = "#B3ACC0";
-    colors.outline = "#4A4356";
-    colors["outline-variant"] = "#2A2536";
+    colors["on-surface"] = "#EDE9E3";
+    colors["on-surface-variant"] = "#C6C0B7";
+    colors.outline = "#8E8880";
+    colors["outline-variant"] = "#45423E";
+
+    colors["secondary-container"] = "#292724";
+    colors["on-secondary-container"] = "#EDE9E3";
+    colors["tertiary-container"] = "#34312D";
+    colors["on-tertiary-container"] = "#EDE9E3";
   } else {
-    // Полдень — warm paper, deliberately not the cream that reads as vintage.
-    colors["surface-dim"] = "#EFEBF3";
+    colors["surface-dim"] = "#EFECE7";
     colors.surface = "#FBF9F7";
     colors["surface-bright"] = "#FFFFFF";
     colors["surface-container-lowest"] = "#FFFFFF";
-    colors["surface-container-low"] = "#F7F4F9";
-    colors["surface-container"] = "#F3F0F5";
-    colors["surface-container-high"] = "#EFEBF3";
-    colors["surface-container-highest"] = "#E9E4EE";
+    colors["surface-container-low"] = "#F6F3EF";
+    colors["surface-container"] = "#F1EDE8";
+    colors["surface-container-high"] = "#EAE6E0";
+    colors["surface-container-highest"] = "#E3DED7";
 
-    colors["on-surface"] = "#16131C";
-    colors["on-surface-variant"] = "#55505F";
-    colors.outline = "#C9C2D2";
-    colors["outline-variant"] = "#E7E2EC";
+    colors["on-surface"] = "#1A1815";
+    colors["on-surface-variant"] = "#57534C";
+    colors.outline = "#B5AFA6";
+    colors["outline-variant"] = "#E2DDD5";
+
+    colors["secondary-container"] = "#EAE6E0";
+    colors["on-secondary-container"] = "#1A1815";
+    colors["tertiary-container"] = "#F1EDE8";
+    colors["on-tertiary-container"] = "#1A1815";
   }
 
   return colors;
