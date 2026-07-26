@@ -113,7 +113,8 @@ const Content = styled("div", {
   base: {
     minWidth: "230px",
     maxWidth: "300px",
-    padding: "74px 0 8px",
+    /* Keeps the first nav item on the same baseline as the pane heading. */
+    padding: "46px 0 8px",
     display: "flex",
     gap: "2px",
 
@@ -134,11 +135,15 @@ const CategoryTitle = styled("span", {
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
 
+    /* The mono label, same as every other section marker in the app. It was
+       the body face at 600 with its own tracking -- one more bespoke type
+       treatment in a place that already has a shared one. */
+    fontFamily: "var(--pd-font-mono)",
     textTransform: "uppercase",
-    fontSize: "11px",
-    fontWeight: 600,
-    letterSpacing: "0.08em",
-    margin: "16px 12px 6px",
+    fontSize: "var(--pd-text-xs)",
+    fontWeight: "var(--pd-weight-regular)",
+    letterSpacing: "var(--pd-tracking-label)",
+    margin: "18px 12px 6px",
 
     color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
   },

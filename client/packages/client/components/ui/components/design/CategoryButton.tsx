@@ -113,8 +113,8 @@ const Base = styled("a", {
     // for <Ripple />:
     position: "relative",
 
-    gap: "14px",
-    padding: "14px 16px",
+    gap: "16px",
+    padding: "12px 18px",
     borderRadius: "var(--pd-radius-md)",
     border: "1px solid var(--pd-border-subtle)",
 
@@ -139,10 +139,16 @@ const Base = styled("a", {
   variants: {
     variant: {
       filled: {
+        /* Flat, like the filled Button. The inset white line and the white
+           border were a dark-theme gloss: on paper white-over-white is
+           invisible, and on the accent it read as a plastic bubble. */
         background: "var(--md-sys-color-primary)",
         "--color": "var(--md-sys-color-on-primary)",
-        borderColor: "color-mix(in srgb, white 12%, transparent)",
-        boxShadow: "var(--pd-shadow-raised), inset 0 1px 0 rgba(255,255,255,0.12)",
+        borderColor: "var(--md-sys-color-primary)",
+        _hover: {
+          background: "color-mix(in srgb, var(--md-sys-color-primary) 86%, #000)",
+          borderColor: "color-mix(in srgb, var(--md-sys-color-primary) 86%, #000)",
+        },
       },
       tonal: {
         background: "var(--md-sys-color-surface-container-low)",
@@ -188,7 +194,7 @@ const Content = styled("div", {
     flexGrow: 1,
     flexDirection: "column",
 
-    fontWeight: 500,
+    fontWeight: "var(--pd-weight-semibold)",
     fontSize: "14px",
     gap: "2px",
     whiteSpace: "nowrap",
@@ -202,9 +208,14 @@ const Content = styled("div", {
  */
 const IconWrapper = styled("div", {
   base: {
-    fill: "var(--md-sys-color-on-surface)",
-    background: "color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent)",
-    border: "1px solid var(--pd-border-subtle)",
+    /* A slot, not a badge. The tinted disc behind every icon turned each row
+       into a pale pink blob and gave twenty-two settings screens the same
+       visual weight regardless of what the row did. The box stays, because
+       avatars, emoji and role swatches are passed in here too and need a
+       fixed column to line up in; only the chrome is gone. */
+    color: "var(--md-sys-color-on-surface-variant)",
+    fill: "var(--md-sys-color-on-surface-variant)",
+    background: "transparent",
 
     width: "40px",
     height: "40px",
@@ -242,8 +253,13 @@ const BlankIconWrapper = styled(IconWrapper, {
  */
 const Description = styled("span", {
   base: {
-    ...typography.raw({ class: "label" }),
+    ...typography.raw({ class: "body", size: "small" }),
 
+    color: "var(--md-sys-color-on-surface-variant)",
+    /* A settings description is a sentence, not a caption. Measure it like
+       one -- an unbounded line across the full pane loses the eye on the way
+       back to the next line. */
+    maxWidth: "60ch",
     textWrap: "wrap",
 
     "& a:hover": {
@@ -273,7 +289,36 @@ export const CategoryButtonGroup = styled("div", {
   base: {
     display: "flex",
     flexDirection: "column",
-    gap: "8px",
+
+    /* The group is the card; the rows are rows in it.
+     *
+     * Each row used to be its own bordered, rounded, gapped card. Eight
+     * separate cards down a settings page read as eight unrelated things of
+     * equal importance -- which is the "no hierarchy, everything the same
+     * size" complaint. Grouping is the hierarchy: what belongs together
+     * shares an edge, and the gap between groups is what separates topics.
+     */
+    background: "var(--pd-surface-raised)",
+    border: "1px solid var(--pd-border-subtle)",
+    borderRadius: "var(--pd-radius-lg)",
+    boxShadow: "var(--pd-shadow-raised)",
+    overflow: "hidden",
+
+    /* Direct rows, and the summary row of a collapsible one. Hairlines go on
+       the top of every row but the first, so no rule is left dangling at the
+       bottom edge whichever kind of child comes last. */
+    "& > a, & > div > summary > a": {
+      background: "transparent",
+      border: "none",
+      borderRadius: 0,
+    },
+    "& > a:not(:first-child), & > div:not(:first-child) > summary > a": {
+      borderTop: "1px solid var(--pd-border-subtle)",
+    },
+    /* Hover is a fill now -- there is no per-row border left to light up. */
+    "& > a:hover, & > div > summary > a:hover": {
+      background: "var(--pd-tint-subtle)",
+    },
   },
 });
 

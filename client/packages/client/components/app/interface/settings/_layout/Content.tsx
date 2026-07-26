@@ -4,7 +4,7 @@ import { X } from "lucide-solid";
 import { css, cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
-import { Breadcrumbs, IconButton, Text } from "@revolt/ui";
+import { Breadcrumbs, IconButton, Text, iconSize } from "@revolt/ui";
 
 import { SettingsList } from "..";
 import { useSettingsNavigation } from "../Settings";
@@ -46,8 +46,8 @@ export function SettingsContent(props: {
       </Show>
       <Show when={props.onClose}>
         <CloseAction>
-          <IconButton variant="tonal" onPress={props.onClose}>
-            <X />
+          <IconButton variant="standard" size="sm" onPress={props.onClose}>
+            <X {...iconSize(20)} />
           </IconButton>
         </CloseAction>
       </Show>
@@ -83,7 +83,7 @@ const InnerContent = styled("div", {
     width: "100%",
     display: "flex",
     maxWidth: "740px",
-    padding: "80px 32px",
+    padding: "52px 32px",
     justifyContent: "stretch",
     zIndex: 1,
   },
@@ -95,7 +95,9 @@ const InnerContent = styled("div", {
 const InnerColumn = styled("div", {
   base: {
     width: "100%",
-    gap: "var(--gap-md)",
+    /* Groups are cards now, so the space between them is what separates one
+       topic from the next. 8px was the gap between individual rows. */
+    gap: "16px",
     display: "flex",
     flexDirection: "column",
     marginBlockEnd: "80px",
@@ -107,22 +109,30 @@ const InnerColumn = styled("div", {
  */
 const CloseAction = styled("div", {
   base: {
-    flexGrow: 1,
+    /* A way out, not a feature.
+     *
+     * This was flexGrow: 1, so closing the settings claimed an entire elastic
+     * column of the pane and sat there as a filled disc with a bold ESC under
+     * it -- the heaviest object on a screen whose job is the content next to
+     * it. It is now a plain icon at the top-right corner, sized like the rest
+     * of the chrome, with the shortcut as a quiet keycap hint. */
     flexShrink: 0,
-    padding: "80px 8px",
+    padding: "52px 12px",
     visibility: "visible",
     position: "sticky",
     top: 0,
 
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+
     "&:after": {
       content: '"ESC"',
-      marginTop: "4px",
-      display: "flex",
-      justifyContent: "center",
-      width: "36px",
-      fontWeight: 600,
-      color: "var(--md-sys-color-on-surface)",
-      fontSize: "0.75rem",
+      marginTop: "2px",
+      fontFamily: "var(--pd-font-mono)",
+      fontSize: "var(--pd-text-xs)",
+      letterSpacing: "var(--pd-tracking-label)",
+      color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
     },
   },
 });
