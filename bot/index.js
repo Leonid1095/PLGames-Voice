@@ -7,7 +7,7 @@ const { IngressInput } = require("livekit-server-sdk");
 require("dotenv").config({ path: path.resolve(__dirname, "..", ".env") });
 
 const { ingressClient, roomService, egressClient } = require("./stream-service");
-const { defaultBannedWords, normaliseForAutomod } = require("./banned-words");
+const { defaultBannedWords, normaliseForAutomod, stripMachineTokens } = require("./banned-words");
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const API_URL = process.env.API_URL;
@@ -2432,7 +2432,9 @@ async function automodCheck(data) {
   if (data.author === botUserId) return;
 
   const userId = data.author;
-  const rawContent = data.content || "";
+  // Links, mentions and custom-emoji ids are machine-generated and must not be
+  // matched against the stop-word list — see stripMachineTokens.
+  const rawContent = stripMachineTokens(data.content || "");
   // Normalised view for stop-word matching: lowercase + homoglyph/leet fold
   // + repeated-letter collapse. Defeats obvious bypasses like "хууууй",
   // "ху1", "x y i", "@ssh0le".

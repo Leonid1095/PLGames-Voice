@@ -270,8 +270,13 @@ const GifGrid = styled("div", {
   base: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
-    gridAutoRows: "1fr",
-    alignItems: "stretch",
+    /*
+     * `grid-auto-rows: 1fr` was dividing the scroller's height across every
+     * row, so twelve rows of GIFs each got a twelfth of the panel -- the
+     * thumbnails rendered as horizontal slivers. Rows size to their content
+     * now, and the 1:1 aspect-ratio on the thumb is what sets the height.
+     */
+    gridAutoRows: "min-content",
     gap: "8px",
     overflow: "auto",
     padding: "4px 8px 8px",

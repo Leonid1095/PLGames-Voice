@@ -128,6 +128,7 @@ export const ServerList = (props: Props) => {
         >
           <Avatar
             size={42}
+            shape="rounded-square"
             fallback={<Home />}
             holepunch={homeNotifications() ? "top-right" : undefined}
             overlay={
@@ -199,6 +200,7 @@ export const ServerList = (props: Props) => {
           <a class={entryContainer()} href={`/`}>
             <Avatar
               size={42}
+              shape="rounded-square"
               fallback={<>+{props.unreadConversations.length - 9}</>}
             />
           </a>
@@ -294,7 +296,7 @@ export const ServerList = (props: Props) => {
         </Tooltip>
         <Tooltip placement="right" content={t`Browse servers`}>
           <a class={entryContainer()} href="/discover">
-            <Avatar size={42} fallback={<Compass />} interactive />
+            <Avatar size={42} shape="rounded-square" fallback={<Compass />} interactive />
           </a>
         </Tooltip>
       </div>
@@ -306,7 +308,7 @@ export const ServerList = (props: Props) => {
           class={entryContainer()}
           onClick={() => openModal({ type: "settings", config: "user" })}
         >
-          <Avatar size={42} fallback={<Settings />} interactive />
+          <Avatar size={42} shape="rounded-square" fallback={<Settings />} interactive />
         </a>
       </Tooltip>
     </ServerListBase>

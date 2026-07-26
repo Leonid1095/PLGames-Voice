@@ -85,6 +85,36 @@ function normaliseForAutomod(input) {
 module.exports.normaliseForAutomod = normaliseForAutomod;
 
 /**
+ * Remove machine-generated tokens before stop-word matching.
+ *
+ * normaliseForAutomod deliberately strips punctuation and collapses repeats,
+ * so it can catch "х у у у й". The cost is that it turns any random ID into a
+ * dense letter soup, and matching is substring-based — so a Tenor URL like
+ * .../m/dickH0lEabc/ folds to something containing "fck" and the message gets
+ * deleted. That is not hypothetical: two of four sample GIF links tripped the
+ * filter, which is why sending a GIF read as three strikes and earned a mute.
+ *
+ * None of these tokens are human-written, so none of them can be profanity a
+ * user chose to post. They are removed before both the raw and normalised
+ * checks; everything the person actually typed is still matched exactly as
+ * before.
+ */
+function stripMachineTokens(input) {
+  if (!input) return "";
+  return String(input)
+    // links (markdown or bare), which is where GIF and image IDs live
+    .replace(/https?:\/\/\S+/gi, " ")
+    .replace(/www\.\S+/gi, " ")
+    // <@ULID> mentions, <#ULID> channel links, :ULID: custom emoji
+    .replace(/<[@#][^>]{1,64}>/g, " ")
+    .replace(/:[0-9A-HJKMNP-TV-Z]{26}:/gi, " ")
+    // bare ULIDs pasted on their own (invite codes, ids)
+    .replace(/[0-9A-HJKMNP-TV-Z]{26}/gi, " ");
+}
+
+module.exports.stripMachineTokens = stripMachineTokens;
+
+/**
  * Combined default list (ru + en).
  */
 module.exports.defaultBannedWords = [...module.exports.ru, ...module.exports.en];
