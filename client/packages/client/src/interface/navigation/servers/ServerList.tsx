@@ -126,20 +126,12 @@ export const ServerList = (props: Props) => {
             },
           }}
         >
-          <Avatar
-            size={42}
-            shape="rounded-square"
-            fallback={<Home />}
-            holepunch={homeNotifications() ? "top-right" : undefined}
-            overlay={
-              <Show when={homeNotifications()}>
-                <Unreads.Graphic
-                  unread={homeNotifications() !== 0}
-                  count={homeNotifications()}
-                />
-              </Show>
-            }
-          />
+          <RailAction>
+            <Home size={22} stroke-width={1.75} />
+            <Show when={homeNotifications()}>
+              <RailBadge>{homeNotifications()}</RailBadge>
+            </Show>
+          </RailAction>
         </a>
         <Tooltip
           placement="right"
@@ -198,11 +190,9 @@ export const ServerList = (props: Props) => {
         </For>
         <Show when={props.unreadConversations.length > 9}>
           <a class={entryContainer()} href={`/`}>
-            <Avatar
-              size={42}
-              shape="rounded-square"
-              fallback={<>+{props.unreadConversations.length - 9}</>}
-            />
+            <RailAction>
+              <RailCount>+{props.unreadConversations.length - 9}</RailCount>
+            </RailAction>
           </a>
         </Show>
         <LineDivider />
@@ -291,12 +281,16 @@ export const ServerList = (props: Props) => {
             class={entryContainer()}
             onClick={() => props.onCreateOrJoinServer()}
           >
-            <Avatar size={42} shape="rounded-square" fallback={<Plus />} />
+            <RailAction>
+              <Plus size={22} stroke-width={1.75} />
+            </RailAction>
           </a>
         </Tooltip>
         <Tooltip placement="right" content={t`Browse servers`}>
           <a class={entryContainer()} href="/discover">
-            <Avatar size={42} shape="rounded-square" fallback={<Compass />} interactive />
+            <RailAction>
+              <Compass size={22} stroke-width={1.75} />
+            </RailAction>
           </a>
         </Tooltip>
       </div>
@@ -308,7 +302,9 @@ export const ServerList = (props: Props) => {
           class={entryContainer()}
           onClick={() => openModal({ type: "settings", config: "user" })}
         >
-          <Avatar size={42} shape="rounded-square" fallback={<Settings />} interactive />
+          <RailAction>
+            <Settings size={22} stroke-width={1.75} />
+          </RailAction>
         </a>
       </Tooltip>
     </ServerListBase>
@@ -403,6 +399,73 @@ const entryContainer = cva({
         },
       },
     },
+  },
+});
+
+/*
+ * A rail ACTION, as opposed to a rail avatar.
+ *
+ * Home, Add, Discover and Settings used to be drawn by the Avatar component
+ * with an icon fallback -- a beige disc with a thin glyph inside, which is
+ * exactly what a disabled placeholder looks like. Content (servers, people)
+ * and actions (buttons) must not share a body: avatars are pictures, these
+ * are controls, and a control answers the pointer.
+ */
+const RailAction = styled("span", {
+  base: {
+    position: "relative",
+    width: "42px",
+    height: "42px",
+    display: "grid",
+    placeItems: "center",
+
+    borderRadius: "var(--pd-radius-squircle)",
+    color: "var(--md-sys-color-on-surface-variant)",
+    fill: "var(--md-sys-color-on-surface-variant)",
+    background: "transparent",
+
+    transition:
+      "background-color var(--pd-transition-fast), color var(--pd-transition-fast)",
+
+    _hover: {
+      background: "var(--pd-tint-subtle)",
+      color: "var(--md-sys-color-on-surface)",
+      fill: "var(--md-sys-color-on-surface)",
+    },
+  },
+});
+
+/**
+ * Pending-request count on the home action. Accent pill with a surface ring
+ * so it reads above whatever sits behind it.
+ */
+const RailBadge = styled("span", {
+  base: {
+    position: "absolute",
+    top: "-2px",
+    insetInlineEnd: "-2px",
+    minWidth: "16px",
+    height: "16px",
+    padding: "0 4px",
+
+    borderRadius: "var(--pd-radius-pill)",
+    background: "var(--md-sys-color-primary)",
+    color: "var(--md-sys-color-on-primary)",
+    boxShadow: "0 0 0 2px var(--md-sys-color-surface)",
+
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "10px",
+    lineHeight: "16px",
+    fontVariantNumeric: "tabular-nums",
+    textAlign: "center",
+  },
+});
+
+const RailCount = styled("span", {
+  base: {
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-sm)",
+    fontVariantNumeric: "tabular-nums",
   },
 });
 
