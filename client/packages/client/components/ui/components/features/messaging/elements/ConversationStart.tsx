@@ -4,7 +4,7 @@ import { Trans } from "@lingui-solid/solid/macro";
 import { Channel } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
-import { Text } from "../../../design";
+import { Symbol } from "../../../utils/Symbol";
 
 interface Props {
   /**
@@ -14,17 +14,41 @@ interface Props {
 }
 
 /**
- * Mark the beginning of a conversation
+ * Mark the beginning of a conversation.
+ *
+ * In a channel with history this is a quiet marker above the oldest message.
+ * But in a brand-new channel it is the entire screen, and it used to render
+ * as two lines of text in the bottom-left corner of a viewport of nothing —
+ * the emptiest surface in the product exactly where a first impression is
+ * formed. It now behaves like a proper welcome: the channel's own glyph on a
+ * raised plate, the name at display size, and one line that tells you the
+ * space is yours.
  */
 export function ConversationStart(props: Props) {
   return (
     <Base>
+      <Glyph>
+        <Switch fallback={<Symbol size={28}>grid_3x3</Symbol>}>
+          <Match when={props.channel.type === "SavedMessages"}>
+            <Symbol size={28}>note_stack</Symbol>
+          </Match>
+          <Match when={props.channel.type === "DirectMessage"}>
+            <Symbol size={28}>alternate_email</Symbol>
+          </Match>
+          <Match when={props.channel.isVoice}>
+            <Symbol size={28}>headset_mic</Symbol>
+          </Match>
+          <Match when={props.channel.isForum}>
+            <Symbol size={28}>forum</Symbol>
+          </Match>
+        </Switch>
+      </Glyph>
+
       <Show when={props.channel.type !== "SavedMessages"}>
-        <Text class="title" size="large">
-          {props.channel.name ?? props.channel.recipient?.username}
-        </Text>
+        <Name>{props.channel.name ?? props.channel.recipient?.username}</Name>
       </Show>
-      <Text class="body">
+
+      <Lede>
         <Switch
           fallback={<Trans>This is the start of your conversation.</Trans>}
         >
@@ -32,32 +56,64 @@ export function ConversationStart(props: Props) {
             <Trans>This is the start of your notes.</Trans>
           </Match>
         </Switch>
-      </Text>
+      </Lede>
     </Base>
   );
 }
 
-/**
- * Base styles
- */
 const Base = styled("div", {
   base: {
     display: "flex",
     userSelect: "none",
     flexDirection: "column",
-    gap: "2px",
-    margin: "18px 16px 10px 16px",
+    alignItems: "flex-start",
+    gap: "10px",
+    margin: "26px 16px 14px 16px",
 
-    /*
-     * `headline large` plus `title` was fine when both were the body face at
-     * weight 400. Once title/headline moved onto the condensed display face at
-     * 700, this block became a 34px slab with a bold second line under it. The
-     * name keeps a display treatment at title size; the sentence below it is
-     * body text, because that is what it is.
-     */
     color: "var(--md-sys-color-on-surface)",
-    "& > *:last-child": {
-      color: "var(--md-sys-color-on-surface-variant)",
-    },
+
+    animationName: "fadeSlideUp",
+    animationDuration: "var(--pd-t-slow)",
+    animationTimingFunction: "var(--pd-e-out)",
+    animationFillMode: "both",
+  },
+});
+
+/**
+ * The channel's glyph on a raised plate — the same squircle language as the
+ * server rail, so an empty screen still speaks the product's shapes.
+ */
+const Glyph = styled("div", {
+  base: {
+    width: "56px",
+    height: "56px",
+    display: "grid",
+    placeItems: "center",
+
+    borderRadius: "var(--pd-radius-squircle)",
+    background: "var(--pd-surface-raised)",
+    border: "1px solid var(--pd-border-subtle)",
+    boxShadow: "var(--pd-shadow-raised)",
+    color: "var(--md-sys-color-primary)",
+    fill: "var(--md-sys-color-primary)",
+  },
+});
+
+const Name = styled("span", {
+  base: {
+    fontFamily: "var(--pd-font-display)",
+    fontVariationSettings: '"wght" 700, "wdth" var(--pd-display-wdth)',
+    fontWeight: 700,
+    fontSize: "var(--pd-text-4xl)",
+    lineHeight: "var(--pd-leading-tight)",
+    letterSpacing: "0.005em",
+    overflowWrap: "anywhere",
+  },
+});
+
+const Lede = styled("span", {
+  base: {
+    fontSize: "var(--pd-text-md)",
+    color: "var(--md-sys-color-on-surface-variant)",
   },
 });

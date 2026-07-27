@@ -3,6 +3,23 @@ import { cleanupOutdatedCaches, precacheAndRoute } from "workbox-precaching";
 
 declare let self: ServiceWorkerGlobalScope;
 
+/*
+ * Take over immediately on every deploy.
+ *
+ * The register side runs `registerType: "autoUpdate"`, but this worker only
+ * skipped waiting when asked by message and never claimed open clients. The
+ * result on production: a freshly installed worker sat waiting while the old
+ * one kept serving the previous bundle from its precache, so reloads
+ * alternated between the old shell and the new one (the "blue splash or red
+ * splash" report), and users kept seeing a build that had already been
+ * replaced. skipWaiting on install plus clients.claim() on activate is the
+ * pair autoUpdate assumes; vanilla APIs so no extra workbox import.
+ */
+self.addEventListener("install", () => self.skipWaiting());
+self.addEventListener("activate", (event) =>
+  event.waitUntil(self.clients.claim()),
+);
+
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting();
 });

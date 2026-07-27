@@ -299,16 +299,20 @@ const Layout = styled("div", {
     minWidth: 0,
   },
   variants: {
+    /*
+     * Deliberately identical in both states. This used to flood the entire
+     * app with primary-container while reconnecting -- with the red accent
+     * that is a pink wash over every pixel, and with a user-picked violet it
+     * was purple. A dropped websocket is a status, and the titlebar strip
+     * already reports it; repainting the whole client is an alarm.
+     */
     disconnected: {
       true: {
-        color: "var(--md-sys-color-on-primary-container)",
-        background: "var(--md-sys-color-primary-container)",
+        color: "var(--md-sys-color-on-surface)",
+        background: "var(--md-sys-color-surface)",
       },
       false: {
         color: "var(--md-sys-color-on-surface)",
-        /* Flat single surface — Notion/Linear feel.
-           Sidebars get their own surface-container-low background, the main
-           area uses surface (slightly darker). No gradients, no shadows. */
         background: "var(--md-sys-color-surface)",
       },
     },

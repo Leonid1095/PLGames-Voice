@@ -79,11 +79,11 @@ export function Titlebar() {
             >
               <Switch>
                 <Match when={lifecycle.state() === State.Connecting}>
-                  Connecting
+                  <Trans>Connecting</Trans>
                 </Match>
                 {/* <Match when={lifecycle.state() === State.Connected}>Connected</Match> */}
                 <Match when={lifecycle.state() === State.Disconnected}>
-                  Disconnected
+                  <Trans>Disconnected</Trans>
                   <a
                     onClick={() =>
                       lifecycle.transition({
@@ -91,14 +91,17 @@ export function Titlebar() {
                       })
                     }
                   >
-                    <strong> (reconnect now)</strong>
+                    <strong>
+                      {" "}
+                      <Trans>(reconnect now)</Trans>
+                    </strong>
                   </a>
                 </Match>
                 <Match when={lifecycle.state() === State.Reconnecting}>
-                  Reconnecting
+                  <Trans>Reconnecting</Trans>
                 </Match>
                 <Match when={lifecycle.state() === State.Offline}>
-                  Device is offline
+                  <Trans>Device is offline</Trans>
                   <a
                     onClick={() =>
                       lifecycle.transition({
@@ -109,7 +112,10 @@ export function Titlebar() {
                       "-webkit-app-region": "no-drag",
                     }}
                   >
-                    <strong> (reconnect now)</strong>
+                    <strong>
+                      {" "}
+                      <Trans>(reconnect now)</Trans>
+                    </strong>
                   </a>
                 </Match>
                 {/* Last, so a connection problem still takes the bar. */}
@@ -170,8 +176,9 @@ const Base = styled("div", {
   variants: {
     disconnected: {
       true: {
-        color: "var(--md-sys-color-on-primary-container)",
-        background: "var(--md-sys-color-primary-container)",
+        color: "var(--pd-warn)",
+        background: "var(--md-sys-color-surface-container-high)",
+        "& a": { color: "var(--md-sys-color-primary)", cursor: "pointer" },
       },
       false: {
         color: "var(--md-sys-color-outline)",

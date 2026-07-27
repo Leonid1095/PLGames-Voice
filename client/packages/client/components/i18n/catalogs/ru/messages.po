@@ -47,6 +47,11 @@ msgstr "(изменения сохраняются…)"
 msgid "(edited)"
 msgstr "(ред.)"
 
+#: components/app/interface/desktop/Titlebar.tsx
+#: components/app/interface/desktop/Titlebar.tsx
+msgid "(reconnect now)"
+msgstr "(переподключиться)"
+
 #: components/app/interface/settings/server/Forms.tsx
 msgid "(required)"
 msgstr "(обязательно)"
@@ -962,6 +967,10 @@ msgstr "Подключиться к голосовому каналу"
 msgid "Connected"
 msgstr "Подключено"
 
+#: components/app/interface/desktop/Titlebar.tsx
+msgid "Connecting"
+msgstr "Подключение"
+
 #: components/ui/components/features/voice/VoiceBottomBar.tsx
 msgid "Connecting..."
 msgstr "Подключение..."
@@ -1406,6 +1415,10 @@ msgstr "Обнаруживать запущенные игры и показыв
 msgid "Developer Documentation"
 msgstr "Документация для разработчиков"
 
+#: components/app/interface/desktop/Titlebar.tsx
+msgid "Device is offline"
+msgstr "Нет соединения с сетью"
+
 #: components/app/interface/settings/user/Account.tsx
 msgid "Disable Account"
 msgstr "Отключить учетную запись"
@@ -1427,6 +1440,7 @@ msgid "Disconnect"
 msgstr "Отключиться"
 
 #: components/ui/components/features/voice/VoiceBottomBar.tsx
+#: components/app/interface/desktop/Titlebar.tsx
 msgid "Disconnected"
 msgstr "Отключено"
 
@@ -3100,6 +3114,10 @@ msgstr "Причина"
 #: components/app/interface/settings/user/Notifications.tsx
 msgid "Receive notifications while the app is open and in the background."
 msgstr "Получать уведомления, когда приложение открыто или в фоне."
+
+#: components/app/interface/desktop/Titlebar.tsx
+msgid "Reconnecting"
+msgstr "Переподключение"
 
 #: components/ui/components/features/voice/VoiceBottomBar.tsx
 msgid "Reconnecting..."
