@@ -40,16 +40,21 @@ export function HeaderIcon(props: { children: JSX.Element }) {
         when={!isMobile()}
         fallback={<Symbol size={22}>menu</Symbol>}
       >
-        <Switch fallback={<ChevronRight size={20} />}>
-          <Match
-            when={state.layout.getSectionState(
-              LAYOUT_SECTIONS.PRIMARY_SIDEBAR,
-              true,
-            )}
-          >
-            <ChevronLeft size={20} />
-          </Match>
-        </Switch>
+        {/* The collapse chevron only surfaces on hover. Permanently visible
+            it read as a back button and tripled the header into
+            "< [icon] Title" — three affordances for one page. */}
+        <span class={`chev ${chevron}`}>
+          <Switch fallback={<ChevronRight size={18} />}>
+            <Match
+              when={state.layout.getSectionState(
+                LAYOUT_SECTIONS.PRIMARY_SIDEBAR,
+                true,
+              )}
+            >
+              <ChevronLeft size={18} />
+            </Match>
+          </Switch>
+        </span>
       </Show>
       {props.children}
     </div>
@@ -60,4 +65,25 @@ const container = css({
   display: "flex",
   cursor: "pointer",
   alignItems: "center",
+  gap: "2px",
+  padding: "4px 6px",
+  borderRadius: "var(--pd-radius-sm)",
+  transition: "background-color var(--pd-transition-fast)",
+
+  _hover: {
+    background: "var(--pd-tint-subtle)",
+    "& .chev": {
+      width: "18px",
+      opacity: 1,
+    },
+  },
+});
+
+const chevron = css({
+  display: "inline-flex",
+  alignItems: "center",
+  overflow: "hidden",
+  width: 0,
+  opacity: 0,
+  transition: "width var(--pd-transition-fast), opacity var(--pd-transition-fast)",
 });

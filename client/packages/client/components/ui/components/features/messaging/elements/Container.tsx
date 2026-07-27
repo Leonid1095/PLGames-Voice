@@ -2,7 +2,7 @@ import { JSX, Match, Show, Switch } from "solid-js";
 
 import { useLingui } from "@lingui-solid/solid/macro";
 import { Message } from "stoat.js";
-import { cva } from "styled-system/css";
+import { css, cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
 import { Ripple, typography } from "@revolt/ui/components/design";
@@ -130,10 +130,10 @@ const base = cva({
 
     padding: "2px 0",
     background: "transparent",
-    borderRadius: "var(--borderRadius-md)",
+    borderRadius: "var(--pd-radius-sm)",
     minHeight: "1em",
 
-    transition: "background-color var(--transitions-fast), box-shadow var(--transitions-fast)",
+    transition: "background-color var(--pd-transition-fast), box-shadow var(--pd-transition-fast)",
 
     "& a:hover": {
       textDecoration: "underline",
@@ -261,6 +261,16 @@ const Content = styled("div", {
 });
 
 /**
+ * Author name — the anchor of a message group.
+ */
+const authorName = css({
+  display: "flex",
+  minWidth: 0,
+  fontWeight: 600,
+  fontSize: "var(--pd-text-base)",
+});
+
+/**
  * Information text
  */
 const infoText = cva({
@@ -271,7 +281,10 @@ const infoText = cva({
 
     color: "var(--md-sys-color-outline)",
 
-    ...typography.raw({ class: "body", size: "small" }),
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    fontVariantNumeric: "tabular-nums",
+    letterSpacing: "0",
   },
   variants: {
     prefix: {
@@ -435,7 +448,9 @@ export function MessageContainer(props: Props) {
         <Body editing={props.editing}>
           <Show when={!props.tail && !props.compact}>
             <Row gap="sm" align>
-              <OverflowingText>{props.username}</OverflowingText>
+              <span class={authorName}>
+                <OverflowingText>{props.username}</OverflowingText>
+              </span>
               <NonBreakingText>
                 <div class={infoText()}>
                   {props.info}

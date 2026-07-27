@@ -74,6 +74,7 @@ export const typography = cva({
         fontWeight: "var(--pd-weight-regular)",
         fontSize: "var(--message-size)",
         letterSpacing: "var(--pd-tracking-snug)",
+        lineHeight: "var(--pd-leading-normal)",
       },
 
       _status: {

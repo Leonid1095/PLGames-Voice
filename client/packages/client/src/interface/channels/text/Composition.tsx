@@ -356,7 +356,7 @@ export function MessageComposition(props: Props) {
             <Match when={props.channel.havePermission("UploadFiles")}>
               <MessageBox.InlineIcon size="wide">
                 <IconButton onPress={addFile}>
-                  <Symbol>add</Symbol>
+                  <Symbol size={20}>add</Symbol>
                 </IconButton>
               </MessageBox.InlineIcon>
               <MessageBox.InlineIcon size="normal">
@@ -380,7 +380,7 @@ export function MessageComposition(props: Props) {
                     tooltip: { placement: "top", content: t`Create poll` },
                   }}
                 >
-                  <Symbol>ballot</Symbol>
+                  <Symbol size={20}>ballot</Symbol>
                 </IconButton>
               </MessageBox.InlineIcon>
             </Match>
@@ -395,12 +395,12 @@ export function MessageComposition(props: Props) {
               <>
                 <MessageBox.InlineIcon size="normal">
                   <IconButton onPress={triggerProps.onClickGif}>
-                    <Symbol>gif_box</Symbol>
+                    <Symbol size={20}>gif_box</Symbol>
                   </IconButton>
                 </MessageBox.InlineIcon>
                 <MessageBox.InlineIcon size="normal">
                   <IconButton onPress={triggerProps.onClickEmoji}>
-                    <Symbol>emoticon</Symbol>
+                    <Symbol size={20}>emoticon</Symbol>
                   </IconButton>
                 </MessageBox.InlineIcon>
                 <Show when={props.channel.havePermission("UploadFiles")}>

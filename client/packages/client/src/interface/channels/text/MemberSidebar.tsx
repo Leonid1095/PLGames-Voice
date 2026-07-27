@@ -319,11 +319,12 @@ const Container = styled("div", {
 const CategoryTitle = styled("div", {
   base: {
     padding: "20px 14px 4px",
-    color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
-    fontSize: "11px",
-    fontWeight: 600,
+    color: "var(--md-sys-color-on-surface-variant)",
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    fontWeight: "var(--pd-weight-regular)",
     textTransform: "uppercase",
-    letterSpacing: "0.08em",
+    letterSpacing: "var(--pd-tracking-label)",
   },
 });
 
