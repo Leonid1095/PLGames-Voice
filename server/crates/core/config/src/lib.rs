@@ -452,10 +452,8 @@ impl Settings {
 }
 
 pub async fn init() {
-    println!(
-        ":: PLG Voice Configuration ::\n\x1b[32m{:?}\x1b[0m",
-        config().await
-    );
+    let config = config().await;
+    log::info!("Configuration loaded for {}", config.hosts.app);
 }
 
 pub async fn read() -> Config {

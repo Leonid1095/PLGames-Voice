@@ -39,7 +39,6 @@ pub async fn web() -> Rocket<Build> {
 
     // Setup database
     let db = revolt_database::DatabaseInfo::Auto.connect().await.unwrap();
-    log::info!("database_here {db:?}");
     db.migrate_database().await.unwrap();
 
     // Setup Authifier event channel
