@@ -104,12 +104,12 @@ function stripMachineTokens(input) {
   return String(input)
     // links (markdown or bare), which is where GIF and image IDs live
     .replace(/https?:\/\/\S+/gi, " ")
-    .replace(/www\.\S+/gi, " ")
+    .replace(/www\.\S+/gi, " ")
     // <@ULID> mentions, <#ULID> channel links, :ULID: custom emoji
     .replace(/<[@#][^>]{1,64}>/g, " ")
     .replace(/:[0-9A-HJKMNP-TV-Z]{26}:/gi, " ")
     // bare ULIDs pasted on their own (invite codes, ids)
-    .replace(/[0-9A-HJKMNP-TV-Z]{26}/gi, " ");
+    .replace(/[0-9A-HJKMNP-TV-Z]{26}/gi, " ");
 }
 
 module.exports.stripMachineTokens = stripMachineTokens;

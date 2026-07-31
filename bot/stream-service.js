@@ -2,7 +2,6 @@ const http = require("http");
 const path = require("path");
 const {
   IngressClient,
-  IngressInput,
   RoomServiceClient,
   EgressClient,
   AccessToken,
@@ -70,7 +69,7 @@ async function isAuthenticated(req) {
       headers: { [botToken ? "X-Bot-Token" : "X-Session-Token"]: token },
     });
     if (!res.ok) return false;
-  } catch (e) {
+  } catch {
     return false;
   }
 
@@ -276,7 +275,7 @@ const server = http.createServer(async (req, res) => {
       }
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ streams: active }));
-    } catch (e) {
+    } catch {
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ streams: [] }));
     }

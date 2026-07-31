@@ -19,7 +19,7 @@ const SERVER_ID = process.env.SERVER_ID;
 const WELCOME_CHANNEL = process.env.WELCOME_CHANNEL;
 
 // --- Global error handling: never crash silently ---
-process.on("unhandledRejection", (reason, promise) => {
+process.on("unhandledRejection", (reason) => {
   console.error("[FATAL] Unhandled promise rejection:", reason);
   if (reason instanceof Error && reason.stack) console.error(reason.stack);
 });
@@ -1933,7 +1933,7 @@ const COMMANDS = {
       } else {
         await sendMessage(msg.channel, "Не удалось перевести.");
       }
-    } catch (e) {
+    } catch {
       await sendMessage(msg.channel, "Ошибка перевода.");
     }
   },
@@ -1998,7 +1998,7 @@ const COMMANDS = {
       }
 
       // For now, provide the audio URL and note about future Whisper integration
-      const audioUrl = `${API_URL.replace("/api", "")}/autumn/attachments/${audioFile._id}/${audioFile.filename}`;
+      const _audioUrl = `${API_URL.replace("/api", "")}/autumn/attachments/${audioFile._id}/${audioFile.filename}`;
       await sendMessage(msg.channel, [
         `🎤 **Голосовое сообщение от <@${message.author}>**`,
         `Файл: \`${audioFile.filename}\` (${(audioFile.size / 1024).toFixed(0)} КБ)`,
