@@ -205,7 +205,8 @@ else
     if [ -f "/etc/letsencrypt/live/$DOMAIN/fullchain.pem" ]; then
       sudo cp "/etc/letsencrypt/live/$DOMAIN/fullchain.pem" data/livekit-certs/
       sudo cp "/etc/letsencrypt/live/$DOMAIN/privkey.pem" data/livekit-certs/
-      sudo chmod 644 data/livekit-certs/*.pem
+      sudo chmod 644 data/livekit-certs/fullchain.pem
+      sudo chmod 600 data/livekit-certs/privkey.pem
       ok "Certificates copied"
     fi
   else
