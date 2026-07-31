@@ -109,6 +109,8 @@ MINIO_PASS=$(keep_or_make MINIO_PASS      "openssl rand -base64 24 | tr -d '/+='
 LIVEKIT_KEY=$(keep_or_make LIVEKIT_API_KEY    "openssl rand -hex 6")
 LIVEKIT_SECRET=$(keep_or_make LIVEKIT_API_SECRET "openssl rand -hex 24")
 FILES_KEY=$(keep_or_make FILES_ENCRYPTION_KEY "openssl rand -base64 32")
+REDIS_PASS=$(keep_or_make REDIS_PASSWORD "openssl rand -base64 24 | tr -d '/+='")
+MESSAGES_KEY=$(keep_or_make MESSAGES_ENCRYPTION_KEY "openssl rand -base64 32")
 
 VAPID_PRIVATE=$(existing VAPID_PRIVATE_KEY)
 VAPID_PUBLIC=$(existing VAPID_PUBLIC_KEY)
@@ -132,6 +134,9 @@ PLG_VOICE_HOST=$DOMAIN
 MONGO_USER=plgadmin
 MONGO_PASS=$MONGO_PASS
 
+# Redis
+REDIS_PASSWORD=$REDIS_PASS
+
 # RabbitMQ
 RABBIT_USER=rabbituser
 RABBIT_PASS=$RABBIT_PASS
@@ -154,6 +159,10 @@ VAPID_PUBLIC_KEY=$VAPID_PUBLIC
 # Losing or changing this key makes every uploaded file permanently unreadable.
 # Back it up somewhere outside this server before you need it.
 FILES_ENCRYPTION_KEY=$FILES_KEY
+
+# Message content encryption (AES-256-GCM)
+# Losing or changing this key makes existing messages permanently unreadable.
+MESSAGES_ENCRYPTION_KEY=$MESSAGES_KEY
 EOF
 
 # Secrets file — owner only. It was previously left at the default umask, which
