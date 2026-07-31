@@ -1,0 +1,39 @@
+name: "Security"
+
+# Runs the secrets-scan test suite (tests/security/) on every push to the main
+# branches and on pull requests. This is the regression net that stops secrets
+# from being re-introduced into tracked files — the same test that caught the
+# history leak during the 2026-07-31 audit.
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+permissions:
+  contents: read
+
+jobs:
+  secrets-scan:
+    name: Secrets scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history so `git ls-files` inside the test works and a future
+          # history-aware scan (gitleaks/trufflehog) can be bolted on.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: tests/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: tests
+
+      - name: Run security tests
+        run: tests/node_modules/.bin/vitest run --config tests/vitest.config.ts tests/security/

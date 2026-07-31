@@ -13,8 +13,11 @@ const ROOT = resolve(__dirname, "../..");
 
 // Паттерны секретов, которые НЕ должны быть в tracked-файлах
 const SECRET_PATTERNS = [
-  // Пароли MongoDB в connection strings
-  /mongodb:\/\/[^:]+:[^@\$]+@/i,
+  // Пароли MongoDB в connection strings.
+  // Classes exclude whitespace so the match can't span newlines (otherwise
+  // `mongodb://database` followed much later by a `:` and an `@` would
+  // falsely match across the whole file).
+  /mongodb:\/\/[^:\s]+:[^@\s$]+@/i,
   // VAPID ключи (base64 строки определённой длины)
   /vapid_private_key\s*=\s*["']?[A-Za-z0-9+/=]{30,}/,
   // LiveKit секреты
