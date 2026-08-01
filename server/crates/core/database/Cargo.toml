@@ -13,7 +13,7 @@ description = "PLG Voice Backend: Database Implementation"
 mongodb = ["dep:mongodb", "bson", "authifier/database-mongodb"]
 
 # ... Other
-tasks = ["isahc", "linkify", "url-escape"]
+tasks = ["reqwest", "linkify", "url-escape"]
 async-std-runtime = ["async-std", "authifier/async-std-runtime"]
 rocket-impl = [
     "rocket",
@@ -59,7 +59,7 @@ deadqueue = "0.2.4"
 linkify = { optional = true, version = "0.8.1" }
 url-escape = { optional = true, version = "0.1.1" }
 validator = { version = "0.16", features = ["derive"] }
-isahc = { optional = true, version = "1.7", features = ["json"] }
+reqwest = { optional = true, version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
 
 # Encryption
 aes-gcm = "0.10"
