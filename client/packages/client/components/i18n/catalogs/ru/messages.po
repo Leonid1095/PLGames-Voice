@@ -4666,3 +4666,59 @@ msgstr "Ваши серверы"
 #: components/i18n/errors.ts
 msgid "Your user has already been created? Try logging in again or refreshing the app."
 msgstr "Ваш пользователь уже создан? Попробуйте войти снова или обновить приложение."
+
+#: components/modal/modals/CreateBot.tsx
+msgid "Acceptable Use Policy"
+msgstr "Политика допустимого использования"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "Blank"
+msgstr "Пустой"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "Start from scratch"
+msgstr "Начать с нуля"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "Gaming"
+msgstr "Игры"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "For gaming communities"
+msgstr "Для игровых сообществ"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "Community"
+msgstr "Сообщество"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "For communities and clubs"
+msgstr "Для сообществ и клубов"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "Study"
+msgstr "Учёба"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "For study groups"
+msgstr "Для учебных групп"
+
+#: components/modal/modals/CreateServer.tsx
+msgid "For a group of friends"
+msgstr "Для группы друзей"
+
+#: components/modal/modals/EditCategory.tsx
+msgid "New name"
+msgstr "Новое название"
+
+#: components/ui/components/features/messaging/elements/Reactions.tsx
+msgid "Add reaction"
+msgstr "Добавить реакцию"
+
+#: src/interface/Home.tsx
+msgid "viewer"
+msgstr "зритель"
+
+#: src/interface/Home.tsx
+msgid "viewers"
+msgstr "зрителей"
