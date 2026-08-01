@@ -451,9 +451,13 @@ services:
     logging: *default-logging
     <<: *default-hardening
     restart: always
+    # Same fix as livekit-egress: short-form depends_on is service_started, which
+    # raced Docker DNS and crash-looped (11 restarts). Wait for healthy upstreams.
     depends_on:
-      - livekit
-      - redis
+      livekit:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       INGRESS_CONFIG_FILE: /etc/ingress.yml
       LIVEKIT_API_KEY: ${LIVEKIT_API_KEY:?Set LIVEKIT_API_KEY in .env}
@@ -475,9 +479,15 @@ services:
     logging: *default-logging
     <<: *default-hardening
     restart: always
+    # Long form, not the short list: the short form is service_started, so egress
+    # launched the moment the redis *container* existed — before Docker DNS was
+    # ready, it got `lookup redis ... server misbehaving` and crash-looped
+    # (11 restarts observed). Wait for redis + livekit to be actually healthy.
     depends_on:
-      - livekit
-      - redis
+      livekit:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       EGRESS_CONFIG_FILE: /etc/egress.yml
       LIVEKIT_API_KEY: ${LIVEKIT_API_KEY:?Set LIVEKIT_API_KEY in .env}
