@@ -29,7 +29,7 @@ serde = "1.0.136"
 
 # async
 futures = "0.3.21"
-async-tungstenite = { version = "0.17.0", features = ["async-std-runtime"] }
+async-tungstenite = { version = "0.28", features = ["async-std-runtime"] }
 async-std = { version = "1.8.0", features = [
     "tokio1",
     "tokio02",
