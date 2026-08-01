@@ -15,6 +15,7 @@ compose.override.yml
 .claude/
 
 node_modules/
+.vite/
 /server/target/
 /server/.mongo/
 /server/.env
