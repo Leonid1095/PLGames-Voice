@@ -18,13 +18,17 @@ const PUBLIC_URL = process.env.PUBLIC_URL || "https://plgames-voice.ru";
 const SERVER_ID = process.env.SERVER_ID;
 const WELCOME_CHANNEL = process.env.WELCOME_CHANNEL;
 
-// --- Global error handling: never crash silently ---
+// --- Global error handling: log loudly, then let the container restart clean ---
 process.on("unhandledRejection", (reason) => {
   console.error("[FATAL] Unhandled promise rejection:", reason);
   if (reason instanceof Error && reason.stack) console.error(reason.stack);
 });
 process.on("uncaughtException", (err) => {
   console.error("[FATAL] Uncaught exception:", err && err.stack ? err.stack : err);
+  // After an uncaught exception the process state is undefined, so continuing
+  // risks silent corruption. Exit 1 so Compose's `restart: always` brings up a
+  // fresh, consistent instance instead of limping on (audit C5.12).
+  process.exit(1);
 });
 
 // --- Persistent settings (JSON file) ---
