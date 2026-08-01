@@ -7,11 +7,43 @@ x-logging: &default-logging
     max-size: "10m"
     max-file: "3"
 
+# Default Linux hardening applied to every service. `no-new-privileges` blocks
+# setuid/file-capability escalation (note: this also neutralises the
+# cap_net_bind_service xattr on the caddy binary, so caddy gets that cap back
+# via cap_add instead). `cap_drop: ALL` strips the default Docker capability
+# set; services that genuinely need a cap (caddy: NET_BIND_SERVICE,
+# livekit-egress: SYS_ADMIN) re-add only that one.
+x-hardening: &default-hardening
+  cap_drop:
+    - ALL
+  security_opt:
+    - no-new-privileges:true
+
+networks:
+  # Edge network: services reached by the host reverse proxy (nginx) and the
+  # internal Caddy proxy. Data stores are NOT on this network, so a compromise
+  # of web/caddy/bot/january cannot reach mongo/redis/rabbit/minio directly.
+  #
+  # Subnet is pinned on purpose. With the built-in 172.17-172.31 pool exhausted by
+  # other projects, Docker fell through to 192.168.0.0/16 and handed this network
+  # 192.168.16.0/20 — which swallowed the admin's LAN gateway 192.168.31.1 and cut
+  # SSH access to the host (2026-08-01). Keep it inside the host-wide
+  # default-address-pools range (10.192.0.0/12) declared in /etc/docker/daemon.json.
+  frontend:
+    ipam:
+      config:
+        - subnet: 10.201.0.0/24
+  # Internal network: data stores and the services that talk to them. Not
+  # marked `internal: true` because pushd needs outbound internet for push
+  # delivery, and ingress/egress may need to reach external stream sources.
+  backend:
+
 services:
   # MongoDB: Database
   database:
     image: docker.io/mongo:8
     logging: *default-logging
+    <<: *default-hardening
     restart: always
     command: --auth
     user: "999:999"
@@ -20,6 +52,7 @@ services:
     environment:
       MONGO_USER: ${MONGO_USER:-plgadmin}
       MONGO_PASS: ${MONGO_PASS:?Set MONGO_PASS in .env}
+    networks: [backend]
     deploy:
       resources:
         limits:
@@ -35,6 +68,12 @@ services:
   redis:
     image: docker.io/redis:7-alpine
     logging: *default-logging
+    <<: *default-hardening
+    # Run directly as the image's redis user. The entrypoint's root path does
+    # `chown`+`su-exec`, which needs CHOWN/DAC_OVERRIDE/SETUID — all stripped by
+    # cap_drop: ALL, so it died with "find: ./appendonlydir: Permission denied".
+    # Starting as 999:1000 skips that path entirely (and never runs as root).
+    user: "999:1000"
     command: >-
       redis-server
       --requirepass ${REDIS_PASSWORD:?Set REDIS_PASSWORD in .env}
@@ -57,6 +96,7 @@ services:
       # --appendonly/--save persistence has nowhere to write and every restart
       # wipes redis (cache/pubsub/presence).
       - ./data/redis:/data
+    networks: [backend]
     deploy:
       resources:
         limits:
@@ -72,12 +112,18 @@ services:
   rabbit:
     image: docker.io/rabbitmq:4
     logging: *default-logging
+    <<: *default-hardening
+    # Same reason as redis: the entrypoint's `gosu rabbitmq` needs CAP_SETUID,
+    # which cap_drop: ALL removes ("failed switching to rabbitmq: operation not
+    # permitted"). ./data/rabbit is already owned by 999:999.
+    user: "999:999"
     restart: always
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBIT_USER:-rabbituser}
       RABBITMQ_DEFAULT_PASS: ${RABBIT_PASS:?Set RABBIT_PASS in .env}
     volumes:
       - ./data/rabbit:/var/lib/rabbitmq
+    networks: [backend]
     deploy:
       resources:
         limits:
@@ -93,6 +139,7 @@ services:
   minio:
     image: docker.io/minio/minio:RELEASE.2025-09-07T16-13-09Z
     logging: *default-logging
+    <<: *default-hardening
     command: server /data
     volumes:
       - ./data/minio:/data
@@ -101,7 +148,7 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_PASS:?Set MINIO_PASS in .env}
       MINIO_DOMAIN: minio
     networks:
-      default:
+      backend:
         aliases:
           - revolt-uploads.minio
           - attachments.minio
@@ -126,6 +173,12 @@ services:
   caddy:
     image: docker.io/caddy:2
     logging: *default-logging
+    <<: *default-hardening
+    # Caddy binds :80 inside the container. Its binary carries the
+    # cap_net_bind_service file capability, but `no-new-privileges` neutralises
+    # file caps on exec — so grant the cap directly here instead.
+    cap_add:
+      - NET_BIND_SERVICE
     restart: always
     env_file: .env.web
     ports:
@@ -134,6 +187,7 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - ./data/caddy-data:/data
       - ./data/caddy-config:/config
+    networks: [frontend]
     deploy:
       resources:
         limits:
@@ -152,6 +206,13 @@ services:
       dockerfile: Dockerfile.api
     image: plg-voice-api:latest
     logging: *default-logging
+    <<: *default-hardening
+    # Revolt.toml is 0640 plg:65532 so the distroless nonroot services (autumn,
+    # january) can read it by group. This container runs as root and used to read
+    # it via CAP_DAC_OVERRIDE, which cap_drop: ALL removed -> panic at
+    # crates/core/config/src/lib.rs:112 "Permission denied". Joining the file's
+    # group restores access without handing a capability back.
+    group_add: ["65532"]
     depends_on:
       database:
         condition: service_healthy
@@ -164,6 +225,7 @@ services:
         source: ./Revolt.toml
         target: /Revolt.toml
         read_only: true
+    networks: [frontend, backend]
     deploy:
       resources:
         limits:
@@ -183,6 +245,9 @@ services:
       dockerfile: Dockerfile.events
     image: plg-voice-events:latest
     logging: *default-logging
+    <<: *default-hardening
+    # Same as api: root container reading the 0640 plg:65532 Revolt.toml.
+    group_add: ["65532"]
     depends_on:
       database:
         condition: service_healthy
@@ -195,6 +260,7 @@ services:
         source: ./Revolt.toml
         target: /Revolt.toml
         read_only: true
+    networks: [frontend, backend]
     deploy:
       resources:
         limits:
@@ -215,6 +281,7 @@ services:
     # the tag's removal. Point at the image it is actually running.
     image: ghcr.io/stoatchat/file-server:latest
     logging: *default-logging
+    <<: *default-hardening
     depends_on:
       database:
         condition: service_healthy
@@ -225,6 +292,7 @@ services:
         source: ./Revolt.toml
         target: /Revolt.toml
         read_only: true
+    networks: [frontend, backend]
     deploy:
       resources:
         limits:
@@ -241,11 +309,13 @@ services:
   january:
     image: ghcr.io/stoatchat/proxy:latest
     logging: *default-logging
+    <<: *default-hardening
     volumes:
       - type: bind
         source: ./Revolt.toml
         target: /Revolt.toml
         read_only: true
+    networks: [frontend]
     deploy:
       resources:
         limits:
@@ -257,6 +327,7 @@ services:
   crond:
     image: ghcr.io/stoatchat/crond:latest
     logging: *default-logging
+    <<: *default-hardening
     depends_on:
       database:
         condition: service_healthy
@@ -267,6 +338,7 @@ services:
         source: ./Revolt.toml
         target: /Revolt.toml
         read_only: true
+    networks: [backend]
     deploy:
       resources:
         limits:
@@ -277,6 +349,7 @@ services:
   pushd:
     image: ghcr.io/stoatchat/pushd:latest
     logging: *default-logging
+    <<: *default-hardening
     restart: always
     depends_on:
       database:
@@ -292,6 +365,7 @@ services:
         source: ./Revolt.toml
         target: /Revolt.toml
         read_only: true
+    networks: [backend]
     deploy:
       resources:
         limits:
@@ -301,6 +375,7 @@ services:
   voice-ingress:
     image: ghcr.io/stoatchat/voice-ingress:latest
     logging: *default-logging
+    <<: *default-hardening
     restart: always
     depends_on:
       database:
@@ -316,6 +391,7 @@ services:
         source: ./Revolt.toml
         target: /Revolt.toml
         read_only: true
+    networks: [frontend, backend]
     deploy:
       resources:
         limits:
@@ -325,6 +401,7 @@ services:
   livekit:
     image: ghcr.io/stoatchat/livekit-server:v1.9.6
     logging: *default-logging
+    <<: *default-hardening
     command: --config /etc/livekit.yml
     volumes:
       - ./livekit.yml:/etc/livekit.yml:ro
@@ -336,6 +413,7 @@ services:
       - "3478:3478/udp"
       - "5349:5349/tcp"
       - "50000-50100:50000-50100/udp"
+    networks: [frontend, backend]
     deploy:
       resources:
         limits:
@@ -352,6 +430,7 @@ services:
   livekit-ingress:
     image: livekit/ingress:v1.4.3
     logging: *default-logging
+    <<: *default-hardening
     restart: always
     depends_on:
       - livekit
@@ -365,6 +444,7 @@ services:
     ports:
       - "127.0.0.1:1935:1935"
       - "127.0.0.1:8088:8088"
+    networks: [backend]
     deploy:
       resources:
         limits:
@@ -374,6 +454,7 @@ services:
   livekit-egress:
     image: livekit/egress:v1.12.0
     logging: *default-logging
+    <<: *default-hardening
     restart: always
     depends_on:
       - livekit
@@ -387,6 +468,7 @@ services:
       - ./data/recordings:/recordings
     cap_add:
       - SYS_ADMIN
+    networks: [backend]
     deploy:
       resources:
         limits:
@@ -399,6 +481,7 @@ services:
     # init container could not start, and with it neither could autumn.
     image: docker.io/minio/mc:RELEASE.2025-08-13T08-35-41Z
     logging: *default-logging
+    <<: *default-hardening
     depends_on:
       - minio
     entrypoint: >
@@ -413,6 +496,7 @@ services:
     environment:
       MINIO_USER: ${MINIO_USER:-minioautumn}
       MINIO_PASS: ${MINIO_PASS:?Set MINIO_PASS in .env}
+    networks: [backend]
 
   # Web App (build locally: docker build -t plg-voice-web:latest ./client/)
   web:
@@ -424,8 +508,10 @@ services:
       dockerfile: Dockerfile
     image: plg-voice-web:latest
     logging: *default-logging
+    <<: *default-hardening
     restart: always
     env_file: .env.web
+    networks: [frontend]
     deploy:
       resources:
         limits:
@@ -444,6 +530,7 @@ services:
       dockerfile: Dockerfile
     image: plg-voice-bot:latest
     logging: *default-logging
+    <<: *default-hardening
     restart: always
     depends_on:
       api:
@@ -471,6 +558,7 @@ services:
       # Expose the bot's stream service (HTTP) to the host so the nginx
       # reverse proxy in plgvoice.conf can reach /stream/* via 127.0.0.1:3939.
       - "127.0.0.1:3939:3939"
+    networks: [frontend]
     deploy:
       resources:
         limits:
