@@ -180,6 +180,24 @@ services:
     cap_add:
       - NET_BIND_SERVICE
     restart: always
+    # Caddy has no depends_on originally, so on `up -d --build` it came up
+    # before the Rust services finished init (events connects to Mongo/Redis).
+    # Docker DNS then returned SERVFAIL for `events` -> /ws got 502 for the
+    # ~8 min until events went healthy. Wait for the proxied upstreams instead.
+    # autumn/january are distroless (no healthcheck) -> service_started only.
+    # livekit/voice-ingress left out so a slow voice stack never blocks the
+    # main web/api/events frontend from serving.
+    depends_on:
+      api:
+        condition: service_healthy
+      events:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+      autumn:
+        condition: service_started
+      january:
+        condition: service_started
     env_file: .env.web
     ports:
       - "127.0.0.1:8091:80"
