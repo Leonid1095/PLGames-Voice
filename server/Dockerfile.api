@@ -39,5 +39,12 @@ RUN sh /tmp/build-image-layer.sh apps
 # Runtime Stage
 FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y ca-certificates libssl3 && rm -rf /var/lib/apt/lists/*
+# Run as non-root. UID/GID 65532 matches the distroless nonroot services
+# (autumn/january) — the group that owns the host Revolt.toml (0640 1000:65532),
+# so the process reads its config via group membership, no CAP_DAC_OVERRIDE.
+RUN groupadd -g 65532 nonroot && \
+    useradd  -u 65532 -g 65532 -d /nonexistent -s /usr/sbin/nologin -M nonroot
 COPY --from=builder /home/rust/src/target/release/revolt-delta /usr/local/bin/revolt-delta
+WORKDIR /tmp
+USER 65532:65532
 CMD ["revolt-delta"]

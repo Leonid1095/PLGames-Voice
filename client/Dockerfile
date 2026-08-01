@@ -69,6 +69,11 @@ RUN npm install --omit=dev
 # Copy built static assets stage 1
 COPY --from=builder /build/packages/client/dist ./dist
 
+# inject.js rewrites assets into dist_injected/ at startup, so /app must be
+# writable by the runtime user. node:alpine ships a `node` user (uid 1000);
+# drop root entirely.
+RUN chown -R node:node /app
+
 EXPOSE 5000
 
 # Runtime env vars (overridden by Helm chart / docker run)
@@ -81,4 +86,5 @@ ENV VITE_HCAPTCHA_SITEKEY=""
 ENV VITE_GIPHY_API_KEY=""
 ENV REVOLT_PUBLIC_URL=""
 
+USER node
 CMD ["npm", "start"]

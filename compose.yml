@@ -225,11 +225,11 @@ services:
     image: plg-voice-api:latest
     logging: *default-logging
     <<: *default-hardening
-    # Revolt.toml is 0640 plg:65532 so the distroless nonroot services (autumn,
-    # january) can read it by group. This container runs as root and used to read
-    # it via CAP_DAC_OVERRIDE, which cap_drop: ALL removed -> panic at
-    # crates/core/config/src/lib.rs:112 "Permission denied". Joining the file's
-    # group restores access without handing a capability back.
+    # Revolt.toml is 0640 uid1000:65532 on the host. The container runs as
+    # 65532:65532 (USER in Dockerfile.api), so it reads the config via primary
+    # group membership — no CAP_DAC_OVERRIDE. group_add kept for clarity.
+    # History: cap_drop: ALL removed CAP_DAC_OVERRIDE -> panic at
+    # crates/core/config/src/lib.rs:112 "Permission denied" (back when this ran as root).
     group_add: ["65532"]
     depends_on:
       database:
@@ -264,7 +264,8 @@ services:
     image: plg-voice-events:latest
     logging: *default-logging
     <<: *default-hardening
-    # Same as api: root container reading the 0640 plg:65532 Revolt.toml.
+    # Same as api: runs as 65532:65532 (USER in Dockerfile.events), reads the
+    # 0640 uid1000:65532 Revolt.toml via group membership.
     group_add: ["65532"]
     depends_on:
       database:
