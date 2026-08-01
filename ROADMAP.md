@@ -1,6 +1,6 @@
 # PLG Voice — Единая дорожная карта
 
-> **Версия:** 3.1 | **Дата:** 2026-05-18
+> **Версия:** 3.2 | **Дата:** 2026-08-01
 > **Репозиторий:** [Leonid1095/PLGames-Voice](https://github.com/Leonid1095/PLGames-Voice)
 > **Стек:** Solid.js 1.9 + Rust (Rocket) + LiveKit 1.9.6 + Node.js бот + Electron
 > **Домен:** plgames-voice.ru | **IP:** 95.78.126.214
@@ -10,6 +10,49 @@
 ## Сводка проекта
 
 PLG Voice — gaming-мессенджер, конкурент Discord/Telegram/Guilded. 17 Docker-сервисов, 57.8K LOC клиент, 2.8K LOC бот, 70+ локалей (активно: en/ru, 98.9% покрытие). Все основные функции реализованы: голос с Krisp, скрин-шеринг, видео, форумы, XP/уровни, турниры, автомод, premium, стикеры. Guilded закрылся — мы забираем их аудиторию и фичи.
+
+---
+
+## 🛡️ Аудит безопасности и харденинг (2026-07-31 → в работе)
+
+> Детальный план с `file:line` и статусом каждой задачи: [`plans/audit-2026-07-31.md`](plans/audit-2026-07-31.md).
+> Все перечисленные правки развёрнуты на prod и проверены в runtime (endpoints 200, WS-рукопожатие 101, реальные клиенты коннектятся).
+
+### ✅ Сделано
+
+**P0 — критические блокеры (закрыты):**
+- **A1** Секреты вычищены из git-истории (VAPID private key + FILES_ENCRYPTION_KEY); теги `v2.0.0`/`v1.6.0` перетегнуты с чистых коммитов
+- **A2** `setup.sh` генерирует `REDIS_PASSWORD` + `MESSAGES_ENCRYPTION_KEY` — свежий деплой снова стартует
+- **A3** `generate_config.sh`/`setup-config.sh` → shim на `setup.sh` (убрана ловушка пересоздания `encryption_key` на каждом запуске)
+- **A4** Дамп полного конфига (SMTP/URI) в stdout убран
+
+**P1 — безопасность / инфра (закрыты):**
+- **B1** CI security-скан на каждый PR (`.github/workflows/security.yml`)
+- **B2** Сетевая изоляция: сети `frontend`/`backend` + подсеть `10.201.0.0/24` (починило инцидент: Docker-пул исчерпался → `frontend` получил 192.168.16.0/20, поглотил LAN-шлюз 192.168.31.1 и отрубил SSH)
+- **B3** Контейнеры non-root: `cap_drop: ALL` + `no-new-privileges` на всех сервисах; api/events/web/redis/rabbit — под non-root uid
+- **B4** livekit-egress: `cap_drop ALL` + только `SYS_ADMIN` + изоляция в `backend`; egress/ingress → `depends_on` long-form (убрало crash-loop по 11 рестартов у каждого — та же DNS-гонка)
+- **B5** `server_tokens off` (nginx больше не светит версию)
+- **B6** TLS-приватники `600` (были world-readable `644`)
+- **C1** Мёртвый/отладочный код в `delta/main.rs` удалён
+- **D1** 14 отсутствующих i18n-переводов (RU): создание сервера, зрители стрима, реакции
+
+**Доп. фиксы вне аудита:**
+- `caddy.depends_on` — убрало /ws 502 при пересборке (Caddy стартовал раньше events, Docker DNS отдавал SERVFAIL)
+- **C2/C3/C4 — зависимости Rust (7 правок, развёрнуто + runtime-проверено):** удалены мёртвые `lettre`/`env_logger`/`reqwest`(delta)/`ulid`(bonfire+voice-ingress); `rocket → 0.5.1`, `ulid → 1.2.1`, `pretty_env_logger → 0.5`, `async-tungstenite 0.17 → 0.28` (WS-стек проверен в runtime), `isahc → reqwest` в database
+- **C5.12** бот: `uncaughtException → exit(1)` (чистый рестарт через `restart: always` вместо зависания в неопределённом состоянии)
+- P3 security-заголовки: `X-XSS-Protection:0`, `Permissions-Policy`, `X-Forwarded-For` на `/whip`+`/stream/`, `ssl_protocols` зафиксированы в репо
+
+### 🔴 Осталось
+
+| Пункт | Статус | Причина / объём |
+|-------|--------|-----------------|
+| **C2** redis форк → upstream | ⛔ заблокирован | `redis-kiss` заброшен (0.1.4, 2023-04), пинит redis 0.23 через `mobc-redis`; нужна замена/форк обёртки (5 крейтов). `smismember` нативен в upstream redis ≥0.24, но не дотянуться без обновления обёртки |
+| **C4** `async-std → tokio` | 🔴 крупный | Мажорная миграция async-рантайма, 7+ крейтов, realtime-ядро — отдельный сфокусированный спринт |
+| **C4** isahc в pushd | 🟡 отложен | `web-push` crate (0.10/0.11) не имеет reqwest-бекенда — нужен кастомный `WebPushClient` или переключение на hyper |
+| **C5.11** unit-тесты бота | 🟢 открыт | XP-формула, автомод, парсеры команд. Низкий риск, аддитивно, не трогает Rust/прод |
+| **C3** дедупликация `<60` крейтов | 🟡 частично | Сейчас ~305 версионных строк в `cargo tree -d`. Без C2/C4 + бампа `authifier` (тянет reqwest 0.11 + ulid 0.5) цели не достичь |
+| B4 seccomp/AppArmor для egress | 🟡 отложен | Высокий риск сломать Chrome/GStreamer-пайплайн egress; текущая позишн (non-root + cap_drop ALL + SYS_ADMIN + backend-сеть) уже сильная |
+| P2/P3 backlog | 🟡 | healthcheck для bot/ingress/egress, `limit_req`/gzip в nginx, права `*.sh` 0755, placeholder'ы `.env.example` |
 
 ---
 
@@ -625,5 +668,5 @@ PLG Voice — gaming-мессенджер, конкурент Discord/Telegram/G
 
 ---
 
-*Последнее обновление: 2026-05-18 — добавлена Rich Activity (manual set готов, desktop auto-detect в P1)*
+*Последнее обновление: 2026-08-01 — добавлен раздел «Аудит безопасности и харденинг» (P0 закрыт, P1 закрыт, C2/C3/C4 частично, блокеры/отложения зафиксированы).*
 *Все предыдущие roadmap'ы (V2, V4, V5, V6) объединены в этот документ.*
