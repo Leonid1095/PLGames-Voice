@@ -28,7 +28,7 @@ impl_ops = "0.1.1"
 bitfield = "0.13.2"
 
 # ID / key generation
-ulid = "0.4.1"
+ulid = "1.1"
 nanoid = "0.4.0"
 
 # serde

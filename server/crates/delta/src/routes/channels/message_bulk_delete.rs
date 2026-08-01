@@ -33,14 +33,11 @@ pub async fn bulk_delete_messages(
     })?;
 
     for id in &options.ids {
-        if ulid::Ulid::from_string(id)
-            .map_err(|_| create_error!(InvalidOperation))?
-            .datetime()
-            .signed_duration_since(Utc::now())
-            .num_days()
-            .abs()
-            > 7
-        {
+        let parsed_ulid = ulid::Ulid::from_string(id)
+            .map_err(|_| create_error!(InvalidOperation))?;
+        let age_days =
+            (parsed_ulid.timestamp_ms() as i64 - Utc::now().timestamp_millis()).abs() / 86_400_000;
+        if age_days > 7 {
             return Err(create_error!(InvalidOperation));
         }
     }

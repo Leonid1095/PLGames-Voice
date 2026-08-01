@@ -44,7 +44,10 @@ pub async fn message_send(
             let last_msg = db.fetch_latest_message_by_user(channel.id(), &user.id).await?;
             if let Some(last) = last_msg {
                 let elapsed = ulid::Ulid::from_string(&last.id)
-                    .map(|u| (Utc::now() - u.datetime()).num_seconds().max(0) as u64)
+                    .map(|u| {
+                        ((Utc::now().timestamp_millis() - u.timestamp_ms() as i64) / 1000).max(0)
+                            as u64
+                    })
                     .unwrap_or(u64::MAX);
                 if elapsed < *interval as u64 {
                     return Err(create_error!(TooManyReplies {
@@ -100,7 +103,9 @@ pub async fn message_send(
     let allow_mentions = if let Some(server) = query.server_ref() {
         if server.discoverable {
             ulid::Ulid::from_string(&user.id)
-                .map(|u| (Utc::now() - u.datetime()).num_seconds() >= 12 * 3600)
+                .map(|u| {
+                    (Utc::now().timestamp_millis() - u.timestamp_ms() as i64) / 1000 >= 12 * 3600
+                })
                 .unwrap_or(true)
         } else {
             true
