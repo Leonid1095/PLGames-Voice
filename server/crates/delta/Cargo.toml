@@ -20,7 +20,6 @@ log = "0.4.11"
 dashmap = "5.2.0"
 linkify = "0.6.0"
 once_cell = "1.17.1"
-env_logger = "0.7.1"
 
 # Lang. Utilities
 regex = "1"
