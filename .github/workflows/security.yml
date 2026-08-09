@@ -88,18 +88,21 @@ jobs:
         run: pnpm test
         working-directory: desktop
 
-  # Dependency advisories. Both jobs are informational for now
-  # (continue-on-error) and deliberately so: the 2026-08-09 audit was the first
-  # time the Rust tree had ever been scanned and it found 37 advisories, so a
-  # blocking job would be red on every run from day one and would simply be
-  # ignored. The value right now is the report. Flip continue-on-error off per
-  # job once its backlog is triaged — the Rust one via deny.toml ignores with a
-  # written reason, the npm one once the build-time lingui/babel chain is
-  # bumped.
+  # Dependency advisories.
+  #
+  # The Rust job BLOCKS. Its backlog is cleared: the 2026-08-09 audit was the
+  # first time this tree had ever been scanned, found 18 vulnerabilities, and
+  # every one is now either fixed (jxl-oxide, crossbeam-epoch) or ignored in
+  # .cargo/audit.toml with a written reason and a named re-check trigger. The
+  # job passes today, so from here a new advisory is a build failure rather
+  # than a line in a report nobody reads.
+  #
+  # The npm job is still informational: client/ carries 6 findings in the
+  # build-time lingui/babel chain, none reachable from anything users touch.
+  # Flip it once that chain is bumped.
   cargo-audit:
-    name: Rust advisories (informational)
+    name: Rust advisories
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       # rust-toolchain.toml pins 1.92; cargo-audit needs >= 1.88 to parse the
