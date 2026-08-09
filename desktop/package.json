@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.9.0",
+    "@electron-forge/maker-appx": "^7.9.0",
     "@electron-forge/maker-deb": "^7.9.0",
     "@electron-forge/maker-dmg": "^7.9.0",
     "@electron-forge/maker-flatpak": "^7.9.0",
@@ -49,7 +50,6 @@
     "vitest": "^3.2.7"
   },
   "dependencies": {
-    "@electron-forge/maker-appx": "^7.9.0",
     "@homebridge/dbus-native": "^0.7.2",
     "auto-launch": "^5.0.6",
     "bufferutil": "^4.0.9",
@@ -59,5 +59,12 @@
     "update-electron-app": "^3.1.1",
     "utf-8-validate": "^6.0.5"
   },
-  "packageManager": "pnpm@10.18.1+sha512.77a884a165cbba2d8d1c19e3b4880eee6d2fcabd0d879121e282196b80042351d5eb3ca0935fa599da1dc51265cc68816ad2bddd2a2de5ea9fdf92adbec7cd34"
+  "packageManager": "pnpm@10.18.1+sha512.77a884a165cbba2d8d1c19e3b4880eee6d2fcabd0d879121e282196b80042351d5eb3ca0935fa599da1dc51265cc68816ad2bddd2a2de5ea9fdf92adbec7cd34",
+  "pnpm": {
+    "overrides": {
+      "conf>ajv": "^8.18.0",
+      "ajv>fast-uri": "^3.1.5",
+      "discord-rpc>ws": "^7.5.11"
+    }
+  }
 }
