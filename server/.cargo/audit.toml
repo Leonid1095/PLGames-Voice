@@ -22,4 +22,6 @@ ignore = [
     "RUSTSEC-2026-0049", # rustls-webpki — as above
     "RUSTSEC-2026-0104", # rustls-webpki — as above; RE-CHECK if S3 goes https://
     "RUSTSEC-2021-0124", # tokio 0.2 via async-std — deferred, resolved by C4
+    "RUSTSEC-2026-0118", # hickory — only reached via mongodb+srv://, we use mongodb://
+    "RUSTSEC-2026-0119", # hickory — as above; RE-CHECK if the URI gains +srv
 ]

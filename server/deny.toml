@@ -91,6 +91,9 @@ ignore = [
     { id = "RUSTSEC-2026-0104", reason = "rustls-webpki 0.101.7/0.102.8 (under rustls 0.21/0.22). All four advisories need a hostile TLS peer, and nothing on those branches meets one: the S3 path (aws-sdk-s3) talks to Revolt.toml's endpoint http://minio:9000 — plain HTTP on the internal network, no TLS at all — while pushd's FCM and APNs paths talk only to Google and Apple. The one component that does fetch arbitrary user-supplied URLs is january, and it is on reqwest 0.12 -> rustls 0.23.40, which is patched. RE-CHECK IMMEDIATELY if [files.s3] endpoint ever becomes an https:// external provider." },
 
     { id = "RUSTSEC-2021-0124", reason = "tokio 0.2 oneshot data race, reached through async-global-executor <- async-std. Fixing it properly means the async-std -> tokio migration, which the 2026-07-31 plan tracks as C4 and defers as a focused sprint across 7+ crates. Not ignored on merit — this one is a real deferral, and it goes away with C4." },
+
+    { id = "RUSTSEC-2026-0118", reason = "hickory-proto NSEC3 unbounded loop, no fix available. hickory-proto and hickory-resolver enter this tree through mongodb 3.6.0 alone, and the driver only resolves DNS for mongodb+srv:// connection strings. Revolt.toml uses a plain mongodb://database:27017 against a Docker-internal hostname, so the resolver never runs — let alone against a hostile DNSSEC response. RE-CHECK if the connection string ever becomes mongodb+srv:// (a move to Atlas would do it)." },
+    { id = "RUSTSEC-2026-0119", reason = "hickory-proto O(n^2) name compression on message *encoding* — same dormant path as RUSTSEC-2026-0118 above, and same re-check trigger. A fix does exist (>=0.26.1) but it is gated behind a mongodb driver bump; take it when mongodb moves." },
 ]
 # If this is true, then cargo deny will use the git executable to fetch advisory database.
 # If this is false, then it uses a built-in git library.
