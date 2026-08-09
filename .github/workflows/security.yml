@@ -63,7 +63,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # The action reads the pnpm version from packageManager, and the one that
+      # applies here lives in desktop/package.json — the repo root has no such
+      # field, so without this it fails with "Multiple versions of pnpm
+      # specified"/"no version specified".
       - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: desktop/package.json
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -117,7 +123,12 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
+      # Pinned rather than read from a packageManager field: this job audits
+      # both workspaces and they pin different pnpm versions (client 10.28.1,
+      # desktop 10.18.1). `pnpm audit` does not care which one reads the lock.
       - uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.1
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
