@@ -1,0 +1,25 @@
+# cargo-audit configuration.
+#
+# cargo-audit and cargo-deny read different files: this one drives `cargo audit`
+# (which is what .github/workflows/security.yml runs), while deny.toml drives
+# `cargo deny`. The IDs below are deliberately bare — the full justification for
+# each lives next to it in deny.toml's [advisories] ignore list, so there is one
+# place to read the reasoning and one place to update it.
+#
+# Triaged 2026-08-09. Nothing here is ignored for convenience: every entry is
+# either unreachable in this deployment or explicitly deferred with a tracked
+# follow-up. Advisories that ARE reachable get fixed — that is why jxl-oxide
+# went 0.12.5 -> 0.12.6 rather than appearing in this list.
+
+[advisories]
+ignore = [
+    "RUSTSEC-2024-0421", # idna — validator only does length/regex here
+    "RUSTSEC-2026-0141", # lettre — Boring TLS backend not compiled (native-tls)
+    "RUSTSEC-2024-0013", # libgit2-sys — build-time only, via vergen
+    "RUSTSEC-2023-0071", # rsa — no RSA signing happens (ES256 / HMAC only)
+    "RUSTSEC-2026-0098", # rustls-webpki — no untrusted TLS peer on those branches
+    "RUSTSEC-2026-0099", # rustls-webpki — as above
+    "RUSTSEC-2026-0049", # rustls-webpki — as above
+    "RUSTSEC-2026-0104", # rustls-webpki — as above; RE-CHECK if S3 goes https://
+    "RUSTSEC-2021-0124", # tokio 0.2 via async-std — deferred, resolved by C4
+]

@@ -69,11 +69,28 @@ feature-depth = 1
 #db-urls = ["https://github.com/rustsec/advisory-db"]
 # A list of advisory IDs to ignore. Note that ignored advisories will still
 # output a note when they are encountered.
+# Triaged 2026-08-09. Every entry below states why the advisory is not
+# reachable in this deployment, not merely that it is inconvenient. Anything
+# that IS reachable gets fixed instead — that is how jxl-oxide 0.12.5 ->
+# 0.12.6 came about, since autumn decodes user-uploaded JPEG XL.
+#
+# Re-check these whenever the surrounding architecture moves. The triggers are
+# named in each reason.
 ignore = [
-    #"RUSTSEC-0000-0000",
-    #{ id = "RUSTSEC-0000-0000", reason = "you can specify a reason the advisory is ignored" },
-    #"a-crate-that-is-yanked@0.1.1", # you can also ignore yanked crate versions if you wish
-    #{ crate = "a-crate-that-is-yanked@0.1.1", reason = "you can specify why you are ignoring the yanked crate" },
+    { id = "RUSTSEC-2024-0421", reason = "idna punycode confusion. Reached only through validator 0.15/0.16, and this codebase uses validator exclusively for #[validate(length(...))] and regex constraints — no email, url or domain validators are declared anywhere in crates/core/models. The idna code path is never entered. Re-check if a #[validate(email)] or #[validate(url)] is ever added." },
+
+    { id = "RUSTSEC-2026-0141", reason = "lettre hostname verification is disabled only on the Boring TLS backend; Cargo.lock resolves lettre 0.10.4 with native-tls, so the affected backend is not compiled. lettre itself arrives transitively through authifier 1.0.16 (the direct dependency was dropped in 9b49b5b6). Re-check if authifier switches TLS backends." },
+
+    { id = "RUSTSEC-2024-0013", reason = "libgit2-sys, via vergen 7.5.1, which stamps build metadata at compile time. It never runs in any shipped binary and never sees untrusted input. Re-check if git2 gains a runtime use." },
+
+    { id = "RUSTSEC-2023-0071", reason = "Marvin timing attack on RSA private-key operations, and no fixed version exists. Present via jwt-simple (<- web-push, pushd) and jsonwebtoken (<- livekit-api). Neither signs with RSA: VAPID web push uses ES256/ECDSA P-256 and LiveKit access tokens are HMAC-SHA256, so no RSA private-key operation is ever performed. The crate is linked for algorithm coverage only. Re-check if an RS256 key is ever configured." },
+
+    { id = "RUSTSEC-2026-0098", reason = "rustls-webpki name constraints — see RUSTSEC-2026-0104 below for the shared reasoning." },
+    { id = "RUSTSEC-2026-0099", reason = "rustls-webpki wildcard name constraints — see RUSTSEC-2026-0104 below for the shared reasoning." },
+    { id = "RUSTSEC-2026-0049", reason = "rustls-webpki CRL distribution point matching — see RUSTSEC-2026-0104 below for the shared reasoning." },
+    { id = "RUSTSEC-2026-0104", reason = "rustls-webpki 0.101.7/0.102.8 (under rustls 0.21/0.22). All four advisories need a hostile TLS peer, and nothing on those branches meets one: the S3 path (aws-sdk-s3) talks to Revolt.toml's endpoint http://minio:9000 — plain HTTP on the internal network, no TLS at all — while pushd's FCM and APNs paths talk only to Google and Apple. The one component that does fetch arbitrary user-supplied URLs is january, and it is on reqwest 0.12 -> rustls 0.23.40, which is patched. RE-CHECK IMMEDIATELY if [files.s3] endpoint ever becomes an https:// external provider." },
+
+    { id = "RUSTSEC-2021-0124", reason = "tokio 0.2 oneshot data race, reached through async-global-executor <- async-std. Fixing it properly means the async-std -> tokio migration, which the 2026-07-31 plan tracks as C4 and defers as a focused sprint across 7+ crates. Not ignored on merit — this one is a real deferral, and it goes away with C4." },
 ]
 # If this is true, then cargo deny will use the git executable to fetch advisory database.
 # If this is false, then it uses a built-in git library.
@@ -159,8 +176,10 @@ registries = [
 [bans]
 # Lint level for when multiple versions of the same crate are detected
 multiple-versions = "warn"
-# Lint level for when a crate version requirement is `*`
-wildcards = "allow"
+# Lint level for when a crate version requirement is `*`. Denied: a wildcard
+# requirement means the resolved version is whatever the registry happened to
+# hold, which is the opposite of a reproducible build (audit 2026-08-09, L4).
+wildcards = "deny"
 # The graph highlighting used when creating dotgraphs for crates
 # with multiple versions
 # * lowest-version - The path to the lowest versioned duplicate is highlighted
