@@ -134,9 +134,15 @@ jobs:
           node-version: "20"
       # --prod only: the dev tree is eslint/vitest/vite/rollup/babel and its
       # findings are not reachable from anything users touch.
+      #
+      # continue-on-error per step, not just per job: pnpm audit exits non-zero
+      # when it finds anything, so the client's 6 build-time findings were
+      # ending the job before the desktop step ever ran. Both need to report.
       - name: Audit client
         run: pnpm audit --prod
         working-directory: client
+        continue-on-error: true
       - name: Audit desktop
         run: pnpm audit --prod
         working-directory: desktop
+        continue-on-error: true
