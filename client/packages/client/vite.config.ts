@@ -79,7 +79,14 @@ export default defineConfig({
     rollupOptions: {
       external: ["hast"],
     },
-    sourcemap: true,
+    // Source maps were served publicly: 313 .map files, 20.6MB, every one of
+    // them HTTP 200 — the whole client source was readable by anyone.
+    // Nothing consumes them today, because sentry.ts only calls Sentry.init()
+    // when VITE_SENTRY_DSN is set and it is set nowhere. If Sentry is ever
+    // turned on, the setting to use is "hidden": it still emits the maps for
+    // upload but drops the sourceMappingURL comment, and the Dockerfile must
+    // then stop copying *.map into the served dist.
+    sourcemap: false,
   },
   optimizeDeps: {
     exclude: ["hast"],
