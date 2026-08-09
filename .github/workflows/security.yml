@@ -39,7 +39,7 @@ jobs:
         run: tests/node_modules/.bin/vitest run --config tests/vitest.config.ts tests/security/
 
   bot-lint:
-    name: Bot lint
+    name: Bot lint and tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -53,4 +53,7 @@ jobs:
         working-directory: bot
       - name: Lint
         run: npm run lint
+        working-directory: bot
+      - name: Test
+        run: npm test
         working-directory: bot

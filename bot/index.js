@@ -8,6 +8,7 @@ require("dotenv").config({ path: path.resolve(__dirname, "..", ".env") });
 
 const { ingressClient, roomService, egressClient } = require("./stream-service");
 const { defaultBannedWords, normaliseForAutomod, stripMachineTokens } = require("./banned-words");
+const { PERMISSION, computeServerPermissions, holds } = require("./permissions");
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const API_URL = process.env.API_URL;
@@ -247,17 +248,38 @@ function sendMessage(channelId, content) {
 
 // --- Permission check ---
 
-async function isAdmin(serverId, userId) {
+/**
+ * Does this user hold every one of the given permission bits on this server?
+ *
+ * Fails closed: any API error (not a member, server gone, transport failure)
+ * denies the action.
+ */
+async function hasPermission(serverId, userId, ...bits) {
   try {
-    const member = await api("GET", `/servers/${serverId}/members/${userId}`);
-    // Server owner is always admin
     const server = await api("GET", `/servers/${serverId}`);
-    if (server.owner === userId) return true;
-    // Check if member has any roles (basic permission check)
-    return member.roles && member.roles.length > 0;
-  } catch {
+    // Skip the member fetch for the owner — they bypass the calculation anyway.
+    const member =
+      server.owner === userId
+        ? null
+        : await api("GET", `/servers/${serverId}/members/${userId}`);
+
+    return holds(computeServerPermissions(server, member, userId), ...bits);
+  } catch (e) {
+    console.error(`[PERM] Check failed for ${userId} on ${serverId}:`, e.message || e);
     return false;
   }
+}
+
+/**
+ * Server administrator — holds ManageServer.
+ *
+ * This used to return true for *any* member holding *any* role, which handed
+ * every moderation command to anyone who had been given a purely cosmetic role
+ * (a colour, "Стример", "Новичок"). It only looked correct because the one role
+ * that existed happened to be Admin (audit 2026-08-09, H3).
+ */
+async function isAdmin(serverId, userId) {
+  return hasPermission(serverId, userId, PERMISSION.ManageServer);
 }
 
 // --- Commands ---
