@@ -57,3 +57,51 @@ jobs:
       - name: Test
         run: npm test
         working-directory: bot
+
+  # Dependency advisories. Both jobs are informational for now
+  # (continue-on-error) and deliberately so: the 2026-08-09 audit was the first
+  # time the Rust tree had ever been scanned and it found 37 advisories, so a
+  # blocking job would be red on every run from day one and would simply be
+  # ignored. The value right now is the report. Flip continue-on-error off per
+  # job once its backlog is triaged — the Rust one via deny.toml ignores with a
+  # written reason, the npm one once the build-time lingui/babel chain is
+  # bumped.
+  cargo-audit:
+    name: Rust advisories (informational)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      # rust-toolchain.toml pins 1.92; cargo-audit needs >= 1.88 to parse the
+      # current advisory DB at all (CVSS 4.0 entries).
+      - name: Cache cargo-audit
+        id: cache-audit
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/cargo-audit
+          key: cargo-audit-${{ runner.os }}-v0.22
+      - name: Install cargo-audit
+        if: steps.cache-audit.outputs.cache-hit != 'true'
+        run: cargo install cargo-audit --locked
+      - name: Audit
+        run: cargo audit
+        working-directory: server
+
+  npm-audit:
+    name: npm advisories (informational)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      # --prod only: the dev tree is eslint/vitest/vite/rollup/babel and its
+      # findings are not reachable from anything users touch.
+      - name: Audit client
+        run: pnpm audit --prod
+        working-directory: client
+      - name: Audit desktop
+        run: pnpm audit --prod
+        working-directory: desktop

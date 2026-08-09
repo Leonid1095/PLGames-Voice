@@ -294,11 +294,15 @@ services:
 
   # File server
   autumn:
-    # Was plg-voice-autumn:latest — a local re-tag from the 2b974f28 "image
-    # rebrand" with no build behind it. The tag is long gone, so the service
-    # could not be recreated; it survived only because its container predates
-    # the tag's removal. Point at the image it is actually running.
-    image: ghcr.io/stoatchat/file-server:latest
+    # Built locally, not pulled. The upstream ghcr.io/stoatchat/file-server
+    # image ships jxl-oxide 0.12.5 / jxl-modular 0.11.2, both with open
+    # advisories, and every image upload is decoded through them; ghcr.io is
+    # unreachable from this host anyway, so it could not be refreshed. See
+    # server/Dockerfile.autumn.
+    image: plg-voice-autumn:latest
+    build:
+      context: ./server
+      dockerfile: Dockerfile.autumn
     logging: *default-logging
     <<: *default-hardening
     depends_on:
