@@ -13,6 +13,14 @@ x-logging: &default-logging
 # via cap_add instead). `cap_drop: ALL` strips the default Docker capability
 # set; services that genuinely need a cap (caddy: NET_BIND_SERVICE,
 # livekit-egress: SYS_ADMIN) re-add only that one.
+#
+# pids_limit caps the cgroup's task count, which contains a fork bomb in a
+# compromised container instead of letting it exhaust host PIDs. 512 is roughly
+# 7x the busiest service at idle (measured 2026-08-09: database 72, rabbit 53,
+# events 37, api 36, everything else under 30) — high enough that nothing legit
+# approaches it, low enough to still be a ceiling. Note the limit counts
+# *threads*, not processes, so the media services that spawn Chrome and
+# GStreamer raise it below rather than take this default.
 x-hardening: &default-hardening
   cap_drop:
     - ALL
@@ -57,6 +65,8 @@ services:
       resources:
         limits:
           memory: 2G
+          cpus: "3"
+          pids: 512
     healthcheck:
       test: mongosh --norc --quiet -u $${MONGO_USER} -p $${MONGO_PASS} --authenticationDatabase admin --eval "db.runCommand({ping:1}).ok"
       interval: 60s
@@ -101,6 +111,8 @@ services:
       resources:
         limits:
           memory: 512M
+          cpus: "1"
+          pids: 512
     healthcheck:
       test: redis-cli -a $${REDIS_PASSWORD} ping | grep -q PONG
       interval: 10s
@@ -128,6 +140,8 @@ services:
       resources:
         limits:
           memory: 512M
+          cpus: "1"
+          pids: 512
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 10s
@@ -161,6 +175,8 @@ services:
       resources:
         limits:
           memory: 1G
+          cpus: "2"
+          pids: 512
     healthcheck:
       test: ["CMD", "mc", "ready", "local"]
       interval: 30s
@@ -210,6 +226,8 @@ services:
       resources:
         limits:
           memory: 256M
+          cpus: "2"
+          pids: 512
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:80/"]
       interval: 30s
@@ -248,12 +266,20 @@ services:
       resources:
         limits:
           memory: 512M
+          cpus: "2"
+          pids: 512
     healthcheck:
       test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/14702' || exit 1"]
       interval: 30s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      # 90s, not 30s: on a full `docker compose up` this service is recreated
+      # alongside mongo/redis/rabbit and cannot bind until they answer. With a
+      # 30s grace window it was still starting when the window closed, went
+      # unhealthy, and took caddy down with it ("dependency failed to start:
+      # container plg-voice-api-1 is unhealthy") — so a cold start of the whole
+      # stack left the site unreachable until caddy was started by hand.
+      start_period: 90s
     restart: always
 
   # Events service (local build)
@@ -284,12 +310,15 @@ services:
       resources:
         limits:
           memory: 512M
+          cpus: "2"
+          pids: 512
     healthcheck:
       test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/14703' || exit 1"]
       interval: 30s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      # Same as api above: this one waits on mongo/redis/rabbit too.
+      start_period: 90s
     restart: always
 
   # File server
@@ -320,6 +349,8 @@ services:
       resources:
         limits:
           memory: 512M
+          cpus: "1.5"
+          pids: 512
     # No healthcheck: this image is distroless — it has no /bin/sh, no bash and
     # no wget, so every CMD-SHELL probe fails with "stat /bin/sh: no such file
     # or directory" and marks a perfectly healthy service unhealthy. The
@@ -343,6 +374,8 @@ services:
       resources:
         limits:
           memory: 256M
+          cpus: "1"
+          pids: 512
     # No healthcheck — distroless image, same as autumn above.
     restart: always
 
@@ -366,6 +399,8 @@ services:
       resources:
         limits:
           memory: 256M
+          cpus: "1"
+          pids: 512
     restart: always
 
   # Push notification daemon
@@ -393,6 +428,8 @@ services:
       resources:
         limits:
           memory: 256M
+          cpus: "1"
+          pids: 512
 
   # Voice ingress daemon
   voice-ingress:
@@ -419,6 +456,8 @@ services:
       resources:
         limits:
           memory: 256M
+          cpus: "6"
+          pids: 1024
 
   # Voice server
   livekit:
@@ -441,6 +480,8 @@ services:
       resources:
         limits:
           memory: 1G
+          cpus: "6"
+          pids: 4096
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:7880/"]
       interval: 30s
@@ -476,6 +517,8 @@ services:
       resources:
         limits:
           memory: 512M
+          cpus: "6"
+          pids: 4096
 
   # LiveKit Egress: stream recording
   livekit-egress:
@@ -506,6 +549,8 @@ services:
       resources:
         limits:
           memory: 1G
+          cpus: "6"
+          pids: 4096
 
   # Create buckets for minio.
   createbuckets:
@@ -532,6 +577,12 @@ services:
     networks: [backend]
 
   # Web App (build locally: docker build -t plg-voice-web:latest ./client/)
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          pids: 512
+
   web:
     # Without this, `docker compose build web` (the command CLAUDE.md documents)
     # printed "No services to build" and exited 0 — which is how the deployed
@@ -549,6 +600,8 @@ services:
       resources:
         limits:
           memory: 256M
+          cpus: "2"
+          pids: 512
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:5000/"]
       interval: 30s
@@ -596,3 +649,5 @@ services:
       resources:
         limits:
           memory: 256M
+          cpus: "1.5"
+          pids: 512

@@ -5,8 +5,12 @@ FROM node:24-alpine AS builder
 
 RUN apk add --no-cache git python3 make g++
 
-# Install pnpm
-RUN corepack enable && corepack prepare pnpm@10.28.1 --activate
+# Enable corepack but pin no version here: it takes pnpm from package.json's
+# "packageManager", which makes that field the single source of truth. Pinning
+# a second version in this file is what let the image build with 10.28.1 while
+# anyone running pnpm locally got 10.10.0 out of the packageManager field — and
+# a lockfile written by one and installed by the other does not survive.
+RUN corepack enable
 
 WORKDIR /build
 
@@ -24,8 +28,11 @@ COPY packages/client/package.json packages/client/
 # Copy panda config needed by client's "prepare" lifecycle script (panda codegen)
 COPY packages/client/panda.config.ts packages/client/
 
-# Install dependencies
-RUN pnpm install
+# Install dependencies. --frozen-lockfile makes pnpm-lock.yaml authoritative:
+# without it the lockfile in the repo was advisory, the image quietly
+# re-resolved whatever it liked, and a drifted lock only showed up as a build
+# failure much later.
+RUN pnpm install --frozen-lockfile
 
 # Submodules:
 # In CI: actions/checkout@v4 with submodules: recursive handles this automatically.
