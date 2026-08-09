@@ -1,4 +1,4 @@
-import { IUpdateInfo, updateElectronApp } from "update-electron-app";
+import { IUpdateInfo, UpdateSourceType, updateElectronApp } from "update-electron-app";
 
 import { BrowserWindow, Notification, app, clipboard, desktopCapturer, globalShortcut, ipcMain, nativeImage, session, shell } from "electron";
 import started from "electron-squirrel-startup";
@@ -41,7 +41,7 @@ if (acquiredLock) {
   updateElectronApp({
     onNotifyUser,
     updateSource: {
-      type: "static-storage",
+      type: UpdateSourceType.StaticStorage,
       baseUrl: "https://github.com/Leonid1095/PLGames-Voice/releases/latest/download",
     },
   });

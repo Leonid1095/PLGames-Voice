@@ -58,6 +58,30 @@ jobs:
         run: npm test
         working-directory: bot
 
+  desktop:
+    name: Desktop typecheck and tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+          cache-dependency-path: desktop/pnpm-lock.yaml
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: desktop
+      # Meaningful only since typescript went 4.5.5 -> 5.9.3: on 4.5 tsc could
+      # not even parse @types/node 24 and drowned in 1619 errors inside
+      # node_modules, so nothing in src/ was ever actually checked.
+      - name: Typecheck
+        run: pnpm typecheck
+        working-directory: desktop
+      - name: Test
+        run: pnpm test
+        working-directory: desktop
+
   # Dependency advisories. Both jobs are informational for now
   # (continue-on-error) and deliberately so: the 2026-08-09 audit was the first
   # time the Rust tree had ever been scanned and it found 37 advisories, so a

@@ -279,6 +279,10 @@ ipcMain.on("config", (_, newConfig: unknown) => {
     const expectedType = ALLOWED_CONFIG_KEYS[key];
     if (!expectedType) continue; // skip unknown keys
     if (typeof value !== expectedType) continue; // skip wrong types
-    (config as Record<string, unknown>)[key] = value;
+    // Config has no index signature, so TypeScript rejects the direct cast;
+    // going through unknown is the sanctioned way to say "yes, really".
+    // Safe here: key is filtered against ALLOWED_CONFIG_KEYS and value's
+    // runtime type is checked against it, two lines above.
+    (config as unknown as Record<string, unknown>)[key] = value;
   }
 });
