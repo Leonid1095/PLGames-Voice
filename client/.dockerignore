@@ -1,4 +1,12 @@
-node_modules
+# `node_modules` on its own matches only the context root — Docker does not
+# apply bare patterns recursively. Every packages/*/node_modules was therefore
+# still being sent, and `COPY packages/ packages/` (Dockerfile:33) dropped the
+# host's symlink farm on top of the one `pnpm install` had just built inside
+# the image. The build only ever succeeded when the host's node_modules
+# happened to agree with the lockfile; run pnpm once on the host and the next
+# from-scratch build fails with "Cannot find module .../rimraf/dist/esm/bin.mjs"
+# or the same for tsc. `**/` makes it recursive and the build hermetic.
+**/node_modules
 .git
 *.md
 !README.md
