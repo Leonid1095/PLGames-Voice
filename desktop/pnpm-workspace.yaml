@@ -1,9 +1,19 @@
 nodeLinker: hoisted
 
+# pnpm 10 blocks dependency build scripts unless they are listed here. Anything
+# with a native addon has to be named, or it installs without ever compiling.
 onlyBuiltDependencies:
   - bufferutil
   - electron
   - electron-winstaller
   - esbuild
+  # appdmg (via @electron-forge/maker-dmg) loads volume.node out of macos-alias
+  # and needs fs-xattr alongside it. Both were missing here, so every macOS run
+  # of Desktop Multi-Platform Build since April died with
+  # "Cannot find module '../build/Release/volume.node'" while Windows and Linux
+  # passed — pnpm even printed "Ignored build scripts: fs-xattr, macos-alias"
+  # in the log each time.
+  - fs-xattr
+  - macos-alias
   - register-scheme
   - utf-8-validate
