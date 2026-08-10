@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.0.1](https://github.com/Leonid1095/PLGames-Voice/compare/v2.0.0...v2.0.1) (2026-08-10)
+
+
+### Bug Fixes
+
+* **desktop:** add the macOS icon the dmg maker has always asked for ([ce5455e](https://github.com/Leonid1095/PLGames-Voice/commit/ce5455e3e473bf225557a83c1b8d80573ae82dbd))
+* **desktop:** allow the native build scripts the macOS dmg needs ([38e72ad](https://github.com/Leonid1095/PLGames-Voice/commit/38e72ad64037deecc204d88fcd7c551cb98633bd))
+* **desktop:** bump Electron 38.1.2 -&gt; 39.8.10 for the advisory floor ([7a9b70c](https://github.com/Leonid1095/PLGames-Voice/commit/7a9b70c2411cc2f75fddd8df2712b414bbd9a0ed))
+* **desktop:** clear the runtime dependency tree — 49 advisories to 0 ([efde807](https://github.com/Leonid1095/PLGames-Voice/commit/efde8077a79d6eb663bbee10816efed77a5eb479))
+* **desktop:** make the typecheck real — TypeScript 4.5.5 -&gt; 5.9.3 ([a83c912](https://github.com/Leonid1095/PLGames-Voice/commit/a83c9129f848ef50a925d240fc35500d39a071b7))
+* macOS build, Docker images rebrand, Android TWA fingerprints, MongoDB migration ([49cf77e](https://github.com/Leonid1095/PLGames-Voice/commit/49cf77e8e6084effa9c9371dc87e6d5f1c3c5e43))
+
 ## [1.6.0](https://github.com/Leonid1095/PLGames-Voice/compare/v1.5.0...v1.6.0) (2026-03-02)
 
 
