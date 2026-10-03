@@ -1,9 +1,10 @@
 import { Match, Show, Switch } from "solid-js";
+import { Contrast, Download, Moon, Sun } from "lucide-solid";
 
+import { Trans } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
 import { useState } from "@revolt/state";
-import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 /**
  * Quick theme mode toggle in the sidebar
@@ -27,20 +28,26 @@ export function ThemeToggle() {
       <Bar onClick={cycle}>
         <Switch>
           <Match when={state.theme.mode === "dark"}>
-            <Symbol size={16}>dark_mode</Symbol>
+            <Moon size={16} stroke-width={1.75} />
           </Match>
           <Match when={state.theme.mode === "light"}>
-            <Symbol size={16}>light_mode</Symbol>
+            <Sun size={16} stroke-width={1.75} />
           </Match>
           <Match when={state.theme.mode === "system"}>
-            <Symbol size={16}>contrast</Symbol>
+            <Contrast size={16} stroke-width={1.75} />
           </Match>
         </Switch>
         <Label>
           <Switch>
-            <Match when={state.theme.mode === "dark"}>Dark</Match>
-            <Match when={state.theme.mode === "light"}>Light</Match>
-            <Match when={state.theme.mode === "system"}>Auto</Match>
+            <Match when={state.theme.mode === "dark"}>
+              <Trans>Dark</Trans>
+            </Match>
+            <Match when={state.theme.mode === "light"}>
+              <Trans>Light</Trans>
+            </Match>
+            <Match when={state.theme.mode === "system"}>
+              <Trans>Auto</Trans>
+            </Match>
           </Switch>
         </Label>
       </Bar>
@@ -49,8 +56,10 @@ export function ThemeToggle() {
           as="a"
           href="https://github.com/Leonid1095/PLGames-Voice/releases/latest/download/plg-voice-desktop-setup.exe"
         >
-          <Symbol size={16}>download</Symbol>
-          <Label>Windows</Label>
+          <Download size={16} stroke-width={1.75} />
+          <Label>
+            <Trans>Windows</Trans>
+          </Label>
         </DownloadBar>
       </Show>
     </Row>

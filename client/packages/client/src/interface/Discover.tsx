@@ -1,5 +1,5 @@
 import { For, Show, createMemo, createSignal } from "solid-js";
-import { Compass, Search, Users } from "lucide-solid";
+import { Search, Users } from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
@@ -78,7 +78,6 @@ export function Discover() {
     <Base>
       <Container>
         <Header>
-          <Compass width={32} height={32} />
           <h2>
             <Trans>Browse servers</Trans>
           </h2>
@@ -102,7 +101,9 @@ export function Discover() {
           when={servers().length > 0}
           fallback={
             <EmptyState>
-              <Trans>No servers found</Trans>
+              <Trans>
+                No servers yet. Create one from Home, or paste an invite below.
+              </Trans>
             </EmptyState>
           }
         >

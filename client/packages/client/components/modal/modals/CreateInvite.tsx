@@ -4,8 +4,9 @@ import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { useMutation } from "@tanstack/solid-query";
 import { styled } from "styled-system/jsx";
 
+import { Check } from "lucide-solid";
+
 import { Dialog, DialogProps } from "@revolt/ui";
-import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 import { useModals } from "..";
 import { Modals } from "../types";
@@ -71,7 +72,7 @@ export function CreateInviteModal(
             </LinkInput>
             <CopyButton onClick={copyLink} copied={copied()}>
               <Show when={copied()} fallback={<Trans>Copy</Trans>}>
-                <Symbol size={16}>check</Symbol>
+                <Check size={16} stroke-width={2} />
                 <Trans>Copied!</Trans>
               </Show>
             </CopyButton>
@@ -161,18 +162,19 @@ const CopyButton = styled("button", {
     border: "none",
     cursor: "pointer",
     fontSize: "13px",
-    fontWeight: 500,
-    letterSpacing: "-0.005em",
-    fontFamily: "inherit",
     whiteSpace: "nowrap",
     transition: "background var(--pd-transition-fast)",
     flexShrink: 0,
     background: "var(--md-sys-color-primary)",
     color: "var(--md-sys-color-on-primary)",
-    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.12)",
+    fontFamily: "var(--pd-font-display)",
+    fontVariationSettings: '"wght" 700, "wdth" var(--pd-display-wdth)',
+    fontWeight: 700,
+    letterSpacing: "0.04em",
+    textTransform: "uppercase",
 
     "&:hover": {
-      background: "color-mix(in srgb, var(--md-sys-color-primary) 92%, white)",
+      background: "color-mix(in srgb, var(--md-sys-color-primary) 86%, #000)",
     },
   },
   variants: {

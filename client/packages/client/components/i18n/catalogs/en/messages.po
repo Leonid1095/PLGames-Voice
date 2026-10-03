@@ -51,123 +51,102 @@ msgstr "(edited)"
 msgid "(required)"
 msgstr "(required)"
 
-#. placeholder {0}: props.count
 #: components/ui/components/features/messaging/elements/BlockedMessage.tsx
 msgid "{0, plural, one {# blocked message} other {# blocked messages}}"
 msgstr "{0, plural, one {# blocked message} other {# blocked messages}}"
 
-#. placeholder {0}: items().length
+#: src/interface/navigation/channels/HomeSidebar.tsx
+msgid "{0, plural, one {# Member} other {# Members}}"
+msgstr "{0, plural, one {# Member} other {# Members}}"
+
+#: src/interface/navigation/channels/HomeSidebar.tsx
+msgid "{0, plural, one {# request} other {# requests}}"
+msgstr "{0, plural, one {# request} other {# requests}}"
+
 #: components/ui/components/utils/files/FileDropAnywhereCollector.tsx
 msgid "{0, plural, one {Drop a file} other {Drop # files}}"
 msgstr "{0, plural, one {Drop a file} other {Drop # files}}"
 
-#. placeholder {0}: users() .slice(0, -1) .map((user) => user!.username) .join(", ")
-#. placeholder {1}: users().slice(-1)[0]!.username
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
 msgid "{0} and {1} are typing"
 msgstr "{0} and {1} are typing"
 
-#. placeholder {0}: (message.systemMessage as ChannelEditSystemMessage).by?.username
 #: components/client/NotificationsWorker.tsx
 msgid "{0} changed the channel description"
 msgstr "{0} changed the channel description"
 
-#. placeholder {0}: (message.systemMessage as ChannelEditSystemMessage).by?.username
 #: components/client/NotificationsWorker.tsx
 msgid "{0} changed the channel icon"
 msgstr "{0} changed the channel icon"
 
-#. placeholder {0}: CONFIGURATION.MAX_EMOJI - props.server.emojis.length
 #: components/app/interface/settings/server/emojis/EmojiList.tsx
 msgid "{0} emoji slots remaining"
 msgstr "{0} emoji slots remaining"
 
-#. placeholder {0}: rejectedFiles.length
 #: src/interface/channels/text/Composition.tsx
 msgid "{0} files exceed the maximum size limit of {maxSizeFormatted} and were not uploaded."
 msgstr "{0} files exceed the maximum size limit of {maxSizeFormatted} and were not uploaded."
 
-#. placeholder {0}: count()
 #: src/interface/Discover.tsx
 msgid "{0} in voice"
 msgstr "{0} in voice"
 
-#. placeholder {0}: users()[0]!.username
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
 msgid "{0} is typing"
 msgstr "{0} is typing"
 
-#. placeholder {0}: (message.systemMessage as UserSystemMessage).user?.username
 #: components/client/NotificationsWorker.tsx
 msgid "{0} joined"
 msgstr "{0} joined"
 
-#. placeholder {0}: (message.systemMessage as UserSystemMessage).user?.username
 #: components/client/NotificationsWorker.tsx
 msgid "{0} left"
 msgstr "{0} left"
 
-#. placeholder {0}: (message.systemMessage as ChannelOwnershipChangeSystemMessage).from?.username
-#. placeholder {1}: (message.systemMessage as ChannelOwnershipChangeSystemMessage).to?.username
 #: components/client/NotificationsWorker.tsx
 msgid "{0} made {1} the new group owner"
 msgstr "{0} made {1} the new group owner"
 
-#. placeholder {0}: server.memberCount ?? "?"
 #: src/interface/Discover.tsx
 msgid "{0} members"
 msgstr "{0} members"
 
-#. placeholder {0}: onlineMembers()
 #: src/interface/channels/text/MemberSidebar.tsx
 msgid "{0} members online"
 msgstr "{0} members online"
 
-#. placeholder {0}: (message.systemMessage as MessagePinnedSystemMessage).by?.username
 #: components/client/NotificationsWorker.tsx
 msgid "{0} pinned a message"
 msgstr "{0} pinned a message"
 
-#. placeholder {0}: (message.systemMessage as ChannelRenamedSystemMessage).by?.username
 #: components/client/NotificationsWorker.tsx
 msgid "{0} renamed the channel"
 msgstr "{0} renamed the channel"
 
-#. placeholder {0}: (message.systemMessage as MessagePinnedSystemMessage).by?.username
 #: components/client/NotificationsWorker.tsx
 msgid "{0} unpinned a message"
 msgstr "{0} unpinned a message"
 
-#. placeholder {0}: (message.systemMessage as UserModeratedSystemMessage).user?.username
-#. placeholder {1}: (message.systemMessage as UserModeratedSystemMessage).by?.username
 #: components/client/NotificationsWorker.tsx
 msgid "{0} was added by {1}"
 msgstr "{0} was added by {1}"
 
-#. placeholder {0}: (message.systemMessage as UserSystemMessage).user?.username
 #: components/client/NotificationsWorker.tsx
 msgid "{0} was banned"
 msgstr "{0} was banned"
 
-#. placeholder {0}: (message.systemMessage as UserSystemMessage).user?.username
 #: components/client/NotificationsWorker.tsx
 msgid "{0} was kicked"
 msgstr "{0} was kicked"
 
-#. placeholder {0}: (message.systemMessage as UserModeratedSystemMessage).user?.username
-#. placeholder {1}: (message.systemMessage as UserModeratedSystemMessage).by?.username
 #: components/client/NotificationsWorker.tsx
 msgid "{0} was removed by {1}"
 msgstr "{0} was removed by {1}"
 
-#. placeholder {0}: page() * itemsPerPage() + 1
-#. placeholder {1}: Math.min( props.itemCount!, page() * itemsPerPage() + itemsPerPage(), )
-#. placeholder {2}: props.itemCount
 #: components/ui/components/design/DataTable.tsx
 msgid "{0}-{1} of {2}"
 msgstr "{0}-{1} of {2}"
 
-#. placeholder {0}: props.member.displayName
 #: components/modal/modals/UserProfileRoles.tsx
 msgid "{0}'s roles"
 msgstr "{0}'s roles"
@@ -252,7 +231,6 @@ msgstr "<0/> updated the group description"
 msgid "<0/> updated the group icon "
 msgstr "<0/> updated the group icon "
 
-#. placeholder {0}: (props.systemMessage as ChannelRenamedSystemMessage).name
 #: components/ui/components/features/messaging/elements/SystemMessage.tsx
 msgid "<0/> updated the group name to <1>{0}</1>"
 msgstr "<0/> updated the group name to <1>{0}</1>"
@@ -461,7 +439,6 @@ msgstr "American (MM/DD/YYYY)"
 msgid "An error occurred."
 msgstr "An error occurred."
 
-#. placeholder {0}: err.location
 #: components/i18n/errors.ts
 msgid "An internal error occurred. ({0})"
 msgstr "An internal error occurred. ({0})"
@@ -469,6 +446,14 @@ msgstr "An internal error occurred. ({0})"
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Analytics"
 msgstr "Analytics"
+
+#: src/AppDownload.tsx
+msgid "Android"
+msgstr "Android"
+
+#: src/Landing.tsx
+msgid "Android — Chrome"
+msgstr "Android — Chrome"
 
 #: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
 msgid "Animated avatar"
@@ -628,6 +613,10 @@ msgstr "Blocked User"
 msgid "Blocked Words"
 msgstr "Blocked Words"
 
+#: src/interface/ThemeSetup.tsx
+msgid "Blue"
+msgstr "Blue"
+
 #: components/app/interface/channels/text/Message.tsx
 msgid "Bot"
 msgstr "Bot"
@@ -719,7 +708,6 @@ msgstr "Change"
 msgid "Change Avatar"
 msgstr "Change Avatar"
 
-#. placeholder {0}: props.member.server!.name
 #: components/modal/modals/ServerIdentity.tsx
 msgid "Change identity on {0}"
 msgstr "Change identity on {0}"
@@ -891,7 +879,6 @@ msgstr "Close"
 msgid "Close chat"
 msgstr "Close chat"
 
-#. placeholder {0}: props.channel.recipient?.displayName
 #: components/modal/modals/DeleteChannel.tsx
 msgid "Close conversation with {0}?"
 msgstr "Close conversation with {0}?"
@@ -1044,8 +1031,6 @@ msgstr "Copy webhook URL"
 msgid "Could not find what you requested."
 msgstr "Could not find what you requested."
 
-#. placeholder {0}: props.embed.type
-#. placeholder {0}: props.file.metadata.type
 #: components/ui/components/features/messaging/elements/Embed.tsx
 #: components/ui/components/features/messaging/elements/Attachment.tsx
 msgid "Could not render {0}!"
@@ -1246,7 +1231,6 @@ msgstr "Customize the message sent when a new member joins. Use {user}for userna
 msgid "Dark"
 msgstr "Dark"
 
-#. placeholder {0}: err.location
 #: components/i18n/errors.ts
 msgid "Database error, please contact support. ({0})"
 msgstr "Database error, please contact support. ({0})"
@@ -1296,9 +1280,6 @@ msgstr "Default Permissions"
 msgid "Delete"
 msgstr "Delete"
 
-#. placeholder {0}: props.server.name
-#. placeholder {0}: props.role.name
-#. placeholder {0}: props.channel.name
 #: components/modal/modals/DeleteServer.tsx
 #: components/modal/modals/DeleteRole.tsx
 #: components/modal/modals/DeleteChannel.tsx
@@ -1357,7 +1338,6 @@ msgstr "Delete server"
 msgid "Description (optional)"
 msgstr "Description (optional)"
 
-#. placeholder {0}: props.invite.username
 #: components/modal/modals/AddBot.tsx
 msgid "Description provided by {0}"
 msgstr "Description provided by {0}"
@@ -1381,6 +1361,10 @@ msgstr "Detect running games and show them in your status."
 #: components/app/interface/settings/user/bots/MyBots.tsx
 msgid "Developer Documentation"
 msgstr "Developer Documentation"
+
+#: src/interface/navigation/channels/HomeSidebar.tsx
+msgid "Direct Messages"
+msgstr "Direct Messages"
 
 #: components/app/interface/settings/user/Account.tsx
 msgid "Disable Account"
@@ -1468,7 +1452,6 @@ msgstr "Echo Cancellation"
 msgid "Edit"
 msgstr "Edit"
 
-#. placeholder {0}: props.member.displayName
 #: components/modal/modals/UserProfileRoles.tsx
 msgid "Edit {0}'s roles"
 msgstr "Edit {0}'s roles"
@@ -1873,11 +1856,13 @@ msgstr "Go to the PLG Voice community"
 msgid "Good"
 msgstr "Good"
 
-#. placeholder {0}: countBits(props.context.rolePermissions![role.id].a)
-#. placeholder {1}: countBits(props.context.rolePermissions![role.id].d)
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 msgid "Grants {0} permissions and denies {1} permissions"
 msgstr "Grants {0} permissions and denies {1} permissions"
+
+#: src/interface/ThemeSetup.tsx
+msgid "Green"
+msgstr "Green"
 
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Greetings and roles"
@@ -2028,6 +2013,14 @@ msgstr "Inviter"
 msgid "Invites"
 msgstr "Invites"
 
+#: src/AppDownload.tsx
+msgid "iPhone"
+msgstr "iPhone"
+
+#: src/Landing.tsx
+msgid "iPhone — Safari"
+msgstr "iPhone — Safari"
+
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "irrelevant joke badge 1"
 msgstr "irrelevant joke badge 1"
@@ -2143,8 +2136,6 @@ msgstr "Learn more about how to create bots on PLG Voice."
 msgid "Leave"
 msgstr "Leave"
 
-#. placeholder {0}: props.server.name
-#. placeholder {0}: props.channel.name
 #: components/modal/modals/LeaveServer.tsx
 #: components/modal/modals/DeleteChannel.tsx
 msgid "Leave {0}?"
@@ -2175,6 +2166,10 @@ msgstr "Light"
 msgid "Limit how often users can send messages in this channel"
 msgstr "Limit how often users can send messages in this channel"
 
+#: src/Landing.tsx
+msgid "Linux"
+msgstr "Linux"
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Listen"
 msgstr "Listen"
@@ -2191,7 +2186,6 @@ msgstr "LIVE"
 msgid "Live Streams"
 msgstr "Live Streams"
 
-#. placeholder {0}: humanFileSize(props.file.size ?? 0)
 #: components/ui/components/features/messaging/elements/TextFile.tsx
 msgid "Load file ({0})"
 msgstr "Load file ({0})"
@@ -2386,8 +2380,6 @@ msgstr "Mentions Only"
 msgid "Message"
 msgstr "Message"
 
-#. placeholder {0}: props.channel.recipient?.username
-#. placeholder {0}: props.channel.name
 #: src/interface/channels/text/Composition.tsx
 #: src/interface/channels/text/Composition.tsx
 msgid "Message {0}"
@@ -2576,7 +2568,6 @@ msgstr "New Event"
 msgid "New Form"
 msgstr "New Form"
 
-#. placeholder {0}: dayjs(decodeTime(props.lastId()!)).fromNow()
 #: components/ui/components/features/messaging/bars/NewMessages.tsx
 msgid "New messages since {0}"
 msgstr "New messages since {0}"
@@ -2622,6 +2613,10 @@ msgstr "No blocked users"
 msgid "No channels found"
 msgstr "No channels found"
 
+#: src/interface/ServerHome.tsx
+msgid "No channels!"
+msgstr "No channels!"
+
 #: components/ui/components/features/messaging/composition/picker/MyGifPicker.tsx
 msgid "No favourite GIFs yet"
 msgstr "No favourite GIFs yet"
@@ -2665,6 +2660,10 @@ msgstr "No saved messages"
 #: src/interface/Discover.tsx
 msgid "No servers found"
 msgstr "No servers found"
+
+#: src/interface/Discover.tsx
+msgid "No servers yet. Create one from Home, or paste an invite below."
+msgstr "No servers yet. Create one from Home, or paste an invite below."
 
 #: src/interface/SavedMessages.tsx
 msgid "No text"
@@ -2770,7 +2769,6 @@ msgstr "Only mentions will notify you"
 msgid "Open"
 msgstr "Open"
 
-#. placeholder {0}: provider()![0]
 #: components/auth/src/flows/MailProvider.tsx
 msgid "Open {0}"
 msgstr "Open {0}"
@@ -2808,6 +2806,10 @@ msgstr "Open settings"
 #: components/modal/modals/CreatePoll.tsx
 msgid "Option"
 msgstr "Option"
+
+#: src/interface/ThemeSetup.tsx
+msgid "Orange"
+msgstr "Orange"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Other"
@@ -2989,6 +2991,10 @@ msgstr "Promotes harm"
 #: components/i18n/errors.ts
 msgid "Provided email or password is wrong."
 msgstr "Provided email or password is wrong."
+
+#: src/interface/ThemeSetup.tsx
+msgid "Purple"
+msgstr "Purple"
 
 #: components/modal/modals/CreatePoll.tsx
 msgid "Question"
@@ -3187,7 +3193,6 @@ msgstr "Resend verification"
 msgid "Reset"
 msgstr "Reset"
 
-#. placeholder {0}: props.bot.user!.username
 #: components/modal/modals/ResetBotToken.tsx
 msgid "Reset {0}'s token?"
 msgstr "Reset {0}'s token?"
@@ -3468,7 +3473,6 @@ msgstr "Sending..."
 msgid "Sent"
 msgstr "Sent"
 
-#. placeholder {0}: message.attachments!.length
 #: components/client/NotificationsWorker.tsx
 msgid "Sent {0} attachments"
 msgstr "Sent {0} attachments"
@@ -3617,6 +3621,10 @@ msgstr "Show send message button"
 msgid "Sign up"
 msgstr "Sign up"
 
+#: src/interface/ThemeSetup.tsx
+msgid "Signal"
+msgstr "Signal"
+
 #: components/app/interface/channels/text/Message.tsx
 msgid "Silent"
 msgstr "Silent"
@@ -3633,7 +3641,6 @@ msgstr "someone@example.com"
 msgid "Something cool about me..."
 msgstr "Something cool about me..."
 
-#. placeholder {0}: err.error
 #: components/i18n/errors.ts
 msgid "Something is wrong with your request, {0}."
 msgstr "Something is wrong with your request, {0}."
@@ -3832,7 +3839,6 @@ msgstr "That action had no effect."
 msgid "The bot will not be granted any permissions."
 msgstr "The bot will not be granted any permissions."
 
-#. placeholder {0}: file.name
 #: src/interface/channels/text/Composition.tsx
 msgid "The file \"{0}\" ({fileSize}) exceeds the maximum size limit of {maxSizeFormatted}."
 msgstr "The file \"{0}\" ({fileSize}) exceeds the maximum size limit of {maxSizeFormatted}."
@@ -3882,7 +3888,6 @@ msgstr "This feature is currently disabled."
 msgid "This file type is not allowed."
 msgstr "This file type is not allowed."
 
-#. placeholder {0}: err.max
 #: components/i18n/errors.ts
 msgid "This group is too large, you can have up to {0} users."
 msgstr "This group is too large, you can have up to {0} users."
@@ -3992,7 +3997,6 @@ msgstr "Unblock"
 msgid "Unblock user"
 msgstr "Unblock user"
 
-#. placeholder {0}: err.type
 #: components/i18n/errors.ts
 msgid "Uncaught PLG Voice error: {0}"
 msgstr "Uncaught PLG Voice error: {0}"
@@ -4066,8 +4070,6 @@ msgstr "Update"
 msgid "Upload Files"
 msgstr "Upload Files"
 
-#. placeholder {0}: file.file.name
-#. placeholder {1}: (file.uploadProgress[0]() * 100).toFixed()
 #: components/app/interface/channels/text/DraftMessage.tsx
 msgid "Uploading file `{0}`... {1}%"
 msgstr "Uploading file `{0}`... {1}%"
@@ -4133,6 +4135,10 @@ msgstr "User settings"
 #: components/modal/modals/ReportContent.tsx
 msgid "User's profile has inappropriate content"
 msgstr "User's profile has inappropriate content"
+
+#: components/modal/modals/AddFriend.tsx
+msgid "username"
+msgstr "username"
 
 #: components/modal/modals/Onboarding.tsx
 #: components/modal/modals/EditUsername.tsx
@@ -4219,6 +4225,10 @@ msgstr "View Recovery Codes"
 #: components/ui/components/features/messaging/bars/JumpToBottom.tsx
 msgid "Viewing older messages"
 msgstr "Viewing older messages"
+
+#: src/interface/ThemeSetup.tsx
+msgid "Violet"
+msgstr "Violet"
 
 #: components/app/interface/settings/UserSettings.tsx
 #: components/app/interface/settings/server/Analytics.tsx
@@ -4315,6 +4325,15 @@ msgstr "Whether other users can edit these settings"
 msgid "While Premium is in development, you can support the project with a donation."
 msgstr "While Premium is in development, you can support the project with a donation."
 
+#: src/interface/ThemeToggle.tsx
+#: src/Landing.tsx
+msgid "Windows"
+msgstr "Windows"
+
+#: src/AppDownload.tsx
+msgid "Windows 10+ • 64-bit • ~117 MB"
+msgstr "Windows 10+ • 64-bit • ~117 MB"
+
 #: components/app/interface/settings/server/Giveaways.tsx
 msgid "Winners"
 msgstr "Winners"
@@ -4323,7 +4342,6 @@ msgstr "Winners"
 msgid "Winners:"
 msgstr "Winners:"
 
-#. placeholder {0}: names.join(", ")
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "With {0}"
 msgstr "With {0}"
@@ -4360,14 +4378,11 @@ msgstr "XP/Levels"
 msgid "You agree that your bot is subject to the Acceptable Usage Policy."
 msgstr "You agree that your bot is subject to the Acceptable Usage Policy."
 
-#. placeholder {0}: props.user?.username
-#. placeholder {0}: props.member.user?.username
 #: components/modal/modals/BanNonMember.tsx
 #: components/modal/modals/BanMember.tsx
 msgid "You are about to ban {0}"
 msgstr "You are about to ban {0}"
 
-#. placeholder {0}: props.member.user?.username
 #: components/modal/modals/KickMember.tsx
 msgid "You are about to kick {0}"
 msgstr "You are about to kick {0}"
@@ -4393,17 +4408,14 @@ msgstr "You can re-open it later, but it will disappear on both sides."
 msgid "You can report issues and discuss improvements with us directly here."
 msgstr "You can report issues and discuss improvements with us directly here."
 
-#. placeholder {0}: err.max
 #: components/i18n/errors.ts
 msgid "You can't be in more than {0} servers, please leave one and try again."
 msgstr "You can't be in more than {0} servers, please leave one and try again."
 
-#. placeholder {0}: err.max
 #: components/i18n/errors.ts
 msgid "You can't have more than {0} channels on this server."
 msgstr "You can't have more than {0} channels on this server."
 
-#. placeholder {0}: err.max
 #: components/i18n/errors.ts
 msgid "You can't have more than {0} emojis on this server."
 msgstr "You can't have more than {0} emojis on this server."
@@ -4432,7 +4444,6 @@ msgstr "You cannot timeout yourself."
 msgid "You cannot undo this action."
 msgstr "You cannot undo this action."
 
-#. placeholder {0}: props.display
 #: components/modal/modals/LinkWarning.tsx
 msgid "You clicked on \"{0}\""
 msgstr "You clicked on \"{0}\""
@@ -4444,6 +4455,10 @@ msgstr "You do not have permission to do this."
 #: components/ui/components/features/messaging/composition/MessageBox.tsx
 msgid "You don't have permission to send messages in this channel."
 msgstr "You don't have permission to send messages in this channel."
+
+#: src/interface/navigation/servers/ServerList.tsx
+msgid "You have {0} pending friend requests."
+msgstr "You have {0} pending friend requests."
 
 #: components/i18n/errors.ts
 msgid "You have been locked out for entering a wrong password multiple times. Please wait a couple minutes and try again."
@@ -4503,7 +4518,6 @@ msgstr "You've been signed out of PLG Voice!"
 msgid "You've reached your personal bot limit."
 msgstr "You've reached your personal bot limit."
 
-#. placeholder {0}: err.max
 #: components/i18n/errors.ts
 msgid "You've sent too many friend requests, the maximum is {0}"
 msgstr "You've sent too many friend requests, the maximum is {0}"
@@ -4520,7 +4534,6 @@ msgstr "Your account has been verified!"
 msgid "Your discriminator change has been ratelimited, please try again later."
 msgstr "Your discriminator change has been ratelimited, please try again later."
 
-#. placeholder {0}: props.client.user!.discriminator
 #: components/modal/modals/EditUsername.tsx
 msgid "Your discriminator changed to {0}"
 msgstr "Your discriminator changed to {0}"
@@ -4545,6 +4558,10 @@ msgstr "Your role ranking is too low to take this action."
 msgid "Your servers"
 msgstr "Your servers"
 
+#: components/auth/src/flows/FlowHome.tsx
+msgid "Your servers and voice are right here."
+msgstr "Your servers and voice are right here."
+
 #: src/Landing.tsx
 msgid "Your space. Your voice."
 msgstr "Your space. Your voice."
@@ -4552,3 +4569,51 @@ msgstr "Your space. Your voice."
 #: components/i18n/errors.ts
 msgid "Your user has already been created? Try logging in again or refreshing the app."
 msgstr "Your user has already been created? Try logging in again or refreshing the app."
+
+#: components/app/interface/settings/channel/webhooks/ViewWebhook.tsx
+msgid "Your site or game posts JSON to this URL. PLG Voice does not fetch either of them."
+msgstr "Your site or game posts JSON to this URL. PLG Voice does not fetch either of them."
+
+#: components/app/interface/settings/channel/webhooks/ViewWebhook.tsx
+msgid "This webhook has no token loaded. Create it again to get a URL."
+msgstr "This webhook has no token loaded. Create it again to get a URL."
+
+#: components/app/interface/settings/channel/webhooks/ViewWebhook.tsx
+msgid "Copy news example"
+msgstr "Copy news example"
+
+#: components/app/interface/settings/channel/webhooks/ViewWebhook.tsx
+msgid "Copy game chat example"
+msgstr "Copy game chat example"
+
+#: components/app/interface/settings/channel/webhooks/ViewWebhook.tsx
+msgid "Delete webhook"
+msgstr "Delete webhook"
+
+#: src/interface/Home.tsx
+msgid "Signup path"
+msgstr "Signup path"
+
+#: src/interface/Home.tsx
+msgid "Visits"
+msgstr "Visits"
+
+#: src/interface/Home.tsx
+msgid "Accounts"
+msgstr "Accounts"
+
+#: src/interface/Home.tsx
+msgid "Usernames"
+msgstr "Usernames"
+
+#: src/interface/Home.tsx
+msgid "First servers"
+msgstr "First servers"
+
+#: components/auth/src/flows/FlowReset.tsx
+msgid "Password reset is sent by email. This server is not sending mail yet, so sign in with your current password."
+msgstr "Password reset is sent by email. This server is not sending mail yet, so sign in with your current password."
+
+#: src/interface/channels/text/Composition.tsx
+msgid "For the first {0} hours, messages are limited to {1} characters, {2} attachments and {3} friend requests."
+msgstr "For the first {0} hours, messages are limited to {1} characters, {2} attachments and {3} friend requests."

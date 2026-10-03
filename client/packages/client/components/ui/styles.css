@@ -12,7 +12,6 @@
 }
 
 :root {
-  --glow-accent: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
   --border-accent: color-mix(in srgb, var(--md-sys-color-primary) 15%, transparent);
 }
 

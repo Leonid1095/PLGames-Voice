@@ -1,4 +1,4 @@
-import { For, Show, createMemo, createResource } from "solid-js";
+import { For, Show, createResource } from "solid-js";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
@@ -16,14 +16,13 @@ export function Analytics(props: ServerSettingsProps) {
   const { t } = useLingui();
   const client = useClient();
 
-  const memberCount = createMemo(() => {
-    // Count from channels member list
-    try {
-      return props.server.channels.length;
-    } catch {
-      return 0;
-    }
-  });
+  const [memberTotal] = createResource(
+    () => props.server.id,
+    async () => {
+      const list = await props.server.fetchMembers();
+      return list.members.length;
+    },
+  );
 
   const channelCount = () => props.server.channels.length;
   const roleCount = () => Object.keys(props.server.roles ?? {}).length;
@@ -73,6 +72,17 @@ export function Analytics(props: ServerSettingsProps) {
         <StatCard>
           <StatIcon>
             <Symbol size={24}>group</Symbol>
+          </StatIcon>
+          <StatValue>
+            {memberTotal.state === "ready" ? memberTotal() : "—"}
+          </StatValue>
+          <StatLabel>
+            <Trans>Members</Trans>
+          </StatLabel>
+        </StatCard>
+        <StatCard>
+          <StatIcon>
+            <Symbol size={24}>forum</Symbol>
           </StatIcon>
           <StatValue>{channelCount()}</StatValue>
           <StatLabel>

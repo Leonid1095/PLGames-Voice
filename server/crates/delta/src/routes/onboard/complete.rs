@@ -45,10 +45,10 @@ pub async fn complete(
         })
     })?;
 
-    Ok(Json(
-        User::create(db, data.username, session.user_id, None)
-            .await?
-            .into_self(false)
-            .await,
-    ))
+    let user = User::create(db, data.username, session.user_id, None).await?;
+    if let Err(err) = db.bump_funnel("username").await {
+        log::warn!("Failed to count a chosen username: {err:?}");
+    }
+
+    Ok(Json(user.into_self(false).await))
 }

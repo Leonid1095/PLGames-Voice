@@ -1,5 +1,12 @@
-import { For, createSignal } from "solid-js";
+import { Component, For, createSignal } from "solid-js";
 import { createFormControl, createFormGroup } from "solid-forms";
+import {
+  CirclePlus,
+  Gamepad2,
+  GraduationCap,
+  Heart,
+  Users,
+} from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
@@ -7,14 +14,13 @@ import { ulid } from "ulid";
 
 import { useNavigate } from "@revolt/routing";
 import { Column, Dialog, DialogProps, Form2, Text } from "@revolt/ui";
-import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 import { useModals } from "..";
 import { Modals } from "../types";
 
 interface ServerTemplate {
   id: string;
-  icon: string;
+  icon: Component;
   name: string;
   description: string;
   categories: { title: string; channels: { name: string; type: "Text" | "VoiceChannel" }[] }[];
@@ -24,14 +30,14 @@ function getTemplates(t: any): ServerTemplate[] {
   return [
   {
     id: "empty",
-    icon: "add_circle",
+    icon: CirclePlus,
     name: t`Blank`,
     description: t`Start from scratch`,
     categories: [],
   },
   {
     id: "gaming",
-    icon: "sports_esports",
+    icon: Gamepad2,
     name: t`Gaming`,
     description: t`For gaming communities`,
     categories: [
@@ -63,7 +69,7 @@ function getTemplates(t: any): ServerTemplate[] {
   },
   {
     id: "community",
-    icon: "groups",
+    icon: Users,
     name: t`Community`,
     description: t`For communities and clubs`,
     categories: [
@@ -93,7 +99,7 @@ function getTemplates(t: any): ServerTemplate[] {
   },
   {
     id: "study",
-    icon: "school",
+    icon: GraduationCap,
     name: t`Study`,
     description: t`For study groups`,
     categories: [
@@ -124,7 +130,7 @@ function getTemplates(t: any): ServerTemplate[] {
   },
   {
     id: "friends",
-    icon: "favorite",
+    icon: Heart,
     name: t`Friends`,
     description: t`For a group of friends`,
     categories: [
@@ -247,7 +253,7 @@ export function CreateServerModal(
                   selected={selectedTemplate() === tmpl.id}
                   onClick={() => setSelectedTemplate(tmpl.id)}
                 >
-                  <Symbol size={24}>{tmpl.icon}</Symbol>
+                  <tmpl.icon size={24} stroke-width={1.75} />
                   <TemplateName>{tmpl.name}</TemplateName>
                   <TemplateDesc>{tmpl.description}</TemplateDesc>
                 </TemplateCard>

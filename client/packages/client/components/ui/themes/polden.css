@@ -167,7 +167,6 @@
   /* Accent reference — reads from the theme so it follows the user's choice. */
   --pd-accent: var(--md-sys-color-primary);
   --pd-accent-wash: color-mix(in srgb, var(--md-sys-color-primary) 12%, var(--md-sys-color-surface));
-  --accent-glow: color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent);
 
   /* ---------- Touch target (a11y) ---------- */
   --pd-touch-target: 44px;

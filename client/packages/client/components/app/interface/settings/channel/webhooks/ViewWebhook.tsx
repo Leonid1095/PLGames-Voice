@@ -15,9 +15,26 @@ import {
   Column,
   Form2,
   Row,
+  Text,
 } from "@revolt/ui";
 
 import { useSettingsNavigation } from "../../Settings";
+
+const NEWS_EXAMPLE = `{
+  "news": {
+    "title": "Новый рейд в субботу",
+    "text": "Запись открыта до пятницы.",
+    "url": "https://example.com/news/raid",
+    "image": "https://example.com/news/raid.jpg"
+  }
+}`;
+
+const CHAT_EXAMPLE = `{
+  "chat": {
+    "author": "Thrall",
+    "text": "Сбор у ворот Орды"
+  }
+}`;
 
 /**
  * Webhook
@@ -85,6 +102,11 @@ export function ViewWebhook(props: { webhook: ChannelWebhook }) {
 
   const submit = Form2.useSubmitHandler(editGroup, onSubmit, onReset);
 
+  const webhookUrl = () =>
+    props.webhook.token
+      ? `${CONFIGURATION.DEFAULT_API_URL}/webhooks/${props.webhook.id}/${props.webhook.token}`
+      : undefined;
+
   return (
     <Column gap="xl">
       <form onSubmit={submit}>
@@ -112,25 +134,90 @@ export function ViewWebhook(props: { webhook: ChannelWebhook }) {
         </Column>
       </form>
 
-      <Column>
+      <Column gap="md">
+        <Text class="label">
+          <Trans>
+            Your site or game posts JSON to this URL. PLG Voice does not fetch
+            either of them.
+          </Trans>
+        </Text>
+        <Show
+          when={webhookUrl()}
+          fallback={
+            <Text class="label">
+              <Trans>
+                This webhook has no token loaded. Create it again to get a URL.
+              </Trans>
+            </Text>
+          }
+        >
+          <pre
+            style={{
+              margin: "0",
+              "white-space": "pre-wrap",
+              "overflow-wrap": "anywhere",
+              "font-family": "var(--pd-font-mono, ui-monospace, monospace)",
+              "font-size": "12px",
+              "line-height": "1.45",
+            }}
+          >
+            {webhookUrl()}
+          </pre>
+        </Show>
         <CategoryButton
           action="chevron"
           icon={<Copy />}
-          onClick={() =>
-            navigator.clipboard.writeText(
-              `${CONFIGURATION.DEFAULT_API_URL}/webhooks/${props.webhook.id}/${props.webhook.token}`,
-            )
-          }
+          disabled={!webhookUrl()}
+          onClick={() => {
+            const url = webhookUrl();
+            if (url) navigator.clipboard.writeText(url);
+          }}
         >
           <Trans>Copy webhook URL</Trans>
         </CategoryButton>
+        <CategoryButton
+          action="chevron"
+          icon={<Copy />}
+          onClick={() => navigator.clipboard.writeText(NEWS_EXAMPLE)}
+        >
+          <Trans>Copy news example</Trans>
+        </CategoryButton>
+        <pre
+          style={{
+            margin: "0",
+            "white-space": "pre-wrap",
+            "font-family": "var(--pd-font-mono, ui-monospace, monospace)",
+            "font-size": "12px",
+            "line-height": "1.45",
+          }}
+        >
+          {NEWS_EXAMPLE}
+        </pre>
+        <CategoryButton
+          action="chevron"
+          icon={<Copy />}
+          onClick={() => navigator.clipboard.writeText(CHAT_EXAMPLE)}
+        >
+          <Trans>Copy game chat example</Trans>
+        </CategoryButton>
+        <pre
+          style={{
+            margin: "0",
+            "white-space": "pre-wrap",
+            "font-family": "var(--pd-font-mono, ui-monospace, monospace)",
+            "font-size": "12px",
+            "line-height": "1.45",
+          }}
+        >
+          {CHAT_EXAMPLE}
+        </pre>
         <CategoryButton
           action="chevron"
           icon={<Trash2 />}
           disabled={deleteWebhook.isPending}
           onClick={() => deleteWebhook.mutate()}
         >
-          Delete webhook
+          <Trans>Delete webhook</Trans>
         </CategoryButton>
       </Column>
     </Column>

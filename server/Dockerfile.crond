@@ -1,3 +1,11 @@
+# Local build of the cleanup daemon.
+#
+# crond used to run the prebuilt ghcr.io/stoatchat/crond:latest. ghcr.io is
+# unreachable from this host, and that image cannot pick up tasks added in
+# this tree (session pruning). The build stage matches Dockerfile.api so the
+# compiled workspace is reused from that image's cache. The runtime matches
+# crates/daemons/crond/Dockerfile: distroless/cc, nonroot, no shell.
+
 # Build Stage
 FROM rust:1.92.0-slim-bookworm AS builder
 USER 0:0
@@ -43,21 +51,9 @@ RUN sh /tmp/build-image-layer.sh deps
 COPY crates ./crates
 RUN sh /tmp/build-image-layer.sh apps
 
-# Runtime Stage
-FROM debian:bookworm-slim
-# bookworm-slim ships no CA bundle, so copy one before apt uses HTTPS.
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-RUN set -e; \
-    for f in /etc/apt/sources.list.d/debian.sources /etc/apt/sources.list; do \
-      [ -f "$f" ] && sed -i 's|http://deb.debian.org|https://deb.debian.org|g; s|http://security.debian.org|https://security.debian.org|g' "$f"; \
-    done; \
-    apt-get update && apt-get install -y ca-certificates libssl3 && rm -rf /var/lib/apt/lists/*
-# Run as non-root. UID/GID 65532 matches the distroless nonroot services
-# (autumn/january) — the group that owns the host Revolt.toml (0640 1000:65532),
-# so the process reads its config via group membership, no CAP_DAC_OVERRIDE.
-RUN groupadd -g 65532 nonroot && \
-    useradd  -u 65532 -g 65532 -d /nonexistent -s /usr/sbin/nologin -M nonroot
-COPY --from=builder /home/rust/src/target/release/revolt-delta /usr/local/bin/revolt-delta
-WORKDIR /tmp
-USER 65532:65532
-CMD ["revolt-delta"]
+# Bundle Stage
+FROM gcr.io/distroless/cc-debian12:nonroot
+COPY --from=builder /home/rust/src/target/release/revolt-crond ./
+
+USER nonroot
+CMD ["./revolt-crond"]

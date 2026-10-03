@@ -1,7 +1,7 @@
 import { Match, Show, Switch, createMemo, splitProps } from "solid-js";
-import { X } from "lucide-solid";
+import { Bookmark, Home, Plus, StickyNote, Users, X } from "lucide-solid";
 
-import { Trans, useLingui } from "@lingui-solid/solid/macro";
+import { Plural, Trans, useLingui } from "@lingui-solid/solid/macro";
 import { VirtualContainer } from "@minht11/solid-virtual-container";
 import { Channel } from "stoat.js";
 import { css } from "styled-system/css";
@@ -22,7 +22,6 @@ import {
   iconSize,
   typography,
 } from "@revolt/ui";
-import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 import { SidebarBase } from "./common";
 
@@ -75,7 +74,7 @@ export const HomeSidebar = (props: Props) => {
           <a href="/">
             <MenuButton
               size="normal"
-              icon={<Symbol>home</Symbol>}
+              icon={<Home size={20} stroke-width={1.75} />}
               attention={location.pathname === "/" ? "selected" : "normal"}
             >
               <ButtonTitle>
@@ -89,7 +88,7 @@ export const HomeSidebar = (props: Props) => {
           <a href="/friends">
             <MenuButton
               size="normal"
-              icon={<Symbol>group</Symbol>}
+              icon={<Users size={20} stroke-width={1.75} />}
               attention={
                 location.pathname === "/friends" ? "selected" : "normal"
               }
@@ -98,7 +97,13 @@ export const HomeSidebar = (props: Props) => {
                 <Trans>Friends</Trans>
                 <div style={{ flex: "1 1 auto" }} />
                 <Show when={pendingRequests()}>
-                  <PendingBadge>{pendingRequests()} requests</PendingBadge>
+                  <PendingBadge>
+                    <Plural
+                      value={pendingRequests()}
+                      one="# request"
+                      other="# requests"
+                    />
+                  </PendingBadge>
                 </Show>
               </ButtonTitle>
             </MenuButton>
@@ -109,7 +114,7 @@ export const HomeSidebar = (props: Props) => {
           <a href="/saved">
             <MenuButton
               size="normal"
-              icon={<Symbol>bookmark</Symbol>}
+              icon={<Bookmark size={20} stroke-width={1.75} />}
               attention={
                 location.pathname === "/saved" ? "selected" : "normal"
               }
@@ -127,7 +132,7 @@ export const HomeSidebar = (props: Props) => {
               <MenuButton
                 size="normal"
                 attention={"normal"}
-                icon={<Symbol>note_stack</Symbol>}
+                icon={<StickyNote size={20} stroke-width={1.75} />}
                 onClick={() => props.openSavedNotes(navigate)}
               >
                 <ButtonTitle>
@@ -140,7 +145,7 @@ export const HomeSidebar = (props: Props) => {
               <a href={`/channel/${savedNotesChannelId()}`}>
                 <MenuButton
                   size="normal"
-                  icon={<Symbol>note_stack</Symbol>}
+                  icon={<StickyNote size={20} stroke-width={1.75} />}
                   attention={
                     props.channelId && savedNotesChannelId() === props.channelId
                       ? "selected"
@@ -156,7 +161,7 @@ export const HomeSidebar = (props: Props) => {
           </Switch>
 
           <Category>
-            Direct Messages
+            <Trans>Direct Messages</Trans>
             <a
               class={css({
                 cursor: "pointer",
@@ -174,9 +179,7 @@ export const HomeSidebar = (props: Props) => {
                 },
               }}
             >
-              <Symbol size={20} marginTop="2px">
-                add
-              </Symbol>
+              <Plus size={18} stroke-width={1.75} />
             </a>
           </Category>
 
@@ -219,8 +222,14 @@ const SidebarTitle = styled("p", {
   base: {
     paddingBlock: "calc(var(--gap-md) + 15px)",
     paddingInline: "var(--gap-md)",
-
-    ...typography.raw({ class: "title" }),
+    margin: 0,
+    fontFamily: "var(--pd-font-display)",
+    fontVariationSettings: '"wght" 700, "wdth" var(--pd-display-wdth)',
+    fontWeight: 700,
+    fontSize: "15px",
+    letterSpacing: "0.04em",
+    textTransform: "uppercase",
+    color: "var(--md-sys-color-on-surface)",
   },
 });
 
@@ -242,8 +251,8 @@ const PendingBadge = styled("div", {
     fontWeight: 600,
     fontVariantNumeric: "tabular-nums",
     padding: "1px 7px",
-    color: "var(--md-sys-color-on-error)",
-    background: "var(--md-sys-color-error)",
+    color: "var(--md-sys-color-on-primary)",
+    background: "var(--md-sys-color-primary)",
     borderRadius: "var(--pd-radius-pill)",
   },
 });
@@ -257,11 +266,12 @@ const Category = styled("div", {
     paddingTop: "16px",
     paddingBottom: "6px",
 
-    fontSize: "11px",
-    fontWeight: 600,
-    letterSpacing: "0.08em",
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    fontWeight: "var(--pd-weight-regular)",
+    letterSpacing: "var(--pd-tracking-label)",
     textTransform: "uppercase",
-    color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
+    color: "var(--md-sys-color-on-surface-variant)",
   },
 });
 
@@ -382,13 +392,11 @@ function Entry(
                 <TextWithEmoji content={local.channel.name!} />
               </OverflowingText>
               <span class={typography({ class: "_status" })}>
-                {/* <Plural
+                <Plural
                   value={local.channel.recipientIds.size}
                   one="# Member"
                   other="# Members"
-                /> */}
-                {local.channel.recipientIds.size}{" "}
-                {local.channel.recipientIds.size > 1 ? `Members` : "Member"}
+                />
               </span>
             </Match>
             <Match when={local.channel.type === "DirectMessage"}>

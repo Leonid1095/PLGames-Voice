@@ -88,6 +88,8 @@ pub struct GlobalLimits {
     /// max server channels
     server_channels: i64,
     body_limit_size: i64,
+    /// Hours a new account keeps the tighter limits
+    new_user_hours: i64,
 }
 
 /// # User Limits
@@ -219,6 +221,7 @@ pub async fn root() -> Result<Json<RevoltConfig>> {
                     server_roles: config.features.limits.global.server_roles as i64,
                     server_channels: config.features.limits.global.server_channels as i64,
                     body_limit_size: config.features.limits.global.body_limit_size as i64,
+                    new_user_hours: config.features.limits.global.new_user_hours as i64,
                 },
                 new_user: UserLimits::from_feature_limits(config.features.limits.new_user),
                 default: UserLimits::from_feature_limits(config.features.limits.default),

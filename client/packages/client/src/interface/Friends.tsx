@@ -1,12 +1,26 @@
 import {
   Accessor,
   For,
+  JSX,
   Match,
   Show,
   Switch,
   createMemo,
   createSignal,
 } from "solid-js";
+import {
+  Ban,
+  Check,
+  Circle,
+  Hourglass,
+  MessageCircle,
+  Unlock,
+  User as UserIcon,
+  UserPlus,
+  UserX,
+  Users,
+  X,
+} from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { VirtualContainer } from "@minht11/solid-virtual-container";
@@ -24,7 +38,6 @@ import {
   IconButton,
   UserStatus,
 } from "@revolt/ui";
-import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 import { HeaderIcon } from "./common/CommonHeader";
 
@@ -100,17 +113,17 @@ export function Friends() {
   const [page, setPage] = createSignal("online");
 
   const tabs = [
-    { id: "online", label: () => t`Online`, icon: "circle" },
-    { id: "all", label: () => t`All`, icon: "group" },
-    { id: "pending", label: () => t`Pending`, icon: "person_add" },
-    { id: "blocked", label: () => t`Blocked`, icon: "block" },
+    { id: "online", label: () => t`Online`, icon: <Circle size={16} stroke-width={1.75} /> },
+    { id: "all", label: () => t`All`, icon: <Users size={16} stroke-width={1.75} /> },
+    { id: "pending", label: () => t`Pending`, icon: <UserPlus size={16} stroke-width={1.75} /> },
+    { id: "blocked", label: () => t`Blocked`, icon: <Ban size={16} stroke-width={1.75} /> },
   ];
 
   return (
     <Base>
       <Header placement="primary">
         <HeaderIcon>
-          <Symbol>group</Symbol>
+          <Users size={22} stroke-width={1.75} />
         </HeaderIcon>
         <Trans>Friends</Trans>
       </Header>
@@ -122,7 +135,7 @@ export function Friends() {
               active={page() === tab.id}
               onClick={() => setPage(tab.id)}
             >
-              <Symbol size={18}>{tab.icon}</Symbol>
+              {tab.icon}
               <span>{tab.label()}</span>
               <Show when={tab.id === "pending" && pendingCount()}>
                 <TabBadge>{pendingCount()}</TabBadge>
@@ -145,7 +158,7 @@ export function Friends() {
             },
           }}
         >
-          <Symbol size={16}>person_add</Symbol>
+          <UserPlus size={16} stroke-width={1.75} />
           <Trans>Add friend</Trans>
         </AddFriendButton>
       </TabBar>
@@ -158,7 +171,7 @@ export function Friends() {
                 title={t`Online`}
                 users={lists().online}
                 scrollTargetElement={targetSignal}
-                emptyIcon="person_off"
+                emptyIcon={<UserX size={48} stroke-width={1.5} />}
                 emptyText={t`No friends online`}
               />
             }
@@ -168,7 +181,7 @@ export function Friends() {
                 title={t`All Friends`}
                 users={lists().friends}
                 scrollTargetElement={targetSignal}
-                emptyIcon="group_off"
+                emptyIcon={<Users size={48} stroke-width={1.5} />}
                 emptyText={t`You haven't added any friends yet`}
               />
             </Match>
@@ -178,7 +191,7 @@ export function Friends() {
                   title={t`Incoming`}
                   users={lists().incoming}
                   scrollTargetElement={targetSignal}
-                  emptyIcon="hourglass_empty"
+                  emptyIcon={<Hourglass size={48} stroke-width={1.5} />}
                   emptyText={t`No pending requests`}
                 />
               </Show>
@@ -187,7 +200,7 @@ export function Friends() {
                   title={t`Outgoing`}
                   users={lists().outgoing}
                   scrollTargetElement={targetSignal}
-                  emptyIcon="hourglass_empty"
+                  emptyIcon={<Hourglass size={48} stroke-width={1.5} />}
                   emptyText={t`No outgoing requests`}
                 />
               </Show>
@@ -197,7 +210,7 @@ export function Friends() {
                 title={t`Blocked`}
                 users={lists().blocked}
                 scrollTargetElement={targetSignal}
-                emptyIcon="block"
+                emptyIcon={<Ban size={48} stroke-width={1.5} />}
                 emptyText={t`No blocked users`}
               />
             </Match>
@@ -215,7 +228,7 @@ function People(props: {
   users: User[];
   title: string;
   scrollTargetElement: Accessor<HTMLDivElement>;
-  emptyIcon: string;
+  emptyIcon: JSX.Element;
   emptyText: string;
 }) {
   return (
@@ -227,7 +240,7 @@ function People(props: {
 
       <Show when={props.users.length === 0}>
         <EmptyState>
-          <Symbol size={48}>{props.emptyIcon}</Symbol>
+          {props.emptyIcon}
           <EmptyText>{props.emptyText}</EmptyText>
         </EmptyState>
       </Show>
@@ -328,7 +341,7 @@ function Entry(props: { user: User; role?: string; tabIndex?: number }) {
                 tooltip: { placement: "top", content: t`Message` },
               }}
             >
-              <Symbol size={18}>chat</Symbol>
+              <MessageCircle size={18} stroke-width={1.75} />
             </IconButton>
           </Show>
           <Show when={props.user.relationship === "Incoming"}>
@@ -340,7 +353,7 @@ function Entry(props: { user: User; role?: string; tabIndex?: number }) {
                 tooltip: { placement: "top", content: t`Accept` },
               }}
             >
-              <Symbol size={18}>check</Symbol>
+              <Check size={18} stroke-width={1.75} />
             </IconButton>
             <IconButton
               size="xs"
@@ -350,7 +363,7 @@ function Entry(props: { user: User; role?: string; tabIndex?: number }) {
                 tooltip: { placement: "top", content: t`Decline` },
               }}
             >
-              <Symbol size={18}>close</Symbol>
+              <X size={18} stroke-width={1.75} />
             </IconButton>
           </Show>
           <Show when={props.user.relationship === "Outgoing"}>
@@ -362,7 +375,7 @@ function Entry(props: { user: User; role?: string; tabIndex?: number }) {
                 tooltip: { placement: "top", content: t`Cancel` },
               }}
             >
-              <Symbol size={18}>close</Symbol>
+              <X size={18} stroke-width={1.75} />
             </IconButton>
           </Show>
           <Show when={props.user.relationship === "Blocked"}>
@@ -374,7 +387,7 @@ function Entry(props: { user: User; role?: string; tabIndex?: number }) {
                 tooltip: { placement: "top", content: t`Unblock` },
               }}
             >
-              <Symbol size={18}>lock_open</Symbol>
+              <Unlock size={18} stroke-width={1.75} />
             </IconButton>
           </Show>
           <IconButton
@@ -387,7 +400,7 @@ function Entry(props: { user: User; role?: string; tabIndex?: number }) {
               tooltip: { placement: "top", content: t`Profile` },
             }}
           >
-            <Symbol size={18}>person</Symbol>
+            <UserIcon size={18} stroke-width={1.75} />
           </IconButton>
         </FriendActions>
       </FriendRow>
@@ -484,26 +497,28 @@ const AddFriendButton = styled("button", {
     display: "flex",
     alignItems: "center",
     gap: "6px",
-    padding: "7px 14px",
-    borderRadius: "var(--pd-radius-md)",
-    border: "1px solid color-mix(in srgb, white 12%, transparent)",
+    padding: "8px 14px",
+    borderRadius: "12px",
+    border: "1px solid var(--md-sys-color-primary)",
     cursor: "pointer",
     fontSize: "13px",
-    fontWeight: 500,
-    letterSpacing: "-0.005em",
-    fontFamily: "inherit",
+    fontFamily: "var(--pd-font-display)",
+    fontVariationSettings: '"wght" 700, "wdth" var(--pd-display-wdth)',
+    fontWeight: 700,
+    letterSpacing: "0.04em",
+    textTransform: "uppercase",
     color: "var(--md-sys-color-on-primary)",
     background: "var(--md-sys-color-primary)",
-    boxShadow: "var(--pd-shadow-raised), inset 0 1px 0 rgba(255,255,255,0.12)",
-    transition: "background var(--pd-transition-base), box-shadow var(--pd-transition-base), transform var(--pd-transition-fast)",
+    transition:
+      "background var(--pd-transition-fast), border-color var(--pd-transition-fast), transform var(--pd-transition-fast)",
     whiteSpace: "nowrap",
 
     "&:hover": {
-      background: "color-mix(in srgb, var(--md-sys-color-primary) 92%, white)",
-      boxShadow: "0 4px 16px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.18)",
+      background: "color-mix(in srgb, var(--md-sys-color-primary) 86%, #000)",
+      borderColor: "color-mix(in srgb, var(--md-sys-color-primary) 86%, #000)",
     },
     "&:active": {
-      transform: "scale(0.97)",
+      transform: "translateY(1px)",
     },
   },
 });

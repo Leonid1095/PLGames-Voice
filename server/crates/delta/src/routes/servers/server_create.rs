@@ -28,8 +28,14 @@ pub async fn create_server(
     })?;
 
     user.can_acquire_server(db).await?;
+    let first_server = db.fetch_server_count(&user.id).await? == 0;
 
     let (server, channels) = Server::create(db, data, &user, true).await?;
+    if first_server {
+        if let Err(err) = db.bump_funnel("server").await {
+            log::warn!("Failed to count a first server: {err:?}");
+        }
+    }
     let (_, channels) = Member::create(db, &server, &user, Some(channels)).await?;
 
     Ok(Json(v0::CreateServerLegacyResponse {

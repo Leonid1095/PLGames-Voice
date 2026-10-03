@@ -54,16 +54,38 @@ fi
 echo "[$(date)] Starting backup..."
 
 # --- MongoDB backup ---
+# The password goes in a mode-600 config that is copied into the container,
+# not on the mongodump command line. `ps` on the host and inside the
+# container would otherwise show -p / --uri for the whole dump.
 echo "[$(date)] Backing up MongoDB..."
+MONGO_CONF="$(mktemp)"
+chmod 600 "$MONGO_CONF"
+python3 - "$MONGO_CONF" "$MONGO_USER" "$MONGO_PASS" <<'PY'
+import json, sys
+from urllib.parse import quote_plus
+path, user, password = sys.argv[1:]
+uri = "mongodb://%s:%s@127.0.0.1:27017/?authSource=admin" % (
+    quote_plus(user),
+    quote_plus(password),
+)
+with open(path, "w", encoding="utf-8") as fh:
+    fh.write("uri: %s\n" % json.dumps(uri))
+PY
+if ! docker compose -f "$PROJECT_DIR/compose.yml" cp "$MONGO_CONF" database:/tmp/mongodump.yaml; then
+  rm -f "$MONGO_CONF"
+  exit 1
+fi
+rm -f "$MONGO_CONF"
+set +e
 docker compose -f "$PROJECT_DIR/compose.yml" exec -T database \
-  mongodump \
-    -u "$MONGO_USER" \
-    -p "$MONGO_PASS" \
-    --authenticationDatabase admin \
-    --db revolt \
-    --archive \
-    --gzip \
+  mongodump --config=/tmp/mongodump.yaml --db revolt --archive --gzip \
   > "$BACKUP_DIR/mongo_${TIMESTAMP}.archive.gz"
+dump_status=$?
+set -e
+docker compose -f "$PROJECT_DIR/compose.yml" exec -T database rm -f /tmp/mongodump.yaml || true
+if [ "$dump_status" -ne 0 ]; then
+  exit "$dump_status"
+fi
 
 MONGO_SIZE=$(du -sh "$BACKUP_DIR/mongo_${TIMESTAMP}.archive.gz" | cut -f1)
 echo "[$(date)] MongoDB backup complete: $MONGO_SIZE"
@@ -99,8 +121,9 @@ done
 
 # --- Redis RDB snapshot ---
 echo "[$(date)] Backing up Redis RDB..."
-docker compose -f "$PROJECT_DIR/compose.yml" exec -T redis \
-  redis-cli -a "${REDIS_PASSWORD:-}" --no-auth-warning BGSAVE > /dev/null 2>&1 || true
+docker compose -f "$PROJECT_DIR/compose.yml" exec -T \
+  -e REDISCLI_AUTH="${REDIS_PASSWORD:-}" \
+  redis redis-cli --no-auth-warning BGSAVE > /dev/null 2>&1 || true
 sleep 2
 if docker compose -f "$PROJECT_DIR/compose.yml" cp redis:/data/dump.rdb "$BACKUP_DIR/redis_${TIMESTAMP}.rdb" 2>/dev/null; then
   echo "[$(date)] Redis backup complete"

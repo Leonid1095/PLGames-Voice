@@ -14,7 +14,7 @@ pub mod process_embeds;
 
 /// Spawn background workers
 pub fn start_workers(db: Database, amqp: AMQP) {
-    task::spawn(authifier_relay::worker());
+    task::spawn(authifier_relay::worker(db.clone()));
 
     for _ in 0..WORKER_COUNT {
         task::spawn(ack::worker(db.clone(), amqp.clone()));

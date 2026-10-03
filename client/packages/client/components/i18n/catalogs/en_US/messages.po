@@ -47,6 +47,11 @@ msgstr ""
 msgid "(edited)"
 msgstr ""
 
+#: components/app/interface/desktop/Titlebar.tsx
+#: components/app/interface/desktop/Titlebar.tsx
+msgid "(reconnect now)"
+msgstr ""
+
 #: components/app/interface/settings/server/Forms.tsx
 msgid "(required)"
 msgstr ""
@@ -54,6 +59,16 @@ msgstr ""
 #. placeholder {0}: props.count
 #: components/ui/components/features/messaging/elements/BlockedMessage.tsx
 msgid "{0, plural, one {# blocked message} other {# blocked messages}}"
+msgstr ""
+
+#. placeholder {0}: local.channel.recipientIds.size
+#: src/interface/navigation/channels/HomeSidebar.tsx
+msgid "{0, plural, one {# Member} other {# Members}}"
+msgstr ""
+
+#. placeholder {0}: pendingRequests()
+#: src/interface/navigation/channels/HomeSidebar.tsx
+msgid "{0, plural, one {# request} other {# requests}}"
 msgstr ""
 
 #. placeholder {0}: items().length
@@ -334,6 +349,10 @@ msgstr ""
 msgid "Account has been queued for deletion!"
 msgstr ""
 
+#: src/interface/Home.tsx
+msgid "Accounts"
+msgstr "Accounts"
+
 #: components/modal/modals/PolicyChange.tsx
 msgid "Acknowledge"
 msgstr ""
@@ -470,6 +489,14 @@ msgstr ""
 msgid "Analytics"
 msgstr ""
 
+#: src/AppDownload.tsx
+msgid "Android"
+msgstr ""
+
+#: src/Landing.tsx
+msgid "Android — Chrome"
+msgstr ""
+
 #: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
 msgid "Animated avatar"
 msgstr ""
@@ -521,6 +548,7 @@ msgstr ""
 msgid "Authenticator App"
 msgstr "Authenticator App"
 
+#: src/interface/ThemeToggle.tsx
 #: src/interface/ThemeSetup.tsx
 msgid "Auto"
 msgstr ""
@@ -626,12 +654,20 @@ msgstr "Blocked User"
 msgid "Blocked Words"
 msgstr ""
 
+#: src/interface/ThemeSetup.tsx
+msgid "Blue"
+msgstr ""
+
 #: components/app/interface/channels/text/Message.tsx
 msgid "Bot"
 msgstr "Bot"
 
 #: components/modal/modals/AddBot.tsx
 msgid "Bots are not verified by PLG Voice."
+msgstr ""
+
+#: src/Landing.tsx
+msgid "Bring the whole raid into one place and hear every call. Free, with no cap on how many people you bring."
 msgstr ""
 
 #: src/interface/Discover.tsx
@@ -642,6 +678,10 @@ msgstr ""
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Bug Tracker"
 msgstr "Bug Tracker"
+
+#: src/Landing.tsx
+msgid "Built for the way you actually play"
+msgstr ""
 
 #: src/interface/navigation/channels/HomeSidebar.tsx
 #: src/interface/channels/text/MemberSidebar.tsx
@@ -952,6 +992,10 @@ msgstr ""
 msgid "Connected"
 msgstr ""
 
+#: components/app/interface/desktop/Titlebar.tsx
+msgid "Connecting"
+msgstr ""
+
 #: components/ui/components/features/voice/VoiceBottomBar.tsx
 msgid "Connecting..."
 msgstr ""
@@ -995,6 +1039,10 @@ msgstr ""
 msgid "Copy channel ID"
 msgstr "Copy channel ID"
 
+#: components/app/interface/settings/channel/webhooks/ViewWebhook.tsx
+msgid "Copy game chat example"
+msgstr "Copy game chat example"
+
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Copy ID"
 msgstr "Copy ID"
@@ -1012,6 +1060,10 @@ msgstr "Copy link"
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Copy message ID"
 msgstr "Copy message ID"
+
+#: components/app/interface/settings/channel/webhooks/ViewWebhook.tsx
+msgid "Copy news example"
+msgstr "Copy news example"
 
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 msgid "Copy role ID"
@@ -1038,8 +1090,20 @@ msgstr "Copy user ID"
 msgid "Copy webhook URL"
 msgstr ""
 
+#: src/interface/channels/text/ForumView.tsx
+msgid "Could not create the thread."
+msgstr ""
+
 #: components/i18n/errors.ts
 msgid "Could not find what you requested."
+msgstr ""
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Could not load threads"
+msgstr ""
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Could not reach the server."
 msgstr ""
 
 #. placeholder {0}: props.embed.type
@@ -1093,11 +1157,15 @@ msgstr ""
 msgid "Create a new role"
 msgstr "Create a new role"
 
+#: src/Landing.tsx
+#: src/Landing.tsx
+msgid "Create a server"
+msgstr ""
+
 #: components/modal/modals/CreateWebhook.tsx
 msgid "Create a webhook"
 msgstr ""
 
-#: src/Landing.tsx
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Create an account"
 msgstr "Create an account"
@@ -1178,8 +1246,8 @@ msgid "Create server emoji"
 msgstr ""
 
 #: src/Landing.tsx
-msgid "Create servers with channels, roles, and permissions. Build the community you want."
-msgstr ""
+#~ msgid "Create servers with channels, roles, and permissions. Build the community you want."
+#~ msgstr ""
 
 #: components/modal/modals/CreateTempChannel.tsx
 msgid "Create temporary channel"
@@ -1206,8 +1274,8 @@ msgid "Created <0/>"
 msgstr ""
 
 #: src/Landing.tsx
-msgid "Crystal-clear voice"
-msgstr ""
+#~ msgid "Crystal-clear voice"
+#~ msgstr ""
 
 #: components/modal/modals/EditUsername.tsx
 #: components/modal/modals/EditPassword.tsx
@@ -1239,6 +1307,7 @@ msgstr ""
 msgid "Customize the message sent when a new member joins. Use {user}for username, {server} for server name, {count} for member count."
 msgstr ""
 
+#: src/interface/ThemeToggle.tsx
 #: src/interface/ThemeSetup.tsx
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Dark"
@@ -1350,6 +1419,10 @@ msgstr "Delete Role"
 msgid "Delete server"
 msgstr ""
 
+#: components/app/interface/settings/channel/webhooks/ViewWebhook.tsx
+msgid "Delete webhook"
+msgstr "Delete webhook"
+
 #: components/app/interface/settings/server/Forms.tsx
 #: components/app/interface/settings/server/Events.tsx
 msgid "Description (optional)"
@@ -1380,6 +1453,14 @@ msgstr ""
 msgid "Developer Documentation"
 msgstr ""
 
+#: components/app/interface/desktop/Titlebar.tsx
+msgid "Device is offline"
+msgstr ""
+
+#: src/interface/navigation/channels/HomeSidebar.tsx
+msgid "Direct Messages"
+msgstr ""
+
 #: components/app/interface/settings/user/Account.tsx
 msgid "Disable Account"
 msgstr "Disable Account"
@@ -1401,6 +1482,7 @@ msgid "Disconnect"
 msgstr ""
 
 #: components/ui/components/features/voice/VoiceBottomBar.tsx
+#: components/app/interface/desktop/Titlebar.tsx
 msgid "Disconnected"
 msgstr ""
 
@@ -1736,6 +1818,10 @@ msgstr ""
 msgid "First message..."
 msgstr ""
 
+#: src/interface/Home.tsx
+msgid "First servers"
+msgstr "First servers"
+
 #: src/interface/Friends.tsx
 #: src/interface/navigation/servers/UserMenu.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
@@ -1768,6 +1854,14 @@ msgstr ""
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "For 8 hours"
 msgstr ""
+
+#. placeholder {0}: accountLimits.hours
+#. placeholder {1}: accountLimits.length
+#. placeholder {2}: accountLimits.attachments
+#. placeholder {3}: accountLimits.friends
+#: src/interface/channels/text/Composition.tsx
+msgid "For the first {0} hours, messages are limited to {1} characters, {2} attachments and {3} friend requests."
+msgstr "For the first {0} hours, messages are limited to {1} characters, {2} attachments and {3} friend requests."
 
 #: components/auth/src/flows/FlowHome.tsx
 msgid "Forgot your password?"
@@ -1827,7 +1921,11 @@ msgid "Get active recovery codes"
 msgstr ""
 
 #: src/Landing.tsx
-msgid "Get started"
+#~ msgid "Get started"
+#~ msgstr ""
+
+#: src/Landing.tsx
+msgid "Get the crew in"
 msgstr ""
 
 #: src/interface/Home.tsx
@@ -1877,6 +1975,10 @@ msgstr ""
 msgid "Grants {0} permissions and denies {1} permissions"
 msgstr ""
 
+#: src/interface/ThemeSetup.tsx
+msgid "Green"
+msgstr ""
+
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Greetings and roles"
 msgstr ""
@@ -1924,6 +2026,7 @@ msgstr ""
 
 #: src/AppDownload.tsx
 #: src/interface/Home.tsx
+#: src/interface/navigation/servers/ServerList.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
 msgid "Home"
 msgstr "Home"
@@ -1973,6 +2076,9 @@ msgid "Incoming"
 msgstr ""
 
 #: src/Landing.tsx
+msgid "Install it in four taps"
+msgstr ""
+
 #: src/AppDownload.tsx
 msgid "Install on your phone"
 msgstr ""
@@ -2024,6 +2130,14 @@ msgstr "Inviter"
 
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Invites"
+msgstr ""
+
+#: src/AppDownload.tsx
+msgid "iPhone"
+msgstr ""
+
+#: src/Landing.tsx
+msgid "iPhone — Safari"
 msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
@@ -2164,6 +2278,7 @@ msgstr ""
 msgid "Let us know how we can improve our app by giving us feedback."
 msgstr "Let us know how we can improve our app by giving us feedback."
 
+#: src/interface/ThemeToggle.tsx
 #: src/interface/ThemeSetup.tsx
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Light"
@@ -2171,6 +2286,11 @@ msgstr ""
 
 #: components/app/interface/settings/channel/Overview.tsx
 msgid "Limit how often users can send messages in this channel"
+msgstr ""
+
+#: src/Landing.tsx
+#: src/Landing.tsx
+msgid "Linux"
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -2242,8 +2362,12 @@ msgid "Long"
 msgstr ""
 
 #: src/Landing.tsx
-msgid "Low-latency voice channels with noise suppression. Talk freely — it just works."
+msgid "Low-latency channels with noise suppression built in. Keyboard clatter and fan noise drop out; the call stays up when the boss does."
 msgstr ""
+
+#: src/Landing.tsx
+#~ msgid "Low-latency voice channels with noise suppression. Talk freely — it just works."
+#~ msgstr ""
 
 #: components/app/interface/settings/server/Leveling.tsx
 msgid "Lv."
@@ -2313,8 +2437,8 @@ msgid "Mark this channel as mature?"
 msgstr ""
 
 #: src/Landing.tsx
-msgid "Markdown, embeds, reactions, and threads. Everything you need for great conversations."
-msgstr ""
+#~ msgid "Markdown, embeds, reactions, and threads. Everything you need for great conversations."
+#~ msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Masquerade"
@@ -2341,6 +2465,7 @@ msgid "Member unbanned"
 msgstr ""
 
 #: components/app/interface/settings/ServerSettings.tsx
+#: components/app/interface/settings/server/Analytics.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Members"
 msgstr "Members"
@@ -2441,6 +2566,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Minimise to Tray"
+msgstr ""
+
+#: src/Landing.tsx
+msgid "Moderation included"
 msgstr ""
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
@@ -2620,6 +2749,10 @@ msgstr ""
 msgid "No channels found"
 msgstr ""
 
+#: src/interface/ServerHome.tsx
+msgid "No channels!"
+msgstr ""
+
 #: components/ui/components/features/messaging/composition/picker/MyGifPicker.tsx
 msgid "No favourite GIFs yet"
 msgstr ""
@@ -2661,7 +2794,11 @@ msgid "No saved messages"
 msgstr ""
 
 #: src/interface/Discover.tsx
-msgid "No servers found"
+#~ msgid "No servers found"
+#~ msgstr ""
+
+#: src/interface/Discover.tsx
+msgid "No servers yet. Create one from Home, or paste an invite below."
 msgstr ""
 
 #: src/interface/SavedMessages.tsx
@@ -2696,6 +2833,10 @@ msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Not of minimum age to use the platform"
+msgstr ""
+
+#: src/Landing.tsx
+msgid "Nothing between you and the call"
 msgstr ""
 
 #: components/app/menus/ServerContextMenu.tsx
@@ -2737,6 +2878,10 @@ msgstr "Oldest"
 msgid "On"
 msgstr "On"
 
+#: src/Landing.tsx
+msgid "On your phone"
+msgstr ""
+
 #: components/modal/modals/DeleteServer.tsx
 #: components/modal/modals/DeleteRole.tsx
 #: components/modal/modals/DeleteChannel.tsx
@@ -2747,6 +2892,10 @@ msgstr "Once it's deleted, there's no going back."
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "One of the first 1000 users!"
+msgstr ""
+
+#: src/Landing.tsx
+msgid "One room."
 msgstr ""
 
 #: src/interface/Friends.tsx
@@ -2807,6 +2956,10 @@ msgstr "Open settings"
 msgid "Option"
 msgstr ""
 
+#: src/interface/ThemeSetup.tsx
+msgid "Orange"
+msgstr ""
+
 #: components/modal/modals/ReportContent.tsx
 msgid "Other"
 msgstr ""
@@ -2838,6 +2991,10 @@ msgstr ""
 #: components/app/interface/settings/user/Account.tsx
 msgid "Password"
 msgstr "Password"
+
+#: components/auth/src/flows/FlowReset.tsx
+msgid "Password reset is sent by email. This server is not sending mail yet, so sign in with your current password."
+msgstr "Password reset is sent by email. This server is not sending mail yet, so sign in with your current password."
 
 #: components/app/interface/settings/server/Events.tsx
 msgid "Past events"
@@ -2988,6 +3145,10 @@ msgstr ""
 msgid "Provided email or password is wrong."
 msgstr ""
 
+#: src/interface/ThemeSetup.tsx
+msgid "Purple"
+msgstr ""
+
 #: components/modal/modals/CreatePoll.tsx
 msgid "Question"
 msgstr ""
@@ -3035,8 +3196,8 @@ msgid "Read past messages sent in channels"
 msgstr ""
 
 #: src/Landing.tsx
-msgid "Ready to start?"
-msgstr ""
+#~ msgid "Ready to start?"
+#~ msgstr ""
 
 #: components/modal/modals/BanNonMember.tsx
 #: components/modal/modals/BanMember.tsx
@@ -3046,6 +3207,10 @@ msgstr "Reason"
 
 #: components/app/interface/settings/user/Notifications.tsx
 msgid "Receive notifications while the app is open and in the background."
+msgstr ""
+
+#: components/app/interface/desktop/Titlebar.tsx
+msgid "Reconnecting"
 msgstr ""
 
 #: components/ui/components/features/voice/VoiceBottomBar.tsx
@@ -3224,8 +3389,8 @@ msgid "Review policy changes"
 msgstr ""
 
 #: src/Landing.tsx
-msgid "Rich messaging"
-msgstr ""
+#~ msgid "Rich messaging"
+#~ msgstr ""
 
 #: src/interface/SavedMessages.tsx
 msgid "Right-click a message and choose \"Save\""
@@ -3260,6 +3425,10 @@ msgstr "Roles"
 
 #: components/app/interface/settings/server/Welcome.tsx
 msgid "Roles automatically assigned to new members when they join."
+msgstr ""
+
+#: src/Landing.tsx
+msgid "Roles, permissions, automod and an audit log ship with the server. Nothing to buy, nothing to bolt on."
 msgstr ""
 
 #: components/modal/modals/ServerIdentity.tsx
@@ -3377,6 +3546,10 @@ msgstr ""
 
 #: src/interface/channels/ChannelHeader.tsx
 msgid "Search..."
+msgstr ""
+
+#: src/Landing.tsx
+msgid "See who is on what"
 msgstr ""
 
 #: components/app/interface/CommandPalette.tsx
@@ -3576,6 +3749,10 @@ msgstr ""
 msgid "Several people are typing"
 msgstr ""
 
+#: src/Landing.tsx
+msgid "Share a screen at 1080p60 or run a full broadcast into the channel. Recordings stay on your own server."
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Share camera or screen in voice call"
@@ -3614,6 +3791,14 @@ msgstr ""
 #: src/AppDownload.tsx
 msgid "Sign up"
 msgstr ""
+
+#: src/interface/ThemeSetup.tsx
+msgid "Signal"
+msgstr ""
+
+#: src/interface/Home.tsx
+msgid "Signup path"
+msgstr "Signup path"
 
 #: components/app/interface/channels/text/Message.tsx
 msgid "Silent"
@@ -3703,6 +3888,10 @@ msgstr ""
 
 #: components/modal/modals/Activity.tsx
 msgid "Stream link (Twitch / YouTube)"
+msgstr ""
+
+#: src/Landing.tsx
+msgid "Stream to the room"
 msgstr ""
 
 #: components/app/interface/settings/user/Advanced.tsx
@@ -3830,6 +4019,10 @@ msgstr ""
 msgid "The bot will not be granted any permissions."
 msgstr ""
 
+#: src/Landing.tsx
+msgid "The client picks up the game you launched and shows it next to your name, so people know what they are joining."
+msgstr ""
+
 #. placeholder {0}: file.name
 #: src/interface/channels/text/Composition.tsx
 msgid "The file \"{0}\" ({fileSize}) exceeds the maximum size limit of {maxSizeFormatted}."
@@ -3837,6 +4030,11 @@ msgstr ""
 
 #: components/i18n/errors.ts
 msgid "The password is too short."
+msgstr ""
+
+#. placeholder {0}: r.status
+#: src/interface/channels/text/ForumView.tsx
+msgid "The server returned {0}."
 msgstr ""
 
 #: src/interface/ThemeSetup.tsx
@@ -3933,6 +4131,10 @@ msgstr ""
 msgid "This username is not allowed."
 msgstr ""
 
+#: components/app/interface/settings/channel/webhooks/ViewWebhook.tsx
+msgid "This webhook has no token loaded. Create it again to get a URL."
+msgstr "This webhook has no token loaded. Create it again to get a URL."
+
 #: components/modal/modals/ResetBotToken.tsx
 msgid "This will invalidate the current token and stop any existing instances of the bot from running."
 msgstr ""
@@ -3972,6 +4174,10 @@ msgstr ""
 
 #: components/modal/modals/CreateChannel.tsx
 msgid "Trigger for temporary channels"
+msgstr ""
+
+#: src/interface/channels/text/ForumView.tsx
+msgid "Try again"
 msgstr ""
 
 #: components/ui/components/features/voice/VoiceBottomBar.tsx
@@ -4132,6 +4338,10 @@ msgstr ""
 msgid "User's profile has inappropriate content"
 msgstr ""
 
+#: components/modal/modals/AddFriend.tsx
+msgid "username"
+msgstr ""
+
 #: components/modal/modals/Onboarding.tsx
 #: components/modal/modals/EditUsername.tsx
 #: components/modal/modals/CreateBot.tsx
@@ -4142,8 +4352,12 @@ msgid "Username"
 msgstr "Username"
 
 #: components/modal/modals/AddFriend.tsx
-msgid "username#1234"
-msgstr ""
+#~ msgid "username#1234"
+#~ msgstr ""
+
+#: src/interface/Home.tsx
+msgid "Usernames"
+msgstr "Usernames"
 
 #: components/app/interface/settings/server/ReactionRoles.tsx
 msgid "Users react to a message with an emoji to get a role. Remove the reaction to lose the role."
@@ -4218,6 +4432,14 @@ msgstr "View Recovery Codes"
 msgid "Viewing older messages"
 msgstr "Viewing older messages"
 
+#: src/interface/ThemeSetup.tsx
+msgid "Violet"
+msgstr ""
+
+#: src/interface/Home.tsx
+msgid "Visits"
+msgstr "Visits"
+
 #: components/app/interface/settings/UserSettings.tsx
 #: components/app/interface/settings/server/Analytics.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -4233,8 +4455,16 @@ msgid "Voice Processing"
 msgstr ""
 
 #: src/Landing.tsx
-msgid "Voice, text, and servers — all in one place. Free, open, and built for your community."
+msgid "Voice that holds"
 msgstr ""
+
+#: src/Landing.tsx
+msgid "Voice, text and servers"
+msgstr ""
+
+#: src/Landing.tsx
+#~ msgid "Voice, text, and servers — all in one place. Free, open, and built for your community."
+#~ msgstr ""
 
 #: components/app/menus/UserContextMenu.tsx
 msgid "Volume"
@@ -4249,8 +4479,8 @@ msgid "Watching"
 msgstr ""
 
 #: components/auth/src/flows/FlowHome.tsx
-msgid "We're so excited to see you again!"
-msgstr ""
+#~ msgid "We're so excited to see you again!"
+#~ msgstr ""
 
 #: components/auth/src/flows/FlowCheck.tsx
 msgid "We've sent you a verification email. Please allow up to 10 minutes for it to arrive."
@@ -4311,6 +4541,16 @@ msgstr ""
 
 #: components/app/interface/settings/user/subscriptions/EditSubscriptionJoinFlow.tsx
 msgid "While Premium is in development, you can support the project with a donation."
+msgstr ""
+
+#: src/Landing.tsx
+#: src/Landing.tsx
+#: src/interface/ThemeToggle.tsx
+msgid "Windows"
+msgstr ""
+
+#: src/AppDownload.tsx
+msgid "Windows 10+ • 64-bit • ~117 MB"
 msgstr ""
 
 #: components/app/interface/settings/server/Giveaways.tsx
@@ -4439,9 +4679,18 @@ msgstr ""
 msgid "You do not have permission to do this."
 msgstr ""
 
+#: src/interface/channels/text/ForumView.tsx
+msgid "You do not have permission to view this forum."
+msgstr ""
+
 #: components/ui/components/features/messaging/composition/MessageBox.tsx
 msgid "You don't have permission to send messages in this channel."
 msgstr "You don't have permission to send messages in this channel."
+
+#. placeholder {0}: homeNotifications()
+#: src/interface/navigation/servers/ServerList.tsx
+msgid "You have {0} pending friend requests."
+msgstr ""
 
 #: components/i18n/errors.ts
 msgid "You have been locked out for entering a wrong password multiple times. Please wait a couple minutes and try again."
@@ -4514,6 +4763,10 @@ msgstr ""
 msgid "Your account has been verified!"
 msgstr "Your account has been verified!"
 
+#: src/Landing.tsx
+msgid "Your crew."
+msgstr ""
+
 #: components/i18n/errors.ts
 msgid "Your discriminator change has been ratelimited, please try again later."
 msgstr ""
@@ -4528,8 +4781,8 @@ msgid "Your message is too long, please remove some characters and try again."
 msgstr ""
 
 #: src/Landing.tsx
-msgid "Your own servers"
-msgstr ""
+#~ msgid "Your own servers"
+#~ msgstr ""
 
 #: components/modal/modals/MFARecovery.tsx
 msgid "Your recovery codes"
@@ -4543,9 +4796,17 @@ msgstr ""
 msgid "Your servers"
 msgstr ""
 
-#: src/Landing.tsx
-msgid "Your space. Your voice."
+#: components/auth/src/flows/FlowHome.tsx
+msgid "Your servers and voice are right here."
 msgstr ""
+
+#: components/app/interface/settings/channel/webhooks/ViewWebhook.tsx
+msgid "Your site or game posts JSON to this URL. PLG Voice does not fetch either of them."
+msgstr "Your site or game posts JSON to this URL. PLG Voice does not fetch either of them."
+
+#: src/Landing.tsx
+#~ msgid "Your space. Your voice."
+#~ msgstr ""
 
 #: components/i18n/errors.ts
 msgid "Your user has already been created? Try logging in again or refreshing the app."

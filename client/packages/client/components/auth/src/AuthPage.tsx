@@ -3,6 +3,7 @@ import { JSX } from "solid-js";
 import { styled } from "styled-system/jsx";
 
 import { Titlebar } from "@revolt/app/interface/desktop/Titlebar";
+import { BrandMark } from "@revolt/ui";
 
 /**
  * Authentication page layout
@@ -30,8 +31,11 @@ const Base = styled("div", {
     letterSpacing: "var(--pd-tracking-snug)",
 
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+    gap: "28px",
+    padding: "32px 20px",
   },
 });
 
@@ -48,7 +52,10 @@ export function AuthPage(props: { children: JSX.Element }) {
       }}
     >
       <Titlebar />
-      <Base>{props.children}</Base>
+      <Base>
+        <BrandMark href="/" />
+        {props.children}
+      </Base>
     </div>
   );
 }

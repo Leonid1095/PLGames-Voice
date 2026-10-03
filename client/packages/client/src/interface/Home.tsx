@@ -1,9 +1,9 @@
-import { createResource, createSignal, For, Match, Show, Switch } from "solid-js";
+import { createResource, createSignal, For, Match, onMount, Show, Switch } from "solid-js";
 import { CreditCard, Home, MessageSquareDot, PlusCircle, Radio, Settings, Users } from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { PublicChannelInvite } from "stoat.js";
-import { css, cva } from "styled-system/css";
+import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
 import { IS_DEV, useClient } from "@revolt/client";
@@ -11,6 +11,7 @@ import { CONFIGURATION } from "@revolt/common";
 import { useModals } from "@revolt/modal";
 import { useNavigate } from "@revolt/routing";
 import {
+  BrandMark,
   Button,
   CategoryButton,
   Column,
@@ -18,8 +19,6 @@ import {
   iconSize,
   main,
 } from "@revolt/ui";
-
-import Wordmark from "../../public/assets/web/wordmark.svg?component-solid";
 
 import { HeaderIcon } from "./common/CommonHeader";
 
@@ -98,6 +97,27 @@ const SeparatedColumn = styled(Column, {
 /**
  * Stream card styles
  */
+const SignupPathRow = styled("div", {
+  base: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: "8px 16px",
+    maxWidth: "560px",
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    letterSpacing: "var(--pd-tracking-label)",
+    textTransform: "uppercase",
+    color: "var(--md-sys-color-on-surface-variant)",
+  },
+});
+
+const SignupPathLabel = styled("span", {
+  base: {
+    color: "var(--md-sys-color-on-surface)",
+  },
+});
+
 const StreamsSection = styled("div", {
   base: {
     width: "100%",
@@ -171,8 +191,8 @@ const LiveBadge = styled("span", {
     position: "absolute",
     top: "8px",
     left: "8px",
-    background: "var(--md-sys-color-primary)",
-    color: "var(--md-sys-color-on-primary)",
+    background: "var(--pd-live)",
+    color: "var(--pd-ink)",
     fontFamily: "var(--pd-font-mono)",
     fontSize: "var(--pd-text-xs)",
     padding: "3px 7px",
@@ -316,16 +336,57 @@ function ActiveStreams() {
 /**
  * Home page
  */
+type SignupPath = {
+  visit: number;
+  account: number;
+  username: number;
+  server: number;
+};
+
 export function HomePage() {
   const { t } = useLingui();
   const { openModal } = useModals();
   const navigate = useNavigate();
   const client = useClient();
 
-  // check if we're stoat.chat; if so, check if the user is in the Lounge
+  onMount(() => {
+    if (sessionStorage.getItem("plg-pending-server") !== "1") return;
+    sessionStorage.removeItem("plg-pending-server");
+    const current = client();
+    if (!current) return;
+    openModal({ type: "create_server", client: current });
+  });
+
+  const ownsServer = () => {
+    const current = client();
+    const me = current?.user?.id;
+    if (!current || !me) return false;
+    for (const server of current.servers.values()) {
+      if (server.ownerId === me) return true;
+    }
+    return false;
+  };
+
+  const [signupPath] = createResource(ownsServer, async (owns) => {
+    if (!owns) return null;
+    try {
+      return (await client()!.api.get("/funnel")) as SignupPath;
+    } catch {
+      return null;
+    }
+  });
+
   const showLoungeButton = CONFIGURATION.IS_PLGAMES;
+  const signupLabels = {
+    path: t`Signup path`,
+    visits: t`Visits`,
+    accounts: t`Accounts`,
+    usernames: t`Usernames`,
+    servers: t`First servers`,
+  };
+  const COMMUNITY_SERVER_ID = "01KJ3E82WMT4EEAJ4NMJ7H7V3Z";
   const isInLounge =
-    client()!.servers.get("01F7ZSBSFHQ8TA81725KQCSDDP") !== undefined;
+    client()!.servers.get(COMMUNITY_SERVER_ID) !== undefined;
 
   return (
     <Base>
@@ -337,14 +398,27 @@ export function HomePage() {
       </Header>
       <div use:scrollable={{ class: content() }}>
         <Column>
-          <Wordmark
-            class={css({
-              width: "220px",
-              height: "auto",
-              fill: "var(--md-sys-color-on-surface)",
-            })}
-          />
+          <BrandMark themed size={40} />
         </Column>
+        <Show when={signupPath()}>
+          {(path) => (
+            <SignupPathRow>
+              <SignupPathLabel>{signupLabels.path}</SignupPathLabel>
+              <span>
+                {signupLabels.visits} {path().visit}
+              </span>
+              <span>
+                {signupLabels.accounts} {path().account}
+              </span>
+              <span>
+                {signupLabels.usernames} {path().username}
+              </span>
+              <span>
+                {signupLabels.servers} {path().server}
+              </span>
+            </SignupPathRow>
+          )}
+        </Show>
         <ActiveStreams />
         <Buttons>
           <SeparatedColumn>
@@ -368,7 +442,7 @@ export function HomePage() {
             <Switch fallback={null}>
               <Match when={showLoungeButton && isInLounge}>
                 <CategoryButton
-                  onClick={() => navigate("/server/01F7ZSBSFHQ8TA81725KQCSDDP")}
+                  onClick={() => navigate(`/server/${COMMUNITY_SERVER_ID}`)}
                   description={
                     <Trans>
                       You can report issues and discuss improvements with us

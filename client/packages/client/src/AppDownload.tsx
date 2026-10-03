@@ -2,6 +2,8 @@ import { styled } from "styled-system/jsx";
 
 import { Trans } from "@lingui-solid/solid/macro";
 
+import { BrandMark } from "@revolt/ui";
+
 /* ── Полдень palette ────────────────────────────────────────────────
  *
  * Same literals as Landing.tsx, for the same reason: this page renders with
@@ -61,10 +63,7 @@ const Title = styled("h1", {
     fontSize: "clamp(30px, 6vw, 60px)",
     letterSpacing: "0.01em",
     margin: 0,
-    background: `linear-gradient(175deg, ${TEXT} 30%, color-mix(in srgb, ${TEXT} 55%, ${ACCENT}) 100%)`,
-    backgroundClip: "text",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
+    color: TEXT,
   },
 });
 
@@ -95,21 +94,25 @@ const BtnDownload = styled("a", {
     justifyContent: "center",
     gap: "10px",
     padding: "16px 36px",
-    borderRadius: "var(--pd-radius-md)",
+    borderRadius: "12px",
+    border: `1px solid ${ACCENT}`,
+    fontFamily: "var(--pd-font-display)",
+    fontVariationSettings: '"wght" 700, "wdth" var(--pd-display-wdth)',
     fontSize: "16px",
     fontWeight: 700,
+    textTransform: "uppercase",
+    letterSpacing: "0.04em",
     textDecoration: "none",
     color: "#fff",
     background: ACCENT,
-    boxShadow: "var(--pd-shadow-raised), inset 0 1px 0 rgba(255,255,255,0.14)",
     transition:
-      "background var(--pd-transition-base), box-shadow var(--pd-transition-base), transform var(--pd-transition-fast)",
+      "background var(--pd-transition-fast), border-color var(--pd-transition-fast), transform var(--pd-transition-fast)",
     cursor: "pointer",
     _hover: {
       background: ACCENT_HOVER,
-      boxShadow: `0 4px 16px ${GLOW}, inset 0 1px 0 rgba(255,255,255,0.18)`,
-      transform: "translateY(-2px)",
+      borderColor: ACCENT_HOVER,
     },
+    _active: { transform: "translateY(1px)" },
     "@media (prefers-reduced-motion: reduce)": {
       _hover: { transform: "none" },
     },
@@ -135,7 +138,7 @@ const BtnSecondary = styled("a", {
     transition: "background 0.2s, color 0.2s",
     cursor: "pointer",
     _hover: {
-      background: "rgba(35,31,51,0.8)",
+      background: "#F1EDE8",
       color: TEXT,
     },
     md: {
@@ -233,46 +236,12 @@ const StepNum = styled("span", {
   },
 });
 
-/* ── Logo ──────────────────────────────────────────── */
-
-function LogoIcon() {
-  return (
-    <svg
-      width="64"
-      height="64"
-      viewBox="0 0 32 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M16 2 L28 9 L28 23 L16 30 L4 23 L4 9 Z"
-        fill="url(#dlGrad)"
-        opacity="0.9"
-      />
-      <path
-        d="M16 10 L16 22 M11 13 L16 10 L21 13 M11 19 L16 22 L21 19"
-        stroke="#fff"
-        stroke-width="1.8"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        fill="none"
-      />
-      <defs>
-        <linearGradient id="dlGrad" x1="4" y1="2" x2="28" y2="30">
-          <stop offset="0%" stop-color="#E00A45" />
-          <stop offset="100%" stop-color="#FF3D6A" />
-        </linearGradient>
-      </defs>
-    </svg>
-  );
-}
-
 /* ── Download page ─────────────────────────────────── */
 
 export default function AppDownloadPage() {
   return (
     <Page>
-      <LogoIcon />
+      <BrandMark href="/" />
       <Title>
         <Trans>Download PLG Voice</Trans>
       </Title>
@@ -284,7 +253,9 @@ export default function AppDownloadPage() {
       <BtnDownload href={DOWNLOAD_URL} target="_blank">
         <Trans>Download for Windows</Trans>
       </BtnDownload>
-      <Footer>Windows 10+ &bull; 64-bit &bull; ~117 MB</Footer>
+      <Footer>
+        <Trans>Windows 10+ • 64-bit • ~117 MB</Trans>
+      </Footer>
 
       <Divider />
 
@@ -299,7 +270,9 @@ export default function AppDownloadPage() {
 
       <InstallCards>
         <InstallCard>
-          <InstallCardTitle>Android</InstallCardTitle>
+          <InstallCardTitle>
+            <Trans>Android</Trans>
+          </InstallCardTitle>
           <InstallStep>
             <StepNum>1</StepNum>
             <span>
@@ -321,7 +294,9 @@ export default function AppDownloadPage() {
         </InstallCard>
 
         <InstallCard>
-          <InstallCardTitle>iPhone</InstallCardTitle>
+          <InstallCardTitle>
+            <Trans>iPhone</Trans>
+          </InstallCardTitle>
           <InstallStep>
             <StepNum>1</StepNum>
             <span>

@@ -1,13 +1,16 @@
-import { Trans } from "@lingui-solid/solid/macro";
+import { Show } from "solid-js";
+
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 
 import { useApi } from "@revolt/client";
 import { CONFIGURATION } from "@revolt/common";
 import { useNavigate } from "@revolt/routing";
-import { Button } from "@revolt/ui";
+import { Button, CircularProgress, Text } from "@revolt/ui";
 
 import { FlowBase, FlowTitle } from "./Flow";
 import { setFlowCheckEmail } from "./FlowCheck";
 import { Fields, Form } from "./Form";
+import { useEmailEnabled } from "./useEmailEnabled";
 
 /**
  * Flow for sending password reset
@@ -15,6 +18,9 @@ import { Fields, Form } from "./Form";
 export default function FlowReset() {
   const api = useApi();
   const navigate = useNavigate();
+  const { loading, email } = useEmailEnabled();
+  const { t } = useLingui();
+  const resetUnavailable = t`Password reset is sent by email. This server is not sending mail yet, so sign in with your current password.`;
 
   /**
    * Send password reset
@@ -38,12 +44,23 @@ export default function FlowReset() {
       <FlowTitle>
         <Trans>Reset password</Trans>
       </FlowTitle>
-      <Form onSubmit={reset} captcha={CONFIGURATION.HCAPTCHA_SITEKEY}>
-        <Fields fields={["email"]} />
-        <Button type="submit">
-          <Trans>Reset</Trans>
-        </Button>
-      </Form>
+      <Show when={!loading()} fallback={<CircularProgress />}>
+        <Show
+          when={email()}
+          fallback={
+            <Text style={{ color: "#57534C", "font-size": "14px" }}>
+              {resetUnavailable}
+            </Text>
+          }
+        >
+          <Form onSubmit={reset} captcha={CONFIGURATION.HCAPTCHA_SITEKEY}>
+            <Fields fields={["email"]} />
+            <Button type="submit">
+              <Trans>Reset</Trans>
+            </Button>
+          </Form>
+        </Show>
+      </Show>
       <a href="/login/auth">
         <Button variant="text">
           <Trans>Go back to login</Trans>

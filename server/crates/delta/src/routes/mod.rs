@@ -7,6 +7,7 @@ use rocket::{Build, Rocket};
 mod bots;
 mod channels;
 mod customisation;
+mod funnel;
 mod invites;
 mod onboard;
 mod policy;
@@ -37,6 +38,7 @@ pub fn mount(config: Settings, mut rocket: Rocket<Build>) -> Rocket<Build> {
             "/auth/session" => rocket_authifier::routes::session::routes(),
             "/auth/mfa" => rocket_authifier::routes::mfa::routes(),
             "/onboard" => onboard::routes(),
+            "/funnel" => funnel::routes(),
             "/policy" => policy::routes(),
             "/push" => push::routes(),
             "/sync" => sync::routes(),
@@ -58,6 +60,7 @@ pub fn mount(config: Settings, mut rocket: Rocket<Build>) -> Rocket<Build> {
             "/auth/session" => rocket_authifier::routes::session::routes(),
             "/auth/mfa" => rocket_authifier::routes::mfa::routes(),
             "/onboard" => onboard::routes(),
+            "/funnel" => funnel::routes(),
             "/policy" => policy::routes(),
             "/push" => push::routes(),
             "/sync" => sync::routes()
@@ -80,6 +83,7 @@ pub fn mount(config: Settings, mut rocket: Rocket<Build>) -> Rocket<Build> {
             "/auth/session" => rocket_authifier::routes::session::routes(),
             "/auth/mfa" => rocket_authifier::routes::mfa::routes(),
             "/onboard" => onboard::routes(),
+            "/funnel" => funnel::routes(),
             "/push" => push::routes(),
             "/sync" => sync::routes(),
             "/webhooks" => webhooks::routes()
@@ -100,6 +104,7 @@ pub fn mount(config: Settings, mut rocket: Rocket<Build>) -> Rocket<Build> {
             "/auth/session" => rocket_authifier::routes::session::routes(),
             "/auth/mfa" => rocket_authifier::routes::mfa::routes(),
             "/onboard" => onboard::routes(),
+            "/funnel" => funnel::routes(),
             "/push" => push::routes(),
             "/sync" => sync::routes()
         };

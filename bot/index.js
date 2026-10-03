@@ -9,6 +9,8 @@ require("dotenv").config({ path: path.resolve(__dirname, "..", ".env") });
 const { ingressClient, roomService, egressClient } = require("./stream-service");
 const { defaultBannedWords, normaliseForAutomod, stripMachineTokens } = require("./banned-words");
 const { PERMISSION, computeServerPermissions, holds } = require("./permissions");
+const { levelForXp, cooledDown } = require("./xp");
+const { pushSpamTimestamp, duplicateStep } = require("./moderation");
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const API_URL = process.env.API_URL;
@@ -2328,14 +2330,12 @@ async function processXp(data) {
   }
   const user = lvl.users[userId];
 
-  // Cooldown check
-  if (now - user.lastXpTime < lvl.cooldown * 1000) return;
+  if (!cooledDown(now, user.lastXpTime, lvl.cooldown)) return;
 
   user.xp += lvl.xpPerMessage;
   user.lastXpTime = now;
 
-  // Check level up
-  const newLevel = Math.floor(Math.sqrt(user.xp / 100));
+  const newLevel = levelForXp(user.xp);
   if (newLevel > user.level) {
     const oldLevel = user.level;
     user.level = newLevel;
@@ -2538,9 +2538,7 @@ async function automodCheck(data) {
   }
   const tracker = spamTracker.get(userId);
 
-  // Clean old timestamps
-  tracker.messages = tracker.messages.filter((ts) => now - ts < am.spamWindow * 1000);
-  tracker.messages.push(now);
+  tracker.messages = pushSpamTimestamp(tracker.messages, now, am.spamWindow * 1000);
 
   if (tracker.messages.length >= am.spamLimit) {
     try {
@@ -2564,22 +2562,19 @@ async function automodCheck(data) {
 
   // --- Duplicate check ---
   if (am.antiDuplicates && duplicateKey) {
-    if (duplicateKey === tracker.lastContent) {
-      tracker.duplicateCount++;
-      if (tracker.duplicateCount >= am.maxDuplicates) {
-        try {
-          await api("DELETE", `/channels/${channelId}/messages/${data._id}`);
-          if (am.logChannel) {
-            await sendMessage(am.logChannel, `🔁 Дубликат от <@${userId}> в <#${channelId}> (${tracker.duplicateCount}x) — удалено`);
-          }
-        } catch (e) {
-          console.error("[AUTOMOD] Duplicate action error:", e.message);
+    const step = duplicateStep(tracker, duplicateKey, am.maxDuplicates);
+    tracker.lastContent = step.lastContent;
+    tracker.duplicateCount = step.duplicateCount;
+    if (step.tripped) {
+      try {
+        await api("DELETE", `/channels/${channelId}/messages/${data._id}`);
+        if (am.logChannel) {
+          await sendMessage(am.logChannel, `🔁 Дубликат от <@${userId}> в <#${channelId}> (${tracker.duplicateCount}x) — удалено`);
         }
-        return;
+      } catch (e) {
+        console.error("[AUTOMOD] Duplicate action error:", e.message);
       }
-    } else {
-      tracker.lastContent = duplicateKey;
-      tracker.duplicateCount = 1;
+      return;
     }
   }
 }

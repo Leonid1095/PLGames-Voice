@@ -18,14 +18,13 @@ import {
   iconSize,
 } from "@revolt/ui";
 
-import { FlowBase, FlowTitle } from "./Flow";
+import { AuthSubmit, FlowBase, FlowTitle } from "./Flow";
 import { Fields, Form } from "./Form";
-
-/* ── Discord-style link ──────────────────────────────── */
+import { useEmailEnabled } from "./useEmailEnabled";
 
 const LinkText = styled("a", {
   base: {
-    color: "var(--md-sys-color-primary)",
+    color: "#E00A45",
     fontSize: "14px",
     textDecoration: "none",
     cursor: "pointer",
@@ -37,7 +36,7 @@ const LinkText = styled("a", {
 
 const ForgotLink = styled("a", {
   base: {
-    color: "var(--md-sys-color-primary)",
+    color: "#E00A45",
     fontSize: "14px",
     textDecoration: "none",
     cursor: "pointer",
@@ -51,32 +50,8 @@ const ForgotLink = styled("a", {
 const BottomLinks = styled("div", {
   base: {
     fontSize: "14px",
-    color: "#6E6889",
+    color: "#57534C",
     marginTop: "4px",
-  },
-});
-
-const AuthButton = styled("button", {
-  base: {
-    width: "100%",
-    marginTop: "8px",
-    padding: "12px",
-    border: "none",
-    borderRadius: "var(--pd-radius-sm)",
-    fontSize: "16px",
-    fontWeight: 600,
-    fontFamily: "inherit",
-    cursor: "pointer",
-    color: "#fff",
-    background: "var(--md-sys-color-primary)",
-    transition: "background var(--pd-transition-base), box-shadow var(--pd-transition-base)",
-    _hover: {
-      background: "#6D28D9",
-      boxShadow: "0 0 20px var(--accent-glow)",
-    },
-    _active: {
-      background: "#5B21B6",
-    },
   },
 });
 
@@ -85,6 +60,7 @@ const AuthButton = styled("button", {
 export default function FlowHome() {
   const state = useState();
   const modals = useModals();
+  const { email } = useEmailEnabled();
   const { lifecycle, isLoggedIn, login, selectUsername } =
     useClientLifecycle();
 
@@ -111,12 +87,12 @@ export default function FlowHome() {
       fallback={
         <>
           <Show when={isLoggedIn()}>
-            <Navigate href={state.layout.popNextPath() ?? "/app"} />
+            <Navigate href={state.layout.popNextPath() ?? "/"} />
           </Show>
 
           <FlowBase>
             <FlowTitle
-              subtitle={<Trans>We're so excited to see you again!</Trans>}
+              subtitle={<Trans>Your servers and voice are right here.</Trans>}
             >
               <Trans>Welcome back!</Trans>
             </FlowTitle>
@@ -124,13 +100,15 @@ export default function FlowHome() {
             <Form onSubmit={performLogin}>
               <Fields fields={["email", "password"]} />
 
-              <ForgotLink href="/login/reset">
-                <Trans>Forgot your password?</Trans>
-              </ForgotLink>
+              <Show when={email()}>
+                <ForgotLink href="/login/reset">
+                  <Trans>Forgot your password?</Trans>
+                </ForgotLink>
+              </Show>
 
-              <AuthButton type="submit">
+              <AuthSubmit type="submit">
                 <Trans>Login</Trans>
-              </AuthButton>
+              </AuthSubmit>
 
               <BottomLinks>
                 <Trans>Need an account?</Trans>{" "}
@@ -154,7 +132,7 @@ export default function FlowHome() {
             <Trans>Choose a username</Trans>
           </FlowTitle>
 
-          <Text style={{ color: "#A098B8", "font-size": "14px" }}>
+          <Text style={{ color: "#57534C", "font-size": "14px" }}>
             <Trans>
               Pick a username that you want people to be able to find you by.
               This can be changed later in your user settings.

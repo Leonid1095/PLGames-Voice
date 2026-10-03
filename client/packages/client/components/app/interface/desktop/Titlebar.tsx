@@ -2,16 +2,14 @@ import { Match, Show, Switch, createSignal } from "solid-js";
 import { Motion, Presence } from "solid-motionone";
 
 import { Trans } from "@lingui-solid/solid/macro";
-import { css } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
 import { useClientLifecycle } from "@revolt/client";
 import { State, TransitionType } from "@revolt/client/Controller";
-import { Button, Ripple, symbolSize, typography } from "@revolt/ui";
+import { BrandMark, Button, Ripple, symbolSize, typography } from "@revolt/ui";
 
 import { Maximize2 as MdExpandContent, Minimize2 as MdCollapseContent, Minus as MdMinimize, Wrench as MdBuild, X as MdClose } from "lucide-solid";
 
-import Wordmark from "../../../../public/assets/web/wordmark.svg?component-solid";
 import { pendingUpdate } from "../../../../src/serviceWorkerInterface";
 
 export function Titlebar() {
@@ -61,12 +59,7 @@ export function Titlebar() {
                 "-webkit-app-region": "drag",
               }}
             >
-              <Wordmark
-                class={css({
-                  height: "18px",
-                  marginBlockStart: "1px",
-                })}
-              />{" "}
+              <BrandMark themed size={16} />{" "}
               <Show when={import.meta.env.DEV}>
                 <MdBuild {...symbolSize(16)} />
               </Show>

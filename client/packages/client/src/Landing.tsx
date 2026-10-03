@@ -1,11 +1,13 @@
-import { For, Show, createSignal } from "solid-js";
+import { For, onMount, Show, createSignal } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
 import { Titlebar } from "@revolt/app/interface/desktop/Titlebar";
 import { useClientLifecycle } from "@revolt/client";
+import { CONFIGURATION } from "@revolt/common";
 import { Navigate } from "@revolt/routing";
+import { BrandMark } from "@revolt/ui";
 
 /* ── Полдень ────────────────────────────────────────────────────────
  *
@@ -55,48 +57,6 @@ const LABEL = {
   letterSpacing: "0.16em",
   fontWeight: 400,
 } as const;
-
-/* ── Logo ─────────────────────────────────────────── */
-
-function Logo() {
-  return (
-    <LogoRow>
-      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
-        <rect width="26" height="26" rx="7" fill={SIGNAL} />
-        <g fill={PAPER}>
-          <rect x="6" y="11" width="2.5" height="4" rx="1.25" />
-          <rect x="10" y="8" width="2.5" height="10" rx="1.25" />
-          <rect x="14" y="6" width="2.5" height="14" rx="1.25" />
-          <rect x="18" y="10" width="2.5" height="6" rx="1.25" />
-        </g>
-      </svg>
-      <LogoWord>
-        PLG<b>VOICE</b>
-      </LogoWord>
-    </LogoRow>
-  );
-}
-
-const LogoRow = styled("a", {
-  base: {
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-    textDecoration: "none",
-    color: TEXT,
-    flexShrink: 0,
-  },
-});
-
-const LogoWord = styled("span", {
-  base: {
-    ...DISPLAY,
-    fontSize: "22px",
-    letterSpacing: "0.02em",
-    color: TEXT_3,
-    "& b": { color: TEXT, fontWeight: 700 },
-  },
-});
 
 /* ── The signature: a voice room, alive ──────────────
  *
@@ -282,18 +242,30 @@ export default function LandingPage() {
   const { isLoggedIn } = useClientLifecycle();
   const [menuOpen, setMenuOpen] = createSignal(false);
 
+  onMount(() => {
+    if (localStorage.getItem("plg-funnel-visit")) return;
+    localStorage.setItem("plg-funnel-visit", "1");
+    fetch(`${CONFIGURATION.DEFAULT_API_URL}/funnel/visit`, { method: "POST" })
+      .then((res) => {
+        if (!res.ok) localStorage.removeItem("plg-funnel-visit");
+      })
+      .catch(() => {
+        localStorage.removeItem("plg-funnel-visit");
+      });
+  });
+
   return (
     <Show when={!isLoggedIn()} fallback={<Navigate href="/" />}>
       <Titlebar />
       <Page>
         <Nav>
-          <Logo />
+          <BrandMark href="/" />
           <NavButtons>
             <NavLink href={DOWNLOAD_WIN} target="_blank">
-              Windows
+              <Trans>Windows</Trans>
             </NavLink>
             <NavLink href={DOWNLOAD_LINUX} target="_blank">
-              Linux
+              <Trans>Linux</Trans>
             </NavLink>
             <BtnGhost href="/login">
               <Trans>Log in</Trans>
@@ -319,10 +291,10 @@ export default function LandingPage() {
               <Trans>Log in</Trans>
             </BtnGhost>
             <NavLink href={DOWNLOAD_WIN} target="_blank">
-              Windows
+              <Trans>Windows</Trans>
             </NavLink>
             <NavLink href={DOWNLOAD_LINUX} target="_blank">
-              Linux
+              <Trans>Linux</Trans>
             </NavLink>
           </MobileMenu>
         </Show>
@@ -470,7 +442,9 @@ export default function LandingPage() {
 
           <InstallCards>
             <InstallCard>
-              <InstallCardTitle>Android — Chrome</InstallCardTitle>
+              <InstallCardTitle>
+                <Trans>Android — Chrome</Trans>
+              </InstallCardTitle>
               <InstallStep>
                 <StepNum>1</StepNum>
                 <Trans>Open plgames-voice.ru in Chrome</Trans>
@@ -490,7 +464,9 @@ export default function LandingPage() {
             </InstallCard>
 
             <InstallCard>
-              <InstallCardTitle>iPhone — Safari</InstallCardTitle>
+              <InstallCardTitle>
+                <Trans>iPhone — Safari</Trans>
+              </InstallCardTitle>
               <InstallStep>
                 <StepNum>1</StepNum>
                 <Trans>Open plgames-voice.ru in Safari</Trans>

@@ -1,12 +1,11 @@
 import { JSX, Match, Show, Switch } from "solid-js";
-import { ChevronLeft, ChevronRight } from "lucide-solid";
+import { ChevronLeft, ChevronRight, Menu } from "lucide-solid";
 
 import { useLingui } from "@lingui-solid/solid/macro";
 import { css } from "styled-system/css";
 
 import { useState } from "@revolt/state";
 import { LAYOUT_SECTIONS } from "@revolt/state/stores/Layout";
-import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { useMobile } from "../MobileContext";
 
 /**
@@ -38,7 +37,7 @@ export function HeaderIcon(props: { children: JSX.Element }) {
     >
       <Show
         when={!isMobile()}
-        fallback={<Symbol size={22}>menu</Symbol>}
+        fallback={<Menu size={22} stroke-width={1.75} />}
       >
         {/* The collapse chevron only surfaces on hover. Permanently visible
             it read as a back button and tripled the header into
@@ -73,17 +72,22 @@ const container = css({
   _hover: {
     background: "var(--pd-tint-subtle)",
     "& .chev": {
-      width: "18px",
+      gridTemplateColumns: "1fr",
       opacity: 1,
     },
   },
 });
 
 const chevron = css({
-  display: "inline-flex",
+  display: "grid",
   alignItems: "center",
   overflow: "hidden",
-  width: 0,
+  gridTemplateColumns: "0fr",
   opacity: 0,
-  transition: "width var(--pd-transition-fast), opacity var(--pd-transition-fast)",
+  transition:
+    "grid-template-columns var(--pd-transition-fast), opacity var(--pd-transition-fast)",
+  "& > *": {
+    minWidth: "18px",
+    overflow: "hidden",
+  },
 });

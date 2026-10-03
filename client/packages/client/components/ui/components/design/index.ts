@@ -29,6 +29,7 @@
  */
 
 export { Avatar } from "./Avatar";
+export { BrandGlyph, BrandMark, BRAND } from "./BrandMark";
 export { ErrorFallback } from "./ErrorFallback";
 export { Badge } from "./Badge";
 export { Button } from "./Button";

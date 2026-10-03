@@ -3,8 +3,9 @@ import { createSignal } from "solid-js";
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
+import { Infinity, Users } from "lucide-solid";
+
 import { Column, Dialog, DialogProps, Row, Text } from "@revolt/ui";
-import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 import { Modals } from "../types";
 
@@ -60,12 +61,12 @@ export function CreateTempChannelModal(
               >
                 {n === 0 ? (
                   <Row align gap="xs">
-                    <Symbol size={16}>all_inclusive</Symbol>
+                    <Infinity size={16} stroke-width={1.75} />
                     <span>{t`No limit`}</span>
                   </Row>
                 ) : (
                   <Row align gap="xs">
-                    <Symbol size={16}>group</Symbol>
+                    <Users size={16} stroke-width={1.75} />
                     <span>{n}</span>
                   </Row>
                 )}

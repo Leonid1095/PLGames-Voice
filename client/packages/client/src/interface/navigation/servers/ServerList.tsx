@@ -16,7 +16,6 @@ import { Avatar, Column, Text, Time, Unreads, UserStatus } from "@revolt/ui";
 import { Tooltip } from "../../../../components/ui/components/floating";
 import { Draggable } from "../../../../components/ui/components/utils/Draggable";
 
-import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { UserMenu } from "./UserMenu";
 
 interface Props {
@@ -121,7 +120,9 @@ export const ServerList = (props: Props) => {
           href="/"
           use:floating={{
             tooltip: {
-              content: `You have ${homeNotifications()} pending friend requests.`,
+              content: homeNotifications()
+                ? t`You have ${homeNotifications()} pending friend requests.`
+                : t`Home`,
               placement: "right",
             },
           }}

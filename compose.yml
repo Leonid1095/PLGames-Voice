@@ -240,6 +240,9 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile.api
+      # Host network so apt can reach the outbound proxy on 127.0.0.1.
+      # Direct HTTP to Debian mirrors is a 503 from that proxy.
+      network: host
     image: plg-voice-api:latest
     logging: *default-logging
     <<: *default-hardening
@@ -381,7 +384,13 @@ services:
 
   # Regular task daemon
   crond:
-    image: ghcr.io/stoatchat/crond:latest
+    # Built locally so tasks added in this tree (session pruning) actually
+    # run. ghcr.io is unreachable from this host. See server/Dockerfile.crond.
+    image: plg-voice-crond:latest
+    build:
+      context: ./server
+      dockerfile: Dockerfile.crond
+      network: host
     logging: *default-logging
     <<: *default-hardening
     depends_on:
@@ -607,6 +616,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+      network: host
     image: plg-voice-web:latest
     logging: *default-logging
     <<: *default-hardening

@@ -1,5 +1,18 @@
 import { Accessor, Match, Setter, Show, Switch, createMemo, createResource } from "solid-js";
-import { Pin, Settings, UserPlus, Users } from "lucide-solid";
+import {
+  ArrowLeft,
+  AtSign,
+  Hash,
+  Headphones,
+  Menu,
+  MessageCircle,
+  MessagesSquare,
+  Pin,
+  Settings,
+  StickyNote,
+  UserPlus,
+  Users,
+} from "lucide-solid";
 
 import { Trans, t, useLingui } from "@lingui-solid/solid/macro";
 import { Channel } from "stoat.js";
@@ -21,9 +34,7 @@ import {
   UserStatus,
   typography,
 } from "@revolt/ui";
-import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
-import MdKeep from "../../svg/keep.svg?component-solid";
 import { HeaderIcon } from "../common/CommonHeader";
 
 import { useMobile } from "../MobileContext";
@@ -92,7 +103,7 @@ export function ChannelHeader(props: Props) {
         data-hamburger
         onPress={toggleSidebar}
       >
-        <Symbol size={22}>menu</Symbol>
+        <Menu size={22} stroke-width={1.75} />
       </IconButton>
 
       <Switch>
@@ -103,12 +114,12 @@ export function ChannelHeader(props: Props) {
               navigate(`/server/${parent.serverId}/channel/${parent.id}`);
             }}
           >
-            <Symbol size={18}>arrow_back</Symbol>
+            <ArrowLeft size={18} stroke-width={1.75} />
             <span>{parentChannel()!.name}</span>
           </BackButton>
           <Divider />
           <HeaderIcon>
-            <Symbol>chat</Symbol>
+            <MessageCircle size={20} stroke-width={1.75} />
           </HeaderIcon>
           <NonBreakingText class={typography({ class: "title", size: "medium" })}>
             <TextWithEmoji content={props.channel.name!} />
@@ -116,7 +127,7 @@ export function ChannelHeader(props: Props) {
         </Match>
         <Match when={props.channel.isForum}>
           <HeaderIcon>
-            <Symbol>forum</Symbol>
+            <MessagesSquare size={20} stroke-width={1.75} />
           </HeaderIcon>
           <NonBreakingText
             class={typography({ class: "title", size: "medium" })}
@@ -132,6 +143,22 @@ export function ChannelHeader(props: Props) {
             </OverflowingText>
           </Show>
         </Match>
+        <Match when={props.channel.type === "VoiceChannel"}>
+          <HeaderIcon>
+            <Headphones size={20} stroke-width={1.75} />
+          </HeaderIcon>
+          <NonBreakingText
+            class={typography({ class: "title", size: "medium" })}
+            onClick={() =>
+              openModal({
+                type: "channel_info",
+                channel: props.channel,
+              })
+            }
+          >
+            <TextWithEmoji content={props.channel.name!} />
+          </NonBreakingText>
+        </Match>
         <Match
           when={
             props.channel.type === "TextChannel" ||
@@ -139,7 +166,7 @@ export function ChannelHeader(props: Props) {
           }
         >
           <HeaderIcon>
-            <Symbol>grid_3x3</Symbol>
+            <Hash size={20} stroke-width={1.75} />
           </HeaderIcon>
           <NonBreakingText
             class={typography({ class: "title", size: "medium" })}
@@ -181,14 +208,14 @@ export function ChannelHeader(props: Props) {
         </Match>
         <Match when={props.channel.type === "DirectMessage"}>
           <HeaderIcon>
-            <Symbol>alternate_email</Symbol>
+            <AtSign size={20} stroke-width={1.75} />
           </HeaderIcon>
           <TextWithEmoji content={props.channel.recipient?.username} />
           <UserStatus status={props.channel.recipient?.presence} size="8px" />
         </Match>
         <Match when={props.channel.type === "SavedMessages"}>
           <HeaderIcon>
-            <Symbol>note_stack</Symbol>
+            <StickyNote size={20} stroke-width={1.75} />
           </HeaderIcon>
           <Trans>Saved Notes</Trans>
         </Match>

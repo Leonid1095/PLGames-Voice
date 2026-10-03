@@ -31,6 +31,7 @@ import {
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { useSearchSpace } from "@revolt/ui/components/utils/autoComplete";
 
+import { newUserLimits } from "./newUserLimits";
 import { ScheduleMessageButton } from "./ScheduledMessages";
 import { VoiceRecorder } from "./VoiceRecorder";
 
@@ -210,8 +211,20 @@ export function MessageComposition(props: Props) {
   /**
    * Shorthand for updating the draft
    */
+  const freshAccount = () =>
+    newUserLimits(
+      client()?.user?.id,
+      client()?.configuration as Parameters<typeof newUserLimits>[1],
+    );
+  const accountLimits = freshAccount();
+  const newUserNotice = accountLimits
+    ? t`For the first ${accountLimits.hours} hours, messages are limited to ${accountLimits.length} characters, ${accountLimits.attachments} attachments and ${accountLimits.friends} friend requests.`
+    : undefined;
+
   function setContent(content: string) {
-    state.draft.setDraft(props.channel.id, { content });
+    const cap = freshAccount()?.length;
+    const next = cap && [...content].length > cap ? [...content].slice(0, cap).join("") : content;
+    state.draft.setDraft(props.channel.id, { content: next });
     startTyping();
   }
 
@@ -257,7 +270,19 @@ export function MessageComposition(props: Props) {
       }
     }
 
-    for (const file of validFiles) {
+    const attachmentCap = freshAccount()?.attachments;
+    const accepted =
+      attachmentCap == null
+        ? validFiles
+        : validFiles.slice(
+            0,
+            Math.max(
+              0,
+              attachmentCap - (draft()?.files?.length ?? 0),
+            ),
+          );
+
+    for (const file of accepted) {
       state.draft.addFile(props.channel.id, file);
     }
   }
@@ -343,6 +368,17 @@ export function MessageComposition(props: Props) {
           );
         }}
       </For>
+      <Show when={newUserNotice}>
+        <p
+          style={{
+            margin: "0",
+            "font-size": "12px",
+            color: "var(--md-sys-color-on-surface-variant)",
+          }}
+        >
+          {newUserNotice}
+        </p>
+      </Show>
       <MessageBox
         initialValue={initialValue()}
         nodeReplacement={nodeReplacement()}

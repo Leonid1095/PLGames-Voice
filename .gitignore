@@ -13,6 +13,7 @@ livekit.yml.old
 compose.override.yml
 
 .claude/
+.impeccable/hook.cache.json
 
 node_modules/
 .vite/

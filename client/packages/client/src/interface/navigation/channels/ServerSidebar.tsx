@@ -1,4 +1,17 @@
-import { CheckCircle2, ChevronRight } from "lucide-solid";
+import {
+  CheckCircle2,
+  ChevronRight,
+  CirclePlus,
+  Clock,
+  Hash,
+  Headphones,
+  MessagesSquare,
+  Pencil,
+  Phone,
+  Plus,
+  Settings,
+  UserPlus,
+} from "lucide-solid";
 import {
   Accessor,
   JSX,
@@ -34,7 +47,6 @@ import {
 } from "@revolt/ui";
 import { VoiceChannelPreview } from "@revolt/ui/components/features/voice/VoiceChannelPreview";
 import { createDragHandle } from "@revolt/ui/components/utils/Draggable";
-import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 import { getGameActivity } from "@revolt/app/gameActivity";
 
@@ -261,7 +273,7 @@ function ServerInfo(
             },
           }}
         >
-          <Symbol size={18}>add</Symbol>
+          <Plus size={18} stroke-width={1.75} />
         </HeaderActionButton>
       </Show>
       <Show when={props.canManageServer}>
@@ -275,7 +287,7 @@ function ServerInfo(
             },
           }}
         >
-          <Symbol size={18}>settings</Symbol>
+          <Settings size={18} stroke-width={1.75} />
         </HeaderActionButton>
       </Show>
     </Row>
@@ -616,28 +628,30 @@ function Entry(
           attention={attentionState()}
           icon={
             <>
-              <Switch fallback={<Symbol>grid_3x3</Symbol>}>
+              <Switch fallback={<Hash size={20} stroke-width={1.75} />}>
                 <Match when={isTrigger()}>
-                  <Symbol color="var(--md-sys-color-tertiary)">
-                    add_circle
-                  </Symbol>
+                  <CirclePlus
+                    size={20}
+                    stroke-width={1.75}
+                    color="var(--md-sys-color-tertiary)"
+                  />
                 </Match>
                 <Match when={isTemp()}>
-                  <Symbol
+                  <Clock
+                    size={20}
+                    stroke-width={1.75}
                     color={inCall() ? "var(--md-sys-color-primary)" : undefined}
-                  >
-                    schedule
-                  </Symbol>
+                  />
                 </Match>
                 <Match when={props.channel.isForum}>
-                  <Symbol>forum</Symbol>
+                  <MessagesSquare size={20} stroke-width={1.75} />
                 </Match>
                 <Match when={props.channel.isVoice}>
-                  <Symbol
+                  <Headphones
+                    size={20}
+                    stroke-width={1.75}
                     color={inCall() ? "var(--md-sys-color-primary)" : undefined}
-                  >
-                    headset_mic
-                  </Symbol>
+                  />
                 </Match>
               </Switch>
               <Show when={props.channel.icon}>
@@ -663,9 +677,7 @@ function Entry(
                     }
                   }}
                 >
-                  <Symbol size={16} fill>
-                    edit
-                  </Symbol>
+                  <Pencil size={16} stroke-width={1.75} />
                 </a>
               </Show>
               <Show when={canInvite()}>
@@ -681,9 +693,7 @@ function Entry(
                     });
                   }}
                 >
-                  <Symbol size={16} fill>
-                    person_add
-                  </Symbol>
+                  <UserPlus size={16} stroke-width={1.75} />
                 </a>
               </Show>
 
@@ -701,9 +711,7 @@ function Entry(
                     });
                   }}
                 >
-                  <Symbol size={16} fill>
-                    settings
-                  </Symbol>
+                  <Settings size={16} stroke-width={1.75} />
                 </a>
               </Show>
             </>
@@ -721,7 +729,7 @@ function Entry(
             </Tooltip>
           </Show>
           <Show when={inCall()}>
-            <Symbol size={16} color="var(--md-sys-color-primary)">call</Symbol>
+            <Phone size={16} stroke-width={1.75} color="var(--md-sys-color-primary)" />
           </Show>
         </MenuButton>
 

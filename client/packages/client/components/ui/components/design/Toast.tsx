@@ -1,8 +1,7 @@
-import { For, createSignal } from "solid-js";
+import { Component, For, createSignal } from "solid-js";
+import { CheckCircle2, CircleAlert, Info, TriangleAlert } from "lucide-solid";
 
 import { styled } from "styled-system/jsx";
-
-import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 type ToastType = "success" | "error" | "info" | "warning";
 
@@ -35,11 +34,11 @@ export function dismissToast(id: number) {
   setToasts((prev) => prev.filter((t) => t.id !== id));
 }
 
-const ICON_MAP: Record<ToastType, string> = {
-  success: "check_circle",
-  error: "error",
-  info: "info",
-  warning: "warning",
+const ICON_MAP: Record<ToastType, Component> = {
+  success: CheckCircle2,
+  error: CircleAlert,
+  info: Info,
+  warning: TriangleAlert,
 };
 
 /**
@@ -49,12 +48,15 @@ export function ToastContainer() {
   return (
     <Container>
       <For each={toasts()}>
-        {(toast) => (
-          <ToastItem type={toast.type} onClick={() => dismissToast(toast.id)}>
-            <Symbol size={20}>{ICON_MAP[toast.type]}</Symbol>
-            <ToastMessage>{toast.message}</ToastMessage>
-          </ToastItem>
-        )}
+        {(toast) => {
+          const Icon = ICON_MAP[toast.type];
+          return (
+            <ToastItem type={toast.type} onClick={() => dismissToast(toast.id)}>
+              <Icon size={20} stroke-width={1.75} />
+              <ToastMessage>{toast.message}</ToastMessage>
+            </ToastItem>
+          );
+        }}
       </For>
     </Container>
   );

@@ -1,4 +1,5 @@
 import { For, Show, createSignal, onMount } from "solid-js";
+import { Bookmark, Copy, ExternalLink, Trash2, X } from "lucide-solid";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { css } from "styled-system/css";
@@ -6,7 +7,6 @@ import { styled } from "styled-system/jsx";
 
 import { useNavigate } from "@revolt/routing";
 import { Header, Text } from "@revolt/ui";
-import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 interface SavedMessage {
   id: string;
@@ -79,7 +79,7 @@ export function SavedMessages() {
             width: "100%",
           })}
         >
-          <Symbol size={24}>bookmark</Symbol>
+          <Bookmark size={22} stroke-width={1.75} />
           <Text class="title" size="medium">
             <Trans>Saved messages</Trans>
           </Text>
@@ -99,7 +99,7 @@ export function SavedMessages() {
           />
           <Show when={messages().length > 0}>
             <ClearButton onClick={clearAll}>
-              <Symbol size={16}>delete_sweep</Symbol>
+              <Trash2 size={16} stroke-width={1.75} />
               <Trans>Clear all</Trans>
             </ClearButton>
           </Show>
@@ -109,7 +109,7 @@ export function SavedMessages() {
           when={filtered().length > 0}
           fallback={
             <EmptyState>
-              <Symbol size={48}>bookmark_border</Symbol>
+              <Bookmark size={48} stroke-width={1.5} />
               <Text class="title" size="medium">
                 <Trans>No saved messages</Trans>
               </Text>
@@ -130,15 +130,15 @@ export function SavedMessages() {
                   <Content>{msg.content || <i><Trans>No text</Trans></i>}</Content>
                   <CardActions>
                     <ActionButton onClick={() => goToMessage(msg)}>
-                      <Symbol size={16}>open_in_new</Symbol>
+                      <ExternalLink size={16} stroke-width={1.75} />
                       <Trans>Go to</Trans>
                     </ActionButton>
                     <ActionButton onClick={() => navigator.clipboard.writeText(msg.content)}>
-                      <Symbol size={16}>content_copy</Symbol>
+                      <Copy size={16} stroke-width={1.75} />
                       <Trans>Copy</Trans>
                     </ActionButton>
                     <ActionButton onClick={() => removeMessage(msg.id)} destructive>
-                      <Symbol size={16}>close</Symbol>
+                      <X size={16} stroke-width={1.75} />
                       <Trans>Delete</Trans>
                     </ActionButton>
                   </CardActions>

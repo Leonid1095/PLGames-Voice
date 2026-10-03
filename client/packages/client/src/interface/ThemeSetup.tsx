@@ -1,9 +1,11 @@
 import { For, Show } from "solid-js";
+import { Contrast, Moon, Sun } from "lucide-solid";
 
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
 import { useState } from "@revolt/state";
+import { BrandMark } from "@revolt/ui";
 
 /**
  * Theme onboarding overlay — shown once after migration or first install.
@@ -11,17 +13,18 @@ import { useState } from "@revolt/state";
  */
 export function ThemeSetup() {
   const state = useState();
+  const { t } = useLingui();
 
   // The brand accent leads the list and must stay in sync with the default in
   // stores/Theme.ts — otherwise a first-run user sees no swatch selected.
   // Violet stays available as a choice; it is just no longer ours.
   const accents = [
-    { color: "#E00A45", label: "Signal" },
-    { color: "#007AFF", label: "Blue" },
-    { color: "#34C759", label: "Green" },
-    { color: "#FF9500", label: "Orange" },
-    { color: "#7C3AED", label: "Violet" },
-    { color: "#AF52DE", label: "Purple" },
+    { color: "#E00A45", label: t`Signal` },
+    { color: "#007AFF", label: t`Blue` },
+    { color: "#34C759", label: t`Green` },
+    { color: "#FF9500", label: t`Orange` },
+    { color: "#7C3AED", label: t`Violet` },
+    { color: "#AF52DE", label: t`Purple` },
   ];
 
   return (
@@ -29,33 +32,7 @@ export function ThemeSetup() {
       <Overlay>
         <Card>
           <Logo>
-            <svg
-              width="48"
-              height="48"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16 2 L28 9 L28 23 L16 30 L4 23 L4 9 Z"
-                fill="url(#tsg)"
-                opacity="0.9"
-              />
-              <path
-                d="M16 10 L16 22 M11 13 L16 10 L21 13 M11 19 L16 22 L21 19"
-                stroke="#fff"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                fill="none"
-              />
-              <defs>
-                <linearGradient id="tsg" x1="4" y1="2" x2="28" y2="30">
-                  <stop offset="0%" stop-color="#E00A45" />
-                  <stop offset="100%" stop-color="#FF3D6A" />
-                </linearGradient>
-              </defs>
-            </svg>
+            <BrandMark themed size={48} word={false} />
           </Logo>
 
           <Title>
@@ -74,27 +51,21 @@ export function ThemeSetup() {
               active={state.theme.mode === "dark"}
               onClick={() => state.theme.setMode("dark")}
             >
-              <span class="material-symbols-outlined" style={{ "font-size": "20px" }}>
-                dark_mode
-              </span>
+              <Moon size={20} />
               <Trans>Dark</Trans>
             </ModeButton>
             <ModeButton
               active={state.theme.mode === "light"}
               onClick={() => state.theme.setMode("light")}
             >
-              <span class="material-symbols-outlined" style={{ "font-size": "20px" }}>
-                light_mode
-              </span>
+              <Sun size={20} />
               <Trans>Light</Trans>
             </ModeButton>
             <ModeButton
               active={state.theme.mode === "system"}
               onClick={() => state.theme.setMode("system")}
             >
-              <span class="material-symbols-outlined" style={{ "font-size": "20px" }}>
-                contrast
-              </span>
+              <Contrast size={20} />
               <Trans>Auto</Trans>
             </ModeButton>
           </ModeRow>
@@ -171,9 +142,13 @@ const Logo = styled("div", {
 const Title = styled("h2", {
   base: {
     margin: 0,
+    fontFamily: "var(--pd-font-display)",
+    fontVariationSettings: '"wght" 700, "wdth" var(--pd-display-wdth)',
+    fontWeight: 700,
     fontSize: "22px",
-    fontWeight: 600,
-    letterSpacing: "-0.02em",
+    lineHeight: 0.95,
+    letterSpacing: "0.01em",
+    textTransform: "uppercase",
     color: "var(--md-sys-color-on-surface)",
     textAlign: "center",
   },
@@ -192,11 +167,12 @@ const Subtitle = styled("p", {
 const SectionLabel = styled("div", {
   base: {
     width: "100%",
-    fontSize: "11px",
-    fontWeight: 600,
+    fontFamily: "var(--pd-font-mono)",
+    fontSize: "var(--pd-text-xs)",
+    fontWeight: "var(--pd-weight-regular)",
     textTransform: "uppercase",
-    letterSpacing: "0.08em",
-    color: "color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent)",
+    letterSpacing: "var(--pd-tracking-label)",
+    color: "var(--md-sys-color-on-surface-variant)",
     marginTop: "8px",
   },
 });
@@ -278,22 +254,25 @@ const AccentDot = styled("button", {
 const DoneButton = styled("button", {
   base: {
     width: "100%",
-    padding: "12px",
+    padding: "14px 22px",
     marginTop: "8px",
-    border: "1px solid color-mix(in srgb, white 12%, transparent)",
-    borderRadius: "var(--pd-radius-md)",
-    fontSize: "14px",
-    fontWeight: 500,
-    letterSpacing: "-0.005em",
-    fontFamily: "inherit",
+    border: "1px solid var(--md-sys-color-primary)",
+    borderRadius: "12px",
+    fontSize: "15px",
+    fontFamily: "var(--pd-font-display)",
+    fontVariationSettings: '"wght" 700, "wdth" var(--pd-display-wdth)',
+    fontWeight: 700,
+    letterSpacing: "0.04em",
+    textTransform: "uppercase",
     cursor: "pointer",
     color: "var(--md-sys-color-on-primary)",
     background: "var(--md-sys-color-primary)",
-    boxShadow: "var(--pd-shadow-raised), inset 0 1px 0 rgba(255,255,255,0.12)",
-    transition: "background var(--pd-transition-base), box-shadow var(--pd-transition-base), transform var(--pd-transition-fast)",
-    _active: { transform: "scale(0.98)" },
+    transition:
+      "background var(--pd-transition-fast), border-color var(--pd-transition-fast), transform var(--pd-transition-fast)",
+    _active: { transform: "translateY(1px)" },
     _hover: {
-      boxShadow: "0 4px 16px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.18)",
+      background: "color-mix(in srgb, var(--md-sys-color-primary) 86%, #000)",
+      borderColor: "color-mix(in srgb, var(--md-sys-color-primary) 86%, #000)",
     },
   },
 });

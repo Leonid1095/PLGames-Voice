@@ -580,6 +580,7 @@ export default class ClientController {
       username,
     });
 
+    sessionStorage.setItem("plg-pending-server", "1");
     this.lifecycle.transition({
       type: TransitionType.UserCreated,
     });
